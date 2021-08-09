@@ -43,6 +43,33 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
     webpage.add_images(ims, txts, links, width=width)
 
 
+def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
+    """Save images to the disk.
+
+    Parameters:
+        webpage (the HTML class) -- the HTML webpage class that stores these imaegs (see html.py for more details)
+        visuals (OrderedDict)    -- an ordered dictionary that stores (name, images (either tensor or numpy) ) pairs
+        image_path (str)         -- the string is used to create image paths
+        aspect_ratio (float)     -- the aspect ratio of saved images
+        width (int)              -- the images will be resized to width x width
+
+    This function will save images stored in 'visuals' to the HTML file specified by 'webpage'.
+    """
+    image_dir = '/glb/data/eptr_am_2/Arnab/volumes/training_data/events/HorizonWindow/att_volumes/slices/finalTest/Output1'
+    short_path = ntpath.basename(image_path[0])
+    name = os.path.splitext(short_path)[0]
+
+    webpage.add_header(name)
+    ims, txts, links = [], [], []
+
+    for label, im_data in visuals.items():
+        image_tensor = im_data.data
+        np_matrix = image_tensor[0].cpu().float().numpy()
+        image_name = '%s_%s.npy' % (name, label)
+        save_path = os.path.join(image_dir, image_name)
+        np.save(save_path,np_matrix)
+
+
 class Visualizer():
     """This class includes several functions that can display/save images and print/save logging information.
 
@@ -103,6 +130,7 @@ class Visualizer():
             epoch (int) - - the current epoch
             save_result (bool) - - if save the current results to an HTML file
         """
+        #print(visuals)
         if self.display_id > 0:  # show images in the browser using visdom
             ncols = self.ncols
             if ncols > 0:        # show all the images in one visdom panel
@@ -119,6 +147,9 @@ class Visualizer():
                 images = []
                 idx = 0
                 for label, image in visuals.items():
+                    #print("items")
+                    #print(np.shape(label))
+                    #print(np.shape(image))
                     image_numpy = util.tensor2im(image)
                     label_html_row += '<td>%s</td>' % label
                     images.append(image_numpy.transpose([2, 0, 1]))
@@ -134,6 +165,8 @@ class Visualizer():
                 if label_html_row != '':
                     label_html += '<tr>%s</tr>' % label_html_row
                 try:
+                    #print("images shape")
+                    #print(np.shape(images))
                     self.vis.images(images, nrow=ncols, win=self.display_id + 1,
                                     padding=2, opts=dict(title=title + ' images'))
                     label_html = '<table>%s</table>' % label_html
@@ -188,6 +221,8 @@ class Visualizer():
             self.plot_data = {'X': [], 'Y': [], 'legend': list(losses.keys())}
         self.plot_data['X'].append(epoch + counter_ratio)
         self.plot_data['Y'].append([losses[k] for k in self.plot_data['legend']])
+        #print(self.plot_data['X'])
+        #print(self.plot_data['Y'])
         try:
             self.vis.line(
                 X=np.stack([np.array(self.plot_data['X'])] * len(self.plot_data['legend']), 1),

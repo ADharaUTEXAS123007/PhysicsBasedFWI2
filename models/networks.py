@@ -3,7 +3,24 @@ import torch.nn as nn
 from torch.nn import init
 import functools
 from torch.optim import lr_scheduler
+import numpy as np
+import sys
+import torch.nn.functional as F
 
+sys.path.append('./models')
+
+from resunet_modules import (
+    ResidualConv,
+    ASPP,
+    AttentionBlock,
+    Upsample_,
+    Squeeze_Excite_Block,
+)
+import operator
+from functools import reduce
+from functools import partial
+from timeit import default_timer
+from unet_layers import unetConv2
 
 ###############################################################################
 # Helper Functions
@@ -151,9 +168,25 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'resnet_6blocks':
         net = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=6)
     elif netG == 'unet_128':
-        net = UnetGenerator(input_nc, output_nc, 7, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+        net = UnetGenerator(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'unet_256':
         net = UnetGenerator(input_nc, output_nc, 8, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+    elif netG == 'classic':
+        net = ClassicU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+    elif netG == 'Att':
+        net = AttU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)  
+    elif netG == 'ASPP':
+        net = ASPPU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+    elif netG == 'resunet':
+        net = ResUnetPlusPlus_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)  
+    elif netG == 'multi':
+        net = MultiU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)   
+    elif netG == 'multi2':
+        net = Multi2U_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'MultiASPP':
+        net = MultiASPPU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'NewU':
+        net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return init_net(net, init_type, init_gain, gpu_ids)
@@ -266,6 +299,8 @@ class GANLoss(nn.Module):
         """
         if self.gan_mode in ['lsgan', 'vanilla']:
             target_tensor = self.get_target_tensor(prediction, target_is_real)
+            #print("shape of target tensor")
+            #print(target_tensor)
             loss = self.loss(prediction, target_tensor)
         elif self.gan_mode == 'wgangp':
             if target_is_real:
@@ -364,7 +399,14 @@ class ResnetGenerator(nn.Module):
                       nn.ReLU(True)]
         model += [nn.ReflectionPad2d(3)]
         model += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
-        model += [nn.Tanh()]
+        model += [nn.LeakyReLU(0.5)]
+        lastll1 = nn.Conv2d(output_nc, output_nc, kernel_size=3,
+                              stride=1, padding=1)
+        model += [lastll1]
+        lastll2 = nn.Conv2d(output_nc, output_nc, kernel_size=3,
+                              stride=1, padding=1)
+        model += [lastll2]
+        #model += [nn.Tanh()]
 
         self.model = nn.Sequential(*model)
 
@@ -464,6 +506,125 @@ class UnetGenerator(nn.Module):
         """Standard forward"""
         return self.model(input)
 
+class UnetAttGenerator(nn.Module):
+    """Create a Unet-based generator"""
+
+    def __init__(self, input_nc, output_nc, num_downs, ngf=64, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        """Construct a Unet generator
+        Parameters:
+            input_nc (int)  -- the number of channels in input images
+            output_nc (int) -- the number of channels in output images
+            num_downs (int) -- the number of downsamplings in UNet. For example, # if |num_downs| == 7,
+                                image of size 128x128 will become of size 1x1 # at the bottleneck
+            ngf (int)       -- the number of filters in the last conv layer
+            norm_layer      -- normalization layer
+
+        We construct the U-Net from the innermost layer to the outermost layer.
+        It is a recursive process.
+        """
+        super(UnetAttGenerator, self).__init__()
+        # construct unet structure
+        unet_block = UnetAttSkipConnectionBlock(ngf * 8, ngf * 8, input_nc=None, submodule=None, norm_layer=norm_layer, innermost=True)  # add the innermost layer
+        for i in range(num_downs - 5):          # add intermediate layers with ngf * 8 filters
+            unet_block = UnetAttSkipConnectionBlock(ngf * 8, ngf * 8, input_nc=None, submodule=unet_block, norm_layer=norm_layer, use_dropout=use_dropout)
+        # gradually reduce the number of filters from ngf * 8 to ngf
+        unet_block = UnetAttSkipConnectionBlock(ngf * 4, ngf * 8, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
+        unet_block = UnetAttSkipConnectionBlock(ngf * 2, ngf * 4, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
+        unet_block = UnetSkipConnectionBlock(ngf, ngf * 2, input_nc=None, submodule=unet_block, norm_layer=norm_layer)
+        self.model = UnetSkipConnectionBlock(output_nc, ngf, input_nc=input_nc, submodule=unet_block, outermost=True, norm_layer=norm_layer)  # add the outermost layer
+
+    def forward(self, input):
+        """Standard forward"""
+        return self.model(input)
+
+
+class UnetAttSkipConnectionBlock(nn.Module):
+    """Defines the Unet submodule with skip connection.
+        X -------------------identity----------------------
+        |-- downsampling -- |submodule| -- upsampling --|
+    """
+
+    def __init__(self, outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        """Construct a Unet submodule with skip connections.
+
+        Parameters:
+            outer_nc (int) -- the number of filters in the outer conv layer
+            inner_nc (int) -- the number of filters in the inner conv layer
+            input_nc (int) -- the number of channels in input images/features
+            submodule (UnetSkipConnectionBlock) -- previously defined submodules
+            outermost (bool)    -- if this module is the outermost module
+            innermost (bool)    -- if this module is the innermost module
+            norm_layer          -- normalization layer
+            use_dropout (bool)  -- if use dropout layers.
+        """
+        super(UnetAttSkipConnectionBlock, self).__init__()
+        self.outermost = outermost
+        self.attb = Attention_block(F_g=outer_nc, F_l=outer_nc, F_int=int(outer_nc/2))
+        if type(norm_layer) == functools.partial:
+            use_bias = norm_layer.func == nn.InstanceNorm2d
+        else:
+            use_bias = norm_layer == nn.InstanceNorm2d
+        if input_nc is None:
+            input_nc = outer_nc
+        downconv = nn.Conv2d(input_nc, inner_nc, kernel_size=4,
+                             stride=2, padding=1, bias=use_bias)
+        downrelu = nn.LeakyReLU(0.2, True)
+        downnorm = norm_layer(inner_nc)
+        uprelu = nn.ReLU(True)
+        upnorm = norm_layer(outer_nc)
+
+        if outermost:
+            upconv = nn.ConvTranspose2d(inner_nc * 2, outer_nc,
+                                        kernel_size=4, stride=2,
+                                        padding=1)
+            lastll1 = nn.Conv2d(outer_nc, outer_nc, kernel_size=3,
+                              stride=1, padding=1)
+            lastll2 = nn.Conv2d(outer_nc, outer_nc, kernel_size=3,
+                              stride=1, padding=1)
+            down = [downconv]
+            #up = [uprelu, upconv, nn.Tanh(),lastll1,lastll2]
+            up = [uprelu, upconv, nn.LeakyReLU(0.8),lastll1,lastll2]
+            #up = [uprelu, upconv]
+
+            model = down + [submodule] + up + self.attb
+        elif innermost:
+            upconv = nn.ConvTranspose2d(inner_nc, outer_nc,
+                                        kernel_size=4, stride=2,
+                                        padding=1, bias=use_bias)
+            down = [downrelu, downconv]
+            up = [uprelu, upconv, upnorm]
+            print("--model---")
+            print(down)
+            print(type(down))
+            print("---attb---")
+            print(self.attb)
+            print(type(self.attb))
+            model = down + up + self.attb
+        else:
+            upconv = nn.ConvTranspose2d(inner_nc * 2, outer_nc,
+                                        kernel_size=4, stride=2,
+                                        padding=1, bias=use_bias)
+
+            down = [downrelu, downconv, downnorm]
+            up = [uprelu, upconv, upnorm]
+
+            if use_dropout:
+                model = down + [submodule] + up + self.attb + [nn.Dropout(0.5)]
+            else:
+                model = down + [submodule] + up + self.attb
+
+        self.model = nn.Sequential(*model)
+
+    def forward(self, x):
+        if self.outermost:
+            return self.model(x)
+        else:   # add skip connections
+            y = self.model(x)
+            x = self.attb(g=y,x=x)
+            return torch.cat([x, y], 1)
+
+
 
 class UnetSkipConnectionBlock(nn.Module):
     """Defines the Unet submodule with skip connection.
@@ -504,8 +665,14 @@ class UnetSkipConnectionBlock(nn.Module):
             upconv = nn.ConvTranspose2d(inner_nc * 2, outer_nc,
                                         kernel_size=4, stride=2,
                                         padding=1)
+            lastll1 = nn.Conv2d(outer_nc, outer_nc, kernel_size=3,
+                              stride=1, padding=1)
+            lastll2 = nn.Conv2d(outer_nc, outer_nc, kernel_size=3,
+                              stride=1, padding=1)
             down = [downconv]
             up = [uprelu, upconv, nn.Tanh()]
+            #up = [uprelu, upconv, nn.LeakyReLU(0.8),lastll1,lastll2]
+            #up = [uprelu, upconv]
             model = down + [submodule] + up
         elif innermost:
             upconv = nn.ConvTranspose2d(inner_nc, outer_nc,
@@ -613,3 +780,1410 @@ class PixelDiscriminator(nn.Module):
     def forward(self, input):
         """Standard forward."""
         return self.net(input)
+
+
+class conv_block(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(conv_block,self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_in, ch_out, kernel_size=4,stride=2,padding=1,bias=False),
+            nn.BatchNorm2d(ch_out),
+            nn.LeakyReLU(0.2,inplace=True),
+        )
+
+
+    def forward(self,x):
+        x = self.conv(x)
+        return x
+
+class conv_block_sqex(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(conv_block,self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_in, ch_out, kernel_size=4,stride=2,padding=1,bias=False),
+            Squeeze_Excite_Block(ch_out),
+            nn.BatchNorm2d(ch_out),
+            nn.LeakyReLU(0.2,inplace=True),
+        )
+
+
+    def forward(self,x):
+        x = self.conv(x)
+        return x
+
+class up_conv(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(up_conv,self).__init__()
+        self.up = nn.Sequential(
+            nn.ConvTranspose2d(ch_in,ch_out,kernel_size=4,stride=2,padding=1,bias=True),
+		    nn.BatchNorm2d(ch_out),
+            #nn.Dropout(0.5, inplace=True),
+			nn.ReLU(inplace=True)
+        )
+
+    def forward(self,x):
+        x = self.up(x)
+        return x
+
+class Recurrent_block(nn.Module):
+    def __init__(self,ch_out,t=2):
+        super(Recurrent_block,self).__init__()
+        self.t = t
+        self.ch_out = ch_out
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_out,ch_out,kernel_size=3,stride=1,padding=1,bias=True),
+		    nn.BatchNorm2d(ch_out),
+			nn.ReLU(inplace=True)
+        )
+
+    def forward(self,x):
+        for i in range(self.t):
+
+            if i==0:
+                x1 = self.conv(x)
+            
+            x1 = self.conv(x+x1)
+        return x1
+        
+class RRCNN_block(nn.Module):
+    def __init__(self,ch_in,ch_out,t=2):
+        super(RRCNN_block,self).__init__()
+        self.RCNN = nn.Sequential(
+            Recurrent_block(ch_out,t=t),
+            Recurrent_block(ch_out,t=t)
+        )
+        self.Conv_1x1 = nn.Conv2d(ch_in,ch_out,kernel_size=1,stride=1,padding=0)
+
+    def forward(self,x):
+        x = self.Conv_1x1(x)
+        x1 = self.RCNN(x)
+        return x+x1
+
+
+class single_conv(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(single_conv,self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_in, ch_out, kernel_size=3,stride=1,padding=1,bias=True),
+            nn.BatchNorm2d(ch_out),
+            nn.ReLU(inplace=True)
+        )
+
+    def forward(self,x):
+        x = self.conv(x)
+        return x
+
+class Attention_block(nn.Module):
+    def __init__(self,F_g,F_l,F_int):
+        super(Attention_block,self).__init__()
+        self.W_g = nn.Sequential(
+            nn.Conv2d(F_g, F_int, kernel_size=1,stride=1,padding=0,bias=True),
+            nn.BatchNorm2d(F_int)
+            )
+        
+        self.W_x = nn.Sequential(
+            nn.Conv2d(F_l, F_int, kernel_size=1,stride=1,padding=0,bias=True),
+            nn.BatchNorm2d(F_int)
+        )
+
+        self.psi = nn.Sequential(
+            nn.Conv2d(F_int, 1, kernel_size=1,stride=1,padding=0,bias=True),
+            nn.BatchNorm2d(1),
+            nn.Sigmoid()
+        )
+        
+        self.relu = nn.ReLU(inplace=True)
+
+        
+    def forward(self,g,x):
+        g1 = self.W_g(g)
+        x1 = self.W_x(x)
+        psi = self.relu(g1+x1)
+        psi = self.psi(psi)
+
+        return x*psi
+
+
+class ClassicU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(ClassicU_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block(ch_in=32,ch_out=64)
+
+        self.Conv3 = conv_block(ch_in=64,ch_out=128)
+
+        self.Conv4 = conv_block(ch_in=128,ch_out=256)
+
+        self.Conv5 = conv_block(ch_in=256,ch_out=256)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+
+        self.Up1 = up_conv(ch_in=128,ch_out=32)
+
+        self.F1 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU3 = nn.LeakyReLU(0.8,True)
+
+        self.F2 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F3 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+        x2 = self.Conv2(x1)
+        x3 = self.Conv3(x2)
+        x4 = self.Conv4(x3)
+        x5 = self.Conv5(x4)
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+
+        # decoding + concat path
+        d5 = self.Up5(x6)
+        d5 = torch.cat((x5,d5),dim=1)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        d4 = torch.cat((x4,d4),dim=1)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x3,d3),dim=1)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x2,d2),dim=1)
+
+        d1 = self.Up1(d2)
+        d1 = torch.cat((x1,d1),dim=1)
+        
+        f1 = self.F1(d1)
+        f1 = self.ReLU3(f1)
+
+        f2 = self.F2(f1)
+        f3 = self.F3(f2)
+
+
+        return f3
+
+
+
+class AttU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(AttU_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block(ch_in=32,ch_out=64)
+
+        self.Conv3 = conv_block(ch_in=64,ch_out=128)
+
+        self.Conv4 = conv_block(ch_in=128,ch_out=256)
+
+        self.Conv5 = conv_block(ch_in=256,ch_out=256)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+        self.Att5 = Attention_block(F_g=256,F_l=256,F_int=128)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+
+        self.Att4 = Attention_block(F_g=256,F_l=256,F_int=128)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+        self.Att3 = Attention_block(F_g=128,F_l=128,F_int=64)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+        self.Att2 = Attention_block(F_g=64,F_l=64,F_int=32)
+
+        self.Up1 = up_conv(ch_in=128,ch_out=32)
+        self.Att1 = Attention_block(F_g=32,F_l=32,F_int=16)
+
+        self.F1 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU3 = nn.LeakyReLU(0.8,True)
+
+        self.F2 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F3 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+        x2 = self.Conv2(x1)
+        x3 = self.Conv3(x2)
+        x4 = self.Conv4(x3)
+        x5 = self.Conv5(x4)
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+
+        # decoding + concat path
+        d5 = self.Up5(x6)
+        x5 = self.Att5(g=d5,x=x5)
+        d5 = torch.cat((x5,d5),dim=1)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        x4 = self.Att4(g=d4,x=x4)
+        d4 = torch.cat((x4,d4),dim=1)
+
+        d3 = self.Up3(d4)
+        x3 = self.Att3(g=d3,x=x3)
+        d3 = torch.cat((x3,d3),dim=1)
+
+        d2 = self.Up2(d3)
+        x2 = self.Att2(g=d2,x=x2)
+        d2 = torch.cat((x2,d2),dim=1)
+
+        d1 = self.Up1(d2)
+        x1 = self.Att1(g=d1,x=x1)
+        d1 = torch.cat((x1,d1),dim=1)
+        
+        f1 = self.F1(d1)
+        f1 = self.ReLU3(f1)
+
+        f2 = self.F2(f1)
+        f3 = self.F3(f2)
+
+
+        return f3
+
+
+class R2U_Net(nn.Module):
+    def __init__(self,img_ch=3,output_ch=1,t=2):
+        super(R2U_Net,self).__init__()
+        
+        self.Maxpool = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Upsample = nn.Upsample(scale_factor=2)
+
+        self.RRCNN1 = RRCNN_block(ch_in=img_ch,ch_out=64,t=t)
+
+        self.RRCNN2 = RRCNN_block(ch_in=64,ch_out=128,t=t)
+        
+        self.RRCNN3 = RRCNN_block(ch_in=128,ch_out=256,t=t)
+        
+        self.RRCNN4 = RRCNN_block(ch_in=256,ch_out=512,t=t)
+        
+        self.RRCNN5 = RRCNN_block(ch_in=512,ch_out=1024,t=t)
+        
+
+        self.Up5 = up_conv(ch_in=1024,ch_out=512)
+        self.Up_RRCNN5 = RRCNN_block(ch_in=1024, ch_out=512,t=t)
+        
+        self.Up4 = up_conv(ch_in=512,ch_out=256)
+        self.Up_RRCNN4 = RRCNN_block(ch_in=512, ch_out=256,t=t)
+        
+        self.Up3 = up_conv(ch_in=256,ch_out=128)
+        self.Up_RRCNN3 = RRCNN_block(ch_in=256, ch_out=128,t=t)
+        
+        self.Up2 = up_conv(ch_in=128,ch_out=64)
+        self.Up_RRCNN2 = RRCNN_block(ch_in=128, ch_out=64,t=t)
+
+        self.Conv_1x1 = nn.Conv2d(64,output_ch,kernel_size=1,stride=1,padding=0)
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.RRCNN1(x)
+
+        x2 = self.Maxpool(x1)
+        x2 = self.RRCNN2(x2)
+        
+        x3 = self.Maxpool(x2)
+        x3 = self.RRCNN3(x3)
+
+        x4 = self.Maxpool(x3)
+        x4 = self.RRCNN4(x4)
+
+        x5 = self.Maxpool(x4)
+        x5 = self.RRCNN5(x5)
+
+        # decoding + concat path
+        d5 = self.Up5(x5)
+        d5 = torch.cat((x4,d5),dim=1)
+        d5 = self.Up_RRCNN5(d5)
+        
+        d4 = self.Up4(d5)
+        d4 = torch.cat((x3,d4),dim=1)
+        d4 = self.Up_RRCNN4(d4)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x2,d3),dim=1)
+        d3 = self.Up_RRCNN3(d3)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x1,d2),dim=1)
+        d2 = self.Up_RRCNN2(d2)
+
+        d1 = self.Conv_1x1(d2)
+
+        return d1
+
+
+
+class R2AttU_Net(nn.Module):
+    def __init__(self,img_ch=3,output_ch=1,t=2):
+        super(R2AttU_Net,self).__init__()
+        
+        self.Maxpool = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Upsample = nn.Upsample(scale_factor=2)
+
+        self.RRCNN1 = RRCNN_block(ch_in=img_ch,ch_out=64,t=t)
+
+        self.RRCNN2 = RRCNN_block(ch_in=64,ch_out=128,t=t)
+        
+        self.RRCNN3 = RRCNN_block(ch_in=128,ch_out=256,t=t)
+        
+        self.RRCNN4 = RRCNN_block(ch_in=256,ch_out=512,t=t)
+        
+        self.RRCNN5 = RRCNN_block(ch_in=512,ch_out=1024,t=t)
+        
+
+        self.Up5 = up_conv(ch_in=1024,ch_out=512)
+        self.Att5 = Attention_block(F_g=512,F_l=512,F_int=256)
+        self.Up_RRCNN5 = RRCNN_block(ch_in=1024, ch_out=512,t=t)
+        
+        self.Up4 = up_conv(ch_in=512,ch_out=256)
+        self.Att4 = Attention_block(F_g=256,F_l=256,F_int=128)
+        self.Up_RRCNN4 = RRCNN_block(ch_in=512, ch_out=256,t=t)
+        
+        self.Up3 = up_conv(ch_in=256,ch_out=128)
+        self.Att3 = Attention_block(F_g=128,F_l=128,F_int=64)
+        self.Up_RRCNN3 = RRCNN_block(ch_in=256, ch_out=128,t=t)
+        
+        self.Up2 = up_conv(ch_in=128,ch_out=64)
+        self.Att2 = Attention_block(F_g=64,F_l=64,F_int=32)
+        self.Up_RRCNN2 = RRCNN_block(ch_in=128, ch_out=64,t=t)
+
+        self.Conv_1x1 = nn.Conv2d(64,output_ch,kernel_size=1,stride=1,padding=0)
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.RRCNN1(x)
+
+        x2 = self.Maxpool(x1)
+        x2 = self.RRCNN2(x2)
+        
+        x3 = self.Maxpool(x2)
+        x3 = self.RRCNN3(x3)
+
+        x4 = self.Maxpool(x3)
+        x4 = self.RRCNN4(x4)
+
+        x5 = self.Maxpool(x4)
+        x5 = self.RRCNN5(x5)
+
+        # decoding + concat path
+        d5 = self.Up5(x5)
+        x4 = self.Att5(g=d5,x=x4)
+        d5 = torch.cat((x4,d5),dim=1)
+        d5 = self.Up_RRCNN5(d5)
+        
+        d4 = self.Up4(d5)
+        x3 = self.Att4(g=d4,x=x3)
+        d4 = torch.cat((x3,d4),dim=1)
+        d4 = self.Up_RRCNN4(d4)
+
+        d3 = self.Up3(d4)
+        x2 = self.Att3(g=d3,x=x2)
+        d3 = torch.cat((x2,d3),dim=1)
+        d3 = self.Up_RRCNN3(d3)
+
+        d2 = self.Up2(d3)
+        x1 = self.Att2(g=d2,x=x1)
+        d2 = torch.cat((x1,d2),dim=1)
+        d2 = self.Up_RRCNN2(d2)
+
+        d1 = self.Conv_1x1(d2)
+
+        return d1
+
+
+class conv_block_sqex(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(conv_block_sqex,self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_in, ch_out, kernel_size=4,stride=2,padding=1,bias=False),
+            Squeeze_Excite_Block(ch_out),
+            nn.BatchNorm2d(ch_out),
+            nn.LeakyReLU(0.2,inplace=True),
+        )
+
+    def forward(self,x):
+        x = self.conv(x)
+        return x
+
+class ASPPU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(ASPPU_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block_sqex(ch_in=32,ch_out=64)
+
+        self.Conv3 = conv_block_sqex(ch_in=64,ch_out=128)
+
+        self.Conv4 = conv_block_sqex(ch_in=128,ch_out=256)
+
+        self.Conv5 = conv_block_sqex(ch_in=256,ch_out=256)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.ASPP = ASPP(256,256)
+        #self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+
+        self.Up1 = up_conv(ch_in=128,ch_out=32)
+
+        self.F1 = nn.ConvTranspose2d(64,inner_nc,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU3 = nn.LeakyReLU(0.8,True)
+
+        #self.F2 = nn.Conv2d(inner_nc,inner_nc,kernel_size=3,stride=1,padding=1)
+        #self.F3 = nn.Conv2d(inner_nc,inner_nc,kernel_size=3,stride=1,padding=1)
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+        x2 = self.Conv2(x1)
+        x3 = self.Conv3(x2)
+        x4 = self.Conv4(x3)
+        x5 = self.Conv5(x4)
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+
+        aspp = self.ASPP(x6)        
+        # decoding + concat path
+        d5 = self.Up5(aspp)
+        d5 = torch.cat((x5,d5),dim=1)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        d4 = torch.cat((x4,d4),dim=1)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x3,d3),dim=1)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x2,d2),dim=1)
+
+        d1 = self.Up1(d2)
+        d1 = torch.cat((x1,d1),dim=1)
+        
+        f1 = self.F1(d1)
+        f1 = self.ReLU3(f1)
+
+        #f2 = self.F2(f1)
+        #f3 = self.F3(f2)
+
+
+        return f1
+
+
+#################ResUnetPlusPlus#######################################
+class ResUnetPlusPlus_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False, filters=[64, 128, 256, 512, 1024]):
+        super(ResUnetPlusPlus_Net, self).__init__()
+
+        self.input_layer = nn.Sequential(
+            nn.Conv2d(outer_nc, filters[0], kernel_size=3, padding=1),
+            nn.BatchNorm2d(filters[0]),
+            nn.ReLU(),
+            nn.Conv2d(filters[0], filters[0], kernel_size=3, padding=1),
+        )
+        self.input_skip = nn.Sequential(
+            nn.Conv2d(outer_nc, filters[0], kernel_size=3, padding=1)
+        )
+
+        self.squeeze_excite1 = Squeeze_Excite_Block(filters[0])
+
+        self.residual_conv1 = ResidualConv(filters[0], filters[1], 2, 1)
+
+        self.squeeze_excite2 = Squeeze_Excite_Block(filters[1])
+
+        self.residual_conv2 = ResidualConv(filters[1], filters[2], 2, 1)
+
+        self.squeeze_excite3 = Squeeze_Excite_Block(filters[2])
+
+        self.residual_conv3 = ResidualConv(filters[2], filters[3], 2, 1)
+
+        self.aspp_bridge = ASPP(filters[3], filters[4])
+
+        self.attn1 = AttentionBlock(filters[2], filters[4], filters[4])
+        self.upsample1 = Upsample_(2)
+        self.up_residual_conv1 = ResidualConv(filters[4] + filters[2], filters[3], 1, 1)
+
+        self.attn2 = AttentionBlock(filters[1], filters[3], filters[3])
+        self.upsample2 = Upsample_(2)
+        self.up_residual_conv2 = ResidualConv(filters[3] + filters[1], filters[2], 1, 1)
+
+        self.attn3 = AttentionBlock(filters[0], filters[2], filters[2])
+        self.upsample3 = Upsample_(2)
+        self.up_residual_conv3 = ResidualConv(filters[2] + filters[0], filters[1], 1, 1)
+
+        self.aspp_out = ASPP(filters[1], filters[0])
+
+        self.output_layer = nn.Sequential(nn.Conv2d(filters[0], inner_nc, 1),nn.LeakyReLU(0.8,inplace=True))
+
+        self.F2 = nn.Conv2d(inner_nc,inner_nc,kernel_size=3,stride=1,padding=1)
+        self.F3 = nn.Conv2d(inner_nc,inner_nc,kernel_size=3,stride=1,padding=1)
+
+    def forward(self, x):
+        x1 = self.input_layer(x) + self.input_skip(x)
+
+        x2 = self.squeeze_excite1(x1)
+        x2 = self.residual_conv1(x2)
+
+        x3 = self.squeeze_excite2(x2)
+        x3 = self.residual_conv2(x3)
+
+        x4 = self.squeeze_excite3(x3)
+        x4 = self.residual_conv3(x4)
+
+        x5 = self.aspp_bridge(x4)
+
+        x6 = self.attn1(x3, x5)
+        x6 = self.upsample1(x6)
+        x6 = torch.cat([x6, x3], dim=1)
+        x6 = self.up_residual_conv1(x6)
+
+        x7 = self.attn2(x2, x6)
+        x7 = self.upsample2(x7)
+        x7 = torch.cat([x7, x2], dim=1)
+        x7 = self.up_residual_conv2(x7)
+
+        x8 = self.attn3(x1, x7)
+        x8 = self.upsample3(x8)
+        x8 = torch.cat([x8, x1], dim=1)
+        x8 = self.up_residual_conv3(x8)
+
+        x9 = self.aspp_out(x8)
+        x10 = self.output_layer(x9)
+
+        x11 = self.F2(x10)
+        out = self.F3(x11)
+
+        return out
+
+###########Mutli UNET : UNET with multiple outputs####################################
+class MultiU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(MultiU_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block(ch_in=32,ch_out=64)
+        self.Conv21 = nn.Conv2d(64,64,kernel_size=3,stride=1,padding=1)
+        self.ReLU21 = nn.LeakyReLU(0.2,True)
+
+        self.Conv3 = conv_block(ch_in=64,ch_out=128)
+        self.Conv31 = nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1)
+        self.ReLU31 = nn.LeakyReLU(0.2,True)
+
+        self.Conv4 = conv_block(ch_in=128,ch_out=256)
+        self.Conv41 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU41 = nn.LeakyReLU(0.2,True)
+
+        self.Conv5 = conv_block(ch_in=256,ch_out=256)
+        self.Conv51 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU51 = nn.LeakyReLU(0.2,True)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+        self.Conv61 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU61 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+        self.Up51 = nn.Conv2d(512,512,kernel_size=3,stride=1,padding=1)
+        self.ReLU51up = nn.ReLU(inplace=True)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+        self.Up41 = nn.Conv2d(512,512,kernel_size=3,stride=1,padding=1)
+        self.ReLU41up = nn.ReLU(inplace=True)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+        self.Up31 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU31up = nn.ReLU(inplace=True)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+        self.Up21 = nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1)
+        self.ReLU21up = nn.ReLU(inplace=True)
+
+        self.Up11 = up_conv(ch_in=128,ch_out=32)
+        self.Up12 = up_conv(ch_in=128,ch_out=32)
+        self.Up13 = up_conv(ch_in=128,ch_out=32)
+
+        self.F11 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU31 = nn.LeakyReLU(0.8,True)
+        self.F12 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU32 = nn.LeakyReLU(0.8,True)
+        self.F13 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU33 = nn.LeakyReLU(0.8,True)
+
+        self.F21 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F22 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F23 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+        self.F31 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F32 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F33 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+
+        x2 = self.Conv2(x1)
+        x2 = self.Conv21(x2)
+        x2 = self.ReLU21(x2)
+
+        x3 = self.Conv3(x2)
+        x3 = self.Conv31(x3)
+        x3 = self.ReLU31(x3)
+
+        x4 = self.Conv4(x3)
+        x4 = self.Conv41(x4)
+        x4 = self.ReLU41(x4)
+
+        x5 = self.Conv5(x4)
+        x5 = self.Conv51(x5)
+        x5 = self.ReLU51(x5)
+
+
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+        x6 = self.Conv61(x6)
+        x6 = self.ReLU61(x6)
+
+        # decoding + concat path
+        d5 = self.Up5(x6)
+        d5 = torch.cat((x5,d5),dim=1)
+        d5 = self.Up51(d5)
+        d5 = self.ReLU51up(d5)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        d4 = torch.cat((x4,d4),dim=1)
+        d4 = self.Up41(d4)
+        d4 = self.ReLU41up(d4)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x3,d3),dim=1)
+        d3 = self.Up31(d3)
+        d3 = self.ReLU41up(d3)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x2,d2),dim=1)
+        d2 = self.Up21(d2)
+        d2 = self.ReLU21up(d2)
+
+        d11 = self.Up11(d2)
+        d11 = torch.cat((x1,d11),dim=1)
+        d12 = self.Up12(d2)
+        d12 = torch.cat((x1,d12),dim=1)
+        d13 = self.Up13(d2)
+        d13 = torch.cat((x1,d13),dim=1)
+        
+        f11 = self.F11(d11)
+        f11 = self.ReLU31(f11)
+        f12 = self.F12(d12)
+        f12 = self.ReLU32(f12)
+        f13 = self.F13(d13)
+        f13 = self.ReLU33(f13)
+
+        f21 = self.F21(f11)
+        f22 = self.F22(f12)
+        f23 = self.F23(f13)
+
+        f31 = self.F31(f21)
+        f32 = self.F32(f22)
+        f33 = self.F33(f23)
+
+
+        return f31, f32, f33
+
+
+###########Mutli UNET 2: UNET with multiple outputs####################################
+class Multi2U_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(Multi2U_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block(ch_in=32,ch_out=64)
+        self.Conv21 = nn.Conv2d(64,64,kernel_size=3,stride=1,padding=1)
+        self.ReLU21 = nn.LeakyReLU(0.2,True)
+
+        self.Conv3 = conv_block(ch_in=64,ch_out=128)
+        self.Conv31 = nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1)
+        self.ReLU31 = nn.LeakyReLU(0.2,True)
+
+        self.Conv4 = conv_block(ch_in=128,ch_out=256)
+        self.Conv41 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU41 = nn.LeakyReLU(0.2,True)
+
+        self.Conv5 = conv_block(ch_in=256,ch_out=256)
+        self.Conv51 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU51 = nn.LeakyReLU(0.2,True)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+        self.Conv61 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU61 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+        self.Up51 = nn.Conv2d(512,512,kernel_size=3,stride=1,padding=1)
+        self.ReLU51up = nn.ReLU(inplace=True)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+        self.Up41 = nn.Conv2d(512,512,kernel_size=3,stride=1,padding=1)
+        self.ReLU41up = nn.ReLU(inplace=True)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+        self.Up31 = nn.Conv2d(256,256,kernel_size=3,stride=1,padding=1)
+        self.ReLU31up = nn.ReLU(inplace=True)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+        self.Up21 = nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1)
+        self.ReLU21up = nn.ReLU(inplace=True)
+
+        self.Up11 = up_conv(ch_in=128,ch_out=32)
+        self.Up12 = up_conv(ch_in=128,ch_out=32)
+
+        self.F11 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU31 = nn.LeakyReLU(0.8,True)
+        self.F12 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU32 = nn.LeakyReLU(0.8,True)
+
+        self.F21 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F22 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+        self.F31 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F32 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+        self.C2onv1 = nn.Conv2d(2,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.R2eLU1 = nn.LeakyReLU(0.2,True)
+
+        self.C2onv2 = conv_block(ch_in=32,ch_out=64)
+        self.C2onv21 = nn.Conv2d(64,64,kernel_size=3,stride=1,padding=1)
+        self.R2eLU21 = nn.LeakyReLU(0.2,True)
+
+        self.U2p2 = up_conv(ch_in=64,ch_out=32)
+
+        self.G11 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.GReLU = nn.LeakyReLU(0.8,True)
+
+        self.G21 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.G22 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+
+        x2 = self.Conv2(x1)
+        x2 = self.Conv21(x2)
+        x2 = self.ReLU21(x2)
+
+        x3 = self.Conv3(x2)
+        x3 = self.Conv31(x3)
+        x3 = self.ReLU31(x3)
+
+        x4 = self.Conv4(x3)
+        x4 = self.Conv41(x4)
+        x4 = self.ReLU41(x4)
+
+        x5 = self.Conv5(x4)
+        x5 = self.Conv51(x5)
+        x5 = self.ReLU51(x5)
+
+
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+        x6 = self.Conv61(x6)
+        x6 = self.ReLU61(x6)
+
+        # decoding + concat path
+        d5 = self.Up5(x6)
+        d5 = torch.cat((x5,d5),dim=1)
+        d5 = self.Up51(d5)
+        d5 = self.ReLU51up(d5)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        d4 = torch.cat((x4,d4),dim=1)
+        d4 = self.Up41(d4)
+        d4 = self.ReLU41up(d4)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x3,d3),dim=1)
+        d3 = self.Up31(d3)
+        d3 = self.ReLU41up(d3)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x2,d2),dim=1)
+        d2 = self.Up21(d2)
+        d2 = self.ReLU21up(d2)
+
+        d11 = self.Up11(d2)
+        d11 = torch.cat((x1,d11),dim=1)
+        d12 = self.Up12(d2)
+        d12 = torch.cat((x1,d12),dim=1)
+        
+        f11 = self.F11(d11)
+        f11 = self.ReLU31(f11)
+        f12 = self.F12(d12)
+        f12 = self.ReLU32(f12)
+
+        f21 = self.F21(f11)
+        f22 = self.F22(f12)
+
+
+        f31 = self.F31(f21)
+        f32 = self.F32(f22)
+
+        g00 = torch.cat((f31,f32),dim=1)
+        g01 = self.C2onv1(g00)
+        g01 = self.R2eLU1(g01)
+
+        g02 = self.C2onv2(g01)
+        g02 = self.C2onv21(g02)
+        g02 = self.R2eLU21(g02)
+
+        h00 = self.U2p2(g02)
+        h00 = torch.cat((g01,h00),dim=1)
+
+        h01 = self.G11(h00)
+        h01 = self.GReLU(h01)
+
+        h11 = self.G21(h01)
+        h11 = self.G22(h11)
+
+
+        return f31, f32, h11
+
+####################UNET 3+################################################################
+
+class UNet_3Plus(nn.Module):
+
+    def __init__(self, in_channels=3, n_classes=1, feature_scale=4, is_deconv=True, is_batchnorm=True):
+        super(UNet_3Plus, self).__init__()
+        self.is_deconv = is_deconv
+        self.in_channels = in_channels
+        self.is_batchnorm = is_batchnorm
+        self.feature_scale = feature_scale
+
+        filters = [64, 128, 256, 512, 1024]
+
+        ## -------------Encoder--------------
+        self.conv1 = unetConv2(self.in_channels, filters[0], self.is_batchnorm)
+        self.maxpool1 = nn.MaxPool2d(kernel_size=2)
+
+        self.conv2 = unetConv2(filters[0], filters[1], self.is_batchnorm)
+        self.maxpool2 = nn.MaxPool2d(kernel_size=2)
+
+        self.conv3 = unetConv2(filters[1], filters[2], self.is_batchnorm)
+        self.maxpool3 = nn.MaxPool2d(kernel_size=2)
+
+        self.conv4 = unetConv2(filters[2], filters[3], self.is_batchnorm)
+        self.maxpool4 = nn.MaxPool2d(kernel_size=2)
+
+        self.conv5 = unetConv2(filters[3], filters[4], self.is_batchnorm)
+
+        ## -------------Decoder--------------
+        self.CatChannels = filters[0]
+        self.CatBlocks = 5
+        self.UpChannels = self.CatChannels * self.CatBlocks
+
+        '''stage 4d'''
+        # h1->320*320, hd4->40*40, Pooling 8 times
+        self.h1_PT_hd4 = nn.MaxPool2d(8, 8, ceil_mode=True)
+        self.h1_PT_hd4_conv = nn.Conv2d(filters[0], self.CatChannels, 3, padding=1)
+        self.h1_PT_hd4_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h1_PT_hd4_relu = nn.ReLU(inplace=True)
+
+        # h2->160*160, hd4->40*40, Pooling 4 times
+        self.h2_PT_hd4 = nn.MaxPool2d(4, 4, ceil_mode=True)
+        self.h2_PT_hd4_conv = nn.Conv2d(filters[1], self.CatChannels, 3, padding=1)
+        self.h2_PT_hd4_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h2_PT_hd4_relu = nn.ReLU(inplace=True)
+
+        # h3->80*80, hd4->40*40, Pooling 2 times
+        self.h3_PT_hd4 = nn.MaxPool2d(2, 2, ceil_mode=True)
+        self.h3_PT_hd4_conv = nn.Conv2d(filters[2], self.CatChannels, 3, padding=1)
+        self.h3_PT_hd4_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h3_PT_hd4_relu = nn.ReLU(inplace=True)
+
+        # h4->40*40, hd4->40*40, Concatenation
+        self.h4_Cat_hd4_conv = nn.Conv2d(filters[3], self.CatChannels, 3, padding=1)
+        self.h4_Cat_hd4_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h4_Cat_hd4_relu = nn.ReLU(inplace=True)
+
+        # hd5->20*20, hd4->40*40, Upsample 2 times
+        self.hd5_UT_hd4 = nn.Upsample(scale_factor=2, mode='bilinear')  # 14*14
+        self.hd5_UT_hd4_conv = nn.Conv2d(filters[4], self.CatChannels, 3, padding=1)
+        self.hd5_UT_hd4_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd5_UT_hd4_relu = nn.ReLU(inplace=True)
+
+        # fusion(h1_PT_hd4, h2_PT_hd4, h3_PT_hd4, h4_Cat_hd4, hd5_UT_hd4)
+        self.conv4d_1 = nn.Conv2d(self.UpChannels, self.UpChannels, 3, padding=1)  # 16
+        self.bn4d_1 = nn.BatchNorm2d(self.UpChannels)
+        self.relu4d_1 = nn.ReLU(inplace=True)
+
+        '''stage 3d'''
+        # h1->320*320, hd3->80*80, Pooling 4 times
+        self.h1_PT_hd3 = nn.MaxPool2d(4, 4, ceil_mode=True)
+        self.h1_PT_hd3_conv = nn.Conv2d(filters[0], self.CatChannels, 3, padding=1)
+        self.h1_PT_hd3_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h1_PT_hd3_relu = nn.ReLU(inplace=True)
+
+        # h2->160*160, hd3->80*80, Pooling 2 times
+        self.h2_PT_hd3 = nn.MaxPool2d(2, 2, ceil_mode=True)
+        self.h2_PT_hd3_conv = nn.Conv2d(filters[1], self.CatChannels, 3, padding=1)
+        self.h2_PT_hd3_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h2_PT_hd3_relu = nn.ReLU(inplace=True)
+
+        # h3->80*80, hd3->80*80, Concatenation
+        self.h3_Cat_hd3_conv = nn.Conv2d(filters[2], self.CatChannels, 3, padding=1)
+        self.h3_Cat_hd3_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h3_Cat_hd3_relu = nn.ReLU(inplace=True)
+
+        # hd4->40*40, hd4->80*80, Upsample 2 times
+        self.hd4_UT_hd3 = nn.Upsample(scale_factor=2, mode='bilinear')  # 14*14
+        self.hd4_UT_hd3_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd4_UT_hd3_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd4_UT_hd3_relu = nn.ReLU(inplace=True)
+
+        # hd5->20*20, hd4->80*80, Upsample 4 times
+        self.hd5_UT_hd3 = nn.Upsample(scale_factor=4, mode='bilinear')  # 14*14
+        self.hd5_UT_hd3_conv = nn.Conv2d(filters[4], self.CatChannels, 3, padding=1)
+        self.hd5_UT_hd3_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd5_UT_hd3_relu = nn.ReLU(inplace=True)
+
+        # fusion(h1_PT_hd3, h2_PT_hd3, h3_Cat_hd3, hd4_UT_hd3, hd5_UT_hd3)
+        self.conv3d_1 = nn.Conv2d(self.UpChannels, self.UpChannels, 3, padding=1)  # 16
+        self.bn3d_1 = nn.BatchNorm2d(self.UpChannels)
+        self.relu3d_1 = nn.ReLU(inplace=True)
+
+        '''stage 2d '''
+        # h1->320*320, hd2->160*160, Pooling 2 times
+        self.h1_PT_hd2 = nn.MaxPool2d(2, 2, ceil_mode=True)
+        self.h1_PT_hd2_conv = nn.Conv2d(filters[0], self.CatChannels, 3, padding=1)
+        self.h1_PT_hd2_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h1_PT_hd2_relu = nn.ReLU(inplace=True)
+
+        # h2->160*160, hd2->160*160, Concatenation
+        self.h2_Cat_hd2_conv = nn.Conv2d(filters[1], self.CatChannels, 3, padding=1)
+        self.h2_Cat_hd2_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h2_Cat_hd2_relu = nn.ReLU(inplace=True)
+
+        # hd3->80*80, hd2->160*160, Upsample 2 times
+        self.hd3_UT_hd2 = nn.Upsample(scale_factor=2, mode='bilinear')  # 14*14
+        self.hd3_UT_hd2_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd3_UT_hd2_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd3_UT_hd2_relu = nn.ReLU(inplace=True)
+
+        # hd4->40*40, hd2->160*160, Upsample 4 times
+        self.hd4_UT_hd2 = nn.Upsample(scale_factor=4, mode='bilinear')  # 14*14
+        self.hd4_UT_hd2_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd4_UT_hd2_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd4_UT_hd2_relu = nn.ReLU(inplace=True)
+
+        # hd5->20*20, hd2->160*160, Upsample 8 times
+        self.hd5_UT_hd2 = nn.Upsample(scale_factor=8, mode='bilinear')  # 14*14
+        self.hd5_UT_hd2_conv = nn.Conv2d(filters[4], self.CatChannels, 3, padding=1)
+        self.hd5_UT_hd2_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd5_UT_hd2_relu = nn.ReLU(inplace=True)
+
+        # fusion(h1_PT_hd2, h2_Cat_hd2, hd3_UT_hd2, hd4_UT_hd2, hd5_UT_hd2)
+        self.conv2d_1 = nn.Conv2d(self.UpChannels, self.UpChannels, 3, padding=1)  # 16
+        self.bn2d_1 = nn.BatchNorm2d(self.UpChannels)
+        self.relu2d_1 = nn.ReLU(inplace=True)
+
+        '''stage 1d'''
+        # h1->320*320, hd1->320*320, Concatenation
+        self.h1_Cat_hd1_conv = nn.Conv2d(filters[0], self.CatChannels, 3, padding=1)
+        self.h1_Cat_hd1_bn = nn.BatchNorm2d(self.CatChannels)
+        self.h1_Cat_hd1_relu = nn.ReLU(inplace=True)
+
+        # hd2->160*160, hd1->320*320, Upsample 2 times
+        self.hd2_UT_hd1 = nn.Upsample(scale_factor=2, mode='bilinear')  # 14*14
+        self.hd2_UT_hd1_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd2_UT_hd1_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd2_UT_hd1_relu = nn.ReLU(inplace=True)
+
+        # hd3->80*80, hd1->320*320, Upsample 4 times
+        self.hd3_UT_hd1 = nn.Upsample(scale_factor=4, mode='bilinear')  # 14*14
+        self.hd3_UT_hd1_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd3_UT_hd1_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd3_UT_hd1_relu = nn.ReLU(inplace=True)
+
+        # hd4->40*40, hd1->320*320, Upsample 8 times
+        self.hd4_UT_hd1 = nn.Upsample(scale_factor=8, mode='bilinear')  # 14*14
+        self.hd4_UT_hd1_conv = nn.Conv2d(self.UpChannels, self.CatChannels, 3, padding=1)
+        self.hd4_UT_hd1_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd4_UT_hd1_relu = nn.ReLU(inplace=True)
+
+        # hd5->20*20, hd1->320*320, Upsample 16 times
+        self.hd5_UT_hd1 = nn.Upsample(scale_factor=16, mode='bilinear')  # 14*14
+        self.hd5_UT_hd1_conv = nn.Conv2d(filters[4], self.CatChannels, 3, padding=1)
+        self.hd5_UT_hd1_bn = nn.BatchNorm2d(self.CatChannels)
+        self.hd5_UT_hd1_relu = nn.ReLU(inplace=True)
+
+        # fusion(h1_Cat_hd1, hd2_UT_hd1, hd3_UT_hd1, hd4_UT_hd1, hd5_UT_hd1)
+        self.conv1d_1 = nn.Conv2d(self.UpChannels, self.UpChannels, 3, padding=1)  # 16
+        self.bn1d_1 = nn.BatchNorm2d(self.UpChannels)
+        self.relu1d_1 = nn.ReLU(inplace=True)
+
+        # output
+        self.outconv1 = nn.Conv2d(self.UpChannels, n_classes, 3, padding=1)
+
+        # initialise weights
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                init_weights(m, init_type='kaiming')
+            elif isinstance(m, nn.BatchNorm2d):
+                init_weights(m, init_type='kaiming')
+
+    def forward(self, inputs):
+        ## -------------Encoder-------------
+        h1 = self.conv1(inputs)  # h1->320*320*64
+
+        h2 = self.maxpool1(h1)
+        h2 = self.conv2(h2)  # h2->160*160*128
+
+        h3 = self.maxpool2(h2)
+        h3 = self.conv3(h3)  # h3->80*80*256
+
+        h4 = self.maxpool3(h3)
+        h4 = self.conv4(h4)  # h4->40*40*512
+
+        h5 = self.maxpool4(h4)
+        hd5 = self.conv5(h5)  # h5->20*20*1024
+
+        ## -------------Decoder-------------
+        h1_PT_hd4 = self.h1_PT_hd4_relu(self.h1_PT_hd4_bn(self.h1_PT_hd4_conv(self.h1_PT_hd4(h1))))
+        h2_PT_hd4 = self.h2_PT_hd4_relu(self.h2_PT_hd4_bn(self.h2_PT_hd4_conv(self.h2_PT_hd4(h2))))
+        h3_PT_hd4 = self.h3_PT_hd4_relu(self.h3_PT_hd4_bn(self.h3_PT_hd4_conv(self.h3_PT_hd4(h3))))
+        h4_Cat_hd4 = self.h4_Cat_hd4_relu(self.h4_Cat_hd4_bn(self.h4_Cat_hd4_conv(h4)))
+        hd5_UT_hd4 = self.hd5_UT_hd4_relu(self.hd5_UT_hd4_bn(self.hd5_UT_hd4_conv(self.hd5_UT_hd4(hd5))))
+        hd4 = self.relu4d_1(self.bn4d_1(self.conv4d_1(
+            torch.cat((h1_PT_hd4, h2_PT_hd4, h3_PT_hd4, h4_Cat_hd4, hd5_UT_hd4), 1)))) # hd4->40*40*UpChannels
+
+        h1_PT_hd3 = self.h1_PT_hd3_relu(self.h1_PT_hd3_bn(self.h1_PT_hd3_conv(self.h1_PT_hd3(h1))))
+        h2_PT_hd3 = self.h2_PT_hd3_relu(self.h2_PT_hd3_bn(self.h2_PT_hd3_conv(self.h2_PT_hd3(h2))))
+        h3_Cat_hd3 = self.h3_Cat_hd3_relu(self.h3_Cat_hd3_bn(self.h3_Cat_hd3_conv(h3)))
+        hd4_UT_hd3 = self.hd4_UT_hd3_relu(self.hd4_UT_hd3_bn(self.hd4_UT_hd3_conv(self.hd4_UT_hd3(hd4))))
+        hd5_UT_hd3 = self.hd5_UT_hd3_relu(self.hd5_UT_hd3_bn(self.hd5_UT_hd3_conv(self.hd5_UT_hd3(hd5))))
+        hd3 = self.relu3d_1(self.bn3d_1(self.conv3d_1(
+            torch.cat((h1_PT_hd3, h2_PT_hd3, h3_Cat_hd3, hd4_UT_hd3, hd5_UT_hd3), 1)))) # hd3->80*80*UpChannels
+
+        h1_PT_hd2 = self.h1_PT_hd2_relu(self.h1_PT_hd2_bn(self.h1_PT_hd2_conv(self.h1_PT_hd2(h1))))
+        h2_Cat_hd2 = self.h2_Cat_hd2_relu(self.h2_Cat_hd2_bn(self.h2_Cat_hd2_conv(h2)))
+        hd3_UT_hd2 = self.hd3_UT_hd2_relu(self.hd3_UT_hd2_bn(self.hd3_UT_hd2_conv(self.hd3_UT_hd2(hd3))))
+        hd4_UT_hd2 = self.hd4_UT_hd2_relu(self.hd4_UT_hd2_bn(self.hd4_UT_hd2_conv(self.hd4_UT_hd2(hd4))))
+        hd5_UT_hd2 = self.hd5_UT_hd2_relu(self.hd5_UT_hd2_bn(self.hd5_UT_hd2_conv(self.hd5_UT_hd2(hd5))))
+        hd2 = self.relu2d_1(self.bn2d_1(self.conv2d_1(
+            torch.cat((h1_PT_hd2, h2_Cat_hd2, hd3_UT_hd2, hd4_UT_hd2, hd5_UT_hd2), 1)))) # hd2->160*160*UpChannels
+
+        h1_Cat_hd1 = self.h1_Cat_hd1_relu(self.h1_Cat_hd1_bn(self.h1_Cat_hd1_conv(h1)))
+        hd2_UT_hd1 = self.hd2_UT_hd1_relu(self.hd2_UT_hd1_bn(self.hd2_UT_hd1_conv(self.hd2_UT_hd1(hd2))))
+        hd3_UT_hd1 = self.hd3_UT_hd1_relu(self.hd3_UT_hd1_bn(self.hd3_UT_hd1_conv(self.hd3_UT_hd1(hd3))))
+        hd4_UT_hd1 = self.hd4_UT_hd1_relu(self.hd4_UT_hd1_bn(self.hd4_UT_hd1_conv(self.hd4_UT_hd1(hd4))))
+        hd5_UT_hd1 = self.hd5_UT_hd1_relu(self.hd5_UT_hd1_bn(self.hd5_UT_hd1_conv(self.hd5_UT_hd1(hd5))))
+        hd1 = self.relu1d_1(self.bn1d_1(self.conv1d_1(
+            torch.cat((h1_Cat_hd1, hd2_UT_hd1, hd3_UT_hd1, hd4_UT_hd1, hd5_UT_hd1), 1)))) # hd1->320*320*UpChannels
+
+        d1 = self.outconv1(hd1)  # d1->320*320*n_classes
+        return d1
+
+
+################Multi ASPP NET##########################################################
+class MultiASPPU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(MultiASPPU_Net,self).__init__()
+        
+        #self.Con = nn.MaxPool2d(kernel_size=2,stride=2)
+        self.Conv1 = nn.Conv2d(outer_nc,32,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU1 = nn.LeakyReLU(0.2,True)
+
+        self.Conv2 = conv_block_sqex(ch_in=32,ch_out=64)
+
+        self.Conv3 = conv_block_sqex(ch_in=64,ch_out=128)
+
+        self.Conv4 = conv_block_sqex(ch_in=128,ch_out=256)
+
+        self.Conv5 = conv_block_sqex(ch_in=256,ch_out=256)
+
+        self.Conv6 = nn.Conv2d(256,256,kernel_size=4,stride=2,padding=1,bias=False)
+        self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.ASPP = ASPP(256,256)
+        #self.ReLU2 = nn.ReLU(inplace=True)
+
+        self.Up5 = up_conv(ch_in=256,ch_out=256)
+
+        self.Up4 = nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1, bias=False)
+        self.Bn1 = nn.BatchNorm2d(256)
+        self.Dp1 = nn.Dropout(0.5,inplace=False)
+        self.ReLU4 = nn.ReLU(inplace=True)
+
+        self.Up3 = up_conv(ch_in=512,ch_out=128)
+
+        self.Up2 = up_conv(ch_in=256,ch_out=64)
+
+        self.Up11 = up_conv(ch_in=128,ch_out=32)
+
+        self.F11 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU31 = nn.LeakyReLU(0.8,True)
+
+        self.F21 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F31 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+        self.Up12 = up_conv(ch_in=128,ch_out=32)
+
+        self.F12 = nn.ConvTranspose2d(64,1,kernel_size=4,stride=2,padding=1,bias=True)
+        self.ReLU32 = nn.LeakyReLU(0.8,True)
+
+        self.F22 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+        self.F32 = nn.Conv2d(1,1,kernel_size=3,stride=1,padding=1)
+
+
+
+
+    def forward(self,x):
+        # encoding path
+        x1 = self.Conv1(x)
+
+        x1 = self.ReLU1(x1)
+        x2 = self.Conv2(x1)
+        x3 = self.Conv3(x2)
+        x4 = self.Conv4(x3)
+        x5 = self.Conv5(x4)
+        x6 = self.Conv6(x5)
+        x6 = self.ReLU2(x6)
+
+        aspp = self.ASPP(x6)        
+        # decoding + concat path
+        d5 = self.Up5(aspp)
+        d5 = torch.cat((x5,d5),dim=1)
+        
+        d4 = self.Up4(d5)
+        d4 = self.Bn1(d4)
+        d4 = self.Dp1(d4)
+        d4 = self.ReLU4(d4)
+        d4 = torch.cat((x4,d4),dim=1)
+
+        d3 = self.Up3(d4)
+        d3 = torch.cat((x3,d3),dim=1)
+
+        d2 = self.Up2(d3)
+        d2 = torch.cat((x2,d2),dim=1)
+
+        d11 = self.Up11(d2)
+        d11 = torch.cat((x1,d11),dim=1)
+        
+        f11 = self.F11(d11)
+        f11 = self.ReLU31(f11)
+
+        f21 = self.F21(f11)
+        f31 = self.F31(f21)
+
+        d12 = self.Up12(d2)
+        d12 = torch.cat((x1,d12),dim=1)
+        
+        f12 = self.F12(d12)
+        f12 = self.ReLU32(f12)
+
+        f22 = self.F22(f12)
+        f32 = self.F32(f22)
+
+
+        return f31, f32
+
+
+#######################UNET 2##############################################
+class unetConv2(nn.Module):
+    def __init__(self, in_size, out_size, is_batchnorm):
+        super(unetConv2, self).__init__()
+        # Kernel size: 3*3, Stride: 1, Padding: 1
+        if is_batchnorm:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.BatchNorm2d(out_size),
+                                       nn.ReLU(inplace=True),)
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.BatchNorm2d(out_size),
+                                       nn.ReLU(inplace=True),)
+        else:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True),)
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True),)
+    def forward(self, inputs):
+        outputs = self.conv1(inputs)
+        outputs = self.conv2(outputs)
+        return outputs
+
+
+class unetDown(nn.Module):
+    def __init__(self, in_size, out_size, is_batchnorm):
+        super(unetDown, self).__init__()
+        self.conv = unetConv2(in_size, out_size, is_batchnorm)
+        self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
+
+    def forward(self, inputs):
+        outputs = self.conv(inputs)
+        outputs = self.down(outputs)
+        return outputs
+
+
+class unetUp(nn.Module):
+    def __init__(self, in_size, out_size, is_deconv):
+        super(unetUp, self).__init__()
+        self.conv = unetConv2(in_size, out_size, True)
+        # Transposed convolution
+        if is_deconv:
+            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2,stride=2)
+        else:
+            self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+
+    def forward(self, inputs1, inputs2):
+        outputs2 = self.up(inputs2)
+        offset1 = (outputs2.size()[2]-inputs1.size()[2])
+        offset2 = (outputs2.size()[3]-inputs1.size()[3])
+        padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
+        # Skip and concatenate 
+        outputs1 = F.pad(inputs1, padding)
+        return self.conv(torch.cat([outputs1, outputs2], 1))
+
+class NewU_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(NewU_Net, self).__init__()
+        self.is_deconv     = True
+        self.in_channels   = outer_nc
+        self.is_batchnorm  = True
+        self.n_classes     = inner_nc
+        
+        filters = [64, 128, 256, 512, 1024]
+        
+        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        self.up4     = unetUp(filters[4], filters[3], self.is_deconv)
+        self.up3     = unetUp(filters[3], filters[2], self.is_deconv)
+        self.up2     = unetUp(filters[2], filters[1], self.is_deconv)
+        self.up1     = unetUp(filters[1], filters[0], self.is_deconv)
+        self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
+        self.final   = nn.ReLU(inplace=True)
+        
+    def forward(self, inputs):
+        label_dsp_dim = (201,301)
+        down1  = self.down1(inputs)
+        down2  = self.down2(down1)
+        down3  = self.down3(down2)
+        down4  = self.down4(down3)
+        center = self.center(down4)
+        up4    = self.up4(down4, center)
+        up3    = self.up3(down3, up4)
+        up2    = self.up2(down2, up3)
+        up1    = self.up1(down1, up2)
+        up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        f1     = self.f1(up1)
+        
+        return self.final(f1)
+    
+    # Initialization of Parameters
+    def  _initialize_weights(self):
+          for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m,nn.ConvTranspose2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+

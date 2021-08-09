@@ -23,6 +23,7 @@ class AlignedDataset(BaseDataset):
         assert(self.opt.load_size >= self.opt.crop_size)   # crop_size should be smaller than the size of loaded image
         self.input_nc = self.opt.output_nc if self.opt.direction == 'BtoA' else self.opt.input_nc
         self.output_nc = self.opt.input_nc if self.opt.direction == 'BtoA' else self.opt.output_nc
+        print("aligned dataset initialized")
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.
@@ -52,6 +53,11 @@ class AlignedDataset(BaseDataset):
 
         A = A_transform(A)
         B = B_transform(B)
+
+        #print("sizes")
+        #print(A.size())
+        #
+        # print(B.size())
 
         return {'A': A, 'B': B, 'A_paths': AB_path, 'B_paths': AB_path}
 

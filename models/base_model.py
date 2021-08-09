@@ -95,6 +95,16 @@ class BaseModel(ABC):
                 net = getattr(self, 'net' + name)
                 net.eval()
 
+    def val(self):
+        """Make models val mode during validation time"""
+        net = getattr(self, 'netG')
+        net.eval()
+
+    def train(self):
+        """Make models training mode during train"""
+        net = getattr(self, 'netG')
+        net.train()
+
     def test(self):
         """Forward function used in test time.
 
@@ -102,8 +112,8 @@ class BaseModel(ABC):
         It also calls <compute_visuals> to produce additional visualization results
         """
         with torch.no_grad():
-            self.forward()
-            self.compute_visuals()
+            self.forwardT()
+            #self.compute_visuals()
 
     def compute_visuals(self):
         """Calculate additional output images for visdom and HTML visualization"""
@@ -228,3 +238,7 @@ class BaseModel(ABC):
             if net is not None:
                 for param in net.parameters():
                     param.requires_grad = requires_grad
+
+    def print_values(self):
+        print("fake C")
+        print(self.fake_C)
