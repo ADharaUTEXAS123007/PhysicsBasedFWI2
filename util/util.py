@@ -20,8 +20,6 @@ def tensor2im(input_image, imtype=np.uint8):
             return input_image
         image_numpy = image_tensor[0].cpu().float().numpy()  # convert it into a numpy array
         #if (np.max(image_numpy)>1.0):
-        print("--numpy shape--")
-        print(np.shape(image_numpy))
         image_numpy = image_numpy/np.max(np.abs(image_numpy))
         #print("image_numpy")
         #print(image_numpy.shape)

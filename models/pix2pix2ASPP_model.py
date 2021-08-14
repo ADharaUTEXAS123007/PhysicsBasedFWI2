@@ -48,7 +48,7 @@ class Pix2Pix2ASPPModel(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['G_GAN', 'G_L1', 'D_real', 'D_fake', 'V_L1']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B','real_B','fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G', 'D']
