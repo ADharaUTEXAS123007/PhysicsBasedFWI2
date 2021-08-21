@@ -4,7 +4,7 @@ from . import networks
 import numpy as np
 import sys
 #sys.path.append('../deepwave')
-#import deepwave
+import deepwave
 
 #from skimage import metrics
 
