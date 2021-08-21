@@ -127,6 +127,8 @@ class NewUModel(BaseModel):
         # device1 = torch.device(GPU_string)
         # GPU_string='cuda:1'
         # device2 = torch.device(GPU_string)
+
+        #---------deepwave------------#
         t = epoch1
         freq = 25
         dx = 10
@@ -216,6 +218,8 @@ class NewUModel(BaseModel):
         data1outs = data1outs.to(self.device1)
         data1outs = torch.unsqueeze(data1outs,1)
 
+        #-------------deepwave---------------------#
+
         #print("shape of data1outs")
         #print(np.shape(data1outs))
 
@@ -247,11 +251,11 @@ class NewUModel(BaseModel):
         self.loss_G =  lambda1*self.loss_M_MSE*100 + lambda2*loss_data*100
         self.loss_G.backward()
 
-    def optimize_parameters(self,epoch1):
+    def optimize_parameters(self):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G1(epoch1)                   # calculate graidents for G
+        self.backward_G()                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
