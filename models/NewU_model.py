@@ -56,7 +56,7 @@ class NewUModel(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE','M_MSE','V_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_BT', 'real_BT']
+        self.visual_names = ['fake_B','real_B','fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -264,7 +264,7 @@ class NewUModel(BaseModel):
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
-        lossMSE = self.criterionMSE(self.fake_BT,self.real_BT)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        lossMSE = self.criterionMSE(self.fake_BT,self.real_BT)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
