@@ -153,7 +153,7 @@ class New1UModel(BaseModel):
                                         .reshape(-1, 1, 1))
         source_amplitudes_true = source_amplitudes_true.to(self.device2)
         lstart = -1
-        num_batches = 1
+        num_batches = 3
         num_epochs = 1
         if (t > lstart):
          num_epochs = 1
