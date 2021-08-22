@@ -3,7 +3,8 @@ from .base_model import BaseModel
 from . import networks
 import numpy as np
 import sys
-sys.path.append('/disk/student/adhara/Fall2021/deepwave/.')
+#sys.path.append('/disk/student/adhara/Fall2021/deepwave/.')
+#sys.path.append('/disk/student/adhara/Fall2021/deepwave/deepwave/.')
 import deepwave
 
 #from skimage import metrics
