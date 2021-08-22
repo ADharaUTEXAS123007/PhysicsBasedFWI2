@@ -51,8 +51,9 @@ class New1UModel(BaseModel):
         """
         BaseModel.__init__(self, opt)
         print("number of cuda devices:", torch.cuda.device_count())
-        for i in range(5):
-            torch.cuda.set_device(i)
+        #for i in range(3):
+        torch.cuda.set_device(0)
+        torch.cuda.set_device(1)
 
         self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
         self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
