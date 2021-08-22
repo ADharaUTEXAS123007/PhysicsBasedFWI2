@@ -63,7 +63,7 @@ if __name__ == '__main__':
          Modelloss = 0.0
          Dataloss = 0.0
          for i, data in enumerate(dataset):  # inner loop within one epoch
-             print("i: " + str(i))
+             ##print("i: " + str(i))
              iter_start_time = time.time()  # timer for computation per iteration
              if total_iters % opt.print_freq == 0:
                  t_data = iter_start_time - iter_data_time

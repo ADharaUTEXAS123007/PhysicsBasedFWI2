@@ -50,8 +50,10 @@ class New1UModel(BaseModel):
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
         BaseModel.__init__(self, opt)
-        torch.cuda.set_device(0)
-        torch.cuda.set_device(1)
+        print("number of cuda devices:", torch.cuda.device_count())
+        for i in range(torch.cuda.device_count()):
+            torch.cuda.set_device(i)
+
         self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
         self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
