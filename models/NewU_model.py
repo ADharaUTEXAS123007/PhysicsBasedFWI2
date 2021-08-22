@@ -3,7 +3,7 @@ from .base_model import BaseModel
 from . import networks
 import numpy as np
 import sys
-#sys.path.append('../deepwave')
+sys.path.append('../deepwave')
 import deepwave
 
 #from skimage import metrics
