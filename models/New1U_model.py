@@ -56,8 +56,8 @@ class New1UModel(BaseModel):
         torch.cuda.set_device(1)
         torch.cuda.set_device(2)
 
-        self.device1 = torch.device('cuda:{}'.format(0)) if self.gpu_ids else torch.device('cpu') 
-        self.device2 = torch.device('cuda:{}'.format(1)) if self.gpu_ids else torch.device('cpu') 
+        self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
+        self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE','M_MSE','V_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
