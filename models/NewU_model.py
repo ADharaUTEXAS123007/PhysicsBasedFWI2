@@ -52,7 +52,7 @@ class NewUModel(BaseModel):
         torch.cuda.set_device(0)
         torch.cuda.set_device(1)
         self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
-        #self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
+        self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE','M_MSE','V_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
@@ -226,20 +226,20 @@ class NewUModel(BaseModel):
 
         #print("shape of real B")
         #print(np.shape(self.real_B))
-        self.loss_D_MSE = sumlossinner/diff_size[0]
+        self.loss_D_MSE = sumlossinner*100/diff_size[0]
         loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         print("----loss_data-----")
         print(loss_data)
-        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         print("---loss MSE-----")
         print(self.loss_M_MSE)
 
         lambda1 = 0
         lambda2 = 1
-        if (t>lstart):
-            lambda2 = 1
         if (t>100):
             lambda1 = 0
+        if (t>lstart):
+            lambda2 = 1
         #print("D_MSE loss")
         #print(self.loss_D_MSE)
 
@@ -249,14 +249,14 @@ class NewUModel(BaseModel):
         #print("loss data")
         #print(loss_data)
         # combine loss and calculate gradients
-        self.loss_G =  lambda1*self.loss_M_MSE*100 + lambda2*loss_data*100
+        self.loss_G =  lambda1*self.loss_M_MSE + lambda2*loss_data*100
         self.loss_G.backward()
 
-    def optimize_parameters(self):
+    def optimize_parameters(self,epoch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G()                   # calculate graidents for G
+        self.backward_G1(epoch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
