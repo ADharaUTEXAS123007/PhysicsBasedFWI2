@@ -54,7 +54,7 @@ class New1UModel(BaseModel):
         #for i in range(3):
         torch.cuda.set_device(0)
         torch.cuda.set_device(1)
-        torch.cuda.set_device(2)
+        #torch.cuda.set_device(2)
 
         self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
         self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
