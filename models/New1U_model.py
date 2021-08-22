@@ -196,7 +196,7 @@ class New1UModel(BaseModel):
                     batch_x_r = x_r[it::num_batches].to(self.device2)
                     #print("shape of batch receiver amps")
                     #print(np.shape(batch_x_r))
-                    batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
+                    #############################batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     ##batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     ##batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
