@@ -9,6 +9,7 @@ import deepwave
 import multiprocessing
 from joblib import Parallel, delayed
 import ray
+import time
 
 #from skimage import metrics
 
@@ -251,7 +252,7 @@ class New1UModel(BaseModel):
 
     @ray.remote
     def prop(self, epoch1, k):
-                #---------deepwave------------#
+        #---------deepwave------------#
         
         net1out1 = self.real_B[k, 0, :, :]
         net1out1 = net1out1.detach()
@@ -339,3 +340,8 @@ class New1UModel(BaseModel):
                     # lossinner.backward()
                     #epoch_loss += loss.item()
                     # optimizer2.step()
+
+    @ray.remote
+    def smallfun(k):
+        time.sleep(1)
+        return(k)
