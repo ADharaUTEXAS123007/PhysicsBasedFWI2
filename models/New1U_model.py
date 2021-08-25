@@ -164,13 +164,13 @@ class New1UModel(BaseModel):
         #-------------deepwave---------------------#
         for k in range(diff_size[0]):
 
-            if (k == 0):
-                self.devicek = self.device2
-            if (k == 1):
-                self.devicek = self.device3
-            net1out = self.real_B[k, 0, :, :]
-            net1out1 = net1out.detach()
-            self.prop(net1out1,epoch1)
+            #if (k == 0):
+            #    self.devicek = self.device2
+            #if (k == 1):
+            #    self.devicek = self.device3
+            #net1out = self.real_B[k, 0, :, :]
+            #net1out1 = net1out.detach()
+            self.prop(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
@@ -234,8 +234,15 @@ class New1UModel(BaseModel):
         self.epoch1 = epoch
         print("epoch numbers : "+str(self.epoch1))
 
-    def prop(self, net1out1, epoch1):
+    def prop(self, epoch1, k):
                 #---------deepwave------------#
+        
+        net1out1 = self.real_B[k, 0, :, :]
+        net1out1 = net1out1.detach()
+        if (k == 0):
+            self.devicek = self.device2
+        if (k == 1):
+            self.devicek = self.device3
         t = epoch1
         freq = 25
         dx = 10
