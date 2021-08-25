@@ -55,7 +55,7 @@ class New1UModel(BaseModel):
             torch.cuda.set_device(i)
 
         #torch.cuda.set_device(2)
-
+        print(self.device)
         for i in range(2):
             variable = str(self.device)+str(i+1)
             print("variable name :",variable)
