@@ -175,8 +175,9 @@ class New1UModel(BaseModel):
         #                                                for k in mylist)
         result_ids = []
         for k in range(diff_size[0]):
-            result_ids.append(self.prop.remote(epoch1,k))
+            result_ids.append(smallfun.remote(epoch1,k))
         #-------------deepwave---------------------#
+        results = ray.get(result_ids)
         #for k in range(diff_size[0]):
 
             #if (k == 0):
@@ -251,7 +252,7 @@ class New1UModel(BaseModel):
 
 
     @ray.remote
-    def prop(self, epoch1, k):
+    def prop(epoch1, k):
         #---------deepwave------------#
         
         net1out1 = self.real_B[k, 0, :, :]
