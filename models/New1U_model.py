@@ -291,7 +291,7 @@ class New1UModel(BaseModel):
             self.devicek = self.device7
         if (k == 6):
             torch.cuda.set_device(7)
-            self.devicek = self.device6
+            self.devicek = self.device8
         t = epoch1
         freq = 25
         dx = 10
