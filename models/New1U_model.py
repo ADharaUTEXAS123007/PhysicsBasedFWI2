@@ -337,7 +337,7 @@ class New1UModel(BaseModel):
         # print(np.shape(receiver_amplitudes_true))
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
-        #net1out1 = net1out1*(4500-2000)+2000
+        net1out1 = net1out1*(4500-2000)+2000
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         net1out1.requires_grad = True
