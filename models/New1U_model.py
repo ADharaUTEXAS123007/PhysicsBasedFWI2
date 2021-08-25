@@ -8,6 +8,7 @@ import sys
 import deepwave
 import multiprocessing
 from joblib import Parallel, delayed
+import ray
 
 #from skimage import metrics
 
@@ -62,6 +63,7 @@ class New1UModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
+        ray.init()
 
         self.device1 = torch.device('cuda:{}'.format(
             self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
