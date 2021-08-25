@@ -173,13 +173,13 @@ class New1UModel(BaseModel):
         #---call deepwave through joblib--------#
         #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
         #                                                for k in mylist)
-        result_ids = []
-        for k in range(diff_size[0]):
-            result_ids.append(self.prop.remote(self,epoch1,k))
+        #result_ids = []
+        #for k in range(diff_size[0]):
+        #    result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         #results = ray.get(result_ids)
         #print("results :", results)
-        #for k in range(diff_size[0]):
+        for k in range(diff_size[0]):
 
 
             #if (k == 0):
@@ -188,7 +188,7 @@ class New1UModel(BaseModel):
             #    self.devicek = self.device3
             #net1out = self.real_B[k, 0, :, :]
             #net1out1 = net1out.detach()
-        #    self.prop(epoch1,k)
+            self.prop(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
