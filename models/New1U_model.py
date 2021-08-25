@@ -187,7 +187,10 @@ class New1UModel(BaseModel):
 
         for k in range(diff_size[0]):
 
-            self.devicek = self.device2
+            if (k==0):
+                self.devicek = self.device2
+            if (k==1):
+                self.devicek = self.device3
             net1out = self.real_B[k,0,:,:]
             net1out1 = net1out.detach()
             net1out1 = net1out1.to(self.devicek)
