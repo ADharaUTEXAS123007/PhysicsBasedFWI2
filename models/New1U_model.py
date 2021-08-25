@@ -184,10 +184,10 @@ class New1UModel(BaseModel):
 
         for k in range(diff_size[0]):
 
-            if (k%1 == 0):
-                net1out = self.real_B[k,0,:,:]
-                net1out1 = net1out.detach()
-                net1out1 = net1out1.to(self.device2)
+            self.devicek = self.device2
+            net1out = self.real_B[k,0,:,:]
+            net1out1 = net1out.detach()
+            net1out1 = net1out1.to(self.devicek)
                 
             #receiver_amplitudes_true = self.real_A[k,:,:,:]
             #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
@@ -199,7 +199,7 @@ class New1UModel(BaseModel):
                 #net1out1 = torch.tensor(net1out1)
             #net1out1 = net1out1*(4500-2000)+2000
                 #np.save('ftout1',net1out1.cpu().numpy())
-            net1out1 = net1out1.to(self.device2)
+            net1out1 = net1out1.to(self.devicek)
             net1out1.requires_grad = True
             ##criterion = torch.nn.MSELoss()
             ##optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
@@ -212,10 +212,10 @@ class New1UModel(BaseModel):
                     #print("shape of batch src amps")
                     #print(np.shape(batch_src_amps))
                     ##batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.device2)
-                    batch_x_s = x_s[it::num_batches].to(self.device2)
+                    batch_x_s = x_s[it::num_batches].to(self.devicek)
                     #print("shape of batch src amps")
                     #print(np.shape(batch_x_s))
-                    batch_x_r = x_r[it::num_batches].to(self.device2)
+                    batch_x_r = x_r[it::num_batches].to(self.devicek)
                     #print("shape of batch receiver amps")
                     #print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
