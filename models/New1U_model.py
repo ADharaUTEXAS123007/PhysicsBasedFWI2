@@ -329,10 +329,10 @@ class New1UModel(BaseModel):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        #receiver_amplitudes_true = self.real_A[k,:,:,:]
-        #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-        #rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
-        #rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        receiver_amplitudes_true = self.real_A[k,:,:,:]
+        receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
+        rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #print("receiver amplitude true shape")
         # print(np.shape(receiver_amplitudes_true))
         #net1out1 = net1out.detach()
@@ -341,8 +341,8 @@ class New1UModel(BaseModel):
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         net1out1.requires_grad = True
-        ##criterion = torch.nn.MSELoss()
-        ##optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+        criterion = torch.nn.MSELoss()
+        optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
                 for it in range(num_batches):
@@ -352,7 +352,7 @@ class New1UModel(BaseModel):
                         1, num_shots_per_batch, 1)
                     #print("shape of batch src amps")
                     # print(np.shape(batch_src_amps))
-                    ##batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.device2)
+                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.device2)
                     batch_x_s = x_s[it::num_batches].to(self.devicek)
                     #print("shape of batch src amps")
                     # print(np.shape(batch_x_s))
@@ -361,18 +361,18 @@ class New1UModel(BaseModel):
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
-                    ##batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
+                    batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
-                    ##batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    ##lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    # if (epoch == num_epochs-1):
-                    ##    sumlossinner += lossinner.item()
-                    # if (t > lstart):
-                    # lossinner.backward()
+                    lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    if (epoch == num_epochs-1):
+                        sumlossinner += lossinner.item()
+                    if (t > lstart):
+                        lossinner.backward()
                     #epoch_loss += loss.item()
-                    # optimizer2.step()
+                    optimizer2.step()
 
         return
 
