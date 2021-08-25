@@ -263,8 +263,8 @@ class New1UModel(BaseModel):
             torch.cuda.set_device(1)
             self.devicek = self.device2            
         if (k == 1):
-            torch.cuda.set_device(2)
-            self.devicek = self.device3
+            torch.cuda.set_device(1)
+            self.devicek = self.device2
         t = epoch1
         freq = 25
         dx = 10
