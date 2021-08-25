@@ -162,7 +162,15 @@ class New1UModel(BaseModel):
         ##data1outs = torch.unsqueeze(data1outs,1)
         diff_size = self.real_B.size()
         #-------------deepwave---------------------#
+        for k in range(diff_size[0]):
 
+            if (k == 0):
+                self.devicek = self.device2
+            if (k == 1):
+                self.devicek = self.device3
+            net1out = self.real_B[k, 0, :, :]
+            net1out1 = net1out.detach()
+            self.prop(net1out1,epoch1)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
@@ -226,7 +234,7 @@ class New1UModel(BaseModel):
         self.epoch1 = epoch
         print("epoch numbers : "+str(self.epoch1))
 
-    def prop(self):
+    def prop(self, net1out1, epoch1):
                 #---------deepwave------------#
         t = epoch1
         freq = 25
@@ -262,32 +270,24 @@ class New1UModel(BaseModel):
 
         ################data misfit calculation##########################################
 
-        for k in range(diff_size[0]):
+        #net1out1 = net1out1.to(self.devicek)
 
-            if (k == 0):
-                self.devicek = self.device2
-            if (k == 1):
-                self.devicek = self.device3
-            net1out = self.real_B[k, 0, :, :]
-            net1out1 = net1out.detach()
-            net1out1 = net1out1.to(self.devicek)
+        #receiver_amplitudes_true = self.real_A[k,:,:,:]
+        #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        #rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
+        #rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        #print("receiver amplitude true shape")
+        # print(np.shape(receiver_amplitudes_true))
+        #net1out1 = net1out.detach()
+        #net1out1 = torch.tensor(net1out1)
+        #net1out1 = net1out1*(4500-2000)+2000
+        # np.save('ftout1',net1out1.cpu().numpy())
+        net1out1 = net1out1.to(self.devicek)
+        net1out1.requires_grad = True
+        ##criterion = torch.nn.MSELoss()
+        ##optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
-            #receiver_amplitudes_true = self.real_A[k,:,:,:]
-            #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-            #rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
-            #rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-            #print("receiver amplitude true shape")
-            # print(np.shape(receiver_amplitudes_true))
-            net1out1 = net1out.detach()
-            #net1out1 = torch.tensor(net1out1)
-            #net1out1 = net1out1*(4500-2000)+2000
-            # np.save('ftout1',net1out1.cpu().numpy())
-            net1out1 = net1out1.to(self.devicek)
-            net1out1.requires_grad = True
-            ##criterion = torch.nn.MSELoss()
-            ##optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
-
-            for epoch in range(num_epochs):
+        for epoch in range(num_epochs):
                 for it in range(num_batches):
                     # optimizer2.zero_grad()
                     prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
