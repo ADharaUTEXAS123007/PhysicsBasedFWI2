@@ -180,6 +180,9 @@ class New1UModel(BaseModel):
         #print(np.shape(self.real_A))
         ##sumlossinner = 0.0
 
+        # Start Ray.
+        ray.init()
+
         ################data misfit calculation##########################################
 
         for k in range(diff_size[0]):
@@ -188,7 +191,7 @@ class New1UModel(BaseModel):
             net1out = self.real_B[k,0,:,:]
             net1out1 = net1out.detach()
             net1out1 = net1out1.to(self.devicek)
-                
+               
             #receiver_amplitudes_true = self.real_A[k,:,:,:]
             #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
             #rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
