@@ -58,6 +58,8 @@ class New1UModel(BaseModel):
         #torch.cuda.set_device(2)
         #del self.device 
         #print(self.device)
+        # Start Ray.
+        ray.init()
         
         self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
         self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
@@ -180,8 +182,6 @@ class New1UModel(BaseModel):
         #print(np.shape(self.real_A))
         ##sumlossinner = 0.0
 
-        # Start Ray.
-        ray.init()
 
         ################data misfit calculation##########################################
 
