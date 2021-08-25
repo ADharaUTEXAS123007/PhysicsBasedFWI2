@@ -352,7 +352,7 @@ class New1UModel(BaseModel):
                         1, num_shots_per_batch, 1)
                     #print("shape of batch src amps")
                     # print(np.shape(batch_src_amps))
-                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.device2)
+                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
                     batch_x_s = x_s[it::num_batches].to(self.devicek)
                     #print("shape of batch src amps")
                     # print(np.shape(batch_x_s))
