@@ -317,7 +317,7 @@ class New1UModel(BaseModel):
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         lstart = -1
         num_batches = 3
-        num_epochs = 1
+        num_epochs = 5
         if (t > lstart):
             num_epochs = 1
         num_shots_per_batch = int(num_shots / num_batches)
