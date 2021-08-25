@@ -175,7 +175,7 @@ class New1UModel(BaseModel):
         #                                                for k in mylist)
         result_ids = []
         for k in range(diff_size[0]):
-            result_ids.append(self.smallfun.remote(k))
+            result_ids.append(self.smallfun.remote(epoch1,k))
         #-------------deepwave---------------------#
         #for k in range(diff_size[0]):
 
@@ -342,6 +342,6 @@ class New1UModel(BaseModel):
                     # optimizer2.step()
 
     @ray.remote
-    def smallfun(k):
+    def smallfun(epoch1,k):
         time.sleep(1)
         return(k)
