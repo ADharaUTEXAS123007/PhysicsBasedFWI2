@@ -253,7 +253,7 @@ class New1UModel(BaseModel):
         print("epoch numbers : "+str(self.epoch1))
 
 
-    @ray.remote(num_gpus=2,max_calls=1)
+    #@ray.remote(num_gpus=2,max_calls=1)
     def prop(self,epoch1, k):
         #---------deepwave------------#
         
