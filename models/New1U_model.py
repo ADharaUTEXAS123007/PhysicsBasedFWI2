@@ -257,7 +257,7 @@ class New1UModel(BaseModel):
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
-        #source_amplitudes_true = source_amplitudes_true.to(self.device2)
+        source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         lstart = -1
         num_batches = 3
         num_epochs = 1
@@ -270,7 +270,7 @@ class New1UModel(BaseModel):
 
         ################data misfit calculation##########################################
 
-        net1out1 = net1out1.to(self.devicek)
+        #net1out1 = net1out1.to(self.devicek)
 
         #receiver_amplitudes_true = self.real_A[k,:,:,:]
         #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
