@@ -6,7 +6,8 @@ import sys
 # sys.path.append('/disk/student/adhara/Fall2021/deepwave/.')
 # sys.path.append('/disk/student/adhara/Fall2021/deepwave/deepwave/.')
 import deepwave
-import ray
+import multiprocessing
+from joblib import Parallel, delayed
 
 #from skimage import metrics
 
