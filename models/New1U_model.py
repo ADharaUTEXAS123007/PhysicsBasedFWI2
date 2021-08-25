@@ -164,6 +164,7 @@ class New1UModel(BaseModel):
         diff_size = self.real_B.size()
         num_cores = diff_size[0]
         mylist = np.linspace(0,diff_size[0])
+        print(mylist)
         #---call deepwave through joblib--------#
         processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop(epoch1,k) 
                                                         for k in mylist))
