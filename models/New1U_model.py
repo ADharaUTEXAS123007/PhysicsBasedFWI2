@@ -165,6 +165,8 @@ class New1UModel(BaseModel):
         num_cores = diff_size[0]
         mylist = list(range(diff_size[0]))
         print(mylist)
+        for k in mylist:
+            print(k)
         #---call deepwave through joblib--------#
         processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop(epoch1,k) 
                                                         for k in mylist))
