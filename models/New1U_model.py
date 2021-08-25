@@ -55,14 +55,18 @@ class New1UModel(BaseModel):
             torch.cuda.set_device(i)
 
         #torch.cuda.set_device(2)
-        del self.device 
+        #del self.device 
         #print(self.device)
-        for i in range(2):
-            variable = str(self.device)+str(i+1)
+        
+        self.device1 = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
+        self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
+        self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
+        #for i in range(2):
+        #    variable = str(self.device)+str(i+1)
             #print("variable name :",variable)
-            locals()[variable] = torch.device('cuda:{}'.format(self.gpu_ids[i])) if self.gpu_ids else torch.device('cpu') 
+        #    locals()[variable] = torch.device('cuda:{}'.format(self.gpu_ids[i])) if self.gpu_ids else torch.device('cpu') 
 
-        self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
+        #self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu') 
             #self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu') 
         #self.device4 = 
