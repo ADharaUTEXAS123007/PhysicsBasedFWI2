@@ -283,6 +283,7 @@ class New1UModel(BaseModel):
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
+        print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         lstart = -1
         num_batches = 3
