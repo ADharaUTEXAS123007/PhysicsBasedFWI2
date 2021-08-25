@@ -64,7 +64,7 @@ class New1UModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        ray.init(num_cpus=48,num_gpus=8)
+        #ray.init(num_cpus=48,num_gpus=8)
 
         self.device1 = torch.device('cuda:{}'.format(
             self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
@@ -347,7 +347,7 @@ class New1UModel(BaseModel):
 
         return
 
-    @ray.remote
+    #@ray.remote
     def smallfun(epoch1,k):
         time.sleep(1)
         return(k)
