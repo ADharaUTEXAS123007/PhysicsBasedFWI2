@@ -319,7 +319,7 @@ class New1UModel(BaseModel):
         num_batches = 3
         num_epochs = 5
         if (t > lstart):
-            num_epochs = 1
+            num_epochs = 5
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
