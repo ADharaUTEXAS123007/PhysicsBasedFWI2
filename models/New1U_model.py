@@ -6,6 +6,7 @@ import sys
 #sys.path.append('/disk/student/adhara/Fall2021/deepwave/.')
 #sys.path.append('/disk/student/adhara/Fall2021/deepwave/deepwave/.')
 import deepwave
+import ray
 
 #from skimage import metrics
 
@@ -182,7 +183,12 @@ class New1UModel(BaseModel):
         ################data misfit calculation##########################################
 
         for k in range(diff_size[0]):
-            net1out = self.real_B[k,0,:,:]
+
+            if (k%1 == 0):
+                net1out = self.real_B[k,0,:,:]
+                net1out1 = net1out.detach()
+                net1out1 = net1out1.to(self.device2)
+                
             #receiver_amplitudes_true = self.real_A[k,:,:,:]
             #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
             #rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
