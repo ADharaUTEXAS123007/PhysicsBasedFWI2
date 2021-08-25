@@ -162,8 +162,13 @@ class New1UModel(BaseModel):
         ##data1outs = data1outs.to(self.device1)
         ##data1outs = torch.unsqueeze(data1outs,1)
         diff_size = self.real_B.size()
+        num_cores = diff_size[0]
+        #---call deepwave through joblib--------#
+        processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop(epoch1,k) 
+                                                        for k in range(diff_size[0]))
+
         #-------------deepwave---------------------#
-        for k in range(diff_size[0]):
+        #for k in range(diff_size[0]):
 
             #if (k == 0):
             #    self.devicek = self.device2
@@ -171,7 +176,7 @@ class New1UModel(BaseModel):
             #    self.devicek = self.device3
             #net1out = self.real_B[k, 0, :, :]
             #net1out1 = net1out.detach()
-            self.prop(epoch1,k)
+        #    self.prop(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
