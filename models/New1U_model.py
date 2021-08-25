@@ -57,7 +57,7 @@ class New1UModel(BaseModel):
         """
         BaseModel.__init__(self, opt)
         print("number of cuda devices:", torch.cuda.device_count())
-        for i in range(2):
+        for i in range(3):
             torch.cuda.set_device(i)
 
         # torch.cuda.set_device(2)
