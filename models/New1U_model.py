@@ -189,7 +189,7 @@ class New1UModel(BaseModel):
         for k in range(diff_size[0]):
             result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
-        #results = ray.get(result_ids)
+        results = ray.get(result_ids)
         #print("results :", results)
         #for k in range(diff_size[0]):
 
@@ -374,7 +374,7 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     optimizer2.step()
 
-        return
+        return net1out1
 
     #@ray.remote
     def smallfun(epoch1,k):
