@@ -260,7 +260,7 @@ class New1UModel(BaseModel):
         net1out1 = self.real_B[k, 0, :, :]
         net1out1 = net1out1.detach()
         #if (k == 0):
-        self.devicek = self.device2
+        self.devicek = self.device3
         #if (k == 1):
         #    self.devicek = self.device3
         t = epoch1
