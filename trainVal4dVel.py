@@ -29,7 +29,7 @@ import numpy as np
 import ray
 
 if __name__ == '__main__':
-    #ray.init()
+    ray.init()
     print('run till here 0')
     opt = TrainOptions().parse()   # get training options
     print('run till here 1')

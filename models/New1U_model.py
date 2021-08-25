@@ -168,9 +168,11 @@ class New1UModel(BaseModel):
         for k in mylist:
             print(k)
         #---call deepwave through joblib--------#
-        processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
-                                                        for k in mylist)
-
+        #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
+        #                                                for k in mylist)
+        result_ids = []
+        for k in range(diff_size[0]):
+            result_ids.append(self.prop.remote(epoch1,k))
         #-------------deepwave---------------------#
         #for k in range(diff_size[0]):
 
@@ -244,6 +246,8 @@ class New1UModel(BaseModel):
         self.epoch1 = epoch
         print("epoch numbers : "+str(self.epoch1))
 
+
+    @ray.remote
     def prop(self, epoch1, k):
                 #---------deepwave------------#
         
