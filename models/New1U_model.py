@@ -72,6 +72,18 @@ class New1UModel(BaseModel):
             self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu')
         self.device3 = torch.device('cuda:{}'.format(
             self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
+        self.device4 = torch.device('cuda:{}'.format(
+            self.gpu_ids[3])) if self.gpu_ids else torch.device('cpu')
+        self.device5 = torch.device('cuda:{}'.format(
+            self.gpu_ids[4])) if self.gpu_ids else torch.device('cpu')
+        self.device6 = torch.device('cuda:{}'.format(
+            self.gpu_ids[5])) if self.gpu_ids else torch.device('cpu')
+        self.device7 = torch.device('cuda:{}'.format(
+            self.gpu_ids[6])) if self.gpu_ids else torch.device('cpu')
+        self.device8 = torch.device('cuda:{}'.format(
+            self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
+        
+        
         # for i in range(2):
         #    variable = str(self.device)+str(i+1)
         #print("variable name :",variable)
@@ -165,11 +177,11 @@ class New1UModel(BaseModel):
         ##data1outs = data1outs.to(self.device1)
         ##data1outs = torch.unsqueeze(data1outs,1)
         diff_size = self.real_B.size()
-        num_cores = diff_size[0]
-        mylist = list(range(diff_size[0]))
-        print(mylist)
-        for k in mylist:
-            print(k)
+        #num_cores = diff_size[0]
+        #mylist = list(range(diff_size[0]))
+        #print(mylist)
+        #for k in mylist:
+        #    print(k)
         #---call deepwave through joblib--------#
         #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
         #                                                for k in mylist)
@@ -263,8 +275,23 @@ class New1UModel(BaseModel):
             torch.cuda.set_device(1)
             self.devicek = self.device2            
         if (k == 1):
-            torch.cuda.set_device(1)
-            self.devicek = self.device2
+            torch.cuda.set_device(2)
+            self.devicek = self.device3
+        if (k == 2):
+            torch.cuda.set_device(3)
+            self.devicek = self.device4
+        if (k == 3):
+            torch.cuda.set_device(4)
+            self.devicek = self.device5
+        if (k == 4):
+            torch.cuda.set_device(5)
+            self.devicek = self.device6
+        if (k == 5):
+            torch.cuda.set_device(6)
+            self.devicek = self.device7
+        if (k == 6):
+            torch.cuda.set_device(7)
+            self.devicek = self.device6
         t = epoch1
         freq = 25
         dx = 10
