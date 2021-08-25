@@ -323,7 +323,7 @@ class New1UModel(BaseModel):
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
-        ##sumlossinner = 0.0
+        sumlossinner = 0.0
 
         ################data misfit calculation##########################################
 
