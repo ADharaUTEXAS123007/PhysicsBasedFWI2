@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
         ##data1outs = torch.unsqueeze(data1outs,1)
         diff_size = self.real_B.size()
         num_cores = diff_size[0]
-        mylist = range(diff_size[0])
+        mylist = list(range(diff_size[0]))
         print(mylist)
         #---call deepwave through joblib--------#
         processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop(epoch1,k) 
