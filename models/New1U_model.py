@@ -58,6 +58,7 @@ class New1UModel(BaseModel):
 
         for i in range(2):
             variable = str(self.device)+str(i+1)
+            print("variable name :",variable)
             locals()[variable] = torch.device('cuda:{}'.format(self.gpu_ids[i])) if self.gpu_ids else torch.device('cpu') 
             #self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu') 
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu') 
