@@ -345,7 +345,7 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     # optimizer2.step()
 
-        return(5)
+        return
 
     @ray.remote
     def smallfun(epoch1,k):
