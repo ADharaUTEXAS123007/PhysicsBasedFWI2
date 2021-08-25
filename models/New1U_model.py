@@ -270,7 +270,7 @@ class New1UModel(BaseModel):
 
         ################data misfit calculation##########################################
 
-        #net1out1 = net1out1.to(self.devicek)
+        net1out1 = net1out1.to(self.devicek)
 
         #receiver_amplitudes_true = self.real_A[k,:,:,:]
         #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
