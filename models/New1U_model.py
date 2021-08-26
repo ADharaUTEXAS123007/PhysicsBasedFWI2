@@ -193,6 +193,10 @@ class New1UModel(BaseModel):
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
         print(np.shape(results))
+        data1outs = results.to(self.device1)
+        print("check shape consistency")
+        print(np.shape(self.fake_B))
+        print(np.shape(data1outs))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
@@ -211,8 +215,8 @@ class New1UModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        ##self.loss_D_MSE = sumlossinner*100/diff_size[0]
-        ##loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_D_MSE = self.sumdataloss*100/diff_size[0]
+        #loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
         self.loss_D_MSE = 0.0
@@ -326,7 +330,7 @@ class New1UModel(BaseModel):
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
-        print("device ordinal :", self.devicek)
+        #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         lstart = -1
         num_batches = 3
@@ -386,7 +390,7 @@ class New1UModel(BaseModel):
                         lossinner.backward()
                     #epoch_loss += loss.item()
                     optimizer2.step()
-
+        self.sumdataloss = sumlossinner
         return net1out1.cpu().detach().numpy()
 
     @ray.remote (num_gpus=1)
