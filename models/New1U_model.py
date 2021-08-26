@@ -272,28 +272,31 @@ class New1UModel(BaseModel):
         
         net1out1 = self.real_B[k, 0, :, :]
         net1out1 = net1out1.detach()
-        print(" ray gpu ids")
+        #print(" ray gpu ids")
         g1 = ray.get_gpu_ids()[0]
+        torch.cuda.set_device(g1)
         if (g1 == 0):
-            torch.cuda.set_device(1)
-            self.devicek = self.device2            
+            #torch.cuda.set_device(0)
+            self.devicek = self.device1            
         if (g1 == 1):
-            torch.cuda.set_device(2)
-            self.devicek = self.device3
+            #torch.cuda.set_device(2)
+            self.devicek = self.device2
         if (g1 == 2):
-            torch.cuda.set_device(3)
-            self.devicek = self.device4
+            #torch.cuda.set_device(3)
+            self.devicek = self.device3
         if (g1 == 3):
-            torch.cuda.set_device(4)
-            self.devicek = self.device5
+            #torch.cuda.set_device(4)
+            self.devicek = self.device4
         if (g1 == 4):
-            torch.cuda.set_device(5)
-            self.devicek = self.device6
+            #torch.cuda.set_device(5)
+            self.devicek = self.device5
         if (g1 == 5):
-            torch.cuda.set_device(6)
-            self.devicek = self.device7
+            #torch.cuda.set_device(6)
+            self.devicek = self.device6
         if (g1 == 6):
-            torch.cuda.set_device(7)
+            #torch.cuda.set_device(7)
+            self.devicek = self.device7
+        if (g1 == 7):
             self.devicek = self.device8
         t = epoch1
         freq = 25
