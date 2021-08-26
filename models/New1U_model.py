@@ -382,7 +382,7 @@ class New1UModel(BaseModel):
     @ray.remote (num_gpus=1)
     def smallfun(epoch1,k):
         print(" ray gpu ids ")
-        print(ray.get_gpu_ids())
+        print(ray.get_gpu_ids()[0])
         time.sleep(1)
         return(k)
         
