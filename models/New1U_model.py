@@ -65,7 +65,7 @@ class New1UModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+        os.environ['CUDA_VISIBLE_DEVICES'] = "2"
         ray.init(num_cpus=48,num_gpus=1)
 
         self.device1 = torch.device('cuda:{}'.format(
