@@ -209,7 +209,9 @@ class New1UModel(BaseModel):
         #print("shape of lossinner")
         #print(np.shape(lossinner))
         data1outs = np.array(data1outs)
-        np.save('matrix.npy',data1outs)
+        
+        if (epoch1 == 3):
+            np.save('matrix.npy',data1outs)
         data1outs = torch.from_numpy(data1outs)
         #print("shape of data1outs")
         #print(np.shape(data1outs))
@@ -299,7 +301,7 @@ class New1UModel(BaseModel):
     def prop(self,epoch1, k):
         #---------deepwave------------#
         
-        net1out1 = self.real_B[k, 0, :, :]
+        net1out1 = self.fake_B[k, 0, :, :]
         net1out1 = net1out1.detach()
         #print(" ray gpu ids")
         g1 = ray.get_gpu_ids()[0]
