@@ -189,10 +189,10 @@ class New1UModel(BaseModel):
         #                                                for k in mylist)
         result_ids = []
         for k in range(diff_size[0]):
-            result_ids.append(self.prop.remote(self,epoch1,k))
+            result_ids.append(self.smallfun.(self,epoch1,k))
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
-        print(np.shape(results))
+        print(results)
         #print("results :", results)
         #for k in range(diff_size[0]):
 
@@ -393,6 +393,7 @@ class New1UModel(BaseModel):
     def smallfun(epoch1,k):
         print(" ray gpu ids ")
         print(ray.get_gpu_ids()[0])
+        torch.cuda.set_device(ray.get_gpu_ids()[0])
         time.sleep(1)
         return(k)
         
