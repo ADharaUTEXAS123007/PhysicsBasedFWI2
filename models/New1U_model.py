@@ -211,13 +211,13 @@ class New1UModel(BaseModel):
         print("shape of data1outs")
         print(np.shape(data1outs))
 
-        #data1outs = results.to(self.device1)
-        #data1outs = torch.unsqueeze(data1outs,1)
+        data1outs = data1outs.to(self.device1)
+        data1outs = torch.unsqueeze(data1outs,1)
 
-        #print("check shape consistency")
-        #print(np.shape(self.fake_B))
-        #print(np.shape(data1outs))
-        #print("results :", results)
+        print("check shape consistency")
+        print(np.shape(self.fake_B))
+        print(np.shape(data1outs))
+        print("results :", data1outs)
         #for k in range(diff_size[0]):
 
 
@@ -235,11 +235,11 @@ class New1UModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        #self.loss_D_MSE = self.sumdataloss*100/diff_size[0]
+        self.loss_D_MSE = torch.mean(lossinner)
         #loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
-        self.loss_D_MSE = 0.0
+        #self.loss_D_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         ##print("---loss MSE-----")
