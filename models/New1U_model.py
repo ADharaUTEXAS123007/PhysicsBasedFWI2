@@ -191,7 +191,7 @@ class New1UModel(BaseModel):
         for k in range(diff_size[0]):
            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
-        results,lossinner = ray.get(result_ids)
+        lossinner = ray.get(result_ids)
         #results = np.array(results)
         #results = torch.from_numpy(results)
         #print("shape of results")
@@ -397,7 +397,8 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     optimizer2.step()
     
-        return net1out1.cpu().detach().numpy(),sumlossinner
+        #return net1out1.cpu().detach().numpy(),sumlossinner
+        return sumlossinner
 
     @ray.remote (num_gpus=1)
     def smallfun(self,epoch1,k):
