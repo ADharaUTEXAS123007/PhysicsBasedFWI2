@@ -68,22 +68,22 @@ class New1UModel(BaseModel):
         os.environ['CUDA_VISIBLE_DEVICES'] = "2"
         ray.init(num_cpus=48,num_gpus=1)
 
-        self.device1 = torch.device('cuda:{}'.format(
-            self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
-        self.device2 = torch.device('cuda:{}'.format(
-            self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu')
-        self.device3 = torch.device('cuda:{}'.format(
-            self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
-        self.device4 = torch.device('cuda:{}'.format(
-            self.gpu_ids[3])) if self.gpu_ids else torch.device('cpu')
-        self.device5 = torch.device('cuda:{}'.format(
-            self.gpu_ids[4])) if self.gpu_ids else torch.device('cpu')
-        self.device6 = torch.device('cuda:{}'.format(
-            self.gpu_ids[5])) if self.gpu_ids else torch.device('cpu')
-        self.device7 = torch.device('cuda:{}'.format(
-            self.gpu_ids[6])) if self.gpu_ids else torch.device('cpu')
-        self.device8 = torch.device('cuda:{}'.format(
-            self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
+        # self.device1 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
+        # self.device2 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu')
+        # self.device3 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
+        # self.device4 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[3])) if self.gpu_ids else torch.device('cpu')
+        # self.device5 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[4])) if self.gpu_ids else torch.device('cpu')
+        # self.device6 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[5])) if self.gpu_ids else torch.device('cpu')
+        # self.device7 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[6])) if self.gpu_ids else torch.device('cpu')
+        # self.device8 = torch.device('cuda:{}'.format(
+        #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
         
         
         # for i in range(2):
@@ -279,7 +279,8 @@ class New1UModel(BaseModel):
         g1 = int(g1)
         print("g1 :",g1)
         torch.cuda.set_device(2)
-        self.devicek = self.device3
+        self.devicek = torch.device('cuda:{}'.format(self.gpu_ids[2]))
+        #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
         #torch.cuda.set_device(int(g1))
         #if (g1 == 0):
             #torch.cuda.set_device(0)
