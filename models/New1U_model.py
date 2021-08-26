@@ -392,8 +392,10 @@ class New1UModel(BaseModel):
     @ray.remote (num_gpus=1)
     def smallfun(self,epoch1,k):
         print(" ray gpu ids ")
-        #print(ray.get_gpu_ids()[0])
-        torch.cuda.set_device(2)
+        print(ray.get_gpu_ids()[0])
+        self.devicek = torch.device('cuda')
+        print("devicek")
+        print(self.devicek)
         time.sleep(1)
         return(k)
         
