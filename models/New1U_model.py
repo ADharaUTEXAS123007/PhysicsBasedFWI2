@@ -277,12 +277,12 @@ class New1UModel(BaseModel):
         #print(" ray gpu ids")
         g1 = ray.get_gpu_ids()[0]
         print("g1 :",g1)
-        torch.cuda.set_device(int(g1))
+        #torch.cuda.set_device(int(g1))
         if (g1 == 0):
             #torch.cuda.set_device(0)
             self.devicek = self.device1            
         if (g1 == 1):
-            #torch.cuda.set_device(2)
+            torch.cuda.set_device(1)
             self.devicek = self.device2
         if (g1 == 2):
             #torch.cuda.set_device(3)
