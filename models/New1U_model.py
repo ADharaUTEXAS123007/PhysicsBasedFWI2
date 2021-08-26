@@ -204,20 +204,21 @@ class New1UModel(BaseModel):
         lossinner = ray.get(result_ids2)
         data1outs = ray.get(result_ids1)
         lossinner = np.expand_dims(lossinner,axis=1)
-        print("shape of lossinner")
-        print(np.shape(lossinner))
+        printt(lossinner)
+        #print("shape of lossinner")
+        #print(np.shape(lossinner))
         data1outs = np.array(data1outs)
         data1outs = torch.from_numpy(data1outs)
-        print("shape of data1outs")
-        print(np.shape(data1outs))
+        #print("shape of data1outs")
+        #print(np.shape(data1outs))
 
         data1outs = data1outs.to(self.device1)
         data1outs = torch.unsqueeze(data1outs,1)
 
-        print("check shape consistency")
-        print(np.shape(self.fake_B))
-        print(np.shape(data1outs))
-        print("results :", data1outs)
+        #print("check shape consistency")
+        #print(np.shape(self.fake_B))
+        #print(np.shape(data1outs))
+        #print("results :", data1outs)
         #for k in range(diff_size[0]):
 
 
@@ -236,7 +237,7 @@ class New1UModel(BaseModel):
         #print("shape of real B")
         # print(np.shape(self.real_B))
         self.loss_D_MSE = torch.mean(lossinner)
-        #loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
         #self.loss_D_MSE = 0.0
@@ -260,7 +261,7 @@ class New1UModel(BaseModel):
         #print("loss data")
         # print(loss_data)
         # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE
+        self.loss_G = self.loss_M_MSE + loss_data
         self.loss_G.backward()
 
     def optimize_parameters(self, epoch):
@@ -410,6 +411,7 @@ class New1UModel(BaseModel):
                         lossinner.backward()
                     #epoch_loss += loss.item()
                     optimizer2.step()
+        net1out1 = (net1out1 - 2000)/(4500-2000)
     
         return net1out1.cpu().detach().numpy(),sumlossinner
         #return sumlossinner
