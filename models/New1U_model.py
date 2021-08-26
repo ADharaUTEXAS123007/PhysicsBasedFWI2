@@ -65,8 +65,8 @@ class New1UModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4,5,6"
-        ray.init(num_cpus=48,num_gpus=5)
+        os.environ['CUDA_VISIBLE_DEVICES'] = "2"
+        ray.init(num_cpus=48,num_gpus=1)
 
         self.device1 = torch.device('cuda:{}'.format(
              self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
@@ -393,7 +393,7 @@ class New1UModel(BaseModel):
     def smallfun(epoch1,k):
         print(" ray gpu ids ")
         print(ray.get_gpu_ids()[0])
-        torch.cuda.set_device(int(ray.get_gpu_ids()[0]))
+        torch.cuda.set_device(2)
         time.sleep(1)
         return(k)
         
