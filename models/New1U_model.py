@@ -210,8 +210,8 @@ class New1UModel(BaseModel):
         #print(np.shape(lossinner))
         data1outs = np.array(data1outs)
         
-        if (epoch1 == 3):
-            np.save('matrix.npy',data1outs)
+        #if (epoch1 == 3):
+        #    np.save('matrix.npy',data1outs)
         data1outs = torch.from_numpy(data1outs)
         #print("shape of data1outs")
         #print(np.shape(data1outs))
