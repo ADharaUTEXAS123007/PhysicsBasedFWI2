@@ -192,6 +192,8 @@ class New1UModel(BaseModel):
            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         lossinner = ray.get(result_ids)
+        print("shape of lossinner")
+        print(np.shape(lossinner))
         #results = np.array(results)
         #results = torch.from_numpy(results)
         #print("shape of results")
