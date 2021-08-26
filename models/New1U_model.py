@@ -198,6 +198,7 @@ class New1UModel(BaseModel):
         #print(np.shape(results))
 
         data1outs = results.to(self.device1)
+        data1outs = torch.expand_dims(data1outs,1)
 
         print("check shape consistency")
         print(np.shape(self.fake_B))
