@@ -204,6 +204,7 @@ class New1UModel(BaseModel):
         lossinner = ray.get(result_ids2)
         data1outs = ray.get(result_ids1)
         lossinner = np.expand_dims(lossinner,axis=1)
+    
         print(lossinner)
         #print("shape of lossinner")
         #print(np.shape(lossinner))
@@ -236,7 +237,7 @@ class New1UModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        self.loss_D_MSE = torch.mean(lossinner)
+        self.loss_D_MSE = np.mean(lossinner)
         loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
