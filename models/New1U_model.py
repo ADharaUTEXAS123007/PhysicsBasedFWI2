@@ -191,19 +191,25 @@ class New1UModel(BaseModel):
         #                                               for k in mylist)
 
         po = self.prop.remote(self,epoch1,0)
-        print(po[0])
-        print(po[1])
-        #result_ids = []
-        #for k in range(diff_size[0]):
-        #   result_ids.append(self.prop.remote(self,epoch1,k))
+        #print(po[0])
+        #print(po[1])
+        result_ids1 = []
+        result_ids2 = []
+        for k in range(diff_size[0]): 
+            po = self.prop.remote(self,epoch1,k)
+            result_ids1.append(po[0])
+            result_ids2.append(po[1]) 
+
         #-------------deepwave---------------------#
-        #lossinner = ray.get(result_ids)
-        #print("shape of lossinner")
-        #print(np.shape(lossinner))
-        #results = np.array(results)
-        #results = torch.from_numpy(results)
-        #print("shape of results")
-        #print(np.shape(results))
+        lossinner = ray.get(result_ids1)
+        data1outs = ray.get(result_ids2)
+        lossinner = np.expand_dims(lossinner,axis=1)
+        print("shape of lossinner")
+        print(np.shape(lossinner))
+        data1outs = np.array(data1outs)
+        data1outs = torch.from_numpy(data1outs)
+        print("shape of data1outs")
+        print(np.shape(data1outs))
 
         #data1outs = results.to(self.device1)
         #data1outs = torch.unsqueeze(data1outs,1)
