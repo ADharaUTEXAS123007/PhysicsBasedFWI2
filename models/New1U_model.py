@@ -240,8 +240,8 @@ class New1UModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        self.loss_D_MSE = np.mean(lossinner)
-        loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_D_MSE = np.mean(lossinner) * 100
+        loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
         #self.loss_D_MSE = 0.0
@@ -265,7 +265,7 @@ class New1UModel(BaseModel):
         #print("loss data")
         # print(loss_data)
         # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE + loss_data
+        self.loss_G = self.loss_M_MSE + 0 * loss_data
         self.loss_G.backward()
 
     def optimize_parameters(self, epoch):
