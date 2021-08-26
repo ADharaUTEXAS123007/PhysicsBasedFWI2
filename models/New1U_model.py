@@ -186,14 +186,19 @@ class New1UModel(BaseModel):
         #    print(k)
         #---call deepwave through joblib--------#
         #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
-        #                                                for k in mylist)
-        result_ids = []
-        for k in range(diff_size[0]):
-           result_ids.append(self.prop.remote(self,epoch1,k))
+        # 
+        #
+        #                                               for k in mylist)
+
+        po = self.prop.remote(self,epoch1,0)
+        print(np.shape(po))
+        #result_ids = []
+        #for k in range(diff_size[0]):
+        #   result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
-        lossinner = ray.get(result_ids)
-        print("shape of lossinner")
-        print(np.shape(lossinner))
+        #lossinner = ray.get(result_ids)
+        #print("shape of lossinner")
+        #print(np.shape(lossinner))
         #results = np.array(results)
         #results = torch.from_numpy(results)
         #print("shape of results")
