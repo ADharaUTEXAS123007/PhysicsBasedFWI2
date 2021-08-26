@@ -192,17 +192,17 @@ class New1UModel(BaseModel):
            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
-        results = np.array(results)
-        results = torch.from_numpy(results)
+        #results = np.array(results)
+        #results = torch.from_numpy(results)
         #print("shape of results")
         #print(np.shape(results))
 
-        data1outs = results.to(self.device1)
-        data1outs = torch.unsqueeze(data1outs,1)
+        #data1outs = results.to(self.device1)
+        #data1outs = torch.unsqueeze(data1outs,1)
 
-        print("check shape consistency")
-        print(np.shape(self.fake_B))
-        print(np.shape(data1outs))
+        #print("check shape consistency")
+        #print(np.shape(self.fake_B))
+        #print(np.shape(data1outs))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
@@ -222,7 +222,7 @@ class New1UModel(BaseModel):
         #print("shape of real B")
         # print(np.shape(self.real_B))
         #self.loss_D_MSE = self.sumdataloss*100/diff_size[0]
-        loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
         self.loss_D_MSE = 0.0
