@@ -215,7 +215,7 @@ class New1UModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        self.loss_D_MSE = self.sumdataloss*100/diff_size[0]
+        #self.loss_D_MSE = self.sumdataloss*100/diff_size[0]
         #loss_data = (self.criterionMSE(self.fake_B, data1outs))/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         # print("----loss_data-----")
         # print(loss_data)
