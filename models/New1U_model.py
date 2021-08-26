@@ -193,10 +193,10 @@ class New1UModel(BaseModel):
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
         print(np.shape(results))
-        data1outs = results.to(self.device1)
-        print("check shape consistency")
-        print(np.shape(self.fake_B))
-        print(np.shape(data1outs))
+        #data1outs = results.to(self.device1)
+        #print("check shape consistency")
+        #print(np.shape(self.fake_B))
+        #print(np.shape(data1outs))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
