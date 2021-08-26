@@ -276,6 +276,7 @@ class New1UModel(BaseModel):
         net1out1 = net1out1.detach()
         #print(" ray gpu ids")
         g1 = ray.get_gpu_ids()[0]
+        g1 = int(g1)
         print("g1 :",g1)
         #torch.cuda.set_device(int(g1))
         if (g1 == 0):
