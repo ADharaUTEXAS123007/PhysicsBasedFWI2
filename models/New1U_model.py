@@ -190,7 +190,7 @@ class New1UModel(BaseModel):
         #
         #                                               for k in mylist)
 
-        po = self.prop.remote(self,epoch1,0)
+        #po = self.prop.remote(self,epoch1,0)
         #print(po[0])
         #print(po[1])
         result_ids1 = []
