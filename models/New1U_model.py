@@ -393,7 +393,7 @@ class New1UModel(BaseModel):
     def smallfun(epoch1,k):
         print(" ray gpu ids ")
         print(ray.get_gpu_ids()[0])
-        torch.cuda.set_device(ray.get_gpu_ids()[0])
+        torch.cuda.set_device(int(ray.get_gpu_ids()[0]))
         time.sleep(1)
         return(k)
         
