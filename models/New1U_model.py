@@ -59,13 +59,13 @@ class New1UModel(BaseModel):
         BaseModel.__init__(self, opt)
         print("number of cuda devices:", torch.cuda.device_count())
         #for i in range(3):
-        torch.cuda.set_device(1)
+        #torch.cuda.set_device(1)
 
         # torch.cuda.set_device(2)
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+        os.environ['CUDA_VISIBLE_DEVICES'] = "0"
         ray.init(num_cpus=48,num_gpus=1)
 
         self.device1 = torch.device('cuda:{}'.format(
@@ -278,7 +278,8 @@ class New1UModel(BaseModel):
         g1 = ray.get_gpu_ids()[0]
         g1 = int(g1)
         print("g1 :",g1)
-        self.devicek = self.device2
+        torch.cuda.set_device(0)
+        self.devicek = self.device1
         #torch.cuda.set_device(int(g1))
         #if (g1 == 0):
             #torch.cuda.set_device(0)
