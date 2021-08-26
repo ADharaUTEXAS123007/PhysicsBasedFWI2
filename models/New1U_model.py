@@ -187,14 +187,14 @@ class New1UModel(BaseModel):
         #---call deepwave through joblib--------#
         #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
         #                                                for k in mylist)
-        result_ids = []
-        for k in range(diff_size[0]):
-            result_ids.append(self.smallfun.remote(epoch1,k))
-        #-------------deepwave---------------------#
-        results = ray.get(result_ids)
-        print(results)
-        #print("results :", results)
+        #result_ids = []
         #for k in range(diff_size[0]):
+        #    result_ids.append(self.smallfun.remote(epoch1,k))
+        #-------------deepwave---------------------#
+        #results = ray.get(result_ids)
+        #print(results)
+        #print("results :", results)
+        for k in range(diff_size[0]):
 
 
             #if (k == 0):
@@ -203,7 +203,7 @@ class New1UModel(BaseModel):
             #    self.devicek = self.device3
             #net1out = self.real_B[k, 0, :, :]
             #net1out1 = net1out.detach()
-        #    self.prop(epoch1,k)
+            self.smallfun(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
@@ -389,10 +389,10 @@ class New1UModel(BaseModel):
 
         return net1out1.cpu().detach().numpy()
 
-    @ray.remote (num_gpus=1)
+    #@ray.remote (num_gpus=1)
     def smallfun(epoch1,k):
         print(" ray gpu ids ")
-        print(ray.get_gpu_ids()[0])
+        #print(ray.get_gpu_ids()[0])
         torch.cuda.set_device(2)
         time.sleep(1)
         return(k)
