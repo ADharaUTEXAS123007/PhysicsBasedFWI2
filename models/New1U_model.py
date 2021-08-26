@@ -194,13 +194,14 @@ class New1UModel(BaseModel):
         results = ray.get(result_ids)
         results = np.array(results)
         results = torch.from_numpy(results)
-        print("shape of results")
-        print(np.shape(results))
+        #print("shape of results")
+        #print(np.shape(results))
 
-        #data1outs = results.to(self.device1)
-        #print("check shape consistency")
-        #print(np.shape(self.fake_B))
-        #print(np.shape(data1outs))
+        data1outs = results.to(self.device1)
+
+        print("check shape consistency")
+        print(np.shape(self.fake_B))
+        print(np.shape(data1outs))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
