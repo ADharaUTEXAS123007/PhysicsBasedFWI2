@@ -59,7 +59,7 @@ class New1UModel(BaseModel):
         BaseModel.__init__(self, opt)
         print("number of cuda devices:", torch.cuda.device_count())
         #for i in range(3):
-        #torch.cuda.set_device(i)
+        torch.cuda.set_device(1)
 
         # torch.cuda.set_device(2)
         #del self.device
@@ -278,30 +278,31 @@ class New1UModel(BaseModel):
         g1 = ray.get_gpu_ids()[0]
         g1 = int(g1)
         print("g1 :",g1)
+        self.devicek = self.device2
         #torch.cuda.set_device(int(g1))
-        if (g1 == 0):
+        #if (g1 == 0):
             #torch.cuda.set_device(0)
-            self.devicek = self.device1            
-        if (g1 == 1):
-            torch.cuda.set_device(1)
-            self.devicek = self.device2
-        if (g1 == 2):
-            #torch.cuda.set_device(3)
-            self.devicek = self.device3
-        if (g1 == 3):
-            #torch.cuda.set_device(4)
-            self.devicek = self.device4
-        if (g1 == 4):
-            #torch.cuda.set_device(5)
-            self.devicek = self.device5
-        if (g1 == 5):
-            #torch.cuda.set_device(6)
-            self.devicek = self.device6
-        if (g1 == 6):
-            #torch.cuda.set_device(7)
-            self.devicek = self.device7
-        if (g1 == 7):
-            self.devicek = self.device8
+        #    self.devicek = self.device1            
+        # if (g1 == 1):
+        #     torch.cuda.set_device(1)
+        #     self.devicek = self.device2
+        # if (g1 == 2):
+        #     #torch.cuda.set_device(3)
+        #     self.devicek = self.device3
+        # if (g1 == 3):
+        #     #torch.cuda.set_device(4)
+        #     self.devicek = self.device4
+        # if (g1 == 4):
+        #     #torch.cuda.set_device(5)
+        #     self.devicek = self.device5
+        # if (g1 == 5):
+        #     #torch.cuda.set_device(6)
+        #     self.devicek = self.device6
+        # if (g1 == 6):
+        #     #torch.cuda.set_device(7)
+        #     self.devicek = self.device7
+        # if (g1 == 7):
+        #     self.devicek = self.device8
         t = epoch1
         freq = 25
         dx = 10
