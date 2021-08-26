@@ -285,7 +285,7 @@ class New1UModel(BaseModel):
         print("epoch numbers : "+str(self.epoch1))
 
 
-    @ray.remote(num_gpus=1,num_returns=1)
+    @ray.remote(num_gpus=1,num_returns=2)
     def prop(self,epoch1, k):
         #---------deepwave------------#
         
@@ -404,8 +404,8 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     optimizer2.step()
     
-        #return net1out1.cpu().detach().numpy(),sumlossinner
-        return sumlossinner
+        return net1out1.cpu().detach().numpy(),sumlossinner
+        #return sumlossinner
 
     @ray.remote (num_gpus=1)
     def smallfun(self,epoch1,k):
