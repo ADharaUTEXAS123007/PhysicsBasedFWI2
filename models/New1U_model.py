@@ -203,7 +203,7 @@ class New1UModel(BaseModel):
             #    self.devicek = self.device3
             #net1out = self.real_B[k, 0, :, :]
             #net1out1 = net1out.detach()
-            self.smallfun(epoch1,k)
+            smallfun(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
