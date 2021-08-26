@@ -278,7 +278,7 @@ class New1UModel(BaseModel):
         g1 = ray.get_gpu_ids()[0]
         g1 = int(g1)
         print("g1 :",g1)
-        #torch.cuda.set_device(2)
+        torch.cuda.set_device(g1)
         self.devicek = torch.device('cuda')
         #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
         #torch.cuda.set_device(int(g1))
