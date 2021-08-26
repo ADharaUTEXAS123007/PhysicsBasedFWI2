@@ -189,7 +189,7 @@ class New1UModel(BaseModel):
         #                                                for k in mylist)
         result_ids = []
         for k in range(diff_size[0]):
-           result_ids.append(self.smallfun.remote(self,epoch1,k))
+           result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
         #print(results)
@@ -268,7 +268,7 @@ class New1UModel(BaseModel):
         print("epoch numbers : "+str(self.epoch1))
 
 
-    @ray.remote(num_gpus=5)
+    @ray.remote(num_gpus=1)
     def prop(self,epoch1, k):
         #---------deepwave------------#
         
@@ -279,7 +279,7 @@ class New1UModel(BaseModel):
         g1 = int(g1)
         print("g1 :",g1)
         #torch.cuda.set_device(2)
-        self.devicek = torch.device('cuda:{}'.format(self.gpu_ids[g1]))
+        self.devicek = torch.device('cuda')
         #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
         #torch.cuda.set_device(int(g1))
         #if (g1 == 0):
