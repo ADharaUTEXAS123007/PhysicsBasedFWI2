@@ -192,7 +192,7 @@ class New1UModel(BaseModel):
            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
-        #print(results)
+        print(np.shape(results))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
