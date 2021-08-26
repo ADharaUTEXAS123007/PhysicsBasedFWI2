@@ -204,7 +204,7 @@ class New1UModel(BaseModel):
         lossinner = ray.get(result_ids2)
         data1outs = ray.get(result_ids1)
         lossinner = np.expand_dims(lossinner,axis=1)
-        printt(lossinner)
+        print(lossinner)
         #print("shape of lossinner")
         #print(np.shape(lossinner))
         data1outs = np.array(data1outs)
