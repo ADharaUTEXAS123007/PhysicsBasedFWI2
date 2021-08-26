@@ -203,7 +203,7 @@ class New1UModel(BaseModel):
             #    self.devicek = self.device3
             #net1out = self.real_B[k, 0, :, :]
             #net1out1 = net1out.detach()
-            smallfun(epoch1,k)
+            self.smallfun(epoch1,k)
         #-------------deepwave---------------------#
 
         #print("shape of data1outs")
@@ -390,7 +390,7 @@ class New1UModel(BaseModel):
         return net1out1.cpu().detach().numpy()
 
     #@ray.remote (num_gpus=1)
-    def smallfun(epoch1,k):
+    def smallfun(self,epoch1,k):
         print(" ray gpu ids ")
         #print(ray.get_gpu_ids()[0])
         torch.cuda.set_device(2)
