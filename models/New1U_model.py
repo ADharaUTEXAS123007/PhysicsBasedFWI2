@@ -192,7 +192,10 @@ class New1UModel(BaseModel):
            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
         results = ray.get(result_ids)
+        results = torch.from_numpy(results)
+        print("shape of results")
         print(np.shape(results))
+
         #data1outs = results.to(self.device1)
         #print("check shape consistency")
         #print(np.shape(self.fake_B))
