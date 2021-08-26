@@ -187,10 +187,10 @@ class New1UModel(BaseModel):
         #                                                for k in mylist)
         result_ids = []
         for k in range(diff_size[0]):
-            result_ids.append(self.smallfun.remote(epoch1,k))
+            result_ids.append(self.prop.remote(self,epoch1,k))
         #-------------deepwave---------------------#
-        #results = ray.get(result_ids)
-        #print(np.shape(results))
+        results = ray.get(result_ids)
+        print(np.shape(results))
         #print("results :", results)
         #for k in range(diff_size[0]):
 
@@ -273,28 +273,28 @@ class New1UModel(BaseModel):
         net1out1 = self.real_B[k, 0, :, :]
         net1out1 = net1out1.detach()
         print(" ray gpu ids")
-        print(ray.get_gpu_ids())
-        # if (k == 0):
-        #     torch.cuda.set_device(1)
-        #     self.devicek = self.device2            
-        # if (k == 1):
-        #     torch.cuda.set_device(2)
-        #     self.devicek = self.device3
-        # if (k == 2):
-        #     torch.cuda.set_device(3)
-        #     self.devicek = self.device4
-        # if (k == 3):
-        #     torch.cuda.set_device(4)
-        #     self.devicek = self.device5
-        # if (k == 4):
-        #     torch.cuda.set_device(5)
-        #     self.devicek = self.device6
-        # if (k == 5):
-        #     torch.cuda.set_device(6)
-        #     self.devicek = self.device7
-        # if (k == 6):
-        #     torch.cuda.set_device(7)
-        #     self.devicek = self.device8
+        g1 = ray.get_gpu_ids()[0]
+        if (g1 == 0):
+            torch.cuda.set_device(1)
+            self.devicek = self.device2            
+        if (g1 == 1):
+            torch.cuda.set_device(2)
+            self.devicek = self.device3
+        if (g1 == 2):
+            torch.cuda.set_device(3)
+            self.devicek = self.device4
+        if (g1 == 3):
+            torch.cuda.set_device(4)
+            self.devicek = self.device5
+        if (g1 == 4):
+            torch.cuda.set_device(5)
+            self.devicek = self.device6
+        if (g1 == 5):
+            torch.cuda.set_device(6)
+            self.devicek = self.device7
+        if (g1 == 6):
+            torch.cuda.set_device(7)
+            self.devicek = self.device8
         t = epoch1
         freq = 25
         dx = 10
