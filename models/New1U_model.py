@@ -191,7 +191,8 @@ class New1UModel(BaseModel):
         #                                               for k in mylist)
 
         po = self.prop.remote(self,epoch1,0)
-        print(po)
+        print(po[0])
+        print(po[1])
         #result_ids = []
         #for k in range(diff_size[0]):
         #   result_ids.append(self.prop.remote(self,epoch1,k))
