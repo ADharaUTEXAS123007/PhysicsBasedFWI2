@@ -160,6 +160,19 @@ class AutoModel(BaseModel):
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
+    
+    def backward_GKL(self):
+        """Calculate MSE loss along with KL divergence"""
+                # First, G(A) should fake the discriminator
+        # Second, G(A) = B
+        #print("real B shape")
+        diff_size = self.real_B.size()
+        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
+            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_D_MSE = 0.0
+        # combine loss and calculate gradients
+        self.loss_G = self.loss_M_MSE
+        self.loss_G.backward()
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
