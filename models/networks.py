@@ -2261,77 +2261,77 @@ class Auto_Net(nn.Module):
                     m.bias.data.zero_()
 
 
-class Vae_Net(nn.Module):
-    def __init__(self, outer_nc, inner_nc, input_nc=None,
-                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        super(Vae_Net, self).__init__()
-        self.is_deconv = True
-        self.in_channels = outer_nc
-        self.is_batchnorm = True
-        self.n_classes = inner_nc
+# class Vae_Net(nn.Module):
+#     def __init__(self, outer_nc, inner_nc, input_nc=None,
+#                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+#         super(Vae_Net, self).__init__()
+#         self.is_deconv = True
+#         self.in_channels = outer_nc
+#         self.is_batchnorm = True
+#         self.n_classes = inner_nc
 
-        filters = [64, 128, 256, 512, 1024]
+#         filters = [64, 128, 256, 512, 1024]
 
-        self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
-        self.up4 = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
-        self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
-        self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
-        self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
-        self.final = nn.ReLU(inplace=True)
+#         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+#         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
+#         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
+#         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+#         self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+#         self.up4 = autoUp(filters[4], filters[3], self.is_deconv)
+#         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
+#         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
+#         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
+#         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
+#         self.final = nn.ReLU(inplace=True)
 
-    def encode(self, inputs):
-        label_dsp_dim = (201,301)
-        down1 = self.down1(inputs)
-        down2 = self.down2(down1)
-        down3 = self.down3(down3)
-        down4 = self.down4(down3)
-        center = self.center(down4)
+#     def encode(self, inputs):
+#         label_dsp_dim = (201,301)
+#         down1 = self.down1(inputs)
+#         down2 = self.down2(down1)
+#         down3 = self.down3(down3)
+#         down4 = self.down4(down3)
+#         center = self.center(down4)
 
-    def decode(self, inputs):
-        label_dsp_dim = (201,301)
-        up4 = self.up4(inputs)
-        up3 = self.up3(up4)
-        up2 = self.up2(up3)
-        up1 = self.up1(up2)
-        up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
-        f1  = self.f1(up1)
+#     def decode(self, inputs):
+#         label_dsp_dim = (201,301)
+#         up4 = self.up4(inputs)
+#         up3 = self.up3(up4)
+#         up2 = self.up2(up3)
+#         up1 = self.up1(up2)
+#         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+#         f1  = self.f1(up1)
 
-    def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
-        """
-        Reparameterization trick to sample from N(mu, var) from
-        N(0,1).
-        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
-        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
-        :return: (Tensor) [B x D]
-        """
-        std = torch.exp(0.5 * logvar)
-        eps = torch.randn_like(std)
-        return eps * std + mu
+#     def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
+#         """
+#         Reparameterization trick to sample from N(mu, var) from
+#         N(0,1).
+#         :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+#         :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+#         :return: (Tensor) [B x D]
+#         """
+#         std = torch.exp(0.5 * logvar)
+#         eps = torch.randn_like(std)
+#         return eps * std + mu
 
-    def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
-        mu, log_var = self.encode(input)
-        z = self.reparameterize(mu, log_var)
-        return  [self.decode(z), input, mu, log_var]
+#     def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
+#         mu, log_var = self.encode(input)
+#         z = self.reparameterize(mu, log_var)
+#         return  [self.decode(z), input, mu, log_var]
 
-    def sample(self,
-               num_samples:int,
-               current_device: int, **kwargs) -> Tensor:
-        """
-        Samples from the latent space and return the corresponding
-        image space map.
-        :param num_samples: (Int) Number of samples
-        :param current_device: (Int) Device to run the model
-        :return: (Tensor)
-        """
-        z = torch.randn(num_samples,
-                        self.latent_dim)
+#     def sample(self,
+#                num_samples:int,
+#                current_device: int, **kwargs) -> Tensor:
+#         """
+#         Samples from the latent space and return the corresponding
+#         image space map.
+#         :param num_samples: (Int) Number of samples
+#         :param current_device: (Int) Device to run the model
+#         :return: (Tensor)
+#         """
+#         z = torch.randn(num_samples,
+#                         self.latent_dim)
 
-        z = z.to(current_device)
+#         z = z.to(current_device)
 
-        samples = self.decode(z)
-        return samples
+#         samples = self.decode(z)
+#         return samples
