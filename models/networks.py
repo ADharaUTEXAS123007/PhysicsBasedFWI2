@@ -2187,3 +2187,80 @@ class NewU_Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
 
+
+
+class autoUp(nn.Module):
+    def __init__(self, in_size, out_size, is_deconv):
+        super(unetUp, self).__init__()
+        self.conv = unetConv2(in_size, out_size, True)
+        # Transposed convolution
+        if is_deconv:
+            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2,stride=2)
+        else:
+            self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+
+    def forward(self, inputs2):
+        outputs2 = self.up(inputs2)
+        #offset1 = (outputs2.size()[2]-inputs1.size()[2])
+        #offset2 = (outputs2.size()[3]-inputs1.size()[3])
+        #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
+        # Skip and concatenate 
+        #outputs1 = F.pad(inputs1, padding)
+        return self.conv(outputs2)
+
+class Auto_Net(nn.Module):
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(Auto_Net, self).__init__()
+        self.is_deconv     = True
+        self.in_channels   = outer_nc
+        self.is_batchnorm  = True
+        self.n_classes     = inner_nc
+        
+        filters = [64, 128, 256, 512, 1024]
+        
+        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
+        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
+        self.final   = nn.ReLU(inplace=True)
+        
+    def forward(self, inputs):
+        label_dsp_dim = (201,301)
+        down1  = self.down1(inputs)
+        down2  = self.down2(down1)
+        down3  = self.down3(down2)
+        down4  = self.down4(down3)
+        center = self.center(down4)
+        up4    = self.up4(down4, center)
+        up3    = self.up3(down3, up4)
+        up2    = self.up2(down2, up3)
+        up1    = self.up1(down1, up2)
+        up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        f1     = self.f1(up1)
+        
+        return self.final(f1)
+    
+    # Initialization of Parameters
+    def  _initialize_weights(self):
+          for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m,nn.ConvTranspose2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+
