@@ -2183,7 +2183,7 @@ class NewU_Net(nn.Module):
 
 class autoUp(nn.Module):
     def __init__(self, in_size, out_size, is_deconv):
-        super(unetUp, self).__init__()
+        super(autoUp, self).__init__()
         self.conv = unetConv2(in_size, out_size, True)
         # Transposed convolution
         if is_deconv:
