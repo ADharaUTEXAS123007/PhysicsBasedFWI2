@@ -193,31 +193,31 @@ class AutoModel(BaseModel):
         #po = self.prop.remote(self,epoch1,0)
         #print(po[0])
         #print(po[1])
-        result_ids1 = []
-        result_ids2 = []
-        for k in range(diff_size[0]): 
-            po = self.prop.remote(self,epoch1,k)
-            result_ids1.append(po[0])
-            result_ids2.append(po[1]) 
+        #result_ids1 = []
+        #result_ids2 = []
+        #for k in range(diff_size[0]): 
+        #    po = self.prop.remote(self,epoch1,k)
+        #    result_ids1.append(po[0])
+        #    result_ids2.append(po[1]) 
 
         #-------------deepwave---------------------#
-        lossinner = ray.get(result_ids2)
-        data1outs = ray.get(result_ids1)
-        lossinner = np.expand_dims(lossinner,axis=1)
+        #lossinner = ray.get(result_ids2)
+        #data1outs = ray.get(result_ids1)
+        #lossinner = np.expand_dims(lossinner,axis=1)
     
         #print(lossinner)
         #print("shape of lossinner")
         #print(np.shape(lossinner))
-        data1outs = np.array(data1outs)
+        #data1outs = np.array(data1outs)
         
         #if (epoch1 == 3):
         #    np.save('matrix.npy',data1outs)
-        data1outs = torch.from_numpy(data1outs)
+        #data1outs = torch.from_numpy(data1outs)
         #print("shape of data1outs")
         #print(np.shape(data1outs))
 
-        data1outs = data1outs.to(self.device1)
-        data1outs = torch.unsqueeze(data1outs,1)
+        #data1outs = data1outs.to(self.device1)
+        #data1outs = torch.unsqueeze(data1outs,1)
 
         #print("check shape consistency")
         #print(np.shape(self.fake_B))
@@ -240,8 +240,9 @@ class AutoModel(BaseModel):
 
         #print("shape of real B")
         # print(np.shape(self.real_B))
-        self.loss_D_MSE = np.mean(lossinner) * 100
-        loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #self.loss_D_MSE = np.mean(lossinner) * 100
+        #loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_D_MSE = 0.0
         # print("----loss_data-----")
         # print(loss_data)
         #self.loss_D_MSE = 0.0
@@ -265,7 +266,7 @@ class AutoModel(BaseModel):
         #print("loss data")
         # print(loss_data)
         # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE + 0 * loss_data
+        self.loss_G = self.loss_M_MSE 
         self.loss_G.backward()
 
     def optimize_parameters(self, epoch):
