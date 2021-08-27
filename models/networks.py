@@ -2185,6 +2185,7 @@ class autoUp(nn.Module):
     def __init__(self, in_size, out_size, is_deconv):
         super(autoUp, self).__init__()
         self.conv = unetConv2(in_size, out_size, True)
+        self.conv2 = unetConv2(out_size, out_size, True)
         # Transposed convolution
         if is_deconv:
             self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2,stride=2)
@@ -2198,7 +2199,7 @@ class autoUp(nn.Module):
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return self.conv(outputs2)
+        return self.conv2(outputs2)
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
@@ -2216,10 +2217,10 @@ class Auto_Net(nn.Module):
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
-        self.up4     = autoUp(filters[4]/2, filters[3], self.is_deconv)
-        self.up3     = autoUp(filters[3]/2, filters[2], self.is_deconv)
-        self.up2     = autoUp(filters[2]/2, filters[1], self.is_deconv)
-        self.up1     = autoUp(filters[1]/2, filters[0], self.is_deconv)
+        self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
+        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
         self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
         self.final   = nn.ReLU(inplace=True)
         
