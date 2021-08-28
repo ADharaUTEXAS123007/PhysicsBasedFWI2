@@ -2294,6 +2294,9 @@ class Vae_Net(nn.Module):
         down3 = self.down3(down2)
         down4 = self.down4(down3)
         center = self.center(down4)
+
+        print("shape of down4")
+        print(np.shape(down4))
         return center
 
     def decode(self, inputs):
