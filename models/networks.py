@@ -2079,10 +2079,10 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.8))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.2))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.8))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.2))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True),)
