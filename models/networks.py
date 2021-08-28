@@ -2207,7 +2207,7 @@ class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Auto_Net, self).__init__()
-        self.is_deconv     = True
+        self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
@@ -2274,12 +2274,20 @@ class Vae_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
+        latent_dim = 128
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+
+        self.fc_mu = nn.Linear(filters[-2]*25*19, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*25*19, latent_dim)
+
         self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+
+        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*19)
+
         self.up4 = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
@@ -2293,21 +2301,40 @@ class Vae_Net(nn.Module):
         down2 = self.down2(down1)
         down3 = self.down3(down2)
         down4 = self.down4(down3)
-        center = self.center(down4)
 
-        print("shape of down4")
-        print(np.shape(down4))
-        return center
+        result = torch.flatten(down4, start=1)
+        mu = self.fc_mu(result)
+        log_var = self.fc_var(result)
+        #center = self.center(down4)
+
+        #print("shape of down4")
+        #print(np.shape(down4))
+        return [mu, log_var]
 
     def decode(self, inputs):
+        filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (201,301)
-        up4 = self.up4(inputs)
+        decoder_input = self.decoder_input(inputs)
+        decoder_input = decoder_input.view(-1, filters[-2], 25, 19)
+        up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1  = self.f1(up1)
         return self.final(f1)
+
+    def reparameterize(self, mu, logvar):
+        """
+        Reparameterization trick to sample from N(mu, var) from
+        N(0,1).
+        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+        :return: (Tensor) [B x D]
+        """
+        std = torch.exp(0.5 * logvar)
+        eps = torch.randn_like(std)
+        return eps * std + mu
         
 
     # def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
@@ -2323,7 +2350,8 @@ class Vae_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs):
-        en1 = self.encode(input)
+        mu,log_var = self.encode(input)
+        z = self.reparameterize(mu, log_var)
         de1 = self.decode(en1)
         return  de1
 
