@@ -2302,7 +2302,7 @@ class Vae_Net(nn.Module):
         down3 = self.down3(down2)
         down4 = self.down4(down3)
 
-        result = torch.flatten(down4, start=1)
+        result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
