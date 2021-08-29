@@ -2353,7 +2353,7 @@ class Vae_Net(nn.Module):
     def forward(self, inputs):
         mu, log_var = self.encode(inputs)
         z = self.reparameterize(mu, log_var)
-        de1 = self.decode(en1)
+        de1 = self.decode(z)
         return  de1
 
     # Initialization of Parameters
