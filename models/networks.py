@@ -2303,21 +2303,21 @@ class Vae_Net(nn.Module):
         down4 = self.down4(down3)
         center = self.center(down4)
 
-        result = torch.flatten(center, start_dim=1)
-        mu = self.fc_mu(result)
-        log_var = self.fc_var(result)
+        #result = torch.flatten(center, start_dim=1)
+        #mu = self.fc_mu(result)
+        #log_var = self.fc_var(result)
         #center = self.center(down4)
 
         #print("shape of down4")
         #print(np.shape(down4))
-        return [mu, log_var]
+        return center
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (201,301)
-        decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-1], 25, 19)
-        up4 = self.up4(decoder_input)
+        #decoder_input = self.decoder_input(inputs)
+        #decoder_input = decoder_input.view(-1, filters[-1], 25, 19)
+        up4 = self.up4(inputs)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
@@ -2325,17 +2325,17 @@ class Vae_Net(nn.Module):
         f1  = self.f1(up1)
         return self.final(f1)
 
-    def reparameterize(self, mu, logvar):
-        """
-        Reparameterization trick to sample from N(mu, var) from
-        N(0,1).
-        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
-        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
-        :return: (Tensor) [B x D]
-        """
-        std = torch.exp(0.5 * logvar)
-        eps = torch.randn_like(std)
-        return eps * std + mu
+    # def reparameterize(self, mu, logvar):
+    #     """
+    #     Reparameterization trick to sample from N(mu, var) from
+    #     N(0,1).
+    #     :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+    #     :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+    #     :return: (Tensor) [B x D]
+    #     """
+    #     std = torch.exp(0.5 * logvar)
+    #     eps = torch.randn_like(std)
+    #     return eps * std + mu
         
 
     # def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
@@ -2351,9 +2351,9 @@ class Vae_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs):
-        mu,log_var = self.encode(inputs)
-        z = self.reparameterize(mu, log_var)
-        de1 = self.decode(z)
+        en1 = self.encode(inputs)
+        #z = self.reparameterize(mu, log_var)
+        de1 = self.decode(en1)
         return  de1
 
     # Initialization of Parameters
