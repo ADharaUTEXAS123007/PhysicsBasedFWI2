@@ -2352,8 +2352,25 @@ class Vae_Net(nn.Module):
     def forward(self, inputs):
         mu,log_var = self.encode(input)
         z = self.reparameterize(mu, log_var)
-        de1 = self.decode(en1)
+        de1 = self.decode(z)
         return  de1
+
+    # Initialization of Parameters
+    def  _initialize_weights(self):
+          for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m,nn.ConvTranspose2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
     # def sample(self,
     #            num_samples:int,
