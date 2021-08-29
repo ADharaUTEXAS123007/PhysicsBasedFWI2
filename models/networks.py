@@ -2310,14 +2310,14 @@ class Vae_Net(nn.Module):
 
         #print("shape of down4")
         #print(np.shape(down4))
-        return mu, log_var
+        return [mu, log_var]
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (201,301)
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-1], 25, 19)
-        up4 = self.up4(inputs)
+        up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
@@ -2351,7 +2351,7 @@ class Vae_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs):
-        mu, log_var = self.encode(inputs)
+        mu,log_var = self.encode(inputs)
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)
         return  de1
