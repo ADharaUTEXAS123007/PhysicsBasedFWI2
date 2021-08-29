@@ -178,6 +178,7 @@ class VaeModel(BaseModel):
         self.loss_G = self.loss_M_MSE + self.loss_K_MSE
         self.loss_G.backward()
 
+
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
         # calculate the source amplitudes
