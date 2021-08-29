@@ -161,7 +161,7 @@ class VaeModel(BaseModel):
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
     
-    def backward_GKL(self):
+    def backward_GKL(self, epoch1):
         """Calculate MSE loss along with KL divergence"""
                 # First, G(A) should fake the discriminator
         # Second, G(A) = B
