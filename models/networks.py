@@ -180,7 +180,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'Auto':
         net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
-        net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return init_net(net, init_type, init_gain, gpu_ids)
@@ -2353,7 +2353,7 @@ class Vae_Net(nn.Module):
         mu,log_var = self.encode(input)
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)
-        return  de1, mu, log_var
+        return  de1
 
     # Initialization of Parameters
     def  _initialize_weights(self):
