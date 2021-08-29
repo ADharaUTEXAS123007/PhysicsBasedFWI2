@@ -2273,8 +2273,8 @@ class Vae_Net(nn.Module):
         self.is_batchnorm = True
         self.n_classes = inner_nc
 
-        filters = [64, 128, 256, 512, 1024]
-        latent_dim = 1024
+        filters = [64, 128, 256, 512, 512]
+        latent_dim = 512
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
