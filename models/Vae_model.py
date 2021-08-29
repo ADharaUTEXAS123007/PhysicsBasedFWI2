@@ -96,7 +96,7 @@ class VaeModel(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE']
+        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
         self.visual_names = ['fake_B','real_B','fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
@@ -170,12 +170,12 @@ class VaeModel(BaseModel):
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
             100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        kld_loss = (7/50) * kld_loss
-        print("KL divergence loss :", kld_loss)
-        print("MSE loss :", self.loss_M_MSE)
+        self.loss_K_MSE = (7/50) * kld_loss
+        #print("KL divergence loss :", kld_loss)
+        #print("MSE loss :", self.loss_M_MSE)
         self.loss_D_MSE = 0.0
         # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE + kld_loss
+        self.loss_G = self.loss_M_MSE + self.loss_K_MSE
         self.loss_G.backward()
 
     def backward_G1(self, epoch1):
