@@ -168,7 +168,7 @@ class VaeModel(BaseModel):
         #print("real B shape")
         diff_size = self.real_B.size()
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
-            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         self.loss_K_MSE = (7/50) * kld_loss
         #print("KL divergence loss :", kld_loss)
@@ -299,7 +299,7 @@ class VaeModel(BaseModel):
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_BT)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.fake_BT, self.real_BT)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
