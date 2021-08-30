@@ -202,8 +202,10 @@ class AutoModel(BaseModel):
                 100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
+            self.loss_D_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        
 
         lambda1 = 1
         lambda2 = 0
