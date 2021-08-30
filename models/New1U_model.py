@@ -206,8 +206,8 @@ class New1UModel(BaseModel):
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data 
         self.loss_G.backward()
         if (epoch1 == 50):
-            np.save('true_data.mat',self.real_A)
-            np.save('true_model.mat',self.real_B)
+            np.save('true_data.mat',self.real_A.cpu().detach().numpy())
+            np.save('true_model.mat',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch):
         self.forward()                   # compute fake images: G(A)
