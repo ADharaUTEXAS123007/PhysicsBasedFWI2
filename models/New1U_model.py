@@ -272,7 +272,7 @@ class New1UModel(BaseModel):
         #     self.devicek = self.device7
         # if (g1 == 7):
         #     self.devicek = self.device8
-        t = epoch1
+        #t = epoch1
         freq = 25
         dx = 10
         nt = 2000
@@ -298,7 +298,7 @@ class New1UModel(BaseModel):
         #lstart = -1
         num_batches = 3
         num_epochs = 5
-        if (t > lstart):
+        if (epoch1 > lstart):
             num_epochs = 10
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
