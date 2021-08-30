@@ -179,29 +179,34 @@ class AutoModel(BaseModel):
         lstart = 100
         diff_size = self.real_B.size()
 
-        result_ids1 = []
-        result_ids2 = []
-        for k in range(diff_size[0]): 
-            po = self.prop.remote(self,epoch1,k,lstart)
-            result_ids1.append(po[0])
-            result_ids2.append(po[1]) 
+        if (epoch1 > lstart):
 
-        # #-------------deepwave---------------------#
-        lossinner = ray.get(result_ids2)
-        data1outs = ray.get(result_ids1)
-        lossinner = np.expand_dims(lossinner,axis=1)
+            result_ids1 = []
+            result_ids2 = []
 
+            for k in range(diff_size[0]):
+                po = self.prop.remote(self, epoch1, k, lstart)
+                result_ids1.append(po[0])
+                result_ids2.append(po[1])
 
-        data1outs = data1outs.to(self.device1)
-        data1outs = torch.unsqueeze(data1outs,1)
+            # #-------------deepwave---------------------#
+            lossinner = ray.get(result_ids2)
+            data1outs = ray.get(result_ids1)
+            lossinner = np.expand_dims(lossinner, axis=1)
 
-        self.loss_D_MSE = np.mean(lossinner) * 100
-        loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            data1outs = data1outs.to(self.device1)
+            data1outs = torch.unsqueeze(data1outs, 1)
+
+            self.loss_D_MSE = np.mean(lossinner) * 100
+            loss_data = (self.criterionMSE(self.fake_B, data1outs)) * \
+                100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+            loss_data = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
 
         lambda1 = 1
-        lambda2 = 1
+        lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0
         if (epoch1>lstart):
