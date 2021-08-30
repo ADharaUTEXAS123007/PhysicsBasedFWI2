@@ -318,6 +318,8 @@ class New1UModel(BaseModel):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
+        if (epoch1 == 51): 
+            np.save('before.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         net1out1.requires_grad = True
@@ -353,7 +355,10 @@ class New1UModel(BaseModel):
                         lossinner.backward()
                     #epoch_loss += loss.item()
                     optimizer2.step()
+        if (epoch1 == 51): 
+            np.save('after.npy',net1out1.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
+        
     
         return net1out1.cpu().detach().numpy(),sumlossinner
         #return sumlossinner
