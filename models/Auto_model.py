@@ -176,110 +176,38 @@ class AutoModel(BaseModel):
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
-        # calculate the source amplitudes
-        # GPU_string='cuda:0'
-        # device1 = torch.device(GPU_string)
-        # GPU_string='cuda:1'
-        # device2 = torch.device(GPU_string)
-
-        ##net1out1 = (net1out1-2000)/(4500-2000)
-        ##net1out1 = torch.unsqueeze(net1out1,0)
-        # if k==0:
-        ##    data1outs = net1out1
-        # else:
-        ##    data1outs = torch.cat((data1outs,net1out1),0)
-
-        ##data1outs = data1outs.to(self.device1)
-        ##data1outs = torch.unsqueeze(data1outs,1)
+        lstart = 100
         diff_size = self.real_B.size()
-        #num_cores = diff_size[0]
-        #mylist = list(range(diff_size[0]))
-        #print(mylist)
-        #for k in mylist:
-        #    print(k)
-        #---call deepwave through joblib--------#
-        #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
-        # 
-        #
-        #                                               for k in mylist)
 
-        #po = self.prop.remote(self,epoch1,0)
-        #print(po[0])
-        #print(po[1])
-        #result_ids1 = []
-        #result_ids2 = []
-        #for k in range(diff_size[0]): 
-        #    po = self.prop.remote(self,epoch1,k)
-        #    result_ids1.append(po[0])
-        #    result_ids2.append(po[1]) 
+        result_ids1 = []
+        result_ids2 = []
+        for k in range(diff_size[0]): 
+            po = self.prop.remote(self,epoch1,k,lstart)
+            result_ids1.append(po[0])
+            result_ids2.append(po[1]) 
 
-        #-------------deepwave---------------------#
-        #lossinner = ray.get(result_ids2)
-        #data1outs = ray.get(result_ids1)
-        #lossinner = np.expand_dims(lossinner,axis=1)
-    
-        #print(lossinner)
-        #print("shape of lossinner")
-        #print(np.shape(lossinner))
-        #data1outs = np.array(data1outs)
-        
-        #if (epoch1 == 3):
-        #    np.save('matrix.npy',data1outs)
-        #data1outs = torch.from_numpy(data1outs)
-        #print("shape of data1outs")
-        #print(np.shape(data1outs))
-
-        #data1outs = data1outs.to(self.device1)
-        #data1outs = torch.unsqueeze(data1outs,1)
-
-        #print("check shape consistency")
-        #print(np.shape(self.fake_B))
-        #print(np.shape(data1outs))
-        #print("results :", data1outs)
-        #for k in range(diff_size[0]):
+        # #-------------deepwave---------------------#
+        lossinner = ray.get(result_ids2)
+        data1outs = ray.get(result_ids1)
+        lossinner = np.expand_dims(lossinner,axis=1)
 
 
-            #if (k == 0):
-            #    self.devicek = self.device2
-            #if (k == 1):
-            #    self.devicek = self.device3
-            #net1out = self.real_B[k, 0, :, :]
-            #net1out1 = net1out.detach()
-        #    self.smallfun(epoch1,k)
-        #-------------deepwave---------------------#
+        data1outs = data1outs.to(self.device1)
+        data1outs = torch.unsqueeze(data1outs,1)
 
-        #print("shape of data1outs")
-        # print(np.shape(data1outs))
-
-        #print("shape of real B")
-        # print(np.shape(self.real_B))
-        #self.loss_D_MSE = np.mean(lossinner) * 100
-        #loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        self.loss_D_MSE = 0.0
-        # print("----loss_data-----")
-        # print(loss_data)
-        #self.loss_D_MSE = 0.0
+        self.loss_D_MSE = np.mean(lossinner) * 100
+        loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        ##print("---loss MSE-----")
-        # print(self.loss_M_MSE)
 
-        ##lambda1 = 0
-        ##lambda2 = 1
-        # if (t>100):
-        ##    lambda1 = 0
-        # if (t>lstart):
-        ##    lambda2 = 1
-        #print("D_MSE loss")
-        # print(self.loss_D_MSE)
+        lambda1 = 1
+        lambda2 = 1
+        if (epoch1>lstart):
+            lambda1 = 0
+        if (epoch1>lstart):
+            lambda2 = 1
 
-        #print("M_MSE loss")
-        # print(self.loss_M_MSE)
-
-        #print("loss data")
-        # print(loss_data)
-        # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE 
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data
         self.loss_G.backward()
 
     def optimize_parameters(self, epoch):
@@ -312,7 +240,7 @@ class AutoModel(BaseModel):
 
 
     @ray.remote(num_gpus=1,num_returns=2)
-    def prop(self,epoch1, k):
+    def prop(self, epoch1, k, lstart):
         #---------deepwave------------#
         
         net1out1 = self.fake_B[k, 0, :, :]
@@ -371,11 +299,11 @@ class AutoModel(BaseModel):
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
-        lstart = -1
+        #lstart = -1
         num_batches = 3
         num_epochs = 5
         if (t > lstart):
-            num_epochs = 5
+            num_epochs = 10
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
