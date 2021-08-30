@@ -351,7 +351,7 @@ class New1UModel(BaseModel):
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
-                    if (t > lstart):
+                    if (epoch1 > lstart):
                         lossinner.backward()
                     #epoch_loss += loss.item()
                     optimizer2.step()
