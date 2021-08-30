@@ -201,7 +201,7 @@ class New1UModel(BaseModel):
         if (epoch1>lstart):
             lambda2 = 1
 
-        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data 
         self.loss_G.backward()
 
     def optimize_parameters(self, epoch):
