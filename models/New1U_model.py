@@ -181,6 +181,8 @@ class New1UModel(BaseModel):
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
 
+            data1outs = np.array(data1outs)
+            data1outs = torch.from_numpy(data1outs)
             data1outs = data1outs.to(self.device1)
             data1outs = torch.unsqueeze(data1outs, 1)
 
