@@ -205,7 +205,7 @@ class New1UModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data 
         self.loss_G.backward()
-        if (epoch1 == 50):
+        if (epoch1 == 51):
             np.save('true_data.npy',self.real_A.cpu().detach().numpy())
             np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
