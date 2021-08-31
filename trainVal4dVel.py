@@ -64,6 +64,7 @@ if __name__ == '__main__':
          model.update_learning_rate()    # update learning rates in the beginning of every epoch.
          Modelloss = 0.0
          Dataloss = 0.0
+         Model1loss = 0.0
          #KLloss = 0.0
          for i, data in enumerate(dataset):  # inner loop within one epoch
              ##print("i: " + str(i))
@@ -109,6 +110,7 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
+             Model1loss = Model1loss + model.loss_M1_MSE.item()
              #KLloss = KLloss + model.loss_K_MSE.item()
 
 
@@ -128,6 +130,7 @@ if __name__ == '__main__':
             losses1['Modelloss'] = Modelloss/i
             losses1['Dataloss'] = Dataloss/i
             losses1['Validationloss'] = Validationloss/k
+            losses1['Model1loss'] = Model1loss/i
             #losses1['KL divergence'] = KLloss/i
             print(losses1)
             losses2 = model.get_current_losses()

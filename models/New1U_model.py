@@ -96,7 +96,7 @@ class New1UModel(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE']
+        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'M1_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
         self.visual_names = ['fake_B', 'real_B', 'fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = -1
+        lstart = 1000
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -187,11 +187,12 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner) * 100
-            loss_data = (self.criterionMSE(self.fake_B, data1outs)) * \
+            self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
                 100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
+            self.loss_M1_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
@@ -203,7 +204,7 @@ class New1UModel(BaseModel):
         if (epoch1>lstart):
             lambda2 = 1
 
-        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data 
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         self.loss_G.backward()
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
