@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 50
+        lstart = 1
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -360,6 +360,7 @@ class New1UModel(BaseModel):
                     optimizer2.step()
         if (epoch1 == 1): 
             np.save('after.npy',net1out1.cpu().detach().numpy())
+            np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
