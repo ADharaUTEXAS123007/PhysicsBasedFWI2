@@ -205,9 +205,9 @@ class New1UModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data 
         self.loss_G.backward()
-        #if (epoch1 == 53):
-        #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
-        #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+        if (epoch1 == 52):
+            np.save('true_data.npy',self.real_A.cpu().detach().numpy())
+            np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch):
         self.forward()                   # compute fake images: G(A)
@@ -321,8 +321,8 @@ class New1UModel(BaseModel):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
-        #if (epoch1 == 1): 
-        #    np.save('before.npy',net1out1.cpu().detach().numpy())
+        if (epoch1 == 52): 
+            np.save('before.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         net1out1.requires_grad = True
@@ -358,9 +358,9 @@ class New1UModel(BaseModel):
                         lossinner.backward()
                     #epoch_loss += loss.item()
                     optimizer2.step()
-        #if (epoch1 == 53): 
-        #    np.save('after.npy',net1out1.cpu().detach().numpy())
-        #    np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        if (epoch1 == 52): 
+            np.save('after.npy',net1out1.cpu().detach().numpy())
+            np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
