@@ -198,10 +198,10 @@ class New1UModel(BaseModel):
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
 
-        lambda1 = 0
+        lambda1 = 1
         lambda2 = 1
         if (epoch1>lstart):
-            lambda1 = 0
+            lambda1 = 1
         if (epoch1>lstart):
             lambda2 = 1
 
