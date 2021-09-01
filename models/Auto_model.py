@@ -176,7 +176,7 @@ class AutoModel(BaseModel):
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 50
+        lstart = 1000
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -208,9 +208,9 @@ class AutoModel(BaseModel):
         
 
         lambda1 = 1
-        lambda2 = 0
+        lambda2 = 1
         if (epoch1>lstart):
-            lambda1 = 0
+            lambda1 = 1
         if (epoch1>lstart):
             lambda2 = 1
 

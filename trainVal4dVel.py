@@ -110,7 +110,7 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
-             Model1loss = Model1loss + model.loss_M1_MSE.item()
+             #Model1loss = Model1loss + model.loss_M1_MSE.item()
              #KLloss = KLloss + model.loss_K_MSE.item()
 
 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
             losses1['Modelloss'] = Modelloss/i
             losses1['Dataloss'] = Dataloss/i
             losses1['Validationloss'] = Validationloss/k
-            losses1['Model1loss'] = Model1loss/i
+            #losses1['Model1loss'] = Model1loss/i
             #losses1['KL divergence'] = KLloss/i
             print(losses1)
             losses2 = model.get_current_losses()

@@ -197,15 +197,15 @@ class New1UModel(BaseModel):
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
 
-        lambda1 = 1
+        lambda1 = 0
         lambda2 = 1
         if (epoch1>lstart):
-            lambda1 = 1
+            lambda1 = 0
         if (epoch1>lstart):
             lambda2 = 1
 
-        #self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
-        self.loss_G = lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        #self.loss_G = lambda2 * self.loss_M1_MSE
         self.loss_G.backward()
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
