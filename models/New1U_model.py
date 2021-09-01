@@ -189,7 +189,7 @@ class New1UModel(BaseModel):
 
             self.loss_D_MSE = np.mean(lossinner) * 100
             self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-                100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+                1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
