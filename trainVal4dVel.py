@@ -26,7 +26,7 @@ from data import create_dataset2
 from models import create_model
 from util.visualizer import Visualizer
 import numpy as np
-import ray
+#import ray
 
 if __name__ == '__main__':
     #ray.init()
