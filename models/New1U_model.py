@@ -359,8 +359,9 @@ class New1UModel(BaseModel):
                         sumlossinner += lossinner.item()
                     if (epoch1 > lstart):
                         lossinner.backward()
+                        optimizer2.step()
                     #epoch_loss += loss.item()
-                    optimizer2.step()
+                    #optimizer2.step()
         #if (epoch1 == 52): 
         #    np.save('after.npy',net1out1.cpu().detach().numpy())
         #    np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
