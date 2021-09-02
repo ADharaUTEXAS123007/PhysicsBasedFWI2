@@ -332,14 +332,14 @@ class New1UModel(BaseModel):
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
 
-        if (epoch1 > lstart):
-            net1out1.requires_grad = True
-            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+        #if (epoch1 > lstart):
+        net1out1.requires_grad = True
+        optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
                 for it in range(num_batches):
-                    if (epoch1 > lstart):
-                        optimizer2.zero_grad()
+                    #if (epoch1 > lstart):
+                    optimizer2.zero_grad()
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
@@ -366,9 +366,9 @@ class New1UModel(BaseModel):
                     #np.save(filen,net1out1.cpu().detach().numpy())
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
-                    if (epoch1 > lstart):
-                        lossinner.backward()
-                        optimizer2.step()
+                    #if (epoch1 > lstart):
+                    lossinner.backward()
+                    optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
