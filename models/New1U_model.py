@@ -199,11 +199,11 @@ class New1UModel(BaseModel):
         
 
         lambda1 = 1
-        lambda2 = 1
-        if (epoch1>lstart):
-            lambda1 = 1
-        if (epoch1>lstart):
-            lambda2 = 1
+        lambda2 = 0
+        #if (epoch1>lstart):
+        #    lambda1 = 1
+        #if (epoch1>lstart):
+        #    lambda2 = 1
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
@@ -303,7 +303,7 @@ class New1UModel(BaseModel):
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
         num_batches = 3
-        num_epochs = 5
+        num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 10
         num_shots_per_batch = int(num_shots / num_batches)
