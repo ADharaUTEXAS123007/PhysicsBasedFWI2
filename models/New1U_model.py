@@ -199,11 +199,11 @@ class New1UModel(BaseModel):
         
 
         lambda1 = 1
-        lambda2 = 1
+        lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 1
         if (epoch1>lstart):
-            lambda2 = 1
+            lambda2 = 0
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
