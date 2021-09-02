@@ -337,6 +337,7 @@ class New1UModel(BaseModel):
         for epoch in range(num_epochs):
                 for it in range(num_batches):
                     # optimizer2.zero_grad()
+                    np.save('before108.npy',net1out1.cpu().detach().numpy())
                     prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
                     batch_src_amps = source_amplitudes_true.repeat(
                         1, num_shots_per_batch, 1)
@@ -367,8 +368,8 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        np.save('after.npy',net1out1.cpu().detach().numpy())
-        np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        np.save('after1.npy',net1out1.cpu().detach().numpy())
+        np.save('seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
