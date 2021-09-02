@@ -177,7 +177,7 @@ class New1UModel(BaseModel):
             result_ids1.append(po[0])
             result_ids2.append(po[1])
 
-            # #-------------deepwave---------------------#
+        # #-------------deepwave---------------------#
         lossinner = ray.get(result_ids2)
         data1outs = ray.get(result_ids1)
         lossinner = np.expand_dims(lossinner, axis=1)
