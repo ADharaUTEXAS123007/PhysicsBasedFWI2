@@ -324,6 +324,8 @@ class New1UModel(BaseModel):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
+        #min1 = torch.min(net1out1)
+        #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
         np.save('before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
@@ -336,8 +338,10 @@ class New1UModel(BaseModel):
 
         for epoch in range(num_epochs):
                 for it in range(num_batches):
-                    # optimizer2.zero_grad()
-                    np.save('before108.npy',net1out1.cpu().detach().numpy())
+                    if (epoch1 > lstart):
+                        optimizer2.zero_grad()
+                    #np.save('before108.npy',net1out1.cpu().detach().numpy())
+                    net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
                     batch_src_amps = source_amplitudes_true.repeat(
                         1, num_shots_per_batch, 1)
