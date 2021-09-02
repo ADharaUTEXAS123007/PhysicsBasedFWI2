@@ -341,7 +341,7 @@ class New1UModel(BaseModel):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
-                    net1out1 = torch.clamp(net1out1,min=2000,max=4500)
+                    #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
                     batch_src_amps = source_amplitudes_true.repeat(
                         1, num_shots_per_batch, 1)
