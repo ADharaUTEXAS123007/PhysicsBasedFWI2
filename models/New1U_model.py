@@ -328,10 +328,10 @@ class New1UModel(BaseModel):
         #    np.save('before.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
+        criterion = torch.nn.MSELoss()
 
         if (epoch1 > lstart):
             net1out1.requires_grad = True
-            criterion = torch.nn.MSELoss()
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
