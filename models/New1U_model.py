@@ -167,43 +167,43 @@ class New1UModel(BaseModel):
         lstart = 1000
         diff_size = self.real_B.size()
 
-        #if (epoch1 > lstart):
+        if (epoch1 > lstart):
 
-        result_ids1 = []
-        result_ids2 = []
+            result_ids1 = []
+            result_ids2 = []
 
-        for k in range(diff_size[0]):
-            po = self.prop.remote(self, epoch1, k, lstart)
-            result_ids1.append(po[0])
-            result_ids2.append(po[1])
+            for k in range(diff_size[0]):
+                po = self.prop.remote(self, epoch1, k, lstart)
+                result_ids1.append(po[0])
+                result_ids2.append(po[1])
 
-        # #-------------deepwave---------------------#
-        lossinner = ray.get(result_ids2)
-        data1outs = ray.get(result_ids1)
-        lossinner = np.expand_dims(lossinner, axis=1)
+            # #-------------deepwave---------------------#
+            lossinner = ray.get(result_ids2)
+            data1outs = ray.get(result_ids1)
+            lossinner = np.expand_dims(lossinner, axis=1)
 
-        data1outs = np.array(data1outs)
-        data1outs = torch.from_numpy(data1outs)
-        data1outs = data1outs.to(self.device1)
-        data1outs = torch.unsqueeze(data1outs, 1)
+            data1outs = np.array(data1outs)
+            data1outs = torch.from_numpy(data1outs)
+            data1outs = data1outs.to(self.device1)
+            data1outs = torch.unsqueeze(data1outs, 1)
 
-        self.loss_D_MSE = np.mean(lossinner) * 100
-        self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-            1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        #else:
-        #    loss_data = 0.0
-        #    self.loss_D_MSE = 0.0
-        #    self.loss_M1_MSE = 0.0
+            self.loss_D_MSE = np.mean(lossinner) * 100
+            self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
+                1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+            loss_data = 0.0
+            self.loss_D_MSE = 0.0
+            self.loss_M1_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
 
         lambda1 = 1
-        lambda2 = 0
-        #if (epoch1>lstart):
-        #    lambda1 = 1
-        #if (epoch1>lstart):
-        #    lambda2 = 1
+        lambda2 = 1
+        if (epoch1>lstart):
+            lambda1 = 1
+        if (epoch1>lstart):
+            lambda2 = 1
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
@@ -359,9 +359,8 @@ class New1UModel(BaseModel):
                         sumlossinner += lossinner.item()
                     if (epoch1 > lstart):
                         lossinner.backward()
-                        optimizer2.step()
                     #epoch_loss += loss.item()
-                    #optimizer2.step()
+                    optimizer2.step()
         #if (epoch1 == 52): 
         #    np.save('after.npy',net1out1.cpu().detach().numpy())
         #    np.save('seis23.npy',batch_rcv_amps_pred.cpu().detach().numpy())
