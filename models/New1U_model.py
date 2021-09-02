@@ -362,8 +362,8 @@ class New1UModel(BaseModel):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    filen = 'epoch1'+str(epoch)+'.npy'
-                    np.save(filen,net1out1.cpu().detach().numpy())
+                    #filen = 'epoch1'+str(epoch)+'.npy'
+                    #np.save(filen,net1out1.cpu().detach().numpy())
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
                     if (epoch1 > lstart):
