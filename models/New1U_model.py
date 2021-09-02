@@ -325,7 +325,7 @@ class New1UModel(BaseModel):
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
         #if (epoch1 == 52): 
-        np.save('before.npy',net1out1.cpu().detach().numpy())
+        np.save('before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
