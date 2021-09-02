@@ -164,36 +164,36 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = -1
+        #lstart = -1
         diff_size = self.real_B.size()
 
-        if (epoch1 > lstart):
+        #if (epoch1 > lstart):
 
-            result_ids1 = []
-            result_ids2 = []
+        result_ids1 = []
+        result_ids2 = []
 
-            for k in range(diff_size[0]):
-                po = self.prop.remote(self, epoch1, k, lstart)
-                result_ids1.append(po[0])
-                result_ids2.append(po[1])
+        for k in range(diff_size[0]):
+            po = self.prop.remote(self, epoch1, k, lstart)
+            result_ids1.append(po[0])
+            result_ids2.append(po[1])
 
             # #-------------deepwave---------------------#
-            lossinner = ray.get(result_ids2)
-            data1outs = ray.get(result_ids1)
-            lossinner = np.expand_dims(lossinner, axis=1)
+        lossinner = ray.get(result_ids2)
+        data1outs = ray.get(result_ids1)
+        lossinner = np.expand_dims(lossinner, axis=1)
 
-            data1outs = np.array(data1outs)
-            data1outs = torch.from_numpy(data1outs)
-            data1outs = data1outs.to(self.device1)
-            data1outs = torch.unsqueeze(data1outs, 1)
+        data1outs = np.array(data1outs)
+        data1outs = torch.from_numpy(data1outs)
+        data1outs = data1outs.to(self.device1)
+        data1outs = torch.unsqueeze(data1outs, 1)
 
-            self.loss_D_MSE = np.mean(lossinner) * 100
-            self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-                1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        else:
-            loss_data = 0.0
-            self.loss_D_MSE = 0.0
-            self.loss_M1_MSE = 0.0
+        self.loss_D_MSE = np.mean(lossinner) * 100
+        self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
+                    1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #else:
+        #    loss_data = 0.0
+        #    self.loss_D_MSE = 0.0
+        #    self.loss_M1_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
