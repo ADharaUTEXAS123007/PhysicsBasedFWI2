@@ -327,7 +327,7 @@ class New1UModel(BaseModel):
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
-        np.save('before1.npy',net1out1.cpu().detach().numpy())
+        np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
@@ -364,7 +364,7 @@ class New1UModel(BaseModel):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    filen = 'epoch1'+str(epoch)+'.npy'
+                    filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     np.save(filen,net1out1.cpu().detach().numpy())
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
@@ -374,8 +374,8 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        np.save('after1.npy',net1out1.cpu().detach().numpy())
-        np.save('seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
+        np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
