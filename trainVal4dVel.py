@@ -132,10 +132,10 @@ if __name__ == '__main__':
 
         
          if epoch % opt.display_freq == 0:    #plot losses
-            losses1['Modelloss'] = Modelloss/i
-            losses1['Dataloss'] = Dataloss/i
-            losses1['Validationloss'] = Validationloss/k
-            losses1['Model1loss'] = Model1loss/i
+            losses1['Modelloss'] = Modelloss/(i+1)
+            losses1['Dataloss'] = Dataloss/(i+1)
+            losses1['Validationloss'] = Validationloss/(k+1)
+            losses1['Model1loss'] = Model1loss/(i+1)
             #losses1['KL divergence'] = KLloss/i
             print(losses1)
             losses2 = model.get_current_losses()
