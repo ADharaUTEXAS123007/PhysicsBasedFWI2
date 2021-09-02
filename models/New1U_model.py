@@ -193,7 +193,7 @@ class New1UModel(BaseModel):
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
-            self.loss_M1_MSE = 0.0
+            self.loss_M1_MSE.item() = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
