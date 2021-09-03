@@ -171,7 +171,7 @@ class New1UModel(BaseModel):
 
             result_ids1 = []
             result_ids2 = []
-            filen = './deepwave/batchOld'+str(batch)+'.npy'
+            filen = './deepwave/batchOld'+str(batch)+'ep'+str(epoch1)+'.npy'
             np.save(filen,self.fake_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
@@ -192,7 +192,7 @@ class New1UModel(BaseModel):
             data1outs = np.array(data1outs)
             #print("shape of data1outs")
             #print(np.shape(data1outs))
-            filen = './deepwave/batch1New'+str(batch)+'.npy'
+            filen = './deepwave/batch1New'+str(batch)+'ep'+str(epoch1)+'.npy'
             np.save(filen,data1outs)
             data1outs = torch.from_numpy(data1outs)
             data1outs = data1outs.to(self.device1)
@@ -200,7 +200,7 @@ class New1UModel(BaseModel):
 
             self.loss_D_MSE = np.mean(lossinner) * 100
             self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-            10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            100000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
