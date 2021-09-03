@@ -192,7 +192,7 @@ class New1UModel(BaseModel):
             data1outs = np.array(data1outs)
             print("shape of data1outs")
             print(np.shape(data1outs))
-            filen = './deepwave/batchNew'+str(batch)+'.npy'
+            filen = './deepwave/batch1New'+str(batch)+'.npy'
             np.save(filen,data1outs)
             data1outs = torch.from_numpy(data1outs)
             data1outs = data1outs.to(self.device1)
