@@ -343,7 +343,7 @@ class New1UModel(BaseModel):
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
         min1 = torch.min(net1out1)
-        mat2 = torch.ones(torch.shape(net1out1)[0],torch.shape(net1out1)[1])*min1
+        mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1])*min1
         print("shape of mat2 :", np.shape(mat2))
 
 
