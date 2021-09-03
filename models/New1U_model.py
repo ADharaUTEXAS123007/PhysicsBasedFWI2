@@ -172,7 +172,7 @@ class New1UModel(BaseModel):
             result_ids1 = []
             result_ids2 = []
             filen = './deepwave/batchOld'+str(batch)+'.npy'
-            np.save(filen,self.real_B.cpu().detach().numpy())
+            np.save(filen,self.fake_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
