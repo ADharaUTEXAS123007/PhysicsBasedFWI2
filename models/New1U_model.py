@@ -187,6 +187,10 @@ class New1UModel(BaseModel):
             print("shape of data1outs")
             print(np.shape(data1outs))
 
+            print("shape of lossinner")
+            print(np.shape(lossinner))
+
+
             data1outs = np.array(data1outs)
             filen = './deepwave/batchNew'+str(batch)+'.npy'
             np.save(filen,data1outs)
