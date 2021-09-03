@@ -162,7 +162,7 @@ class New1UModel(BaseModel):
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
 
-    def backward_G1(self, epoch1):
+    def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
         lstart = -1
         diff_size = self.real_B.size()
@@ -181,6 +181,9 @@ class New1UModel(BaseModel):
             lossinner = ray.get(result_ids2)
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
+            filen = './deepwave/batch'+str(batch)+'.npy'
+            np.save(filen,net1out1.cpu().detach().numpy())
+
 
             data1outs = np.array(data1outs)
             data1outs = torch.from_numpy(data1outs)
@@ -212,11 +215,11 @@ class New1UModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
-    def optimize_parameters(self, epoch):
+    def optimize_parameters(self, epoch, batch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G1(epoch)                   # calculate graidents for G
+        self.backward_G1(epoch, batch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
