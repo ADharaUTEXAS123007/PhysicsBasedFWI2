@@ -184,7 +184,8 @@ class New1UModel(BaseModel):
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
 
-
+            print("shape of data1outs")
+            print(np.shape(data1outs))
 
             data1outs = np.array(data1outs)
             filen = './deepwave/batchNew'+str(batch)+'.npy'
