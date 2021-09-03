@@ -171,6 +171,8 @@ class New1UModel(BaseModel):
 
             result_ids1 = []
             result_ids2 = []
+            filen = './deepwave/batchOld'+str(batch)+'.npy'
+            np.save(filen,self.real_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
@@ -181,7 +183,7 @@ class New1UModel(BaseModel):
             lossinner = ray.get(result_ids2)
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
-            filen = './deepwave/batch'+str(batch)+'.npy'
+            filen = './deepwave/batchNew'+str(batch)+'.npy'
             np.save(filen,net1out1.cpu().detach().numpy())
 
 
