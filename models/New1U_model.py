@@ -335,15 +335,17 @@ class New1UModel(BaseModel):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
+        min1 = torch.min(net1out1)
+        mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1])*min1
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
         #np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
+        mat2 = mat2.to(self.devicek)
         criterion = torch.nn.MSELoss()
-        min1 = torch.min(net1out1).to(self.devicek)
-        mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1])*min1
+
         print("shape of mat2 :", np.shape(mat2))
 
 
