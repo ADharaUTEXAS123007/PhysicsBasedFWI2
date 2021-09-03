@@ -184,14 +184,14 @@ class New1UModel(BaseModel):
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
 
-            print("shape of data1outs")
-            print(np.shape(data1outs))
 
             print("shape of lossinner")
             print(np.shape(lossinner))
 
 
             data1outs = np.array(data1outs)
+            print("shape of data1outs")
+            print(np.shape(data1outs))
             filen = './deepwave/batchNew'+str(batch)+'.npy'
             np.save(filen,data1outs)
             data1outs = torch.from_numpy(data1outs)
