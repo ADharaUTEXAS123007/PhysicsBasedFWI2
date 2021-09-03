@@ -336,9 +336,9 @@ class New1UModel(BaseModel):
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
         min1 = torch.min(net1out1)
-        print(min1.get_device())
+        #print(min1.get_device())
         min1 = min1.to(self.device1)
-        mat2 = torch.ones(201,301).to(self.device1)
+        mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(self.device1)
         mat2 = mat2 * min1
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -347,9 +347,14 @@ class New1UModel(BaseModel):
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         mat2 = mat2.to(self.devicek)
+        prop2 = deepwave.scalar.Propagator({'vp': mat2}, dx)
+        receiver_amplitudes_cte = prop2(source_amplitudes_true.to(self.devicek),
+                                x_s.to(self.devicek),
+                                x_r.to(self.devicek), dt)
+
         criterion = torch.nn.MSELoss()
 
-        print("shape of mat2 :", np.shape(mat2))
+        #print("shape of mat2 :", np.shape(mat2))
 
 
         #if (epoch1 > lstart):
@@ -378,6 +383,8 @@ class New1UModel(BaseModel):
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
+                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
