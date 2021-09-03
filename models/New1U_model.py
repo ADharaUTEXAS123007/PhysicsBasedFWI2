@@ -338,7 +338,7 @@ class New1UModel(BaseModel):
         min1 = torch.min(net1out1)
         print(min1.get_device())
         min1 = min1.to(self.device1)
-        mat2 = torch.mul(torch.ones(net1out1.size()[0],net1out1.size()[1]),min1)
+        mat2 = (torch.ones(net1out1.size()[0],net1out1.size()[1])
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
