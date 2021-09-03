@@ -342,6 +342,10 @@ class New1UModel(BaseModel):
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
+        min1 = torch.min(net1out1)
+        mat2 = np.ones(torch.size(net1out1)[0],torch.size(net1out1)[1])*min1
+        print("shape of mat2 :", np.shape(mat2))
+
 
         #if (epoch1 > lstart):
         net1out1.requires_grad = True
