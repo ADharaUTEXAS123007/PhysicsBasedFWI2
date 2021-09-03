@@ -65,8 +65,8 @@ class New1UModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "1"
-        ray.init(num_cpus=48,num_gpus=1)
+        os.environ['CUDA_VISIBLE_DEVICES'] = "1,2,3,4,5,6,7"
+        ray.init(num_cpus=48,num_gpus=7)
 
         self.device1 = torch.device('cuda:{}'.format(
              self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
@@ -189,7 +189,7 @@ class New1UModel(BaseModel):
 
             self.loss_D_MSE = np.mean(lossinner) * 100
             self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-            1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
@@ -305,7 +305,7 @@ class New1UModel(BaseModel):
         num_batches = 3
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 200
+            num_epochs = 10
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
@@ -327,7 +327,7 @@ class New1UModel(BaseModel):
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
-        np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
         criterion = torch.nn.MSELoss()
@@ -364,8 +364,8 @@ class New1UModel(BaseModel):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    filen = './deepwave/epoch1'+str(epoch)+'.npy'
-                    np.save(filen,net1out1.cpu().detach().numpy())
+                    #filen = './deepwave/epoch1'+str(epoch)+'.npy'
+                    #np.save(filen,net1out1.cpu().detach().numpy())
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
                     #if (epoch1 > lstart):
@@ -374,8 +374,8 @@ class New1UModel(BaseModel):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
-        np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
