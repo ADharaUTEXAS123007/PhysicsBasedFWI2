@@ -164,15 +164,15 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 50
+        lstart = 40
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
 
             result_ids1 = []
             result_ids2 = []
-            filen = './deepwave/batchOld'+str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen,self.fake_B.cpu().detach().numpy())
+            #filen = './deepwave/batchOld'+str(batch)+'ep'+str(epoch1)+'.npy'
+            #np.save(filen,self.fake_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
@@ -192,8 +192,8 @@ class New1UModel(BaseModel):
             data1outs = np.array(data1outs)
             #print("shape of data1outs")
             #print(np.shape(data1outs))
-            filen = './deepwave/batch1New'+str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen,data1outs)
+            #filen = './deepwave/batch1New'+str(batch)+'ep'+str(epoch1)+'.npy'
+            #np.save(filen,data1outs)
             data1outs = torch.from_numpy(data1outs)
             data1outs = data1outs.to(self.device1)
             data1outs = torch.unsqueeze(data1outs, 1)
@@ -227,7 +227,7 @@ class New1UModel(BaseModel):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G(epoch, batch)                   # calculate graidents for G
+        self.backward_G1(epoch, batch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
@@ -290,17 +290,17 @@ class New1UModel(BaseModel):
         # if (g1 == 7):
         #     self.devicek = self.device8
         #t = epoch1
-        freq = 25
+        freq = 15
         dx = 10
-        nt = 2000
-        dt = 0.001
-        num_shots = 15
-        num_receivers_per_shot = 301
+        nt = 800
+        dt = 0.0015
+        num_shots = 10
+        num_receivers_per_shot = 101
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 301 * dx / num_shots
-        receiver_spacing = 301 * dx / num_receivers_per_shot
+        source_spacing = 101 * dx / num_shots
+        receiver_spacing = 101 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -313,10 +313,10 @@ class New1UModel(BaseModel):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
-        num_batches = 3
+        num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 500
+            num_epochs = 15
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
@@ -335,24 +335,24 @@ class New1UModel(BaseModel):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         net1out1 = net1out1*(4500-2000)+2000
-        min1 = torch.min(net1out1)
+        #min1 = torch.min(net1out1)
         #print(min1.get_device())
-        min1 = min1.to(self.device1)
-        mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(self.device1)
-        mat2 = mat2 * min1
+        #min1 = min1.to(self.device1)
+        #mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(self.device1)
+        #mat2 = mat2 * min1
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
         #np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
         net1out1 = net1out1.to(self.devicek)
-        mat2 = mat2.to(self.devicek)
-        src_amps = source_amplitudes_true.repeat(
-                        1, num_shots, 1)
-        prop2 = deepwave.scalar.Propagator({'vp': mat2}, dx)
-        receiver_amplitudes_cte = prop2(src_amps,
-                                x_s.to(self.devicek),
-                                x_r.to(self.devicek), dt)
+        #mat2 = mat2.to(self.devicek)
+        #src_amps = source_amplitudes_true.repeat(
+        #                1, num_shots, 1)
+        #prop2 = deepwave.scalar.Propagator({'vp': mat2}, dx)
+        #receiver_amplitudes_cte = prop2(src_amps,
+        #                        x_s.to(self.devicek),
+        #                        x_r.to(self.devicek), dt)
 
         criterion = torch.nn.MSELoss()
 
@@ -385,8 +385,8 @@ class New1UModel(BaseModel):
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
-                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    #batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
