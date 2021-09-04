@@ -235,7 +235,7 @@ class New1UModel(BaseModel):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
-        diff_size = self.real_B.size()
+        diff_size = self.real_BT.size()
         lossMSE = self.criterionMSE(self.fake_BT, self.real_BT)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
