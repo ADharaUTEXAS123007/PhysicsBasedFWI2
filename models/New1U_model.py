@@ -207,7 +207,7 @@ class New1UModel(BaseModel):
                 loss_data = 0.0
                 self.loss_D_MSE = 0.0
                 self.loss_M1_MSE = 0.0
-        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
+        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*1) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
 
@@ -238,7 +238,7 @@ class New1UModel(BaseModel):
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_BT)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.fake_BT, self.real_BT)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
