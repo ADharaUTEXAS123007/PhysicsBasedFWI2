@@ -149,7 +149,7 @@ class New1UModel(BaseModel):
         self.real_BT = self.real_B
         #self.real_AT = self.real_A
 
-    def backward_G(self):
+    def backward_G(self,epoch1,batch1):
         """Calculate GAN and L1 loss for the generator"""
         # First, G(A) should fake the discriminator
         # Second, G(A) = B
