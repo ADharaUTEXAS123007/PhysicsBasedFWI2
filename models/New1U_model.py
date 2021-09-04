@@ -336,7 +336,7 @@ class New1UModel(BaseModel):
         # print(np.shape(receiver_amplitudes_true))
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
-        net1out1 = net1out1*(4500-2000)+2000
+        #net1out1 = net1out1*(4500-2000)+2000
         #min1 = torch.min(net1out1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
@@ -407,7 +407,7 @@ class New1UModel(BaseModel):
         #if (epoch1 == 52): 
         #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
-        net1out1 = (net1out1 - 2000)/(4500-2000)
+        #net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
         return net1out1.cpu().detach().numpy(),sumlossinner
