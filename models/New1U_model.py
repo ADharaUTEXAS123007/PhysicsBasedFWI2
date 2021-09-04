@@ -166,46 +166,47 @@ class New1UModel(BaseModel):
         lstart = 70
         diff_size = self.real_B.size()
 
-        #if (epoch1 > lstart):
-
-        result_ids1 = []
-        result_ids2 = []
         if (epoch1 > lstart):
-            filen = './deepwave/batchOld' + \
-                str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen, self.fake_B.cpu().detach().numpy())
+            
 
-        for k in range(diff_size[0]):
-            po = self.prop.remote(self, epoch1, k, lstart)
+            result_ids1 = []
+            result_ids2 = []
+            if (epoch1 > lstart):
+                filen = './deepwave/batchOld' + \
+                    str(batch)+'ep'+str(epoch1)+'.npy'
+                np.save(filen, self.fake_B.cpu().detach().numpy())
+
+            for k in range(diff_size[0]):
+                po = self.prop.remote(self, epoch1, k, lstart)
             result_ids1.append(po[0])
             result_ids2.append(po[1])
 
             # #-------------deepwave---------------------#
-        lossinner = ray.get(result_ids2)
-        data1outs = ray.get(result_ids1)
-        lossinner = np.expand_dims(lossinner, axis=1)
+            lossinner = ray.get(result_ids2)
+            data1outs = ray.get(result_ids1)
+            lossinner = np.expand_dims(lossinner, axis=1)
 
             #print("shape of lossinner")
             #print(np.shape(lossinner))
 
-        data1outs = np.array(data1outs)
+            data1outs = np.array(data1outs)
             #print("shape of data1outs")
             #print(np.shape(data1outs))
-        if (epoch1 > lstart):
-            filen = './deepwave/batch1New' + \
-                str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen, data1outs)
-        data1outs = torch.from_numpy(data1outs)
-        data1outs = data1outs.to(self.device1)
-        data1outs = torch.unsqueeze(data1outs, 1)
+            if (epoch1 > lstart):
+                filen = './deepwave/batch1New' + \
+                    str(batch)+'ep'+str(epoch1)+'.npy'
+                np.save(filen, data1outs)
+            data1outs = torch.from_numpy(data1outs)
+            data1outs = data1outs.to(self.device1)
+            data1outs = torch.unsqueeze(data1outs, 1)
 
-        self.loss_D_MSE = np.mean(lossinner)
-        self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
-            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        #else:
-        #    loss_data = 0.0
-        #    self.loss_D_MSE = 0.0
-        #    self.loss_M1_MSE = 0.0
+            self.loss_D_MSE = np.mean(lossinner)
+            self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
+                50/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+                loss_data = 0.0
+                self.loss_D_MSE = 0.0
+                self.loss_M1_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
