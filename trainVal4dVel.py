@@ -108,12 +108,12 @@ if __name__ == '__main__':
                  #np.save('./datasets/testO/B.npy',data['B'].numpy())
 
              iter_data_time = time.time()
-             Modelloss = Modelloss + model.loss_M_MSE.item()
-             Dataloss = Dataloss + model.loss_D_MSE
-             if (epoch > 50):
-                 Model1loss = Model1loss + model.loss_M1_MSE.item()     
-             else:
-                 Model1loss = Model1loss + model.loss_M1_MSE
+             #Modelloss = Modelloss + model.loss_M_MSE.item()
+             #Dataloss = Dataloss + model.loss_D_MSE
+             #if (epoch > 50):
+             #    Model1loss = Model1loss + model.loss_M1_MSE.item()     
+             #else:
+             #    Model1loss = Model1loss + model.loss_M1_MSE
                  
                 
              #KLloss = KLloss + model.loss_K_MSE.item()
@@ -133,9 +133,9 @@ if __name__ == '__main__':
         
          if epoch % opt.display_freq == 0:    #plot losses
             losses1['Modelloss'] = Modelloss/(i+1)
-            losses1['Dataloss'] = Dataloss/(i+1)
+            losses1['Dataloss'] = 0.0
             losses1['Validationloss'] = Validationloss/(k+1)
-            losses1['Model1loss'] = Model1loss/(i+1)
+            losses1['Model1loss'] = 0.0
             #losses1['KL divergence'] = KLloss/i
             print(losses1)
             losses2 = model.get_current_losses()
