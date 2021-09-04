@@ -208,6 +208,7 @@ class New1UModel(BaseModel):
             self.loss_M1_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         print("loss MSE example :", self.loss_M_MSE)
+        print("diff size :", diff_size)
         
 
         lambda1 = 1
