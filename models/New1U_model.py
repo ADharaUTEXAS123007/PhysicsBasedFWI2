@@ -137,7 +137,7 @@ class New1UModel(BaseModel):
 
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:2000:5, :]
+        netin1 = self.real_A[:, :, 1:800:2, :]
         self.fake_B = self.netG(netin1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
@@ -316,7 +316,7 @@ class New1UModel(BaseModel):
         num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 25
+            num_epochs = 5
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
