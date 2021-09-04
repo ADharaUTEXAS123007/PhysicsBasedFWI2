@@ -66,7 +66,7 @@ class New1UModel(BaseModel):
         # print(self.device)
         # Start Ray.
         os.environ['CUDA_VISIBLE_DEVICES'] = "1,2,3,4,5,6,7"
-        ray.init(num_cpus=48,num_gpus=7)
+        ray.init(num_cpus=48, num_gpus=7)
 
         self.device1 = torch.device('cuda:{}'.format(
              self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
@@ -84,8 +84,7 @@ class New1UModel(BaseModel):
         #     self.gpu_ids[6])) if self.gpu_ids else torch.device('cpu')
         # self.device8 = torch.device('cuda:{}'.format(
         #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
-        
-        
+
         # for i in range(2):
         #    variable = str(self.device)+str(i+1)
         #print("variable name :",variable)
@@ -98,7 +97,7 @@ class New1UModel(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'M1_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B','real_B','fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B', 'fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -149,14 +148,14 @@ class New1UModel(BaseModel):
         self.real_BT = self.real_B
         #self.real_AT = self.real_A
 
-    def backward_G(self,epoch1,batch1):
+    def backward_G(self, epoch1, batch1):
         """Calculate GAN and L1 loss for the generator"""
         # First, G(A) should fake the discriminator
         # Second, G(A) = B
         #print("real B shape")
         diff_size = self.real_B.size()
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
-            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            10/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_D_MSE = 0.0
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE
@@ -167,50 +166,52 @@ class New1UModel(BaseModel):
         lstart = 70
         diff_size = self.real_B.size()
 
+        #if (epoch1 > lstart):
+
+        result_ids1 = []
+        result_ids2 = []
         if (epoch1 > lstart):
+            filen = './deepwave/batchOld' + \
+                str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.fake_B.cpu().detach().numpy())
 
-            result_ids1 = []
-            result_ids2 = []
-            filen = './deepwave/batchOld'+str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen,self.fake_B.cpu().detach().numpy())
-
-            for k in range(diff_size[0]):
-                po = self.prop.remote(self, epoch1, k, lstart)
-                result_ids1.append(po[0])
-                result_ids2.append(po[1])
+        for k in range(diff_size[0]):
+            po = self.prop.remote(self, epoch1, k, lstart)
+            result_ids1.append(po[0])
+            result_ids2.append(po[1])
 
             # #-------------deepwave---------------------#
-            lossinner = ray.get(result_ids2)
-            data1outs = ray.get(result_ids1)
-            lossinner = np.expand_dims(lossinner, axis=1)
-
+        lossinner = ray.get(result_ids2)
+        data1outs = ray.get(result_ids1)
+        lossinner = np.expand_dims(lossinner, axis=1)
 
             #print("shape of lossinner")
             #print(np.shape(lossinner))
 
-
-            data1outs = np.array(data1outs)
+        data1outs = np.array(data1outs)
             #print("shape of data1outs")
             #print(np.shape(data1outs))
-            filen = './deepwave/batch1New'+str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen,data1outs)
-            data1outs = torch.from_numpy(data1outs)
-            data1outs = data1outs.to(self.device1)
-            data1outs = torch.unsqueeze(data1outs, 1)
+        if (epoch1 > lstart):
+        filen = './deepwave/batch1New' + \
+                str(batch)+'ep'+str(epoch1)+'.npy'
+        np.save(filen, data1outs)
+        data1outs = torch.from_numpy(data1outs)
+        data1outs = data1outs.to(self.device1)
+        data1outs = torch.unsqueeze(data1outs, 1)
 
-            self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
+        self.loss_D_MSE = np.mean(lossinner)
+        self.loss_M1_MSE = (self.criterionMSE(self.fake_B, data1outs)) * \
             100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        else:
-            loss_data = 0.0
-            self.loss_D_MSE = 0.0
-            self.loss_M1_MSE = 0.0
+        #else:
+        #    loss_data = 0.0
+        #    self.loss_D_MSE = 0.0
+        #    self.loss_M1_MSE = 0.0
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
 
         lambda1 = 1
-        lambda2 = 1
+        lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0
         if (epoch1>lstart):
@@ -359,14 +360,14 @@ class New1UModel(BaseModel):
         #print("shape of mat2 :", np.shape(mat2))
 
 
-        #if (epoch1 > lstart):
-        net1out1.requires_grad = True
-        optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+        if (epoch1 > lstart):
+            net1out1.requires_grad = True
+            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
                 for it in range(num_batches):
-                    #if (epoch1 > lstart):
-                    optimizer2.zero_grad()
+                    if (epoch1 > lstart):
+                        optimizer2.zero_grad()
                     model2 = net1out1.clone()
                     model2 = torch.clamp(net1out1,min=2000,max=4500)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
@@ -397,9 +398,9 @@ class New1UModel(BaseModel):
                     #np.save(filen,net1out1.cpu().detach().numpy())
                     if (epoch == num_epochs-1):
                         sumlossinner += lossinner.item()
-                    #if (epoch1 > lstart):
-                    lossinner.backward()
-                    optimizer2.step()
+                    if (epoch1 > lstart):
+                        lossinner.backward()
+                        optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
