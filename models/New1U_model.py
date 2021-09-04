@@ -144,7 +144,7 @@ class New1UModel(BaseModel):
 
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:2000:5, :]
+        netin1 = self.real_A[:, :, 1:800:2, :]
         self.fake_BT = self.netG(netin1)  # G(A)
         self.real_BT = self.real_B
         #self.real_AT = self.real_A
@@ -227,7 +227,7 @@ class New1UModel(BaseModel):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G1(epoch, batch)                   # calculate graidents for G
+        self.backward_G(epoch, batch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):

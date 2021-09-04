@@ -2149,7 +2149,7 @@ class NewU_Net(nn.Module):
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs):
-        label_dsp_dim = (201,301)
+        label_dsp_dim = (101,101)
         down1  = self.down1(inputs)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
