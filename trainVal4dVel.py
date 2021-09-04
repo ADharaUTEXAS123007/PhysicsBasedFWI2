@@ -138,8 +138,8 @@ if __name__ == '__main__':
             losses1['Model1loss'] = 0.0
             #losses1['KL divergence'] = KLloss/i
             print(losses1)
-            losses2 = model.get_current_losses()
-            print(losses2)
+            #losses2 = model.get_current_losses()
+            #print(losses2)
             visualizer.plot_current_losses(epoch, 0, losses1)
 
          print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs + opt.n_epochs_decay, time.time() - epoch_start_time))
