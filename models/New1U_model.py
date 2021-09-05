@@ -180,14 +180,16 @@ class New1UModel(BaseModel):
                 po = self.prop.remote(self, epoch1, k, lstart)
             result_ids1.append(po[0])
             result_ids2.append(po[1])
+            
+            print("result ids2 :", str(result_ids2))
 
             # #-------------deepwave---------------------#
             lossinner = ray.get(result_ids2)
             data1outs = ray.get(result_ids1)
             lossinner = np.expand_dims(lossinner, axis=1)
 
-            print("shape of lossinner")
-            print(np.shape(lossinner))
+            #print("shape of lossinner")
+            #print(np.shape(lossinner))
             print("diff_size[0] :",str(diff_size[0]))
             data1outs = np.array(data1outs)
             print("shape of data1outs")
