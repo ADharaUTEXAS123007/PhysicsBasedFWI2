@@ -314,7 +314,7 @@ class New1UModel(BaseModel):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
-        num_batches = 1
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 5
@@ -329,13 +329,13 @@ class New1UModel(BaseModel):
 
         receiver_amplitudes_true = self.real_A[k,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-        rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
+        rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #print("receiver amplitude true shape")
         # print(np.shape(receiver_amplitudes_true))
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
-        #net1out1 = net1out1*(4500-2000)+2000
+        net1out1 = net1out1*(4500-2000)+2000
         #min1 = torch.min(net1out1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
@@ -387,8 +387,8 @@ class New1UModel(BaseModel):
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
                     #batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
-                    batch_rcv_amps_pred = batch_rcv_amps_pred
-                    batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
+                    #batch_rcv_amps_pred = batch_rcv_amps_pred
+                    batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
                     #print("shape of receiver amplitudes predicted")
@@ -406,7 +406,7 @@ class New1UModel(BaseModel):
         #if (epoch1 == 52): 
         #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
-        #net1out1 = (net1out1 - 2000)/(4500-2000)
+        net1out1 = (net1out1 - 2000)/(4500-2000)
         
     
         return net1out1.cpu().detach().numpy(),sumlossinner

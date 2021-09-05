@@ -60,7 +60,7 @@ class UnalignedVel2Dataset(BaseDataset):
         
         A_img = np.load(A_path)
         B_img = np.load(B_path)
-        #B_img = (B_img - 2000)/(4500 - 2000)
+        B_img = (B_img - 2000)/(4500 - 2000)
         #r = random.randint(0,1)
         #if (r==0):
         #    A_img = -1*A_img

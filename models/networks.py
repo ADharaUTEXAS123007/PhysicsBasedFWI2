@@ -2162,7 +2162,7 @@ class NewU_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         
-        return f1
+        return self.final(f1)
     
     # Initialization of Parameters
     def  _initialize_weights(self):
