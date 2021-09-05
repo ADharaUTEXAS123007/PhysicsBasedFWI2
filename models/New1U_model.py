@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 50
+        lstart = 20
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -201,12 +201,12 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*50/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
             self.loss_M1_MSE = 0.0
-        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         print("loss MSE example :", self.loss_M_MSE)
         print("diff size :", diff_size)
         
@@ -237,7 +237,7 @@ class New1UModel(BaseModel):
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_BT.size()
-        lossMSE = self.criterionMSE(self.fake_BT, self.real_BT)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        lossMSE = self.criterionMSE(self.fake_BT, self.real_BT)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
