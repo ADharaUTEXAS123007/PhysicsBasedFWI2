@@ -175,6 +175,9 @@ class New1UModel(BaseModel):
                 filen = './deepwave/batchOld' + \
                     str(batch)+'ep'+str(epoch1)+'.npy'
                 np.save(filen, self.fake_B.cpu().detach().numpy())
+                filen = './deepwave/realOld' + \
+                    str(batch)+'ep'+str(epoch1)+'.npy'
+                np.save(filen, self.real_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
@@ -203,7 +206,7 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*1/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
@@ -216,7 +219,7 @@ class New1UModel(BaseModel):
         lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0
+            lambda1 = 0.4
         if (epoch1>lstart):
             lambda2 = 1
 
