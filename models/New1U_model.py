@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 1
+        lstart = 50
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -178,10 +178,10 @@ class New1UModel(BaseModel):
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
-            result_ids1.append(po[0])
-            result_ids2.append(po[1])
+                result_ids1.append(po[0])
+                result_ids2.append(po[1])
             
-            print("result ids2 :", str(result_ids2))
+            #print("result ids2 :", str(result_ids2))
 
             # #-------------deepwave---------------------#
             lossinner = ray.get(result_ids2)
@@ -190,10 +190,10 @@ class New1UModel(BaseModel):
 
             #print("shape of lossinner")
             #print(np.shape(lossinner))
-            print("diff_size[0] :",str(diff_size[0]))
+            #print("diff_size[0] :",str(diff_size[0]))
             data1outs = np.array(data1outs)
-            print("shape of data1outs")
-            print(np.shape(data1outs))
+            #print("shape of data1outs")
+            #print(np.shape(data1outs))
             if (epoch1 > lstart):
                 filen = './deepwave/batch75New' + \
                     str(batch)+'ep'+str(epoch1)+'.npy'
