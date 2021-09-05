@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 20
+        lstart = 50
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
@@ -201,7 +201,7 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*10/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
