@@ -315,10 +315,10 @@ class New1UModel(BaseModel):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 5
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 30
+            num_epochs = 100
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
