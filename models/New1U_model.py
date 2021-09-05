@@ -258,6 +258,7 @@ class New1UModel(BaseModel):
         #---------deepwave------------#
         
         net1out1 = self.fake_B[k, 0, :, :]
+        print("k k :", str(k))
         net1out1 = net1out1.detach()
         #print(" ray gpu ids")
         g1 = ray.get_gpu_ids()[0]
