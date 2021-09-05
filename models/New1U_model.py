@@ -218,7 +218,7 @@ class New1UModel(BaseModel):
         
 
         lambda1 = 1
-        lambda2 = 0.01
+        lambda2 = 0.0
         if (epoch1>lstart2):
             lambda1 = 0.4
             lambda2 = 1
