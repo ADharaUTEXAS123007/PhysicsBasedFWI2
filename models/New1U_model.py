@@ -190,8 +190,8 @@ class New1UModel(BaseModel):
             #print(np.shape(lossinner))
 
             data1outs = np.array(data1outs)
-            #print("shape of data1outs")
-            #print(np.shape(data1outs))
+            print("shape of data1outs")
+            print(np.shape(data1outs))
             if (epoch1 > lstart):
                 filen = './deepwave/batch75New' + \
                     str(batch)+'ep'+str(epoch1)+'.npy'
@@ -207,8 +207,8 @@ class New1UModel(BaseModel):
             self.loss_D_MSE = 0.0
             self.loss_M1_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        print("loss MSE example :", self.loss_M_MSE)
-        print("diff size :", diff_size)
+        #print("loss MSE example :", self.loss_M_MSE)
+        #print("diff size :", diff_size)
         
 
         lambda1 = 1
