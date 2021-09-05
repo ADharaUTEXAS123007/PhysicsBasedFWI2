@@ -188,7 +188,7 @@ class New1UModel(BaseModel):
 
             #print("shape of lossinner")
             #print(np.shape(lossinner))
-
+            print("diff_size[0] :",str(np.shape(diff_size[0])))
             data1outs = np.array(data1outs)
             print("shape of data1outs")
             print(np.shape(data1outs))
