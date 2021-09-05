@@ -193,7 +193,7 @@ class New1UModel(BaseModel):
             #print("shape of data1outs")
             #print(np.shape(data1outs))
             if (epoch1 > lstart):
-                filen = './deepwave/batch1New' + \
+                filen = './deepwave/batch75New' + \
                     str(batch)+'ep'+str(epoch1)+'.npy'
                 np.save(filen, data1outs)
             data1outs = torch.from_numpy(data1outs)
