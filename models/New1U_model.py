@@ -207,7 +207,7 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
