@@ -207,7 +207,7 @@ class New1UModel(BaseModel):
             data1outs = torch.unsqueeze(data1outs, 1)
 
             self.loss_D_MSE = np.mean(lossinner)
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*2000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             loss_data = 0.0
             self.loss_D_MSE = 0.0
@@ -220,8 +220,8 @@ class New1UModel(BaseModel):
         lambda1 = 1
         lambda2 = 0.0
         if (epoch1>lstart):
-            lambda1 = 1
-            lambda2 = 1
+            lambda1 = 0.5
+            lambda2 = 0.5
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
@@ -323,7 +323,7 @@ class New1UModel(BaseModel):
         num_batches = 5
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 100
+            num_epochs = 10
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
