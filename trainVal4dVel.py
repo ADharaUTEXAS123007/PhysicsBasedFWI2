@@ -110,7 +110,7 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
-             if (epoch > 100):
+             if (epoch > 10):
                 Model1loss = Model1loss + model.loss_M1_MSE.item()     
              else:
                 Model1loss = Model1loss + model.loss_M1_MSE
