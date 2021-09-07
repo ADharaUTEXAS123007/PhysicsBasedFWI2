@@ -217,11 +217,11 @@ class New1UModel(BaseModel):
         #print("diff size :", diff_size)
         
 
-        lambda1 = 0.1
-        lambda2 = 0.9
-        #if (epoch1>lstart):
-        #    lambda1 = 0.1
-        #    lambda2 = 0.9
+        lambda1 = 1
+        lambda2 = 0
+        if (epoch1>lstart):
+            lambda1 = 0.1
+            lambda2 = 0.9
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
