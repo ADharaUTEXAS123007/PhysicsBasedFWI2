@@ -172,13 +172,13 @@ class New1UModel(BaseModel):
 
             result_ids1 = []
             result_ids2 = []
-            if (epoch1 > lstart):
-                filen = './deepwave/batchOld' + \
-                    str(batch)+'ep'+str(epoch1)+'.npy'
-                np.save(filen, self.fake_B.cpu().detach().numpy())
-                filen = './deepwave/realOld' + \
-                    str(batch)+'ep'+str(epoch1)+'.npy'
-                np.save(filen, self.real_B.cpu().detach().numpy())
+            #if (epoch1 > lstart):
+            #    filen = './deepwave/batchOld' + \
+            #        str(batch)+'ep'+str(epoch1)+'.npy'
+            #    np.save(filen, self.fake_B.cpu().detach().numpy())
+            #    filen = './deepwave/realOld' + \
+            #        str(batch)+'ep'+str(epoch1)+'.npy'
+            #    np.save(filen, self.real_B.cpu().detach().numpy())
 
             for k in range(diff_size[0]):
                 po = self.prop.remote(self, epoch1, k, lstart)
@@ -198,10 +198,10 @@ class New1UModel(BaseModel):
             data1outs = np.array(data1outs)
             #print("shape of data1outs")
             #print(np.shape(data1outs))
-            if (epoch1 > lstart):
-                filen = './deepwave/batch75New' + \
-                    str(batch)+'ep'+str(epoch1)+'.npy'
-                np.save(filen, data1outs)
+            #if (epoch1 > lstart):
+            #    filen = './deepwave/batch75New' + \
+            #        str(batch)+'ep'+str(epoch1)+'.npy'
+            #    np.save(filen, data1outs)
             data1outs = torch.from_numpy(data1outs)
             data1outs = data1outs.to(self.device1)
             data1outs = torch.unsqueeze(data1outs, 1)
