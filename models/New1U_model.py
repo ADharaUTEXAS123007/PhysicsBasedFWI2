@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 90
+        lstart = 10
         lstart2 = 50
         diff_size = self.real_B.size()
 
@@ -217,11 +217,12 @@ class New1UModel(BaseModel):
         #print("diff size :", diff_size)
         
 
-        lambda1 = 1
-        lambda2 = 0.0
-        if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+        lambda1 = 0.6
+        lambda2 = 0.4
+        #if (epoch1>lstart):
+        #    lambda1 = 0.1
+        #    lambda2 = 0.9
+            
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
@@ -322,8 +323,12 @@ class New1UModel(BaseModel):
         #lstart = -1
         num_batches = 5
         num_epochs = 1
-        if (epoch1 > lstart):
-            num_epochs = 30
+        if (epoch1 > 10):
+            num_epochs = 10
+        if (epoch1 > 50):
+            num_epochs = 20
+        if (epoch1 > 80):
+            num_epochs = 30 
         num_shots_per_batch = int(num_shots / num_batches)
         #print("size of self.realA")
         # print(np.shape(self.real_A))
