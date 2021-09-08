@@ -2302,6 +2302,9 @@ class Vae_Net(nn.Module):
         down3 = self.down3(down2)
         down4 = self.down4(down3)
         center = self.center(down4)
+        
+        print("shape of center")
+        print(np.shape(center))
 
         result = torch.flatten(center, start_dim=1)
         mu = self.fc_mu(result)
