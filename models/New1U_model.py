@@ -163,7 +163,7 @@ class New1UModel(BaseModel):
 
     def backward_G1(self, epoch1, batch):
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 30
+        lstart = 100
         lstart2 = 50
         diff_size = self.real_B.size()
 
