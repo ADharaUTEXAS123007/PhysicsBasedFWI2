@@ -419,7 +419,7 @@ class New1UModel(BaseModel):
         #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
-        net1out1 = net1out1*1000
+        net1out1 = net1out1/1000
         
     
         return net1out1.cpu().detach().numpy(),sumlossinner
