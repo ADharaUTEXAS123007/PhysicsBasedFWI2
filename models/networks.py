@@ -128,7 +128,7 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
     if len(gpu_ids) > 0:
         assert(torch.cuda.is_available())
         net.to(gpu_ids[0])
-        net = torch.nn.DataParallel(net, gpu_ids)  # multi-GPUs
+        net = torch.nn.DataParallel(net, [gpu_ids[0]])  # multi-GPUs
     init_weights(net, init_type, init_gain=init_gain)
     return net
 
@@ -2162,7 +2162,7 @@ class NewU_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         
-        return f1
+        return self.final(f1)
     
     # Initialization of Parameters
     def  _initialize_weights(self):
