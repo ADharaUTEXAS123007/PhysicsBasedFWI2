@@ -293,7 +293,7 @@ class VaeModel(BaseModel):
         self.loss_G = self.loss_M_MSE 
         self.loss_G.backward()
 
-    def optimize_parameters(self, epoch):
+    def optimize_parameters(self, epoch, batch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
