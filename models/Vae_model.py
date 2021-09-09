@@ -271,7 +271,7 @@ class VaeModel(BaseModel):
         # print("----loss_data-----")
         # print(loss_data)
         #self.loss_D_MSE = 0.0
-        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*100) / \
+        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*10000) / \
             (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         ##print("---loss MSE-----")
         # print(self.loss_M_MSE)
