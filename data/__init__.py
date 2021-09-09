@@ -147,7 +147,7 @@ class CustomDatasetValLoader():
         self.dataloader = torch.utils.data.DataLoader(
             self.dataset,
             batch_size=1,
-            shuffle=True,
+            shuffle=False,
             num_workers=int(opt.num_threads))
 
     def load_data(self):
