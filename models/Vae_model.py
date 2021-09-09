@@ -178,12 +178,12 @@ class VaeModel(BaseModel):
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE + self.loss_K_MSE
         self.loss_G.backward()
-        if (epoch1 == 195):
-            np.save('real.npy',self.real_B)
-            np.save('fake.npy',self.fake_B)
-            np.save('real_seismic.npy',self.real_A)
-            np.save('mu.npy',self.mu)
-            np.save('var.npy',self.log_var)
+        #if (epoch1 == 195):
+        #    np.save('real.npy',self.real_B)
+        #    np.save('fake.npy',self.fake_B)
+        #    np.save('real_seismic.npy',self.real_A)
+        #    np.save('mu.npy',self.mu)
+        #    np.save('var.npy',self.log_var)
 
 
     def backward_G1(self, epoch1):
