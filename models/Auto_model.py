@@ -218,7 +218,7 @@ class AutoModel(BaseModel):
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * loss_data
         self.loss_G.backward()
 
-    def optimize_parameters(self, epoch):
+    def optimize_parameters(self, epoch, batch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
