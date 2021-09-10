@@ -161,7 +161,7 @@ class AutoModel(BaseModel):
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
     
-    def backward_GKL(self):
+    def backward_GKL(self,epoch):
         """Calculate MSE loss along with KL divergence"""
                 # First, G(A) should fake the discriminator
         # Second, G(A) = B
@@ -170,6 +170,7 @@ class AutoModel(BaseModel):
         self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
             100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_D_MSE = 0.0
+        self.loss_M1_MSE = 0.0
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
@@ -221,7 +222,7 @@ class AutoModel(BaseModel):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G1(epoch)                   # calculate graidents for G
+        self.backward_GKL(epoch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
