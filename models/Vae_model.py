@@ -173,8 +173,8 @@ class VaeModel(BaseModel):
         self.loss_K_MSE = kld_loss
         #self.loss_K_MSE = 0.0
 
-        print("KL divergence loss :", kld_loss)
-        print("MSE loss :", self.loss_M_MSE)
+        #print("KL divergence loss :", kld_loss)
+        #print("MSE loss :", self.loss_M_MSE)
         self.loss_D_MSE = 0.0
         self.loss_M1_MSE = 0.0
         # combine loss and calculate gradients
