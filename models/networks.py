@@ -2242,7 +2242,7 @@ class Auto_Net(nn.Module):
         f1     = self.f1(up1)
 
         #result = torch.flatten(f1, start_dim=1)
-        print(" shape of result :", np.shape(down4))
+        #print(" shape of result :", np.shape(down4))
 
         return self.final(f1)
     
