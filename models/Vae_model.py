@@ -147,8 +147,8 @@ class VaeModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         lstart = 1
-        epoch1 = 1
-        [self.fake_BT, self.muT, self.log_varT] = self.netG(self.real_A,lstart,epoch1)  # G(A)
+        epoch11 = 1
+        [self.fake_BT, self.muT, self.log_varT] = self.netG(self.real_A,lstart,epoch11)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
