@@ -61,11 +61,11 @@ class VaeModel(BaseModel):
         #for i in range(3):
         #torch.cuda.set_device(1)
 
-        torch.cuda.set_device(2)
+        #torch.cuda.set_device(2)
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "0,3,4,5,6,7"
+        os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4,5,6,7"
         ray.init(num_cpus=48,num_gpus=6)
 
         self.device1 = torch.device('cuda:{}'.format(
