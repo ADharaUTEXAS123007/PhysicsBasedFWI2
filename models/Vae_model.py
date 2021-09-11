@@ -143,7 +143,7 @@ class VaeModel(BaseModel):
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
-    def forwardT(self,epoch1):
+    def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         lstart = 1
