@@ -2435,6 +2435,7 @@ class Vae_Net(nn.Module):
         #net1out1 = net1out1*(4500-2000)+2000
         net1out1 = vel * 1000
         net1out1 = net1out1.detach()
+        net1out1 = torch.squeeze(net1out1)
         print(np.shape(net1out1))
         #min1 = torch.min(net1out1)
         #print(min1.get_device())
