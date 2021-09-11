@@ -2360,8 +2360,8 @@ class Vae_Net(nn.Module):
         de1 = self.decode(z)
         #print(type(de1))
         de2 = 0*de1
-        #if (epoch1 > lstart):
-        #    de2 = self.prop(inputs, de1, lstart, epoch1)    
+        if (epoch1 > lstart):
+            de2 = self.prop(inputs, de1, lstart, epoch1)    
         return  de1, mu, log_var, de2
 
     # Initialization of Parameters
@@ -2404,7 +2404,7 @@ class Vae_Net(nn.Module):
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
-        source_amplitudes_true = source_amplitudes_true.to(self.devicek)
+        ##########source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
         num_batches = 1
         num_epochs = 1
@@ -2475,11 +2475,14 @@ class Vae_Net(nn.Module):
                         1, num_shots_per_batch, 1)
                     #print("shape of batch src amps")
                     # print(np.shape(batch_src_amps))
-                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
-                    batch_x_s = x_s[it::num_batches].to(self.devicek)
+                    ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
+                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
+                    ##################batch_x_s = x_s[it::num_batches].to(self.devicek)
+                    batch_x_s = x_s[it::num_batches]
                     #print("shape of batch src amps")
                     # print(np.shape(batch_x_s))
-                    batch_x_r = x_r[it::num_batches].to(self.devicek)
+                    batch_x_r = x_r[it::num_batches]
+                    ##################batch_x_r = x_r[it::num_batches].to(self.devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = 10 * prop(
