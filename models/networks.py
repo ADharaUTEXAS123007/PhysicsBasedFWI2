@@ -2383,6 +2383,11 @@ class Vae_Net(nn.Module):
     
     def prop(self, inputs, vel, lstart, epoch1):
             #---------deepwave------------#
+        net1out1 = vel * 1000
+        net1out1 = net1out1.detach()
+        net1out1 = torch.squeeze(net1out1)
+        devicek = net1out1.get_device()
+        
         freq = 15
         dx = 10
         nt = 800
@@ -2404,7 +2409,7 @@ class Vae_Net(nn.Module):
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
-        ##########source_amplitudes_true = source_amplitudes_true.to(self.devicek)
+        source_amplitudes_true = source_amplitudes_true.to(self.devicek)
         #lstart = -1
         num_batches = 1
         num_epochs = 1
@@ -2433,10 +2438,7 @@ class Vae_Net(nn.Module):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         #net1out1 = net1out1*(4500-2000)+2000
-        net1out1 = vel * 1000
-        net1out1 = net1out1.detach()
-        net1out1 = torch.squeeze(net1out1)
-        print(np.shape(net1out1))
+        #print(np.shape(net1out1))
         #min1 = torch.min(net1out1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
