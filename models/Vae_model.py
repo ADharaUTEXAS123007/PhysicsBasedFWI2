@@ -371,7 +371,7 @@ class VaeModel(BaseModel):
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         #########rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         ##########rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-        receiver_amplitudes_true_norm = receiver_amplitudes_true
+        rcv_amps_true_norm = receiver_amplitudes_true
         #print("receiver amplitude true shape")
         # print(np.shape(receiver_amplitudes_true))
         #net1out1 = net1out.detach()
