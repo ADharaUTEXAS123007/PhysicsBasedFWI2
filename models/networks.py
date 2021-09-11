@@ -2354,7 +2354,7 @@ class Vae_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs):
-        mu,log_var = self.encode(inputs)
+        mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)
         return  de1, mu, log_var
