@@ -2361,7 +2361,9 @@ class Vae_Net(nn.Module):
         #print(type(de1))
         de2 = 0*de1
         if (epoch1 > lstart):
-            de2 = self.prop(inputs, de1, lstart, epoch1)    
+            de2 = self.prop(inputs, de1, lstart, epoch1)
+            print("shape of de2")
+            print(np.shape(de2))    
         return  de1, mu, log_var, de2
 
     # Initialization of Parameters
