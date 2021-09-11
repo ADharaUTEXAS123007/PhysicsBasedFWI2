@@ -57,11 +57,11 @@ class VaeModel(BaseModel):
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
         BaseModel.__init__(self, opt)
-        print("number of cuda devices:", torch.cuda.device_count())
+        #print("number of cuda devices:", torch.cuda.device_count())
         #for i in range(3):
         #torch.cuda.set_device(1)
 
-        # torch.cuda.set_device(2)
+        torch.cuda.set_device(2)
         #del self.device
         # print(self.device)
         # Start Ray.
