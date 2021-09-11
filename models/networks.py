@@ -2360,8 +2360,7 @@ class Vae_Net(nn.Module):
         de1 = self.decode(z)
         de2 = 0
         if (epoch1 > lstart):
-            de2 = self.prop(inputs, de1, lstart, epoch1)
-            
+            de2 = self.prop(inputs, de1, lstart, epoch1)    
         return  de1, mu, log_var, de2
 
     # Initialization of Parameters
