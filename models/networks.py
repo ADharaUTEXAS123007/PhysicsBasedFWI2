@@ -2384,7 +2384,7 @@ class Vae_Net(nn.Module):
     def prop(self, inputs, vel, lstart, epoch1):
             #---------deepwave------------#
         net1out1 = vel * 1000
-        print("---shape of vel---", str(vel))
+        print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         devicek = net1out1.get_device()
