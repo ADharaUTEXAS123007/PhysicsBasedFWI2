@@ -2280,7 +2280,7 @@ class Vae_Net(nn.Module):
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
         self.fc_mu = nn.Linear(filters[-1]*25*7, latent_dim)
         self.fc_var = nn.Linear(filters[-1]*25*7, latent_dim)
@@ -2288,7 +2288,7 @@ class Vae_Net(nn.Module):
 
         self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*7)
 
-        self.up4 = autoUp(filters[4], filters[3], self.is_deconv)
+        #self.up4 = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
@@ -2301,12 +2301,12 @@ class Vae_Net(nn.Module):
         down2 = self.down2(down1)
         down3 = self.down3(down2)
         down4 = self.down4(down3)
-        center = self.center(down4)
+        #center = self.center(down4)
         
-        #print("shape of center")
-        #print(np.shape(center))
+        print("shape of down")
+        print(np.shape(down4))
 
-        result = torch.flatten(center, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
@@ -2320,8 +2320,8 @@ class Vae_Net(nn.Module):
         label_dsp_dim = (101,101)
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-1], 25, 7)
-        up4 = self.up4(decoder_input)
-        up3 = self.up3(up4)
+        #up4 = self.up4(decoder_input)
+        up3 = self.up3(decoder_input)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
