@@ -189,7 +189,8 @@ class VaeModel(BaseModel):
 
 
     def backward_G1(self, epoch1, batch):
-            """Calculate GAN and L1 loss for the generator"""
+        
+        """Calculate GAN and L1 loss for the generator"""
         lstart = 4
         lstart2 = 50
         diff_size = self.real_B.size()
