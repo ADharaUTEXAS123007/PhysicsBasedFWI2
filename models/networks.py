@@ -2301,12 +2301,12 @@ class Vae_Net(nn.Module):
         down2 = self.down2(down1)
         down3 = self.down3(down2)
         down4 = self.down4(down3)
-        center = self.center(down4)
+        #center = self.center(down4)
         
         #print("shape of down")
         #print(np.shape(down4))
 
-        result = torch.flatten(, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
@@ -2321,7 +2321,7 @@ class Vae_Net(nn.Module):
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
         up4 = self.up4(decoder_input)
-        up3 = self.up3(decoder_input)
+        up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
