@@ -135,10 +135,11 @@ class VaeModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
-    def forward(self):
+    def forward(self,epoch1):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
-        [self.fake_B, self.mu, self.log_var] = self.netG(self.real_A)  # G(A)
+        lstart = 1
+        [self.fake_B, self.mu, self.log_var] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -319,7 +320,7 @@ class VaeModel(BaseModel):
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch, batch):
-        self.forward()                   # compute fake images: G(A)
+        self.forward(epoch)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch)                   # calculate graidents for G
