@@ -65,8 +65,8 @@ class VaeModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        #os.environ['CUDA_VISIBLE_DEVICES'] = "1,2,3,4,5,6,7"
-        #ray.init(num_cpus=48,num_gpus=7)
+        os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4,5,6,7"
+        ray.init(num_cpus=48,num_gpus=6)
 
         self.device1 = torch.device('cuda:{}'.format(
              self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
@@ -188,119 +188,81 @@ class VaeModel(BaseModel):
         #    np.save('var.npy',self.log_var)
 
 
-    def backward_G1(self, epoch1):
-        """Calculate GAN and L1 loss for the generator"""
-        # calculate the source amplitudes
-        # GPU_string='cuda:0'
-        # device1 = torch.device(GPU_string)
-        # GPU_string='cuda:1'
-        # device2 = torch.device(GPU_string)
-
-        ##net1out1 = (net1out1-2000)/(4500-2000)
-        ##net1out1 = torch.unsqueeze(net1out1,0)
-        # if k==0:
-        ##    data1outs = net1out1
-        # else:
-        ##    data1outs = torch.cat((data1outs,net1out1),0)
-
-        ##data1outs = data1outs.to(self.device1)
-        ##data1outs = torch.unsqueeze(data1outs,1)
+    def backward_G1(self, epoch1, batch):
+            """Calculate GAN and L1 loss for the generator"""
+        lstart = 4
+        lstart2 = 50
         diff_size = self.real_B.size()
-        #num_cores = diff_size[0]
-        #mylist = list(range(diff_size[0]))
-        #print(mylist)
-        #for k in mylist:
-        #    print(k)
-        #---call deepwave through joblib--------#
-        #processed_list = Parallel(n_jobs=num_cores)(delayed(self.prop)(epoch1,k) 
-        # 
-        #
-        #                                               for k in mylist)
 
-        #po = self.prop.remote(self,epoch1,0)
-        #print(po[0])
-        #print(po[1])
-        #result_ids1 = []
-        #result_ids2 = []
-        #for k in range(diff_size[0]): 
-        #    po = self.prop.remote(self,epoch1,k)
-        #    result_ids1.append(po[0])
-        #    result_ids2.append(po[1]) 
+        if (epoch1 > lstart):
+            
 
-        #-------------deepwave---------------------#
-        #lossinner = ray.get(result_ids2)
-        #data1outs = ray.get(result_ids1)
-        #lossinner = np.expand_dims(lossinner,axis=1)
-    
-        #print(lossinner)
-        #print("shape of lossinner")
-        #print(np.shape(lossinner))
-        #data1outs = np.array(data1outs)
+            result_ids1 = []
+            result_ids2 = []
+            if (epoch1 > lstart):
+               filen = './deepwave/batchOld' + \
+                   str(batch)+'ep'+str(epoch1)+'.npy'
+               np.save(filen, self.fake_B.cpu().detach().numpy())
+               filen = './deepwave/realOld' + \
+                   str(batch)+'ep'+str(epoch1)+'.npy'
+               np.save(filen, self.real_B.cpu().detach().numpy())
+
+            for k in range(diff_size[0]):
+                po = self.prop.remote(self, epoch1, k, lstart)
+                result_ids1.append(po[0])
+                result_ids2.append(po[1])
+            
+            #print("result ids2 :", str(result_ids2))
+
+            # #-------------deepwave---------------------#
+            lossinner = ray.get(result_ids2)
+            data1outs = ray.get(result_ids1)
+            lossinner = np.expand_dims(lossinner, axis=1)
+
+            #print("shape of lossinner")
+            #print(np.shape(lossinner))
+            #print("diff_size[0] :",str(diff_size[0]))
+            data1outs = np.array(data1outs)
+            #print("shape of data1outs")
+            #print(np.shape(data1outs))
+            if (epoch1 > lstart):
+               filen = './deepwave/batch75New' + \
+                   str(batch)+'ep'+str(epoch1)+'.npy'
+               np.save(filen, data1outs)
+            data1outs = torch.from_numpy(data1outs)
+            data1outs = data1outs.to(self.device1)
+            data1outs = torch.unsqueeze(data1outs, 1)
+
+            self.loss_D_MSE = np.mean(lossinner)
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, data1outs)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+            loss_data = 0.0
+            self.loss_D_MSE = 0.0
+            self.loss_M1_MSE = 0.0
+        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #print("loss MSE example :", self.loss_M_MSE)
+        #print("diff size :", diff_size)
         
-        #if (epoch1 == 3):
-        #    np.save('matrix.npy',data1outs)
-        #data1outs = torch.from_numpy(data1outs)
-        #print("shape of data1outs")
-        #print(np.shape(data1outs))
 
-        #data1outs = data1outs.to(self.device1)
-        #data1outs = torch.unsqueeze(data1outs,1)
+        lambda1 = 1
+        lambda2 = 0
+        if (epoch1>lstart):
+            lambda1 = 0.5
+            lambda2 = 0.5
+            
 
-        #print("check shape consistency")
-        #print(np.shape(self.fake_B))
-        #print(np.shape(data1outs))
-        #print("results :", data1outs)
-        #for k in range(diff_size[0]):
-
-
-            #if (k == 0):
-            #    self.devicek = self.device2
-            #if (k == 1):
-            #    self.devicek = self.device3
-            #net1out = self.real_B[k, 0, :, :]
-            #net1out1 = net1out.detach()
-        #    self.smallfun(epoch1,k)
-        #-------------deepwave---------------------#
-
-        #print("shape of data1outs")
-        # print(np.shape(data1outs))
-
-        #print("shape of real B")
-        # print(np.shape(self.real_B))
-        #self.loss_D_MSE = np.mean(lossinner) * 100
-        #loss_data = (self.criterionMSE(self.fake_B, data1outs))*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        self.loss_D_MSE = 0.0
-        # print("----loss_data-----")
-        # print(loss_data)
-        #self.loss_D_MSE = 0.0
-        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)*10000) / \
-            (diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        ##print("---loss MSE-----")
-        # print(self.loss_M_MSE)
-
-        ##lambda1 = 0
-        ##lambda2 = 1
-        # if (t>100):
-        ##    lambda1 = 0
-        # if (t>lstart):
-        ##    lambda2 = 1
-        #print("D_MSE loss")
-        # print(self.loss_D_MSE)
-
-        #print("M_MSE loss")
-        # print(self.loss_M_MSE)
-
-        #print("loss data")
-        # print(loss_data)
-        # combine loss and calculate gradients
-        self.loss_G = self.loss_M_MSE 
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        #self.loss_G = lambda2 * self.loss_M1_MSE
         self.loss_G.backward()
+        #if (epoch1 == 52):
+        #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
+        #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch, batch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_GKL(epoch)                   # calculate graidents for G
+        self.backward_G1(epoch,batch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
@@ -325,128 +287,173 @@ class VaeModel(BaseModel):
         print("epoch numbers : "+str(self.epoch1))
 
 
-    # @ray.remote(num_gpus=1,num_returns=2)
-    # def prop(self,epoch1, k):
-    #     #---------deepwave------------#
+    @ray.remote(num_gpus=1,num_returns=2)
+    def prop(self, epoch1, k, lstart):
+        #---------deepwave------------#
         
-    #     net1out1 = self.fake_B[k, 0, :, :]
-    #     net1out1 = net1out1.detach()
-    #     #print(" ray gpu ids")
-    #     g1 = ray.get_gpu_ids()[0]
-    #     g1 = int(g1)
-    #     #print("g1 :",g1)
-    #     #torch.cuda.set_device(g1)
-    #     self.devicek = torch.device('cuda')
-    #     #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
-    #     #torch.cuda.set_device(int(g1))
-    #     #if (g1 == 0):
-    #         #torch.cuda.set_device(0)
-    #     #    self.devicek = self.device1            
-    #     # if (g1 == 1):
-    #     #     torch.cuda.set_device(1)
-    #     #     self.devicek = self.device2
-    #     # if (g1 == 2):
-    #     #     #torch.cuda.set_device(3)
-    #     #     self.devicek = self.device3
-    #     # if (g1 == 3):
-    #     #     #torch.cuda.set_device(4)
-    #     #     self.devicek = self.device4
-    #     # if (g1 == 4):
-    #     #     #torch.cuda.set_device(5)
-    #     #     self.devicek = self.device5
-    #     # if (g1 == 5):
-    #     #     #torch.cuda.set_device(6)
-    #     #     self.devicek = self.device6
-    #     # if (g1 == 6):
-    #     #     #torch.cuda.set_device(7)
-    #     #     self.devicek = self.device7
-    #     # if (g1 == 7):
-    #     #     self.devicek = self.device8
-    #     t = epoch1
-    #     freq = 25
-    #     dx = 10
-    #     nt = 2000
-    #     dt = 0.001
-    #     num_shots = 15
-    #     num_receivers_per_shot = 301
-    #     num_sources_per_shot = 1
-    #     num_dims = 2
-    #     #ModelDim = [201,301]
-    #     source_spacing = 301 * dx / num_shots
-    #     receiver_spacing = 301 * dx / num_receivers_per_shot
-    #     x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
-    #     x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
-    #     x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
-    #     x_r[0, :, 1] = torch.arange(
-    #         num_receivers_per_shot).float() * receiver_spacing
-    #     x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
+        net1out1 = self.fake_B[k, 0, :, :]
+        #print("k k :", str(k))
+        net1out1 = net1out1.detach()
+        #print(" ray gpu ids")
+        g1 = ray.get_gpu_ids()[0]
+        g1 = int(g1)
+        #print("g1 :",g1)
+        #torch.cuda.set_device(g1)
+        self.devicek = torch.device('cuda')
+        #     self.gpu_ids[7])) if self.gpu_ids else torch.device('cpu')
+        #torch.cuda.set_device(int(g1))
+        #if (g1 == 0):
+            #torch.cuda.set_device(0)
+        #    self.devicek = self.device1            
+        # if (g1 == 1):
+        #     torch.cuda.set_device(1)
+        #     self.devicek = self.device2
+        # if (g1 == 2):
+        #     #torch.cuda.set_device(3)
+        #     self.devicek = self.device3
+        # if (g1 == 3):
+        #     #torch.cuda.set_device(4)
+        #     self.devicek = self.device4
+        # if (g1 == 4):
+        #     #torch.cuda.set_device(5)
+        #     self.devicek = self.device5
+        # if (g1 == 5):
+        #     #torch.cuda.set_device(6)
+        #     self.devicek = self.device6
+        # if (g1 == 6):
+        #     #torch.cuda.set_device(7)
+        #     self.devicek = self.device7
+        # if (g1 == 7):
+        #     self.devicek = self.device8
+        #t = epoch1
+        freq = 15
+        dx = 10
+        nt = 800
+        dt = 0.0015
+        num_shots = 10
+        num_receivers_per_shot = 101
+        num_sources_per_shot = 1
+        num_dims = 2
+        #ModelDim = [201,301]
+        source_spacing = 101 * dx / num_shots
+        receiver_spacing = 101 * dx / num_receivers_per_shot
+        x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
+        x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
+        x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
+        x_r[0, :, 1] = torch.arange(
+            num_receivers_per_shot).float() * receiver_spacing
+        x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
 
-    #     source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
-    #                               .reshape(-1, 1, 1))
-    #     #print("device ordinal :", self.devicek)
-    #     source_amplitudes_true = source_amplitudes_true.to(self.devicek)
-    #     lstart = -1
-    #     num_batches = 3
-    #     num_epochs = 5
-    #     if (t > lstart):
-    #         num_epochs = 5
-    #     num_shots_per_batch = int(num_shots / num_batches)
-    #     #print("size of self.realA")
-    #     # print(np.shape(self.real_A))
-    #     sumlossinner = 0.0
+        source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
+                                  .reshape(-1, 1, 1))
+        #print("device ordinal :", self.devicek)
+        source_amplitudes_true = source_amplitudes_true.to(self.devicek)
+        #lstart = -1
+        num_batches = 1
+        num_epochs = 1
+        if (epoch1 > 4):
+            num_epochs = 5
+        #if (epoch1 > 50):
+        #    num_epochs = 30
+        #if (epoch1 > 80):
+        #    num_epochs = 40 
+        num_shots_per_batch = int(num_shots / num_batches)
+        #print("size of self.realA")
+        # print(np.shape(self.real_A))
+        sumlossinner = 0.0
 
-    #     ################data misfit calculation##########################################
+        ################data misfit calculation##########################################
 
-    #     #net1out1 = net1out1.to(self.devicek)
+        #net1out1 = net1out1.to(self.devicek)
 
-    #     receiver_amplitudes_true = self.real_A[k,:,:,:]
-    #     receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-    #     rcv_amps_true_max, _ = receiver_amplitudes_true.max(dim=0, keepdim=True)
-    #     rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-    #     #print("receiver amplitude true shape")
-    #     # print(np.shape(receiver_amplitudes_true))
-    #     #net1out1 = net1out.detach()
-    #     #net1out1 = torch.tensor(net1out1)
-    #     net1out1 = net1out1*(4500-2000)+2000
-    #     # np.save('ftout1',net1out1.cpu().numpy())
-    #     net1out1 = net1out1.to(self.devicek)
-    #     net1out1.requires_grad = True
-    #     criterion = torch.nn.MSELoss()
-    #     optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+        receiver_amplitudes_true = self.real_A[k,:,:,:]
+        receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        #########rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
+        ##########rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        receiver_amplitudes_norm = receiver_amplitudes_true
+        #print("receiver amplitude true shape")
+        # print(np.shape(receiver_amplitudes_true))
+        #net1out1 = net1out.detach()
+        #net1out1 = torch.tensor(net1out1)
+        #net1out1 = net1out1*(4500-2000)+2000
+        net1out1 = net1out1 * 1000
+        #min1 = torch.min(net1out1)
+        #print(min1.get_device())
+        #min1 = min1.to(self.device1)
+        #mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(self.device1)
+        #mat2 = mat2 * min1
+        #min1 = torch.min(net1out1)
+        #max1 = torch.max(net1out1)
+        #if (epoch1 == 52): 
+        #np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
+        # np.save('ftout1',net1out1.cpu().numpy())
+        net1out1 = net1out1.to(self.devicek)
+        #mat2 = mat2.to(self.devicek)
+        #src_amps = source_amplitudes_true.repeat(
+        #                1, num_shots, 1)
+        #prop2 = deepwave.scalar.Propagator({'vp': mat2}, dx)
+        #receiver_amplitudes_cte = prop2(src_amps,
+        #                        x_s.to(self.devicek),
+        #                        x_r.to(self.devicek), dt)
 
-    #     for epoch in range(num_epochs):
-    #             for it in range(num_batches):
-    #                 # optimizer2.zero_grad()
-    #                 prop = deepwave.scalar.Propagator({'vp': net1out1}, dx)
-    #                 batch_src_amps = source_amplitudes_true.repeat(
-    #                     1, num_shots_per_batch, 1)
-    #                 #print("shape of batch src amps")
-    #                 # print(np.shape(batch_src_amps))
-    #                 batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
-    #                 batch_x_s = x_s[it::num_batches].to(self.devicek)
-    #                 #print("shape of batch src amps")
-    #                 # print(np.shape(batch_x_s))
-    #                 batch_x_r = x_r[it::num_batches].to(self.devicek)
-    #                 #print("shape of batch receiver amps")
-    #                 # print(np.shape(batch_x_r))
-    #                 batch_rcv_amps_pred = prop(
-    #                     batch_src_amps, batch_x_s, batch_x_r, dt)
-    #                 batch_rcv_amps_pred_max, _ = batch_rcv_amps_pred.max(dim=0, keepdim=True)
-    #                 # Normalize amplitudes by dividing by the maximum amplitude of each receiver
-    #                 batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
-    #                 #print("shape of receiver amplitudes predicted")
-    #                 # print(np.shape(batch_rcv_amps_pred))
-    #                 lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-    #                 if (epoch == num_epochs-1):
-    #                     sumlossinner += lossinner.item()
-    #                 if (t > lstart):
-    #                     lossinner.backward()
-    #                 #epoch_loss += loss.item()
-    #                 optimizer2.step()
-    #     net1out1 = (net1out1 - 2000)/(4500-2000)
+        criterion = torch.nn.MSELoss()
+
+        #print("shape of mat2 :", np.shape(mat2))
+
+
+        if (epoch1 > lstart):
+            net1out1.requires_grad = True
+            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+
+        for epoch in range(num_epochs):
+                for it in range(num_batches):
+                    if (epoch1 > lstart):
+                        optimizer2.zero_grad()
+                    model2 = net1out1.clone()
+                    model2 = torch.clamp(net1out1,min=2000,max=4500)
+                    #np.save('before108.npy',net1out1.cpu().detach().numpy())
+                    #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
+                    prop = deepwave.scalar.Propagator({'vp': model2}, dx)
+                    batch_src_amps = source_amplitudes_true.repeat(
+                        1, num_shots_per_batch, 1)
+                    #print("shape of batch src amps")
+                    # print(np.shape(batch_src_amps))
+                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
+                    batch_x_s = x_s[it::num_batches].to(self.devicek)
+                    #print("shape of batch src amps")
+                    # print(np.shape(batch_x_s))
+                    batch_x_r = x_r[it::num_batches].to(self.devicek)
+                    #print("shape of batch receiver amps")
+                    # print(np.shape(batch_x_r))
+                    batch_rcv_amps_pred = 10 * prop(
+                        batch_src_amps, batch_x_s, batch_x_r, dt)
+                    #batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
+                    #batch_rcv_amps_pred = batch_rcv_amps_pred
+                    ############batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
+                    # Normalize amplitudes by dividing by the maximum amplitude of each receiver
+                    ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+                    batch_rcv_amps_norm = batch_rcv_amps_pred
+                    #print("shape of receiver amplitudes predicted")
+                    # print(np.shape(batch_rcv_amps_pred))
+                    lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    #filen = './deepwave/epoch1'+str(epoch)+'.npy'
+                    #np.save(filen,net1out1.cpu().detach().numpy())
+                    if (epoch == num_epochs-1):
+                        sumlossinner += lossinner.item()
+                    if (epoch1 > lstart):
+                        lossinner.backward()
+                        optimizer2.step()
+                    #epoch_loss += loss.item()
+                    #optimizer2.step()
+        #if (epoch1 == 52): 
+        #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        #net1out1 = (net1out1 - 2000)/(4500-2000)
+        net1out1 = net1out1/1000
+        
     
-    #     return net1out1.cpu().detach().numpy(),sumlossinner
-    #     #return sumlossinner
+        return net1out1.cpu().detach().numpy(),sumlossinner
+        #return sumlossinner
 
     # @ray.remote (num_gpus=1)
     # def smallfun(self,epoch1,k):
