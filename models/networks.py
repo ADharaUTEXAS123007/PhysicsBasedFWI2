@@ -2358,10 +2358,11 @@ class Vae_Net(nn.Module):
         mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)
-        de2 = 0
+        print(type(de1))
+        #de2 = 0
         #if (epoch1 > lstart):
         #    de2 = self.prop(inputs, de1, lstart, epoch1)    
-        return  de1, mu, log_var, de2
+        return  de1, mu, log_var
 
     # Initialization of Parameters
     def  _initialize_weights(self):
