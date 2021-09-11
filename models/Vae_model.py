@@ -146,9 +146,9 @@ class VaeModel(BaseModel):
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
-        lstart = 1
-        epoch11 = -1
-        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_A,lstart,epoch11)  # G(A)
+        False_lstart = 1
+        False_epoch = -1
+        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_A,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -264,27 +264,44 @@ class VaeModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
-    def backward_G11(self, epoch1, batch):
+    def backward_G11(self, epoch1, batch, lstart):
         
         """Calculate GAN and L1 loss for the generator"""
-        #lstart = 4
+        #lstart = 1
         #lstart2 = 50
         diff_size = self.real_B.size()
 
-        self.loss_M1_MSE = 0.0
+        if (epoch1 > lstart):
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+            self.loss_M1_MSE = 0.0
+            
+        
+        
         self.loss_D_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         self.loss_K_MSE = kld_loss
         #print("loss MSE example :", self.loss_M_MSE)
         #print("diff size :", diff_size)
-        print("device of fake B:",str(self.fake_B.get_device()))
+        #print("device of fake B:",str(self.fake_B.get_device()))
+        
+        if (epoch1 > lstart):
+            filen = './deepwave/fake11Sep' + \
+                str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.fake_B.cpu().detach().numpy())
+            filen = './deepwave/real11Sep' + \
+                str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.real_B.cpu().detach().numpy())
+            filen = './deepwave/fakeData11Sep' + \
+                   str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.fake_BD.cpu().detach().numpy())
 
         lambda1 = 1
         lambda2 = 0
-        #if (epoch1>lstart):
-        #    lambda1 = 0.5
-        #    lambda2 = 0.5
+        if (epoch1>lstart):
+            lambda1 = 0.5
+            lambda2 = 0.5
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
@@ -294,12 +311,12 @@ class VaeModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
-    def optimize_parameters(self, epoch, batch):
-        lstart = 1
+    def optimize_parameters(self, epoch, batch, lstart):
+        #lstart = 1
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch)                   # calculate graidents for G
+        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
