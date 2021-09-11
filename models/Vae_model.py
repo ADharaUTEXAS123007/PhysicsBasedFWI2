@@ -135,11 +135,11 @@ class VaeModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
-    def forward(self,epoch1):
+    def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
-        lstart = 1
-        [self.fake_B, self.mu, self.log_var] = self.netG(self.real_A,lstart,epoch1)  # G(A)
+        #lstart = 1
+        [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -147,8 +147,8 @@ class VaeModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         lstart = 1
-        epoch11 = 1
-        [self.fake_BT, self.muT, self.log_varT] = self.netG(self.real_A,lstart,epoch11)  # G(A)
+        epoch11 = -1
+        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_A,lstart,epoch11)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -264,7 +264,7 @@ class VaeModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
     
-        def backward_GKL(self, epoch1):
+    def backward_GKL(self, epoch1):
             """Calculate MSE loss along with KL divergence"""
                 # First, G(A) should fake the discriminator
         # Second, G(A) = B
@@ -294,8 +294,8 @@ class VaeModel(BaseModel):
     def backward_G11(self, epoch1, batch):
         
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 4
-        lstart2 = 50
+        #lstart = 4
+        #lstart2 = 50
         diff_size = self.real_B.size()
 
         self.loss_M1_MSE = 0.0
@@ -322,7 +322,8 @@ class VaeModel(BaseModel):
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch, batch):
-        self.forward(epoch)                   # compute fake images: G(A)
+        lstart = 1
+        self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch)                   # calculate graidents for G

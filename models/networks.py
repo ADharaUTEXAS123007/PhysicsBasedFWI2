@@ -2358,7 +2358,11 @@ class Vae_Net(nn.Module):
         mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)
-        return  de1, mu, log_var
+        de2 = 0
+        if (epoch1 > lstart):
+            de2 = self.prop(inputs, de1, lstart, epoch1)
+            
+        return  de1, mu, log_var, de2
 
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -2377,7 +2381,7 @@ class Vae_Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
     
-    def prop(self, inputs, net1out1, lstart, epoch1):
+    def prop(self, inputs, vel, lstart, epoch1):
             #---------deepwave------------#
         freq = 15
         dx = 10
@@ -2429,7 +2433,7 @@ class Vae_Net(nn.Module):
         #net1out1 = net1out.detach()
         #net1out1 = torch.tensor(net1out1)
         #net1out1 = net1out1*(4500-2000)+2000
-        net1out1 = net1out1 * 1000
+        net1out1 = vel * 1000
         #min1 = torch.min(net1out1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
@@ -2440,7 +2444,7 @@ class Vae_Net(nn.Module):
         #if (epoch1 == 52): 
         #np.save('./deepwave/before1.npy',net1out1.cpu().detach().numpy())
         # np.save('ftout1',net1out1.cpu().numpy())
-        net1out1 = net1out1.to(self.devicek)
+        #net1out1 = net1out1.to(self.devicek)
         #mat2 = mat2.to(self.devicek)
         #src_amps = source_amplitudes_true.repeat(
         #                1, num_shots, 1)
