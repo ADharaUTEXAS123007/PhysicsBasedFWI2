@@ -260,12 +260,68 @@ class VaeModel(BaseModel):
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+    
+        def backward_GKL(self, epoch1):
+            """Calculate MSE loss along with KL divergence"""
+                # First, G(A) should fake the discriminator
+        # Second, G(A) = B
+        #print("real B shape")
+        diff_size = self.real_B.size()
+        self.loss_M_MSE = (self.criterionMSE(self.fake_B, self.real_B)) * \
+            100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
+        self.loss_K_MSE = kld_loss
+        #self.loss_K_MSE = 0.0
+
+        #print("KL divergence loss :", kld_loss)
+        #print("MSE loss :", self.loss_M_MSE)
+        self.loss_D_MSE = 0.0
+        self.loss_M1_MSE = 0.0
+        # combine loss and calculate gradients
+        self.loss_G = self.loss_M_MSE + self.loss_K_MSE
+        self.loss_G.backward()
+        #if (epoch1 == 195):
+        #    np.save('real.npy',self.real_B)
+        #    np.save('fake.npy',self.fake_B)
+        #    np.save('real_seismic.npy',self.real_A)
+        #    np.save('mu.npy',self.mu)
+        #    np.save('var.npy',self.log_var)
+
+
+    def backward_G11(self, epoch1, batch):
+        
+        """Calculate GAN and L1 loss for the generator"""
+        lstart = 4
+        lstart2 = 50
+        diff_size = self.real_B.size()
+
+        self.loss_M1_MSE = 0.0
+        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
+        self.loss_K_MSE = kld_loss
+        #print("loss MSE example :", self.loss_M_MSE)
+        #print("diff size :", diff_size)
+        print("device of fake B:",str(self.fake_B.get_device()))
+
+        lambda1 = 1
+        lambda2 = 0
+        #if (epoch1>lstart):
+        #    lambda1 = 0.5
+        #    lambda2 = 0.5
+            
+
+        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        #self.loss_G = lambda2 * self.loss_M1_MSE
+        self.loss_G.backward()
+        #if (epoch1 == 52):
+        #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
+        #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
     def optimize_parameters(self, epoch, batch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G1(epoch,batch)                   # calculate graidents for G
+        self.backward_G11(epoch,batch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
