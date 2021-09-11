@@ -2482,12 +2482,12 @@ class Vae_Net(nn.Module):
                     # print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
                     batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
-                    ##################batch_x_s = x_s[it::num_batches].to(self.devicek)
-                    batch_x_s = x_s[it::num_batches]
+                    batch_x_s = x_s[it::num_batches].to(devicek)
+                    ##################batch_x_s = x_s[it::num_batches]
                     #print("shape of batch src amps")
                     # print(np.shape(batch_x_s))
-                    batch_x_r = x_r[it::num_batches]
-                    ##################batch_x_r = x_r[it::num_batches].to(self.devicek)
+                    #####################batch_x_r = x_r[it::num_batches]
+                    batch_x_r = x_r[it::num_batches].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = 10 * prop(
