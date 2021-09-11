@@ -2429,7 +2429,7 @@ class Vae_Net(nn.Module):
         #net1out1 = net1out1.to(self.devicek)
 
         receiver_amplitudes_true = inputs
-        #receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         #########rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         ##########rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         rcv_amps_true_norm = receiver_amplitudes_true
