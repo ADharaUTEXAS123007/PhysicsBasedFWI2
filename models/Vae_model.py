@@ -405,8 +405,8 @@ class VaeModel(BaseModel):
         #lstart = -1
         num_batches = 1
         num_epochs = 1
-        if (epoch1 > 4):
-            num_epochs = 100
+        if (epoch1 > lstart):
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
