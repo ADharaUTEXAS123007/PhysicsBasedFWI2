@@ -65,8 +65,8 @@ class VaeModel(BaseModel):
         #del self.device
         # print(self.device)
         # Start Ray.
-        os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4,5,6,7"
-        ray.init(num_cpus=48,num_gpus=6)
+        #os.environ['CUDA_VISIBLE_DEVICES'] = "2,3,4,5,6,7"
+        #ray.init(num_cpus=48,num_gpus=6)
 
         self.device1 = torch.device('cuda:{}'.format(
              self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
