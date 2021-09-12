@@ -2387,7 +2387,7 @@ class Vae_Net(nn.Module):
     
     def prop(self, inputs, vel, lstart, epoch1):
             #---------deepwave------------#
-        net1out1 = vel * 1000
+        net1out1 = vel * 100
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
@@ -2419,7 +2419,7 @@ class Vae_Net(nn.Module):
         num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 5
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
@@ -2433,7 +2433,7 @@ class Vae_Net(nn.Module):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        receiver_amplitudes_true = inputs[0,:,:,:]
+        receiver_amplitudes_true = inputs[0,:,:,:]/10
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
@@ -2497,7 +2497,7 @@ class Vae_Net(nn.Module):
                     batch_x_r = x_r[it::num_batches].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
-                    batch_rcv_amps_pred = 10 * prop(
+                    batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
                     #batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches].to(self.devicek)
                     #batch_rcv_amps_pred = batch_rcv_amps_pred
@@ -2522,7 +2522,7 @@ class Vae_Net(nn.Module):
         #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
-        net1out1 = net1out1/1000            
+        net1out1 = net1out1/100           
         return net1out1
     # def sample(self,
     #            num_samples:int,
