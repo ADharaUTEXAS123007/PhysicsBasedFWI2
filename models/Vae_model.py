@@ -191,10 +191,10 @@ class VaeModel(BaseModel):
         #    np.save('var.npy',self.log_var)
 
 
-    def backward_G1(self, epoch1, batch):
+    def backward_G1(self, epoch1, batch, lstart):
         
         """Calculate GAN and L1 loss for the generator"""
-        lstart = 4
+        #lstart = 4
         lstart2 = 50
         diff_size = self.real_B.size()
 
@@ -316,7 +316,7 @@ class VaeModel(BaseModel):
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
+        self.backward_G1(epoch,batch,lstart)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
