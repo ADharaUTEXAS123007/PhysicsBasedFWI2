@@ -43,7 +43,7 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
     webpage.add_images(ims, txts, links, width=width)
 
 
-def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256, mnumber=1):
+def save_matrix(visuals, image_path, aspect_ratio=1.0, width=256, mnumber=1):
     """Save images to the disk.
 
     Parameters:
@@ -60,8 +60,8 @@ def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256, mnumb
     short_path = ntpath.basename(image_path[0])
     name = os.path.splitext(short_path)[0]
 
-    webpage.add_header(name)
-    ims, txts, links = [], [], []
+    #webpage.add_header(name)
+    #ims, txts, links = [], [], []
 
     for label, im_data in visuals.items():
         image_tensor = im_data.data
