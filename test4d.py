@@ -69,5 +69,5 @@ if __name__ == '__main__':
         #if i % 5 == 0:  # save images to an HTML file
         print('processing (%04d)-th image... %s' % (i, img_path))
         #save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
-        save_matrix(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize,1)
+        save_matrix(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize,mnumber=1)
     webpage.save()  # save the HTML
