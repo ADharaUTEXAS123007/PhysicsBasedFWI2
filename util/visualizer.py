@@ -43,7 +43,7 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
     webpage.add_images(ims, txts, links, width=width)
 
 
-def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
+def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256, mnumber):
     """Save images to the disk.
 
     Parameters:
@@ -55,7 +55,8 @@ def save_matrix(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
 
     This function will save images stored in 'visuals' to the HTML file specified by 'webpage'.
     """
-    image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output'
+    image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(mnumber)
+    os.mkdir(image_dir)
     short_path = ntpath.basename(image_path[0])
     name = os.path.splitext(short_path)[0]
 
