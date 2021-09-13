@@ -33,6 +33,7 @@ from data import create_dataset2
 from models import create_model
 from util.visualizer import save_images, save_matrix
 from util import html
+import shutil
 
 
 if __name__ == '__main__':
@@ -57,6 +58,9 @@ if __name__ == '__main__':
     # For [CycleGAN]: It should not affect CycleGAN as CycleGAN uses instancenorm without dropout.
     #if opt.eval:
     model.eval()
+    image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(1)
+    shutil.rmtree(image_dir)
+    os.mkdir(image_dir)
     for i, data in enumerate(dataset):
         print("i :"+str(i))
         if i >= opt.num_test:  # only apply our model to opt.num_test images.

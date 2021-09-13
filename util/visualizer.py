@@ -57,8 +57,6 @@ def save_matrix(visuals, image_path, aspect_ratio=1.0, width=256, mnumber=1):
     This function will save images stored in 'visuals' to the HTML file specified by 'webpage'.
     """
     image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(mnumber)
-    shutil.rmtree(image_dir)
-    os.mkdir(image_dir)
     short_path = ntpath.basename(image_path[0])
     name = os.path.splitext(short_path)[0]
 
