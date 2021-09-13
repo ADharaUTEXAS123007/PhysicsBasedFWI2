@@ -2561,13 +2561,13 @@ class VaeNoPhy_Net(nn.Module):
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-1]*25*19, latent_dim)
-        self.fc_var = nn.Linear(filters[-1]*25*19, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*19)
+        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*7)
 
         self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
@@ -2600,7 +2600,7 @@ class VaeNoPhy_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (101,101)
         decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-1], 25, 19)
+        decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
         up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
@@ -2638,7 +2638,8 @@ class VaeNoPhy_Net(nn.Module):
         mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)  
-        return  de1, mu, log_var
+        de2 = 0*de1
+        return  de1, mu, log_var, de2
 
     # Initialization of Parameters
     def  _initialize_weights(self):
