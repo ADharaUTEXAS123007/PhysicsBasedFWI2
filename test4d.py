@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # For [CycleGAN]: It should not affect CycleGAN as CycleGAN uses instancenorm without dropout.
     # if opt.eval:
     model.eval()
-    for k in enumerate(opt.realization):
+    for k in range(opt.realization):
         print("realization :", str(k))
         image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(k)
         shutil.rmtree(image_dir)
