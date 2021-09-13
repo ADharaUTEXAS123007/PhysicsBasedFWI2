@@ -182,6 +182,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'VaeNoPhy':
+        net = VaeNoPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return init_net(net, init_type, init_gain, gpu_ids)
@@ -2524,6 +2526,138 @@ class Vae_Net(nn.Module):
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         net1out1 = net1out1/100           
         return net1out1
+    # def sample(self,
+    #            num_samples:int,
+    #            current_device: int, **kwargs) -> Tensor:
+    #     """
+    #     Samples from the latent space and return the corresponding
+    #     image space map.
+    #     :param num_samples: (Int) Number of samples
+    #     :param current_device: (Int) Device to run the model
+    #     :return: (Tensor)
+    #     """
+    #     z = torch.randn(num_samples,
+    #                     self.latent_dim)
+
+    #     z = z.to(current_device)
+
+    #     samples = self.decode(z)
+    #     return samples
+
+
+class VaeNoPhy_Net(nn.Module):
+    def __init__(self, outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(Vae_Net, self).__init__()
+        self.is_deconv = True
+        self.in_channels = outer_nc
+        self.is_batchnorm = True
+        self.n_classes = inner_nc
+
+        filters = [64, 128, 256, 512, 1024]
+        latent_dim = 256
+
+        self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+
+        self.fc_mu = nn.Linear(filters[-1]*25*19, latent_dim)
+        self.fc_var = nn.Linear(filters[-1]*25*19, latent_dim)
+        
+
+        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*19)
+
+        self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
+        self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
+        self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
+        self.final = nn.ReLU(inplace=True)
+
+    def encode(self, inputs):
+        label_dsp_dim = (101,101)
+        down1 = self.down1(inputs)
+        down2 = self.down2(down1)
+        down3 = self.down3(down2)
+        down4 = self.down4(down3)
+        center = self.center(down4)
+        
+        #print("shape of down")
+        #print(np.shape(down4))
+
+        result = torch.flatten(center, start_dim=1)
+        mu = self.fc_mu(result)
+        log_var = self.fc_var(result)
+        #center = self.center(down4)
+
+        #print("shape of down4")
+        #print(np.shape(down4))
+        return [mu, log_var]
+
+    def decode(self, inputs):
+        filters = [64, 128, 256, 512, 1024]
+        label_dsp_dim = (101,101)
+        decoder_input = self.decoder_input(inputs)
+        decoder_input = decoder_input.view(-1, filters[-1], 25, 19)
+        up4 = self.up4(decoder_input)
+        up3 = self.up3(up4)
+        up2 = self.up2(up3)
+        up1 = self.up1(up2)
+        up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        f1  = self.f1(up1)
+        return self.final(f1)
+
+    def reparameterize(self, mu, logvar):
+        """
+        Reparameterization trick to sample from N(mu, var) from
+        N(0,1).
+        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+        :return: (Tensor) [B x D]
+        """
+        std = torch.exp(0.5 * logvar)
+        eps = torch.randn_like(std)
+        return eps * std + mu
+        
+
+    # def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
+    #     """
+    #     Reparameterization trick to sample from N(mu, var) from
+    #     N(0,1).
+    #     :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+    #     :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+    #     :return: (Tensor) [B x D]
+    #     """
+    #     std = torch.exp(0.5 * logvar)
+    #     eps = torch.randn_like(std)
+    #     return eps * std + mu
+
+    def forward(self, inputs, lstart, epoch1):
+        mu,log_var = self.encode(inputs[:,:,1:800:2,:])
+        z = self.reparameterize(mu, log_var)
+        de1 = self.decode(z)  
+        return  de1, mu, log_var
+
+    # Initialization of Parameters
+    def  _initialize_weights(self):
+          for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m,nn.ConvTranspose2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+    
+    
     # def sample(self,
     #            num_samples:int,
     #            current_device: int, **kwargs) -> Tensor:
