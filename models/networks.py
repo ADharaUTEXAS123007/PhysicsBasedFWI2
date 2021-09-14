@@ -2490,8 +2490,8 @@ class Vae_Net(nn.Module):
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
                     batch_src_amps = source_amplitudes_true.repeat(
                         1, num_shots_per_batch, 1)
-                    print("shape of batch src amps")
-                    print(np.shape(batch_src_amps))
+                    #print("shape of batch src amps")
+                    #print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
                     batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
                     batch_x_s = x_s[it::num_batches].to(devicek)
@@ -2504,6 +2504,8 @@ class Vae_Net(nn.Module):
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
+                    print("batch_rcv_amps_pred")
+                    print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
