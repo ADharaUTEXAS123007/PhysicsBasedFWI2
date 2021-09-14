@@ -2437,8 +2437,8 @@ class Vae_Net(nn.Module):
 
         receiver_amplitudes_true = inputs[0,:,:,:]/10
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-        print("shape of receiver amplitudes true")
-        print(np.shape(receiver_amplitudes_true))
+        #print("shape of receiver amplitudes true")
+        #print(np.shape(receiver_amplitudes_true))
 
         ######rcv_amps_true_norm = receiver_amplitudes_true
         #print("receiver amplitude true shape")
@@ -2504,8 +2504,8 @@ class Vae_Net(nn.Module):
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(
                         batch_src_amps, batch_x_s, batch_x_r, dt)
-                    print("batch_rcv_amps_pred")
-                    print(np.shape(batch_rcv_amps_pred))
+                    #print("batch_rcv_amps_pred")
+                    #print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
