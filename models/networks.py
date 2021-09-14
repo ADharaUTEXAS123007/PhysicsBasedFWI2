@@ -2439,8 +2439,7 @@ class Vae_Net(nn.Module):
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
-        rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
-        rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+
         ######rcv_amps_true_norm = receiver_amplitudes_true
         #print("receiver amplitude true shape")
         # print(np.shape(receiver_amplitudes_true))
@@ -2466,6 +2465,10 @@ class Vae_Net(nn.Module):
         receiver_amplitudes_cte = prop2(src_amps,
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
+        
+        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
+        rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
 
         criterion = torch.nn.MSELoss()
 
