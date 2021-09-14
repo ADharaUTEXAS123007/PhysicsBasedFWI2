@@ -300,8 +300,8 @@ class VaeModel(BaseModel):
         lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0.1
-            lambda2 = 0.9
+            lambda1 = 0.2
+            lambda2 = 0.8
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
