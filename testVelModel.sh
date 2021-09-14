@@ -1,2 +1,2 @@
 
-python test4d.py --dataroot /disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/ --name NoPhysicsVae1000 --model VaeNoPhy --direction AtoB --input_nc 10 --output_nc 1 --num_test 1000 --gpu_ids 2 --realization 15
+python test4d.py --dataroot /disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/ --name UNET1000 --model New1U --direction AtoB --input_nc 10 --output_nc 1 --num_test 1000 --gpu_ids 2 --realization 15
