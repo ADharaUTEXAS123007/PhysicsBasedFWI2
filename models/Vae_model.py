@@ -286,16 +286,16 @@ class VaeModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        if (epoch1 > lstart):
-             filen = './deepwave/fake13Sep' + \
-                 str(batch)+'ep'+str(epoch1)+'.npy'
-             np.save(filen, self.fake_B.cpu().detach().numpy())
-             filen = './deepwave/real13Sep' + \
-                 str(batch)+'ep'+str(epoch1)+'.npy'
-             np.save(filen, self.real_B.cpu().detach().numpy())
-             filen = './deepwave/fakeData13Sep' + \
-                    str(batch)+'ep'+str(epoch1)+'.npy'
-             np.save(filen, self.fake_BD.cpu().detach().numpy())
+        if (epoch1%10 == 0):
+            filen = './deepwave/fake13Sep' + \
+                str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.fake_B.cpu().detach().numpy())
+        #     filen = './deepwave/real13Sep' + \
+        #         str(batch)+'ep'+str(epoch1)+'.npy'
+        #     np.save(filen, self.real_B.cpu().detach().numpy())
+        #     filen = './deepwave/fakeData13Sep' + \
+        #            str(batch)+'ep'+str(epoch1)+'.npy'
+        #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
         lambda1 = 1
         lambda2 = 0
