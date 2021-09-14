@@ -272,7 +272,7 @@ class VaeModel(BaseModel):
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             self.loss_M1_MSE = 0.0
             
@@ -300,8 +300,8 @@ class VaeModel(BaseModel):
         lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+            lambda1 = 0.1
+            lambda2 = 0.9
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
