@@ -253,8 +253,8 @@ class VaeModel(BaseModel):
         lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+            lambda1 = 0.7
+            lambda2 = 0.3
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
@@ -286,22 +286,22 @@ class VaeModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        # if (epoch1 > lstart):
-        #      filen = './deepwave/fake13Sep' + \
-        #          str(batch)+'ep'+str(epoch1)+'.npy'
-        #      np.save(filen, self.fake_B.cpu().detach().numpy())
-        #      filen = './deepwave/real13Sep' + \
-        #          str(batch)+'ep'+str(epoch1)+'.npy'
-        #      np.save(filen, self.real_B.cpu().detach().numpy())
-        #      filen = './deepwave/fakeData13Sep' + \
-        #             str(batch)+'ep'+str(epoch1)+'.npy'
-        #      np.save(filen, self.fake_BD.cpu().detach().numpy())
+        if (epoch1 > lstart):
+             filen = './deepwave/fake13Sep' + \
+                 str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.fake_B.cpu().detach().numpy())
+             filen = './deepwave/real13Sep' + \
+                 str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.real_B.cpu().detach().numpy())
+             filen = './deepwave/fakeData13Sep' + \
+                    str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.fake_BD.cpu().detach().numpy())
 
         lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+            lambda1 = 0.7
+            lambda2 = 0.3
             
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
