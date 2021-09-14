@@ -2437,8 +2437,8 @@ class Vae_Net(nn.Module):
 
         receiver_amplitudes_true = inputs[0,:,:,:]/10
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
-        #print("shape of receiver amplitudes true")
-        #print(np.shape(receiver_amplitudes_true))
+        print("shape of receiver amplitudes true")
+        print(np.shape(receiver_amplitudes_true))
 
         ######rcv_amps_true_norm = receiver_amplitudes_true
         #print("receiver amplitude true shape")
