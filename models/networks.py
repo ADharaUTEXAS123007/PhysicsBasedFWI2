@@ -2452,6 +2452,7 @@ class Vae_Net(nn.Module):
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
         mat2 = mat2 * min1
+        mat2 = torch.clamp(mat2,min=2000,max=4500)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
