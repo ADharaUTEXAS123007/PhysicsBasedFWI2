@@ -2761,8 +2761,8 @@ class PlanarFlow(Flow):
 
     def log_abs_det_jacobian(self, z):
         z = z.unsqueeze(2)
-        print("size of z :", str(z.size()))
-        print("size of weight :", str(self.weight.size()))
+        #print("size of z :", str(z.size()))
+        #print("size of weight :", str(self.weight.size()))
         f_z = torch.bmm(self.weight, z) + self.bias
         psi = self.weight * (1 - torch.tanh(f_z) ** 2)
         det_grad = 1 + torch.bmm(psi, self.scale)
