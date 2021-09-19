@@ -2904,7 +2904,7 @@ class VaeNormalizing_Net(nn.Module):
             sigma = torch.exp(0.5*log_var)
             # Re-parametrize a Normal distribution
             q = distrib.Normal(torch.zeros(mu.shape[1]), torch.ones(sigma.shape[1]))
-            dev = q.get_device()
+            dev = mu.get_device()
             
             q = q.to(dev)
             # Obtain our first set of latent points
