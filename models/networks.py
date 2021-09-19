@@ -2720,8 +2720,6 @@ class NormalizingFlow(nn.Module):
         self.transforms = transform.ComposeTransform(biject)
         self.bijectors = nn.ModuleList(biject)
         self.base_density = density
-        self.domain = torch.distributions.constraints.Constraint()
-        self.codomain = torch.distributions.constraints.Constraint()
         self.final_density = distrib.TransformedDistribution(density, self.transforms)
         self.log_det = []
         self.dim = dim
@@ -2753,6 +2751,8 @@ class PlanarFlow(Flow):
         self.scale = []
         self.bias = []
         self.dim = dim
+        self.domain = torch.distributions.constraints.Constraint()
+        self.codomain = torch.distributions.constraints.Constraint()
 
     def _call(self, z):
         z = z.unsqueeze(2)
