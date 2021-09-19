@@ -2791,7 +2791,7 @@ class VaeNormalizing_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        latent_dim = 128
         
         self.flow_enc = nn.Linear(filters[-2]*25*7, self.flow.n_parameters())
 
