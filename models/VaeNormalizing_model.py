@@ -271,10 +271,10 @@ class VaeNormalizingModel(BaseModel):
         #lstart2 = 50
         diff_size = self.real_B.size()
 
-        #if (epoch1 > lstart):
-        #    self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        #else:
-        self.loss_M1_MSE = 0.0
+        if (epoch1 > lstart):
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        else:
+            self.loss_M1_MSE = 0.0
             
         #print("shape of real B :"+ str(np.shape(self.real_B)))
         #print("shape of fake B :"+str(np.shape(self.fake_B)))
