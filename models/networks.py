@@ -2824,7 +2824,7 @@ class VaeNormalizing_Net(nn.Module):
         result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
-        flow_params = self.flow_enc()
+        flow_params = self.flow_enc(result)
         #center = self.center(down4)
 
         #print("shape of down4")
