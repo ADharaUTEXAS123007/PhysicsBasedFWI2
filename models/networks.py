@@ -2878,6 +2878,7 @@ class VaeNormalizing_Net(nn.Module):
         z_tilde, kl_div = self.latent(z_params)
         print("shape of z_tilde :", np.shape(z_tilde))
         de1 = self.decode(z_tilde)  
+        print("shape of de1 :", np.shape(de1))
         de2 = 0*de1
         return  de1, kl_div, de2
 
