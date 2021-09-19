@@ -22,6 +22,8 @@ from functools import reduce
 from functools import partial
 from timeit import default_timer
 from unet_layers import unetConv2
+import torch.distributions.transforms as transform
+import torch.distributions as distrib
 
 ###############################################################################
 # Helper Functions
@@ -184,6 +186,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
         net = VaeNoPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'VaeNormalizing':
+        net = VaeNormalizing_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return init_net(net, init_type, init_gain, gpu_ids)
@@ -2682,3 +2686,237 @@ class VaeNoPhy_Net(nn.Module):
 
     #     samples = self.decode(z)
     #     return samples
+    
+    
+
+class Flow(transform.Transform, nn.Module):
+    
+    def __init__(self):
+        transform.Transform.__init__(self)
+        nn.Module.__init__(self)
+    
+    # Init all parameters
+    def init_parameters(self):
+        for param in self.parameters():
+            param.data.uniform_(-0.01, 0.01)
+            
+    # Hacky hash bypass
+    def __hash__(self):
+        return nn.Module.__hash__(self)
+    
+
+# Main class for normalizing flow
+class NormalizingFlow(nn.Module):
+
+    def __init__(self, dim, blocks, flow_length, density):
+        super().__init__()
+        biject = []
+        self.n_params = []
+        for f in range(flow_length):
+            for b_flow in blocks:
+                cur_block = b_flow(dim)
+                biject.append(cur_block)
+                self.n_params.append(cur_block.n_parameters())
+        self.transforms = transform.ComposeTransform(biject)
+        self.bijectors = nn.ModuleList(biject)
+        self.base_density = density
+        self.final_density = distrib.TransformedDistribution(density, self.transforms)
+        self.log_det = []
+        self.dim = dim
+
+    def forward(self, z):
+        self.log_det = []
+        # Applies series of flows
+        for b in range(len(self.bijectors)):
+            self.log_det.append(self.bijectors[b].log_abs_det_jacobian(z))
+            z = self.bijectors[b](z)
+        return z, self.log_det
+        
+    def n_parameters(self):
+        return sum(self.n_params)
+    
+    def set_parameters(self, params):
+        param_list = params.split(self.n_params, dim = 1)
+        # Applies series of flows
+        for b in range(len(self.bijectors)):
+            self.bijectors[b].set_parameters(param_list[b])
+            
+
+
+class PlanarFlow(Flow):
+
+    def __init__(self, dim):
+        super(PlanarFlow, self).__init__()
+        self.weight = []
+        self.scale = []
+        self.bias = []
+        self.dim = dim
+
+    def _call(self, z):
+        z = z.unsqueeze(2)
+        f_z = torch.bmm(self.weight, z) + self.bias
+        return (z + self.scale * torch.tanh(f_z)).squeeze(2)
+
+    def log_abs_det_jacobian(self, z):
+        z = z.unsqueeze(2)
+        f_z = torch.bmm(self.weight, z) + self.bias
+        psi = self.weight * (1 - torch.tanh(f_z) ** 2)
+        det_grad = 1 + torch.bmm(psi, self.scale)
+        return torch.log(det_grad.abs() + 1e-9)
+    
+    def set_parameters(self, p_list):
+        self.weight = p_list[:, :self.dim].unsqueeze(1)
+        self.scale = p_list[:, self.dim:self.dim*2].unsqueeze(2)
+        self.bias = p_list[:, self.dim*2].unsqueeze(1).unsqueeze(2)
+        
+    def n_parameters(self):
+        return 2 * self.dim + 1
+    
+       
+    
+class VaeNormalizing_Net(nn.Module):
+    def __init__(self, outer_nc, inner_nc, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(VaeNormalizing_Net, self).__init__()
+        self.flow = NormalizingFlow(dim=2, blocks=[PlanarFlow], flow_length=16, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
+        self.is_deconv = True
+        self.in_channels = outer_nc
+        self.is_batchnorm = True
+        self.n_classes = inner_nc
+
+        filters = [64, 128, 256, 512, 1024]
+        latent_dim = 256
+        
+        self.flow_enc = nn.Linear(filters[-2], self.flow.n_parameters())
+
+        self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+        #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+
+        self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        
+
+        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*7)
+
+        self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
+        self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
+        self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
+        self.final = nn.ReLU(inplace=True)
+
+    def encode(self, inputs):
+        label_dsp_dim = (101,101)
+        down1 = self.down1(inputs)
+        down2 = self.down2(down1)
+        down3 = self.down3(down2)
+        down4 = self.down4(down3)
+        #center = self.center(down4)
+        
+        #print("shape of down")
+        #print(np.shape(down4))
+
+        result = torch.flatten(down4, start_dim=1)
+        mu = self.fc_mu(result)
+        log_var = self.fc_var(result)
+        flow_params = self.flow_enc()
+        #center = self.center(down4)
+
+        #print("shape of down4")
+        #print(np.shape(down4))
+        return [mu, log_var, flow_params]
+
+    def decode(self, inputs):
+        filters = [64, 128, 256, 512, 1024]
+        label_dsp_dim = (101,101)
+        decoder_input = self.decoder_input(inputs)
+        decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
+        up4 = self.up4(decoder_input)
+        up3 = self.up3(up4)
+        up2 = self.up2(up3)
+        up1 = self.up1(up2)
+        up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        f1  = self.f1(up1)
+        return self.final(f1)
+
+    def reparameterize(self, mu, logvar):
+        """
+        Reparameterization trick to sample from N(mu, var) from
+        N(0,1).
+        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+        :return: (Tensor) [B x D]
+        """
+        std = torch.exp(0.5 * logvar)
+        eps = torch.randn_like(std)
+        return eps * std + mu
+        
+
+    # def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
+    #     """
+    #     Reparameterization trick to sample from N(mu, var) from
+    #     N(0,1).
+    #     :param mu: (Tensor) Mean of the latent Gaussian [B x D]
+    #     :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
+    #     :return: (Tensor) [B x D]
+    #     """
+    #     std = torch.exp(0.5 * logvar)
+    #     eps = torch.randn_like(std)
+    #     return eps * std + mu
+
+    def forward(self, inputs, lstart, epoch1):
+        z_params = self.encode(inputs[:,:,1:800:2,:])
+        #mu,log_var = z_params
+        #z = self.reparameterize(mu, log_var)
+        z_tilde, kl_div = self.latent(z_params)
+        de1 = self.decode(z_tilde)  
+        de2 = 0*de1
+        return  de1, kl_div, de2
+
+    # Initialization of Parameters
+    def  _initialize_weights(self):
+          for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m,nn.ConvTranspose2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+                    
+                    
+    def latent(self, z_params):
+            n_batch = 1;
+            # Split the encoded values to retrieve flow parameters
+            mu, log_var, flow_params = z_params
+            
+            sigma = torch.exp(0.5*log_var)
+            # Re-parametrize a Normal distribution
+            q = distrib.Normal(torch.zeros(mu.shape[1]), torch.ones(sigma.shape[1]))
+            # Obtain our first set of latent points
+            z_0 = (sigma * q.sample((n_batch, ))) + mu
+            # Update flows parameters
+            self.flow.set_parameters(flow_params)
+            # Complexify posterior with flows
+            z_k, list_ladj = self.flow(z_0)
+            # ln p(z_k) 
+            log_p_zk = torch.sum(-0.5 * z_k * z_k, dim=1)
+            # ln q(z_0)  (not averaged)
+            log_q_z0 = torch.sum(-0.5 * (sigma.log() + (z_0 - mu) * (z_0 - mu) * sigma.reciprocal()), dim=1)
+            #  ln q(z_0) - ln p(z_k)
+            logs = (log_q_z0 - log_p_zk).sum()
+            # Add log determinants
+            ladj = torch.cat(list_ladj, dim=1)
+            # ln q(z_0) - ln p(z_k) - sum[log det]
+            logs -= torch.sum(ladj)
+            return z_k, (logs / float(n_batch))
+    

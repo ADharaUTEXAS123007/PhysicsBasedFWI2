@@ -139,7 +139,7 @@ class VaeNormalizingModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
+        [self.fake_B, self.kld_loss, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -148,7 +148,7 @@ class VaeNormalizingModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_A,False_lstart,False_epoch)  # G(A)
+        [self.fake_BT, self.kld_loss, self.fake_BDT] = self.netG(self.real_A,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -271,17 +271,17 @@ class VaeNormalizingModel(BaseModel):
         #lstart2 = 50
         diff_size = self.real_B.size()
 
-        if (epoch1 > lstart):
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        else:
-            self.loss_M1_MSE = 0.0
+        #if (epoch1 > lstart):
+        #    self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*10000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #else:
+        self.loss_M1_MSE = 0.0
             
         
         
         self.loss_D_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = kld_loss
+        self.loss_K_MSE = 0.0
         #print("loss MSE example :", self.loss_M_MSE)
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
