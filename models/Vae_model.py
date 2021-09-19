@@ -15,7 +15,7 @@ import os
 #from skimage import metrics
 
 
-class VaeNormalizingModel(BaseModel):
+class VaeModel(BaseModel):
     """ This class implements the pix2pix model, for learning a mapping from input images to output images given paired data.
 
     The model training requires '--dataset_mode aligned' dataset.
