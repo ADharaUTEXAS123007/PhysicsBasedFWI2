@@ -2906,9 +2906,9 @@ class VaeNormalizing_Net(nn.Module):
             q = distrib.Normal(torch.zeros(mu.shape[1]), torch.ones(sigma.shape[1]))
             dev = mu.get_device()
             
-            q = q.to(dev)
+            #q = q.to(dev)
             # Obtain our first set of latent points
-            z_0 = (sigma * q.sample((n_batch, ))) + mu
+            z_0 = (sigma * q.sample((n_batch, )).to(dev)) + mu
             # Update flows parameters
             self.flow.set_parameters(flow_params)
             # Complexify posterior with flows
