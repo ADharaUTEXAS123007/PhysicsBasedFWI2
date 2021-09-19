@@ -2365,6 +2365,7 @@ class Vae_Net(nn.Module):
         z = self.reparameterize(mu, log_var)
         print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
+        print("shape of de1 :", np.shape(de1))
         #print(type(de1))
         de2 = 0*de1
         if (epoch1 > lstart):
