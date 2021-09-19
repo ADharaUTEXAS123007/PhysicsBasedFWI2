@@ -2895,7 +2895,7 @@ class VaeNormalizing_Net(nn.Module):
                     
                     
     def latent(self, z_params):
-            n_batch = 1;
+            n_batch = 1
             # Split the encoded values to retrieve flow parameters
             mu, log_var, flow_params = z_params
             
