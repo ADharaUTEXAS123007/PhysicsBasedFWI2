@@ -2363,6 +2363,7 @@ class Vae_Net(nn.Module):
     def forward(self, inputs, lstart, epoch1):
         mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
+        print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
         #print(type(de1))
         de2 = 0*de1
@@ -2372,7 +2373,7 @@ class Vae_Net(nn.Module):
             de2 = torch.unsqueeze(de2,0)
             #print("shape of de2")
             #print(np.shape(de2))    
-        return  de1, mu, log_var, de2
+        return  de1, mu, log_var
 
     # Initialization of Parameters
     def  _initialize_weights(self):
