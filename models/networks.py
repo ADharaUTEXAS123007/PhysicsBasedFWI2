@@ -2805,7 +2805,7 @@ class VaeNormalizing_Net(nn.Module):
         self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*7)
+        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
 
         self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
@@ -2839,6 +2839,7 @@ class VaeNormalizing_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (101,101)
         decoder_input = self.decoder_input(inputs)
+        
         decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
         print("shape of decoder input :", np.shape(decoder_input))
         up4 = self.up4(decoder_input)
