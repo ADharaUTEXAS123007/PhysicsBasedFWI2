@@ -2784,7 +2784,7 @@ class VaeNormalizing_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(VaeNormalizing_Net, self).__init__()
-        self.flow = NormalizingFlow(dim=256, blocks=[PlanarFlow], flow_length=16, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
+        self.flow = NormalizingFlow(dim=128, blocks=[PlanarFlow], flow_length=16, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
         self.is_deconv = True
         self.in_channels = outer_nc
         self.is_batchnorm = True
