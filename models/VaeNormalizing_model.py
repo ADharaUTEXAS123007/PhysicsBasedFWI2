@@ -276,6 +276,8 @@ class VaeNormalizingModel(BaseModel):
         #else:
         self.loss_M1_MSE = 0.0
             
+        print("shape of real B :"+ str(np.shape(self.real_B)))
+        print("shape of fake B :"+str(np.shape(self.fake_B)))
         
         
         self.loss_D_MSE = 0.0
