@@ -2579,7 +2579,7 @@ class VaeNoPhy_Net(nn.Module):
         self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-1]*25*7)
+        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
 
         self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
