@@ -2784,7 +2784,6 @@ class VaeNormalizing_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(VaeNormalizing_Net, self).__init__()
-        self.flow = NormalizingFlow(dim=64, blocks=[PlanarFlow], flow_length=16, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
         self.is_deconv = True
         self.in_channels = outer_nc
         self.is_batchnorm = True
@@ -2793,8 +2792,7 @@ class VaeNormalizing_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         latent_dim = 64
         
-        self.flow_enc = nn.Linear(filters[-2]*25*7, self.flow.n_parameters())
-        self.flow_enc.weight.data.uniform_(-0.01, 0.01)
+
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2804,6 +2802,10 @@ class VaeNormalizing_Net(nn.Module):
 
         self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
         self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        
+        self.flow = NormalizingFlow(dim=64, blocks=[PlanarFlow], flow_length=16, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
+        self.flow_enc = nn.Linear(filters[-2]*25*7, self.flow.n_parameters())
+        self.flow_enc.weight.data.uniform_(-0.01, 0.01)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
