@@ -2938,5 +2938,5 @@ class VaeNormalizing_Net(nn.Module):
             ladj = torch.cat(list_ladj, dim=1)
             # ln q(z_0) - ln p(z_k) - sum[log det]
             logs -= torch.sum(ladj)
-            return z_k, (logs / float(n_batch))
+            return z_0, (logs / float(n_batch))
     
