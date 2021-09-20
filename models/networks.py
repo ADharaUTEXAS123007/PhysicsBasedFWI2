@@ -2794,6 +2794,7 @@ class VaeNormalizing_Net(nn.Module):
         latent_dim = 64
         
         self.flow_enc = nn.Linear(filters[-2]*25*7, self.flow.n_parameters())
+        self.flow_enc.weight.data.uniform_(-0.01, 0.01)
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
