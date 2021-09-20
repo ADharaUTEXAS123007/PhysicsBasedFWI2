@@ -2594,12 +2594,12 @@ class VaeNoPhy_Net(nn.Module):
         down2 = self.down2(down1)
         down3 = self.down3(down2)
         down4 = self.down4(down3)
-        center = self.center(down4)
+        #center = self.center(down4)
         
         #print("shape of down")
         #print(np.shape(down4))
 
-        result = torch.flatten(center, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
