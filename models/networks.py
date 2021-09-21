@@ -2576,7 +2576,7 @@ class VaeNoPhy_Net(nn.Module):
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
         self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_sigma = nn.Linear(filters[-2]*25*7, latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
@@ -2801,7 +2801,7 @@ class VaeNormalizing_Net(nn.Module):
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
         self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_sigma = nn.Sequential(nn.Linear(filters[-2]*25*7, latent_dim),nn.Softplus(),nn.Hardtanh(min_val=1e-4, max_val=5.))
         
         self.flow = NormalizingFlow(dim=64, blocks=[PlanarFlow], flow_length=2, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
         self.flow_enc = nn.Linear(filters[-2]*25*7, self.flow.n_parameters())
@@ -2830,13 +2830,13 @@ class VaeNormalizing_Net(nn.Module):
 
         result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
-        log_var = self.fc_var(result)
+        sigma = self.fc_sigma(result)
         flow_params = self.flow_enc(result)
         #center = self.center(down4)
 
         #print("shape of down4")
         #print(np.shape(down4))
-        return [mu, log_var, flow_params]
+        return [mu, sigma, flow_params]
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
@@ -2914,9 +2914,9 @@ class VaeNormalizing_Net(nn.Module):
     def latent(self, z_params):
             n_batch = 1
             # Split the encoded values to retrieve flow parameters
-            mu, log_var, flow_params = z_params
+            mu, sigma, flow_params = z_params
             
-            sigma = torch.exp(0.5*log_var)
+            #sigma = torch.exp(0.5*log_var)
             # Re-parametrize a Normal distribution
             q = distrib.Normal(torch.zeros(mu.shape[1]), torch.ones(sigma.shape[1]))
             dev = mu.get_device()
@@ -2929,7 +2929,7 @@ class VaeNormalizing_Net(nn.Module):
             # Complexify posterior with flows
             z_k, list_ladj = self.flow(z_0)
             
-            print("z_k :",z_k)
+            #print("z_k :",z_k)
             # ln p(z_k) 
             log_p_zk = torch.sum(-0.5 * z_k * z_k, dim=1)
             # ln q(z_0)  (not averaged)
