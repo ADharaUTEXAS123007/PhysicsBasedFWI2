@@ -2928,6 +2928,8 @@ class VaeNormalizing_Net(nn.Module):
             self.flow.set_parameters(flow_params)
             # Complexify posterior with flows
             z_k, list_ladj = self.flow(z_0)
+            
+            print("z_k :",z_k)
             # ln p(z_k) 
             log_p_zk = torch.sum(-0.5 * z_k * z_k, dim=1)
             # ln q(z_0)  (not averaged)
@@ -2938,5 +2940,5 @@ class VaeNormalizing_Net(nn.Module):
             ladj = torch.cat(list_ladj, dim=1)
             # ln q(z_0) - ln p(z_k) - sum[log det]
             logs -= torch.sum(ladj)
-            return z_0, (logs / float(n_batch))
+            return z_k, (logs / float(n_batch))
     
