@@ -59,8 +59,8 @@ class Unaligned2Dataset(BaseDataset):
         B_path = self.B_paths[index]
         A_img = np.load(A_path)
         B_img = np.load(B_path)
-        A_img = A_img/100
-        B_img = B_img/100
+        A_img = A_img/1000
+        B_img = B_img/1000
         #r = random.randint(0,1)
         #if (r==0):
         #    A_img = -1*A_img
