@@ -3273,7 +3273,7 @@ class VaeNoPhy_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        latent_dim = 64
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -3316,7 +3316,7 @@ class VaeNoPhy_Net(nn.Module):
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
-        label_dsp_dim = (101,101)
+        label_dsp_dim = (201,301)
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
         up4 = self.up4(decoder_input)
