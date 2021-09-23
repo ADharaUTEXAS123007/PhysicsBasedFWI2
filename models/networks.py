@@ -3283,11 +3283,11 @@ class Vaevel_Net(nn.Module):
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*13*19, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*13*19, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
+        self.decoder_input = nn.Linear(latent_dim, filters[-2]*13*19)
 
         self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
@@ -3297,7 +3297,7 @@ class Vaevel_Net(nn.Module):
         self.final = nn.ReLU(inplace=True)
 
     def encode(self, inputs):
-        label_dsp_dim = (101,101)
+        label_dsp_dim = (201,301)
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
@@ -3320,12 +3320,12 @@ class Vaevel_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (201,301)
         decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
+        decoder_input = decoder_input.view(-1, filters[-2], 13, 19)
         up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
-        #up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1  = self.f1(up1)
         return self.final(f1)
 
