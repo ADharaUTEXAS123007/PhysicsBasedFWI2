@@ -281,10 +281,10 @@ class VaevelModel(BaseModel):
         self.loss_D_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = 0.0
-        #print("loss MSE example :", self.loss_M_MSE)
-        #print("diff size :", diff_size)
-        #print("device of fake B:",str(self.fake_B.get_device()))
+        self.loss_K_MSE = kld_loss
+        print("loss MSE example :", self.loss_M_MSE)
+        print("diff size :", diff_size)
+        print("device of fake B:",str(self.fake_B.get_device()))
         
         if (epoch1>lstart):
             filen = './deepwave/fake123Sep' + \
@@ -316,7 +316,7 @@ class VaevelModel(BaseModel):
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
+        self.backward_G()                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
