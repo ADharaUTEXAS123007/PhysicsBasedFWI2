@@ -3304,8 +3304,8 @@ class Vaevel_Net(nn.Module):
         down4 = self.down4(down3)
         #center = self.center(down4)
         
-        #print("shape of down")
-        #print(np.shape(down4))
+        print("shape of down")
+        print(np.shape(down4))
 
         result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
