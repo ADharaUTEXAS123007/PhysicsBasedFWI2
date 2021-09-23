@@ -3355,7 +3355,7 @@ class Vaevel_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs, lstart, epoch1):
-        mu,log_var = self.encode(inputs[:,:,1:800:2,:])
+        mu,log_var = self.encode(inputs)
         z = self.reparameterize(mu, log_var)
         de1 = self.decode(z)  
         de2 = 0*de1
