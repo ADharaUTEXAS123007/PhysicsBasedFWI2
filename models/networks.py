@@ -190,6 +190,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = VaeNormalizing_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNormalizingPhy':
         net = VaeNormalizingPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'Vaevel':
+        net = Vaevel_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return init_net(net, init_type, init_gain, gpu_ids)
@@ -3263,10 +3265,10 @@ class VaeNormalizingPhy_Net(nn.Module):
         return net1out1
     
 
-class VaeNoPhy_Net(nn.Module):
+class Vaevel_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        super(VaeNoPhy_Net, self).__init__()
+        super(Vaevel_Net, self).__init__()
         self.is_deconv = True
         self.in_channels = outer_nc
         self.is_batchnorm = True
