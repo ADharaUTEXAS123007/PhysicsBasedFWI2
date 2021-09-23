@@ -283,8 +283,8 @@ class VaevelModel(BaseModel):
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         self.loss_K_MSE = kld_loss
         print("loss MSE example :", self.loss_M_MSE)
-        print("diff size :", diff_size)
-        print("device of fake B:",str(self.fake_B.get_device()))
+        print("loss KMSE example :", self.loss_K_MSE)
+        #print("device of fake B:",str(self.fake_B.get_device()))
         
         if (epoch1>lstart):
             filen = './deepwave/fake123Sep' + \
