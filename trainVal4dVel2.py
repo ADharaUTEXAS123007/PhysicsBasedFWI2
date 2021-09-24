@@ -45,6 +45,7 @@ if __name__ == '__main__':
     visualizer = Visualizer(opt)   # create a visualizer that display/save images and plots
     total_iters = 0                # the total number of training iterations
     losses1 = OrderedDict()
+    lstart = 1000
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
          iter_data_time = time.time()    # timer for data loading per iteration
@@ -64,8 +65,8 @@ if __name__ == '__main__':
          model.update_learning_rate()    # update learning rates in the beginning of every epoch.
          Modelloss = 0.0
          Dataloss = 0.0
-         #Model1loss = 0.0
-         KLloss = 0.0
+         Model1loss = 0.0
+         #KLloss = 0.0
          for i, data in enumerate(dataset):  # inner loop within one epoch
              ##print("i: " + str(i))
              iter_start_time = time.time()  # timer for computation per iteration
@@ -75,7 +76,7 @@ if __name__ == '__main__':
              total_iters += opt.batch_size
              epoch_iter += opt.batch_size
              model.set_input(data)         # unpack data from dataset and apply preprocessing
-             model.optimize_parameters(epoch)   # calculate loss functions, get gradients, update network weights
+             model.optimize_parameters(epoch,i,lstart)   # calculate loss functions, get gradients, update network weights
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()
@@ -110,8 +111,13 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
-             #Model1loss = Model1loss + model.loss_M1_MSE.item()
-             KLloss = KLloss + model.loss_K_MSE.item()
+             if (epoch > lstart):
+                Model1loss = Model1loss + model.loss_M1_MSE.item()     
+             else:
+                Model1loss = Model1loss + model.loss_M1_MSE
+                 
+                
+             #KLloss = KLloss + model.loss_K_MSE.item()
 
 
          
@@ -127,14 +133,14 @@ if __name__ == '__main__':
 
         
          if epoch % opt.display_freq == 0:    #plot losses
-            losses1['Modelloss'] = Modelloss/i
-            losses1['Dataloss'] = Dataloss/i
-            losses1['Validationloss'] = Validationloss/k
-            #losses1['Model1loss'] = Model1loss/i
-            losses1['KL divergence'] = KLloss/i
-            print(losses1)
-            losses2 = model.get_current_losses()
-            print(losses2)
+            losses1['Modelloss'] = Modelloss/(i+1)
+            losses1['Dataloss'] = Dataloss/(i+1)
+            losses1['Validationloss'] = Validationloss/(k+1)
+            losses1['Model1loss'] = Model1loss/(i+1)
+            #losses1['KL divergence'] = KLloss/i
+            #print(losses1)
+            #losses2 = model.get_current_losses()
+            #print(losses2)
             visualizer.plot_current_losses(epoch, 0, losses1)
 
          print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs + opt.n_epochs_decay, time.time() - epoch_start_time))

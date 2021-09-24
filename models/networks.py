@@ -3275,7 +3275,7 @@ class Vaevel_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        latent_dim = 512
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -3289,7 +3289,7 @@ class Vaevel_Net(nn.Module):
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*13*19)
 
-        self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
+        self.up4 = autoUp(filters[43, filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
