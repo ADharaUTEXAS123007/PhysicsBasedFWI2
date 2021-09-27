@@ -2367,9 +2367,9 @@ class Vae_Net(nn.Module):
     def forward(self, inputs, lstart, epoch1):
         mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
-        print("shape of z: ", np.shape(z))
+        #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
-        print("shape of de1 :", np.shape(de1))
+        #print("shape of de1 :", np.shape(de1))
         #print(type(de1))
         de2 = 0*de1
         if (epoch1 > lstart):
@@ -2462,7 +2462,7 @@ class Vae_Net(nn.Module):
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
         mat2 = mat2 * min1
-        mat2 = torch.clamp(mat2,min=2000,max=4500)
+        mat2 = torch.clamp(mat2,min=1500,max=4400)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
@@ -2495,7 +2495,7 @@ class Vae_Net(nn.Module):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=2000,max=4500)
+                    model2 = torch.clamp(net1out1,min=1500,max=4400)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
