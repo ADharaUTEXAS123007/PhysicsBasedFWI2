@@ -287,13 +287,13 @@ class VaeModel(BaseModel):
         #print("device of fake B:",str(self.fake_B.get_device()))
         
         if (epoch1>lstart):
-            filen = './deepwave/fake123Sep' + \
+            filen = './deepwave/fake27Sep' + \
                 str(batch)+'ep'+str(epoch1)+'.npy'
             np.save(filen, self.fake_B.cpu().detach().numpy())
-            filen = './deepwave/real123Sep' + \
+            filen = './deepwave/real27Sep' + \
                  str(batch)+'ep'+str(epoch1)+'.npy'
             np.save(filen, self.real_B.cpu().detach().numpy())
-            filen = './deepwave/fakeData123Sep' + \
+            filen = './deepwave/fakeData27Sep' + \
                     str(batch)+'ep'+str(epoch1)+'.npy'
             np.save(filen, self.fake_BD.cpu().detach().numpy())
 
