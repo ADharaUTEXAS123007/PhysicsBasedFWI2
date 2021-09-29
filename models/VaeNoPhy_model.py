@@ -292,10 +292,10 @@ class VaeNoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        # if (epoch1 > lstart):
-        #     filen = './deepwave/fake11Sep' + \
-        #         str(batch)+'ep'+str(epoch1)+'.npy'
-        #     np.save(filen, self.fake_B.cpu().detach().numpy())
+        if (epoch1 > lstart):
+             filen = './deepwave/fake29Sep' + \
+                 str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.fake_B.cpu().detach().numpy())
         #     filen = './deepwave/real11Sep' + \
         #         str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.real_B.cpu().detach().numpy())
