@@ -85,6 +85,8 @@ class UnalignedVelLatent2Dataset(BaseDataset):
         eps = torch.randn_like(std)
         
         C = eps * std + mu
+        
+        C = torch.unsqueeze(C,0)
 
         #print("AB size")
         #print(A.size())
