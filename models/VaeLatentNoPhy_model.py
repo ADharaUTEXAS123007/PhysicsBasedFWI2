@@ -310,16 +310,20 @@ class VaeLatentNoPhyModel(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 1
-        lambda2 = 0
-        if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+        lambda1 = 0
+        lambda2 = 1
+        #if (epoch1>lstart):
+        #    lambda1 = 0.5
+        #    lambda2 = 0.5
             
 
-        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        #self.loss_G.backward()
+        print("z before :", self.real_C);
+        
+        self.loss_G.backward()
+        
+        print("z after : ", self.real_C)
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
