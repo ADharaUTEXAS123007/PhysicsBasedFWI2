@@ -298,9 +298,12 @@ class VaeNoPhyModel(BaseModel):
              filen = './deepwave/fake29Sep' + \
                  str(batch)+'ep'+str(epoch1)+'.npy'
              np.save(filen, self.fake_B.cpu().detach().numpy())
-        #     filen = './deepwave/real11Sep' + \
-        #         str(batch)+'ep'+str(epoch1)+'.npy'
-        #     np.save(filen, self.real_B.cpu().detach().numpy())
+             filen = './deepwave/realA29Sep' + \
+                 str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.real_A.cpu().detach().numpy())
+             filen = './deepwave/realB29Sep' + \
+                 str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.real_B.cpu().detach().numpy())
         #     filen = './deepwave/fakeData11Sep' + \
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
