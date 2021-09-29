@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
          #model.update_epoch(epoch)
          model.train()
-         #model.update_learning_rate()    # update learning rates in the beginning of every epoch.
+         model.update_learning_rate()    # update learning rates in the beginning of every epoch.
          Modelloss = 0.0
          Dataloss = 0.0
          Model1loss = 0.0
