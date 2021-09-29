@@ -108,7 +108,7 @@ class VaeLatentNoPhyModel(BaseModel):
         self.netG = networks.define_G(opt.input_nc, opt.output_nc, opt.ngf, opt.netG, opt.norm,
                                       not opt.no_dropout, opt.init_type, opt.init_gain, self.gpu_ids)
 
-        self.z = self.real_C
+        #self.z = self.real_C
         if self.isTrain:
             # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
@@ -136,6 +136,20 @@ class VaeLatentNoPhyModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.real_C = input['C' if AtoB else 'C'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
+        self.z = self.real_C
+        if self.isTrain:
+                # define loss functions
+            #self.criterionL1 = torch.nn.L1Loss()
+            # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
+            #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
+            self.optimizer_G = torch.optim.Adam(
+                self.z, lr=opt.lr)
+            self.optimizers.append(self.optimizer_G)
+            self.criterionMSE = torch.nn.MSELoss(reduction='sum')
+        else:
+            print("----test data----")
+            self.criterionL1 = torch.nn.L1Loss()
+            self.criterionMSE = torch.nn.MSELoss(reduction='sum')
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
