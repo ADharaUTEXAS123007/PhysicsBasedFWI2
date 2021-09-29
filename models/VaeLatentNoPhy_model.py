@@ -307,9 +307,9 @@ class VaeLatentNoPhyModel(BaseModel):
              filen = './deepwave/realB229Sep' + \
                  str(batch)+'ep'+str(epoch1)+'.npy'
              np.save(filen, self.real_B.cpu().detach().numpy())
-        #     filen = './deepwave/fakeData11Sep' + \
-        #            str(batch)+'ep'+str(epoch1)+'.npy'
-        #     np.save(filen, self.fake_BD.cpu().detach().numpy())
+             filen = './deepwave/fakeData229Sep' + \
+                   str(batch)+'ep'+str(epoch1)+'.npy'
+             np.save(filen, self.fake_BD.cpu().detach().numpy())
 
         lambda1 = 0
         lambda2 = 1
