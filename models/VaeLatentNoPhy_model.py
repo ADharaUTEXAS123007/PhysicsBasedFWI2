@@ -288,6 +288,7 @@ class VaeLatentNoPhyModel(BaseModel):
         self.loss_K_MSE = 0.0
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
+        print("loss_M1_MSE : ",self.loss_M1_MSE)
         #print("mu :", self.mu)
         #print("shape of mu :", self.mu.size())
         #print("var :", self.log_var)
