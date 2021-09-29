@@ -290,6 +290,7 @@ class VaeLatentNoPhyModel(BaseModel):
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
         print("loss_M1_MSE : ",self.loss_M1_MSE)
+        print("fake_B : ",self.fake_B)
         #print("mu :", self.mu)
         #print("shape of mu :", self.mu.size())
         #print("var :", self.log_var)
@@ -321,7 +322,7 @@ class VaeLatentNoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        print("z before :", self.z);
+        print("z before :", self.z)
         
         self.loss_G.backward()
         
