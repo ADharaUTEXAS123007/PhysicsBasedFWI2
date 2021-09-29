@@ -2854,7 +2854,7 @@ class VaeLatentNoPhy_Net(nn.Module):
         num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 1
+            num_epochs = 10
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
