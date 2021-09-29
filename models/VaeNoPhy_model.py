@@ -284,6 +284,8 @@ class VaeNoPhyModel(BaseModel):
         self.loss_K_MSE = kld_loss
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
+        print("mu :", self.mu)
+        print("var :", self.log_var)
         #print("loss MSE example :", self.loss_M_MSE)
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
