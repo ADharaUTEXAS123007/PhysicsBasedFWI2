@@ -141,7 +141,8 @@ class VaeLatentNoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
         print("shape of real C:", self.real_C.size())
-        [self.fake_B, self.fake_BD] = self.netG(self.real_C,self.real_A,lstart,epoch1)  # G(A)
+        self.z = self.real_C
+        [self.fake_B, self.fake_BD] = self.netG(self.z,self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -320,11 +321,11 @@ class VaeLatentNoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        print("z before :", self.real_C);
+        print("z before :", self.z);
         
         self.loss_G.backward()
         
-        print("z after : ", self.real_C)
+        print("z after : ", self.z)
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
