@@ -114,7 +114,7 @@ class VaeLatentNoPhyModel(BaseModel):
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
             self.optimizer_G = torch.optim.Adam(
-                self.netG.parameters(), lr=opt.lr)
+                self.z, lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
@@ -322,12 +322,13 @@ class VaeLatentNoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        #print("z before :", self.z)
-        before = self.z
+        print("z before :", self.z)
+        #before = self.z
         
         self.loss_G.backward()
         
-        print("fake_B : ",self.fake_B)
+        print("z after :", self.z)
+        #print("fake_B : ",self.fake_B)
         #after = self.z
         #self.bf = torch.subtract(after,before)
         #print("bf bf bf")
