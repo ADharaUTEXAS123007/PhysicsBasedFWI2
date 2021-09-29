@@ -109,21 +109,21 @@ class VaeLatentNoPhyModel(BaseModel):
                                       not opt.no_dropout, opt.init_type, opt.init_gain, self.gpu_ids)
 
         #self.z = self.real_C
-        if self.isTrain:
-            # define loss functions
-            #self.criterionL1 = torch.nn.L1Loss()
-            # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
-            #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam(
-                self.z, lr=opt.lr)
-            self.optimizers.append(self.optimizer_G)
-            self.criterionMSE = torch.nn.MSELoss(reduction='sum')
-        else:
-            print("----test data----")
-            self.criterionL1 = torch.nn.L1Loss()
-            self.criterionMSE = torch.nn.MSELoss(reduction='sum')
+        # if self.isTrain:
+        #     # define loss functions
+        #     #self.criterionL1 = torch.nn.L1Loss()
+        #     # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
+        #     #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
+        #     self.optimizer_G = torch.optim.Adam(
+        #         self.z, lr=opt.lr)
+        #     self.optimizers.append(self.optimizer_G)
+        #     self.criterionMSE = torch.nn.MSELoss(reduction='sum')
+        # else:
+        #     print("----test data----")
+        #     self.criterionL1 = torch.nn.L1Loss()
+        #     self.criterionMSE = torch.nn.MSELoss(reduction='sum')
 
-    def set_input(self, input):
+    def set_input(self, input,opt):
         """Unpack input data from the dataloader and perform necessary pre-processing steps.
 
         Parameters:
