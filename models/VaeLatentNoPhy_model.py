@@ -108,6 +108,7 @@ class VaeLatentNoPhyModel(BaseModel):
         self.netG = networks.define_G(opt.input_nc, opt.output_nc, opt.ngf, opt.netG, opt.norm,
                                       not opt.no_dropout, opt.init_type, opt.init_gain, self.gpu_ids)
 
+        self.z = self.real_C
         if self.isTrain:
             # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
@@ -141,7 +142,6 @@ class VaeLatentNoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
         print("shape of real C:", self.real_C.size())
-        self.z = self.real_C
         [self.fake_B, self.fake_BD] = self.netG(self.z,self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
