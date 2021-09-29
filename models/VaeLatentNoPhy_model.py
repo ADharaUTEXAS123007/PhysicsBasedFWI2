@@ -327,9 +327,10 @@ class VaeLatentNoPhyModel(BaseModel):
         
         self.loss_G.backward()
         
-        after = self.z
-        self.bf = torch.subtract(after,before)
-        print("bf bf bf")
+        print("fake_B : ",self.fake_B)
+        #after = self.z
+        #self.bf = torch.subtract(after,before)
+        #print("bf bf bf")
         #print("bf :")
         
         #if (epoch1 == 52):
