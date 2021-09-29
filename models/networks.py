@@ -2788,15 +2788,15 @@ class VaeLatentNoPhy_Net(nn.Module):
     #     eps = torch.randn_like(std)
     #     return eps * std + mu
 
-    def forward(self, inputs, lstart, epoch1):
+    def forward(self, inputs1, inputs2, lstart, epoch1):
         #mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         #mu = torch.randn(1,256).to(inputs.get_device())
         #log_var = torch.randn(1,256).to(inputs.get_device())
         #z = self.reparameterize(mu, log_var)
-        de1 = self.decode(inputs)  
+        de1 = self.decode(inputs1)  
         de2 = 0*de1
         if (epoch1 > lstart):            
-            de2 = self.prop(inputs, de1, lstart, epoch1)
+            de2 = self.prop(inputs2, de1, lstart, epoch1)
             de2 = torch.unsqueeze(de2,0)
             de2 = torch.unsqueeze(de2,0)
             #print("shape of de2")

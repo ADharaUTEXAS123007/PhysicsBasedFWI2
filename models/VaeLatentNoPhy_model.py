@@ -141,7 +141,7 @@ class VaeLatentNoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
         print("shape of real C:", self.real_C.size())
-        [self.fake_B, self.fake_BD] = self.netG(self.real_C,lstart,epoch1)  # G(A)
+        [self.fake_B, self.fake_BD] = self.netG(self.real_C,self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
