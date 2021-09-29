@@ -312,8 +312,8 @@ class VaeLatentNoPhyModel(BaseModel):
                    str(batch)+'ep'+str(epoch1)+'.npy'
              np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 1
-        lambda2 = 0
+        lambda1 = 0
+        lambda2 = 1
         #if (epoch1>lstart):
         #    lambda1 = 0.5
         #    lambda2 = 0.5
