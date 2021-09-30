@@ -82,12 +82,12 @@ if __name__ == '__main__':
              if total_iters % opt.print_freq == 0:
                  t_data = iter_start_time - iter_data_time
 
-             print("z :", z)
+             print("z before:", z)
              total_iters += opt.batch_size
              epoch_iter += opt.batch_size
              model.set_input(data,opt,z)         # unpack data from dataset and apply preprocessing
-             model.optimize_parameters(epoch,i,lstart)   # calculate loss functions, get gradients, update network weights
-             print("z :", z)
+             model.optimize_parameters(epoch,i,lstart,z)   # calculate loss functions, get gradients, update network weights
+             print("z after:", z)
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()

@@ -350,9 +350,9 @@ class VaeLatentNoPhyModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
-    def optimize_parameters(self, epoch, batch, lstart):
+    def optimize_parameters(self, epoch, batch, lstart, z):
         #lstart = 1
-        self.forward(epoch,lstart)                   # compute fake images: G(A)
+        self.forward(epoch,lstart,z)                   # compute fake images: G(A)
         # update G
         #print("z before :", self.z)
         self.optimizer_G.zero_grad()        # set G's gradients to zero
