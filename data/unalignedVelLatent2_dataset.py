@@ -113,7 +113,7 @@ class UnalignedVelLatent2Dataset(BaseDataset):
         #print(A.size())
         #print(B.size())
 
-        return {'A': A, 'B': B, A_paths': A_path, 'B_paths': B_path}
+        return {'A': A, 'B': B, 'A_paths': A_path, 'B_paths': B_path}
 
     def __len__(self):
         """Return the total number of images in the dataset.
