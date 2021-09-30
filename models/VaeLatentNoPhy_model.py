@@ -302,7 +302,7 @@ class VaeLatentNoPhyModel(BaseModel):
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
         print("loss_M1_MSE : ",self.loss_M1_MSE)
-        print("fake_B : ",self.fake_B)
+        #print("fake_B : ",self.fake_B)
         #print("mu :", self.mu)
         #print("shape of mu :", self.mu.size())
         #print("var :", self.log_var)
@@ -311,7 +311,7 @@ class VaeLatentNoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        if (epoch1 > lstart):
+        if (epoch1//100 == 0):
              filen = './deepwave/fake229Sep' + \
                  str(batch)+'ep'+str(epoch1)+'.npy'
              np.save(filen, self.fake_B.cpu().detach().numpy())
