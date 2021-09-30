@@ -96,9 +96,9 @@ class VaeLatentNoPhyModel(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
+        self.loss_names = ['D_MSE', 'M_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -134,7 +134,7 @@ class VaeLatentNoPhyModel(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
-        self.real_C = input['C' if AtoB else 'C'].to(self.device1)
+        #self.real_C = input['C' if AtoB else 'C'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
         if self.isTrain:
                 # define loss functions
@@ -153,7 +153,7 @@ class VaeLatentNoPhyModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        print("shape of real C:", self.real_C.size())
+        #print("shape of real C:", self.real_C.size())
         [self.fake_B, self.fake_BD] = self.netG(z,self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
@@ -325,7 +325,7 @@ class VaeLatentNoPhyModel(BaseModel):
                    str(batch)+'ep'+str(epoch1)+'.npy'
              np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 1
+        lambda1 = 0
         lambda2 = 1
         #if (epoch1>lstart):
         #    lambda1 = 0.5
