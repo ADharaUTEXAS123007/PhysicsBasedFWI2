@@ -336,12 +336,12 @@ class VaeLatentNoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        print("z before :", self.z)
+        #print("z before :", self.z)
         #before = self.z
         
         self.loss_G.backward()
         
-        print("z after :", self.z)
+        #print("z after :", self.z)
         #print("fake_B : ",self.fake_B)
         #after = self.z
         #self.bf = torch.subtract(after,before)
@@ -356,9 +356,11 @@ class VaeLatentNoPhyModel(BaseModel):
         #lstart = 1
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
+        print("z before :", self.z)
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
+        print("z after :", self.z)
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
