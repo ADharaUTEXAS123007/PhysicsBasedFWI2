@@ -330,6 +330,7 @@ class VaeLatentNoPhyModel(BaseModel):
         lambda3 = 1
         
         print("torch _norm :", torch.norm(z))
+        print("M1_MSE :", self.loss_M1_MSE)
         #if (epoch1>lstart):
         #    lambda1 = 0.5
         #    lambda2 = 0.5
