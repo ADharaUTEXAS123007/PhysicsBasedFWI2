@@ -153,5 +153,10 @@ if __name__ == '__main__':
             #losses2 = model.get_current_losses()
             #print(losses2)
             visualizer.plot_current_losses(epoch, 0, losses1)
+            
+         if epoch % 100 == 0:
+             filen = './deepwave/ZZ' + \
+                 'ep'+str(epoch)+'.npy'
+             np.save(filen, z.cpu().detach().numpy())
 
          print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs + opt.n_epochs_decay, time.time() - epoch_start_time))
