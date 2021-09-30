@@ -137,13 +137,13 @@ class VaeLatentNoPhyModel(BaseModel):
         self.real_C = input['C' if AtoB else 'C'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
         self.z = self.real_C
+        self.z.requires_grad = True
         if self.isTrain:
                 # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam(
-                [self.z], lr=opt.lr)
+            self.optimizer_G = torch.optim.Adam([self.z], lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
@@ -362,6 +362,7 @@ class VaeLatentNoPhyModel(BaseModel):
         self.optimizer_G.step()             # udpate G's weights
         print("z after :", self.z)
         print("grad :", self.z.grad)
+
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
