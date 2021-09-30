@@ -279,7 +279,7 @@ class VaeLatentNoPhyModel(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
-    def backward_G11(self, epoch1, batch, lstart):
+    def backward_G11(self, epoch1, batch, lstart, z):
         
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
@@ -327,12 +327,15 @@ class VaeLatentNoPhyModel(BaseModel):
 
         lambda1 = 0
         lambda2 = 1
+        lambda3 = 1
+        
+        print("torch _norm :", torch.norm(z))
         #if (epoch1>lstart):
         #    lambda1 = 0.5
         #    lambda2 = 0.5
             
 
-        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE + lambda3 * torch.norm(z)**2
         #self.loss_G = lambda2 * self.loss_M1_MSE
         #print("z before :", self.z)
         #before = self.z
@@ -356,7 +359,7 @@ class VaeLatentNoPhyModel(BaseModel):
         # update G
         #print("z before :", self.z)
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
+        self.backward_G11(epoch,batch,lstart,z)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
         #print("z after :", self.z)
         #print("grad :", self.z.grad)
