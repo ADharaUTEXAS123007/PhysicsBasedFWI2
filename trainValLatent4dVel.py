@@ -26,6 +26,7 @@ from data import create_dataset2
 from models import create_model
 from util.visualizer import Visualizer
 import numpy as np
+import torch
 #import ray
 
 if __name__ == '__main__':
@@ -46,6 +47,14 @@ if __name__ == '__main__':
     total_iters = 0                # the total number of training iterations
     losses1 = OrderedDict()
     lstart = 0
+    
+    mu = torch.randn(1,256)
+    logvar = torch.randn(1,256)        
+    std = torch.exp(0.5 * logvar)
+    eps = torch.randn_like(std)        
+    z = eps * std + mu        
+    z = torch.unsqueeze(z,0)
+    z.requires_grad = True
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
          iter_data_time = time.time()    # timer for data loading per iteration
@@ -73,10 +82,12 @@ if __name__ == '__main__':
              if total_iters % opt.print_freq == 0:
                  t_data = iter_start_time - iter_data_time
 
+             print("z :", z)
              total_iters += opt.batch_size
              epoch_iter += opt.batch_size
-             model.set_input(data,opt)         # unpack data from dataset and apply preprocessing
+             model.set_input(data,opt,z)         # unpack data from dataset and apply preprocessing
              model.optimize_parameters(epoch,i,lstart)   # calculate loss functions, get gradients, update network weights
+             print("z :", z)
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()

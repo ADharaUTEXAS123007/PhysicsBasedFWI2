@@ -123,7 +123,7 @@ class VaeLatentNoPhyModel(BaseModel):
         #     self.criterionL1 = torch.nn.L1Loss()
         #     self.criterionMSE = torch.nn.MSELoss(reduction='sum')
 
-    def set_input(self, input,opt):
+    def set_input(self, input, opt, z):
         """Unpack input data from the dataloader and perform necessary pre-processing steps.
 
         Parameters:
@@ -136,14 +136,12 @@ class VaeLatentNoPhyModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.real_C = input['C' if AtoB else 'C'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
-        self.z = self.real_C
-        self.z.requires_grad = True
         if self.isTrain:
                 # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam([self.z], lr=opt.lr)
+            self.optimizer_G = torch.optim.Adam([z], lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
@@ -356,12 +354,12 @@ class VaeLatentNoPhyModel(BaseModel):
         #lstart = 1
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
-        print("z before :", self.z)
+        #print("z before :", self.z)
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
-        print("z after :", self.z)
-        print("grad :", self.z.grad)
+        #print("z after :", self.z)
+        #print("grad :", self.z.grad)
 
 
     def compute_loss_only(self):
