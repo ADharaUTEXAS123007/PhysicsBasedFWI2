@@ -149,12 +149,12 @@ class VaeLatentNoPhyModel(BaseModel):
             self.criterionL1 = torch.nn.L1Loss()
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
 
-    def forward(self,epoch1,lstart):
+    def forward(self,epoch1,lstart,z):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
         print("shape of real C:", self.real_C.size())
-        [self.fake_B, self.fake_BD] = self.netG(self.z,self.real_A,lstart,epoch1)  # G(A)
+        [self.fake_B, self.fake_BD] = self.netG(z,self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
