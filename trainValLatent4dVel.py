@@ -56,6 +56,7 @@ if __name__ == '__main__':
     #z = torch.unsqueeze(z,0)
     #z.requires_grad = True
     z = np.load('./deepwave/ZZep5800.npy')
+    z = torch.from_numpy(z)
     z.requires_grad = True
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
