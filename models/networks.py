@@ -188,6 +188,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = VaeNoPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeLatentNoPhy':
         net = VaeLatentNoPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+    elif netG == 'VaeLatent2NoPhy':
+        net = VaeLatent2NoPhy_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNormalizing':
         net = VaeNormalizing_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNormalizingPhy':
