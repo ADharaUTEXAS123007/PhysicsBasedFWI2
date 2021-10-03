@@ -3030,6 +3030,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
+        print("shape of up1 :", np.shape(up1))
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1  = self.f1(up1)
         return self.final(f1)
