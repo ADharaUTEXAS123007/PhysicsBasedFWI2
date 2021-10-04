@@ -3025,7 +3025,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (151,401)
         decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
+        decoder_input = decoder_input.view(-1, filters[-2], 7, 25)
         print("decoder input :", np.shape(decoder_input))
         up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
