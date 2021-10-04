@@ -2980,16 +2980,16 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        latent_dim = 64
 
-        # self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        # self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
-        # self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
-        # self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
-        # #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+        #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        # self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
-        # self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*26*10, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*26*10, latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*26*10)
@@ -3001,25 +3001,25 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
         self.final = nn.ReLU(inplace=True)
 
-    # def encode(self, inputs):
-    #     label_dsp_dim = (151,401)
-    #     down1 = self.down1(inputs)
-    #     down2 = self.down2(down1)
-    #     down3 = self.down3(down2)
-    #     down4 = self.down4(down3)
-    #     #center = self.center(down4)
+    def encode(self, inputs):
+        label_dsp_dim = (151,401)
+        down1 = self.down1(inputs)
+        down2 = self.down2(down1)
+        down3 = self.down3(down2)
+        down4 = self.down4(down3)
+        #center = self.center(down4)
         
-    #     #print("shape of down")
-    #     #print(np.shape(down4))
+        #print("shape of down")
+        #print(np.shape(down4))
 
-    #     result = torch.flatten(down4, start_dim=1)
-    #     mu = self.fc_mu(result)
-    #     log_var = self.fc_var(result)
-    #     #center = self.center(down4)
+        result = torch.flatten(down4, start_dim=1)
+        mu = self.fc_mu(result)
+        log_var = self.fc_var(result)
+        #center = self.center(down4)
 
-    #     #print("shape of down4")
-    #     #print(np.shape(down4))
-    #     return [mu, log_var]
+        #print("shape of down4")
+        #print(np.shape(down4))
+        return [mu, log_var]
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
@@ -3063,11 +3063,11 @@ class VaeLatent2NoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        #mu,log_var = self.encode(inputs[:,:,1:800:2,:])
-        #mu = torch.randn(1,256).to(inputs.get_device())
-        #log_var = torch.randn(1,256).to(inputs.get_device())
-        #z = self.reparameterize(mu, log_var)
-        de1 = self.decode(inputs1)  
+        mu,log_var = self.encode(inputs2[:,:,1:4001:4,:])
+        #mu = torch.randn(1,64).to(inputs2.get_device())
+        #log_var = torch.randn(1,64).to(inputs2.get_device())
+        z = self.reparameterize(mu, log_var)
+        de1 = self.decode(z)  
         
         de2 = 0*de1
         if (epoch1 > lstart):            
