@@ -141,7 +141,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        print("shape of real B :", np.shape(self.real_B))
+        #print("shape of real B :", np.shape(self.real_B))
         [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_B,lstart,epoch1)  # G(A)
         #self.fake_B = self.real_C
         # print(np.shape(self.fake_B))
@@ -288,8 +288,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         self.loss_K_MSE = kld_loss
         #self.loss_M_MSE = 0.0
         #self.loss_K_MSE = 0.0
-        print("loss_M_MSE : ",self.loss_M_MSE)
-        print("loss_K_MSE : ",self.loss_K_MSE)
+        #print("loss_M_MSE : ",self.loss_M_MSE)
+        #print("loss_K_MSE : ",self.loss_K_MSE)
         #print("mu :", self.mu)
         #print("shape of mu :", self.mu.size())
         #print("var :", self.log_var)
