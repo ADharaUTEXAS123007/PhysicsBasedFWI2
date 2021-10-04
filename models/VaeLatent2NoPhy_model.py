@@ -283,7 +283,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         self.loss_D_MSE = 0.0
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
-        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         self.loss_K_MSE = kld_loss
