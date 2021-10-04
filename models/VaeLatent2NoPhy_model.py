@@ -291,9 +291,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #self.loss_K_MSE = 0.0
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
-        print("mu :", self.mu)
+        #print("mu :", self.mu)
         #print("shape of mu :", self.mu.size())
-        print("var :", self.log_var)
+        #print("var :", self.log_var)
         #print("shape of var :", self.log_var.size())
         #print("loss MSE example :", self.loss_M_MSE)
         #print("diff size :", diff_size)
