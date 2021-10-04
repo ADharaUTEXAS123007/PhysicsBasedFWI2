@@ -96,9 +96,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE']
+        self.loss_names = ['D_MSE', 'M_MSE', 'K_MSE', 'V_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B', 'real_B', 'real_C']
+        self.visual_names = ['fake_B', 'real_B', 'real_BT','fake_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -131,18 +131,18 @@ class VaeLatent2NoPhyModel(BaseModel):
         The option 'direction' can be used to swap images in domain A and domain B.
         """
         AtoB = self.opt.direction == 'AtoB'
-        self.real_A = input['A' if AtoB else 'B'].to(self.device1)
+        #self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
-        self.real_C = input['C'].to(self.device1)
-        self.real_D = input['D'].to(self.device1)      
-        self.image_paths = input['A_paths' if AtoB else 'B_paths']
+        #self.real_C = input['C'].to(self.device1)
+        #self.real_D = input['D'].to(self.device1)      
+        #self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        print("shape of real A :", np.shape(self.real_A))
-        [self.fake_B, self.fake_BD] = self.netG(self.real_D,self.real_A,lstart,epoch1)  # G(A)
+        print("shape of real B :", np.shape(self.real_B))
+        [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_B,lstart,epoch1)  # G(A)
         #self.fake_B = self.real_C
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
@@ -152,8 +152,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.fake_BDT] = self.netG(self.real_D,self.real_A,False_lstart,False_epoch)  # G(A)
-        #self.real_BT = self.real_B
+        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_B,self.real_B,False_lstart,False_epoch)  # G(A)
+        self.real_BT = self.real_B
 
     def backward_G(self):
         """Calculate GAN and L1 loss for the generator"""
@@ -284,10 +284,10 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        #self.loss_K_MSE = kld_loss
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
+        self.loss_K_MSE = kld_loss
         #self.loss_M_MSE = 0.0
-        self.loss_K_MSE = 0.0
+        #self.loss_K_MSE = 0.0
         print("loss_M_MSE : ",self.loss_M_MSE)
         print("loss_K_MSE : ",self.loss_K_MSE)
         #print("mu :", self.mu)

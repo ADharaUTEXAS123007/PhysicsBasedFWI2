@@ -34,11 +34,11 @@ if __name__ == '__main__':
     opt = TrainOptions().parse()   # get training options
     print('run till here 1')
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
-    #dataset2 = create_dataset2(opt) #create dataset for validation
+    dataset2 = create_dataset2(opt) #create dataset for validation
     dataset_size = len(dataset)    # get the number of images in the dataset.
-    #dataset2_size = len(dataset2) #get the number of images in validation dataset
+    dataset2_size = len(dataset2) #get the number of images in validation dataset
     print('The number of training images = %d' % dataset_size)
-    #print('The number of validation images = %d' % dataset2_size)
+    print('The number of validation images = %d' % dataset2_size)
 
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
@@ -52,21 +52,21 @@ if __name__ == '__main__':
          epoch_iter = 0                  # the number of training iterations in current epoch, reset to 0 every epoch
          visualizer.reset()              # reset the visualizer: make sure it saves the results to HTML at least once every epoch
 
-         #model.eval()  #For going to validation
-         #Validationloss = 0.0
-         #for k, data2 in enumerate(dataset2):
-         #    model.set_input(data2)
-         #    model.test()
-         #    model.compute_loss_only()
-         #    Validationloss = Validationloss + model.loss_V_MSE.item()
+         model.eval()  #For going to validation
+         Validationloss = 0.0
+         for k, data2 in enumerate(dataset2):
+             model.set_input(data2)
+             model.test()
+             model.compute_loss_only()
+             Validationloss = Validationloss + model.loss_V_MSE.item()
 
          #model.update_epoch(epoch)
-         #model.train()
+         model.train()
          model.update_learning_rate()    # update learning rates in the beginning of every epoch.
          Modelloss = 0.0
          Dataloss = 0.0
          Model1loss = 0.0
-         #KLloss = 0.0
+         KLloss = 0.0
          for i, data in enumerate(dataset):  # inner loop within one epoch
              ##print("i: " + str(i))
              iter_start_time = time.time()  # timer for computation per iteration
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                 Model1loss = Model1loss + model.loss_M1_MSE
                  
                 
-             #KLloss = KLloss + model.loss_K_MSE.item()
+             KLloss = KLloss + model.loss_K_MSE.item()
 
 
          
@@ -135,9 +135,9 @@ if __name__ == '__main__':
          if epoch % opt.display_freq == 0:    #plot losses
             losses1['Modelloss'] = Modelloss/(i+1)
             losses1['Dataloss'] = Dataloss/(i+1)
-            #losses1['Validationloss'] = Validationloss/(k+1)
+            losses1['Validationloss'] = Validationloss/(k+1)
             #losses1['Model1loss'] = Model1loss/(i+1)
-            #losses1['KL divergence'] = KLloss/i
+            losses1['KL divergence'] = KLloss/i
             #print(losses1)
             #losses2 = model.get_current_losses()
             #print(losses2)
