@@ -2988,8 +2988,8 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-2]*63*13, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*63*13, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*26*10, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*26*10, latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*26*10)
