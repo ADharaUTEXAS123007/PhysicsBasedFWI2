@@ -152,7 +152,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         False_lstart = 1
         False_epoch = -1
         [self.fake_BT, self.fake_BDT] = self.netG(self.real_D,self.real_A,False_lstart,False_epoch)  # G(A)
-        self.real_BT = self.real_B
+        #self.real_BT = self.real_B
 
     def backward_G(self):
         """Calculate GAN and L1 loss for the generator"""
@@ -275,7 +275,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         diff_size = self.real_B.size()
 
         if (epoch1 > lstart):
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
             self.loss_M1_MSE = 0.0
    
