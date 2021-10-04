@@ -142,8 +142,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
         #print("shape of real B :", np.shape(self.real_B))
-        print("real B real B")
-        print(self.real_B)
+        #print("real B real B")
+        #print(self.real_B)
         [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_B,lstart,epoch1)  # G(A)
         #self.fake_B = self.real_C
         # print(np.shape(self.fake_B))
