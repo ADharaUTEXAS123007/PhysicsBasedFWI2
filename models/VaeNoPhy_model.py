@@ -139,6 +139,7 @@ class VaeNoPhyModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
+        print("shape of real A:", np.shape(self.real_A))
         [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
@@ -274,10 +275,7 @@ class VaeNoPhyModel(BaseModel):
         if (epoch1 > lstart):
             self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         else:
-            self.loss_M1_MSE = 0.0
-            
-        
-        
+            self.loss_M1_MSE = 0.0   
         #print("shape of real B :", np.shape(self.real_B))
         #print("shape of fake B : ", np.shape(self.fake_B))
         self.loss_D_MSE = 0.0
