@@ -117,7 +117,8 @@ if __name__ == '__main__':
                 Model1loss = Model1loss + model.loss_M1_MSE
                  
                 
-             KLloss = KLloss + model.loss_K_MSE.item()
+             #KLloss = KLloss + model.loss_K_MSE.item()
+             KLloss = 0.0
 
 
          
