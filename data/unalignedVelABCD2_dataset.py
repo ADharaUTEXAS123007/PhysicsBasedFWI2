@@ -86,7 +86,7 @@ class UnalignedVelABCD2Dataset(BaseDataset):
         #D_img = np.expand_dims(D_img,0)
         A = torch.from_numpy(A_img)
         #A = torch.abs(A)
-        #A = A.float()
+        A = A.float()
         B = torch.from_numpy(B_img)
         #B = torch.abs(B)
         B = B.float()
