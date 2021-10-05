@@ -2656,7 +2656,7 @@ class VaeNoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs, lstart, epoch1):
-        #mu,log_var = self.encode(inputs[:,:,1:800:2,:])
+        mu,log_var = self.encode(inputs[:,:,1:800:2,:])
         mu = torch.randn(1,256).to(inputs.get_device())
         log_var = torch.randn(1,256).to(inputs.get_device())
         z = self.reparameterize(mu, log_var)
