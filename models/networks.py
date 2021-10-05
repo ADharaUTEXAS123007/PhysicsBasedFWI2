@@ -3067,9 +3067,9 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #mu = torch.randn(1,64).to(inputs2.get_device())
         #log_var = torch.randn(1,64).to(inputs2.get_device())
         #z = self.reparameterize(mu, log_var)
-        print("encoded")
-        print(encoded)
         de1 = self.decode(encoded)  
+        print("decoded")
+        print(de1)
         mu = 0*de1
         log_var = 0*de1
         de2 = 0*de1
