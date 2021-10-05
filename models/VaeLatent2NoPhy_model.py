@@ -143,7 +143,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("shape of real B :", np.shape(self.real_B))
         #print("real B real B")
         #print(self.real_B)
-        [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_A[:,:,1:800:2,:],lstart,epoch1)  # G(A)
+        [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_B,lstart,epoch1)  # G(A)
         #print("fake B ::")
         #print(self.fake_B)
         #self.fake_B = self.real_C
@@ -155,7 +155,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_B,self.real_A[:,:,1:800:2,:],False_lstart,False_epoch)  # G(A)
+        [self.fake_BT, self.muT, self.log_varT, self.fake_BDT] = self.netG(self.real_B,self.real_B,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -325,7 +325,7 @@ class VaeLatent2NoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        #self.loss_G.backward()
+        self.loss_G.backward()
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
