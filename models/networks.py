@@ -3063,12 +3063,12 @@ class VaeLatent2NoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        print("inputs2 ")
-        print(inputs2)
         encoded = self.encode(inputs2)
         #mu = torch.randn(1,64).to(inputs2.get_device())
         #log_var = torch.randn(1,64).to(inputs2.get_device())
         #z = self.reparameterize(mu, log_var)
+        print("encoded")
+        print(encoded)
         de1 = self.decode(encoded)  
         mu = 0*de1
         log_var = 0*de1
