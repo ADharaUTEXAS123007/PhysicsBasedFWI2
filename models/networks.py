@@ -3012,9 +3012,9 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #print("shape of down")
         #print(np.shape(down4))
 
-        result = torch.flatten(down4, start_dim=1)
-        mu = self.fc_mu(result)
-        log_var = self.fc_var(result)
+        #result = torch.flatten(down4, start_dim=1)
+        #mu = self.fc_mu(result)
+        #log_var = self.fc_var(result)
         #center = self.center(down4)
 
         #print("shape of down4")
