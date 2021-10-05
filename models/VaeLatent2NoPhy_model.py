@@ -145,8 +145,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("real B real B")
         #print(self.real_B)
         [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_B,self.real_B,lstart,epoch1)  # G(A)
-        print("fake B ::")
-        print(self.fake_B)
+        #print("fake B ::")
+        #print(self.fake_B)
         #self.fake_B = self.real_C
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
