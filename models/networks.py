@@ -3019,15 +3019,15 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
         #print("shape of down4")
         #print(np.shape(down4))
-        return [mu, log_var]
+        return down4
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (151,401)
-        decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-2], 10, 26)
+        #decoder_input = self.decoder_input(inputs)
+        #decoder_input = decoder_input.view(-1, filters[-2], 10, 26)
         #print("decoder input :", np.shape(decoder_input))
-        up4 = self.up4(decoder_input)
+        up4 = self.up4(inputs)
         up3 = self.up3(up4)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
@@ -3063,12 +3063,13 @@ class VaeLatent2NoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        mu,log_var = self.encode(inputs2)
+        encoded = self.encode(inputs2)
         #mu = torch.randn(1,64).to(inputs2.get_device())
         #log_var = torch.randn(1,64).to(inputs2.get_device())
-        z = self.reparameterize(mu, log_var)
-        de1 = self.decode(z)  
-        
+        #z = self.reparameterize(mu, log_var)
+        de1 = self.decode(encoded)  
+        mu = 0
+        log_var = 0
         de2 = 0*de1
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
