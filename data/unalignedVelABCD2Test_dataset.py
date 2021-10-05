@@ -61,17 +61,17 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #    index_B = index % self.B_size
         #else:   # randomize the index for domain B to avoid fixed pairs.
         #    index_B = random.randint(0, self.B_size - 1)
-        #A_path = self.A_paths[index]
+        A_path = self.A_paths[index]
         B_path = self.B_paths[index]
         #C_path = self.C_paths[index]
         #D_path = self.D_paths[index]
         
-        #A_img = np.load(A_path)
+        A_img = np.load(A_path)
         B_img = np.load(B_path)
         #C_img = np.load(C_path)
         #D_img = np.load(D_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
-        #A_img = 10*A_img
+        A_img = 10*A_img
         B_img = B_img/100
         #C_img = C_img/100
         #r = random.randint(0,1)
@@ -84,7 +84,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         B_img = np.expand_dims(B_img,0)
         #C_img = np.expand_dims(C_img,0)
         #D_img = np.expand_dims(D_img,0)
-        #A = torch.from_numpy(A_img)
+        A = torch.from_numpy(A_img)
         #A = torch.abs(A)
         #A = A.float()
         B = torch.from_numpy(B_img)
@@ -124,7 +124,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #print(A.size())
         #print(B.size())
 
-        return {'B': B}
+        return {'A':A,'B': B}
 
     def __len__(self):
         """Return the total number of images in the dataset.
