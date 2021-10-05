@@ -71,7 +71,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #C_img = np.load(C_path)
         #D_img = np.load(D_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
-        A_img = 10*A_img
+        A_img = A_img/100
         B_img = B_img/100
         #C_img = C_img/100
         #r = random.randint(0,1)
@@ -80,7 +80,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #    B_img = -1*B_img
 
 
-        #A_img = np.expand_dims(A_img,0)
+        A_img = np.expand_dims(A_img,0)
         B_img = np.expand_dims(B_img,0)
         #C_img = np.expand_dims(C_img,0)
         #D_img = np.expand_dims(D_img,0)
