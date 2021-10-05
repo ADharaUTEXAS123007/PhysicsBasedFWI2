@@ -132,8 +132,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
-        #self.real_C = input['C'].to(self.device1)
-        #self.real_D = input['D'].to(self.device1)      
+        self.real_C = input['C'].to(self.device1)
+        self.real_D = input['D'].to(self.device1)      
         #self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
@@ -286,7 +286,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         self.loss_D_MSE = 0.0
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
-        self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.real_C, self.fake_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         self.loss_K_MSE = kld_loss
