@@ -3068,8 +3068,8 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #log_var = torch.randn(1,64).to(inputs2.get_device())
         #z = self.reparameterize(mu, log_var)
         de1 = self.decode(encoded)  
-        mu = 0
-        log_var = 0
+        mu = 0*de1
+        log_var = 0*de1
         de2 = 0*de1
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
