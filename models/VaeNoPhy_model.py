@@ -139,7 +139,7 @@ class VaeNoPhyModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        print("shape of real A:", np.shape(self.real_A))
+        #print("shape of real A:", np.shape(self.real_A))
         [self.fake_B, self.mu, self.log_var, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
@@ -317,7 +317,7 @@ class VaeNoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        #self.loss_G.backward()
+        self.loss_G.backward()
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
