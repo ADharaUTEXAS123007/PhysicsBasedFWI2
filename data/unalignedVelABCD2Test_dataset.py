@@ -72,7 +72,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #D_img = np.load(D_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
         #A_img = 10*A_img
-        B_img = B_img
+        B_img = B_img/100
         #C_img = C_img/100
         #r = random.randint(0,1)
         #if (r==0):
