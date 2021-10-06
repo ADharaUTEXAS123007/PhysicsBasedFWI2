@@ -2712,7 +2712,7 @@ class VaeLatentNoPhy_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        latent_dim = 512
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2989,8 +2989,8 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-2]*63*13, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*63*13, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*26*10, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*26*10, latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[-2]*26*10)
@@ -3064,7 +3064,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        [mu,log_var] = self.encode(inputs1[:,:,1:4001:4,:])
+        [mu,log_var] = self.encode(inputs1)
         #mu = torch.randn(1,64).to(inputs2.get_device())
         #log_var = torch.randn(1,64).to(inputs2.get_device())
         z = self.reparameterize(mu, log_var)
