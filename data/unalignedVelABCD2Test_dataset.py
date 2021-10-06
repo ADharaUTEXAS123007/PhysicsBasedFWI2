@@ -63,12 +63,12 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #    index_B = random.randint(0, self.B_size - 1)
         A_path = self.A_paths[index]
         B_path = self.B_paths[index]
-        #C_path = self.C_paths[index]
+        C_path = self.C_paths[index]
         #D_path = self.D_paths[index]
         
         A_img = np.load(A_path)
         B_img = np.load(B_path)
-        #C_img = np.load(C_path)
+        C_img = np.load(C_path)
         #D_img = np.load(D_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
         A_img = A_img/100
@@ -91,8 +91,8 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #B = torch.abs(B)
         B = B.float()
         
-        #C = torch.from_numpy(C_img)
-        #C = C.float()
+        C = torch.from_numpy(C_img)
+        C = C.float()
         
         #D = torch.from_numpy(D_img)
         #D = D.float()
@@ -124,7 +124,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #print(A.size())
         #print(B.size())
 
-        return {'A':A, 'B': B}
+        return {'A':A, 'B': B, 'C':C}
 
     def __len__(self):
         """Return the total number of images in the dataset.
