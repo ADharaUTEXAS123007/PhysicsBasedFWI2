@@ -3004,16 +3004,16 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
     def encode(self, inputs):
         label_dsp_dim = (151,201)
-        print(" shape of inputs")
-        print(np.shape(inputs))
+        #print(" shape of inputs")
+        #print(np.shape(inputs))
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
         down4 = self.down4(down3)
         #center = self.center(down4)
         
-        print("shape of down")
-        print(np.shape(down4))
+        #print("shape of down")
+        #print(np.shape(down4))
 
         result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
