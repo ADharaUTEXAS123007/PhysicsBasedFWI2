@@ -3004,6 +3004,8 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
     def encode(self, inputs):
         label_dsp_dim = (151,201)
+        print(" shape of inputs")
+        print(np.shape(inputs))
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
