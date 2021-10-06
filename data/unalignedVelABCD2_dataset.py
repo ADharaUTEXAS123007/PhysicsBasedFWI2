@@ -36,7 +36,7 @@ class UnalignedVelABCD2Dataset(BaseDataset):
         #self.D_paths = sorted(make_dataset(self.dir_D, opt.max_dataset_size)) 
         self.A_size = len(self.A_paths)  # get the size of dataset A
         self.B_size = len(self.B_paths)  # get the size of dataset B
-        #self.C_size = len(self.C_paths)  # get the size of dataset C
+        self.C_size = len(self.C_paths)  # get the size of dataset C
         #self.D_size = len(self.D_paths)
         btoA = self.opt.direction == 'BtoA'
         input_nc = self.opt.output_nc if btoA else self.opt.input_nc       # get the number of channels of input image
