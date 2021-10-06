@@ -138,7 +138,7 @@ if __name__ == '__main__':
             losses1['Dataloss'] = Dataloss/(i+1)
             losses1['Validationloss'] = Validationloss/(k+1)
             #losses1['Model1loss'] = Model1loss/(i+1)
-            losses1['KL divergence'] = KLloss/i
+            losses1['KL divergence'] = KLloss/(i+1)
             #print(losses1)
             #losses2 = model.get_current_losses()
             #print(losses2)
