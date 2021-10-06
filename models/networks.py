@@ -2989,11 +2989,11 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-2]*26*10, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*26*10, latent_dim)
+        self.fc_mu = nn.Linear(filters[-2]*13*10, latent_dim)
+        self.fc_var = nn.Linear(filters[-2]*13*10, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-2]*26*10)
+        self.decoder_input = nn.Linear(latent_dim, filters[-2]*13*10)
 
         self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
@@ -3026,7 +3026,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         label_dsp_dim = (151,201)
         decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-2], 10, 26)
+        decoder_input = decoder_input.view(-1, filters[-2], 10, 13)
         #print("decoder input :", np.shape(decoder_input))
         up4 = self.up4(decoder_input)
         up3 = self.up3(up4)
