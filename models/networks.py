@@ -3003,7 +3003,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         self.final = nn.ReLU(inplace=True)
 
     def encode(self, inputs):
-        label_dsp_dim = (151,401)
+        label_dsp_dim = (151,201)
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
@@ -3024,7 +3024,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
     def decode(self, inputs):
         filters = [64, 128, 256, 512, 1024]
-        label_dsp_dim = (151,401)
+        label_dsp_dim = (151,201)
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-2], 10, 26)
         #print("decoder input :", np.shape(decoder_input))
