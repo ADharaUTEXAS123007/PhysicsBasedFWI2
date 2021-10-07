@@ -3158,6 +3158,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
         receiver_amplitudes_true = inputs[0,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        receiver_amplitudes_true = receiver_amplitudes_true.to(devicek)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
 
