@@ -143,6 +143,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("shape of real D :", np.shape(self.real_D))
         #print("real B real B")
         #print(self.real_B)
+        
         [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_D,self.real_C,lstart,epoch1)  # G(A)
         print("shape of gradient:", np.shape(self.fake_BD))
         #print("fake B ::")
@@ -304,9 +305,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        #filen = './marmousi/fakeB' + str(batch)+'ep'+str(epoch1)+'.npy'
+        filen = './marmousi/fakeB' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        #np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
