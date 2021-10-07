@@ -3079,11 +3079,11 @@ class VaeLatent2NoPhy_Net(nn.Module):
         z = 0*de1
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
-            de2 = torch.unsqueeze(de2,0)
-            de2 = torch.unsqueeze(de2,0)
+            #de2 = torch.unsqueeze(de2,0)
+            #de2 = torch.unsqueeze(de2,0)
             #print("shape of de2")
             #print(np.shape(de2)) 
-        return  de1, mu, log_var, z, de2
+        return  de1, mu, log_var, z, grad
 
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -3240,21 +3240,24 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    
+                    #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
-                    if (epoch == num_epochs-1):
-                        sumlossinner += lossinner.item()
-                    if (epoch1 > lstart):
-                        lossinner.backward()
-                        optimizer2.step()
+                    ##############if (epoch == num_epochs-1):
+                    ##########    sumlossinner += lossinner.item()
+                    #########if (epoch1 > lstart):
+                    lossinner.backward()
+                    model2.grad[0:26,:] = 0
+                    ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
         #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
-        net1out1 = net1out1/100           
-        return net1out1
+        #net1out1 = net1out1/100           
+        return model2.grad
     
     
     # def sample(self,

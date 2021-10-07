@@ -144,6 +144,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("real B real B")
         #print(self.real_B)
         [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_D,self.real_C,lstart,epoch1)  # G(A)
+        print("shape of gradient:", np.shape(self.fake_BD))
         #print("fake B ::")
         #print(self.fake_B)
         #self.fake_B = self.real_C
@@ -278,11 +279,12 @@ class VaeLatent2NoPhyModel(BaseModel):
         #lstart2 = 50
         diff_size = self.real_B.size()
 
-        if (epoch1 > lstart):
-            self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        else:
-            self.loss_M1_MSE = 0.0
-   
+        #if (epoch1 > lstart):
+        #    self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #else:
+        #    self.loss_M1_MSE = 0.0
+
+        
         self.loss_D_MSE = 0.0
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
