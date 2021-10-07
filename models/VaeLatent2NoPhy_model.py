@@ -350,7 +350,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
-        #self.optimizer_G.step()             # udpate G's weights
+        self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
