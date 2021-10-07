@@ -3075,7 +3075,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #print(de1)
         mu = 0*de1
         log_var = 0*de1
-        de2 = 0*de1
+        #de2 = 0*de1
         z = 0*de1
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
@@ -3110,17 +3110,17 @@ class VaeLatent2NoPhy_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         devicek = net1out1.get_device()
         
-        freq = 15
+        freq = 14
         dx = 10
-        nt = 800
-        dt = 0.0015
-        num_shots = 10
-        num_receivers_per_shot = 101
+        nt = 4001
+        dt = 0.001
+        num_shots = 16
+        num_receivers_per_shot = 100
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 101 * dx / num_shots
-        receiver_spacing = 101 * dx / num_receivers_per_shot
+        source_spacing = 201 * dx / num_shots
+        receiver_spacing = 201 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -3136,7 +3136,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 100
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
@@ -3150,7 +3150,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        receiver_amplitudes_true = inputs[0,:,:,:]/10
+        receiver_amplitudes_true = inputs[0,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
@@ -3201,7 +3201,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1500,max=4400)
+                    model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
