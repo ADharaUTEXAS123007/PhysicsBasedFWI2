@@ -3257,7 +3257,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100           
-        return model2.grad
+        return net1out1.grad
     
     
     # def sample(self,
