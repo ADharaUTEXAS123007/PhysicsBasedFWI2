@@ -143,7 +143,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         print("shape of real D :", np.shape(self.real_D))
         #print("real B real B")
         #print(self.real_B)
-        [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_A,self.real_A,lstart,epoch1)  # G(A)
+        [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_D,self.real_A,lstart,epoch1)  # G(A)
         #print("fake B ::")
         #print(self.fake_B)
         #self.fake_B = self.real_C
@@ -155,7 +155,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.muT, self.log_varT, self.zT, self.fake_BDT] = self.netG(self.real_A,self.real_A,False_lstart,False_epoch)  # G(A)
+        [self.fake_BT, self.muT, self.log_varT, self.zT, self.fake_BDT] = self.netG(self.real_D,self.real_A,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
