@@ -334,7 +334,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         ##################self.loss_G.backward(self.fake_BD)
         grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1)
         grad = grad.to(self.fake_B.get_device())
-        self.fake_B.backward(torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1))
+        self.fake_B.backward(grad)
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
