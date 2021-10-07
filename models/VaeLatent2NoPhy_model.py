@@ -335,6 +335,10 @@ class VaeLatent2NoPhyModel(BaseModel):
         grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1)
         grad = grad.to(self.fake_B.get_device())
         self.fake_B.backward(grad)
+        
+        filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy'
+        
+        np.save(filen, self.fake_BD.cpu().detach().numpy()) 
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
