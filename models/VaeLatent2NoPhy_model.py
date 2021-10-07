@@ -140,14 +140,14 @@ class VaeLatent2NoPhyModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        print("shape of real D :", np.shape(self.real_D))
+        #print("shape of real D :", np.shape(self.real_D))
         #print("real B real B")
         #print(self.real_B)
         [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_A,self.real_A,lstart,epoch1)  # G(A)
         #print("fake B ::")
         #print(self.fake_B)
         #self.fake_B = self.real_C
-        # print(np.shape(self.fake_B))
+        print(np.shape(self.z))
         # print(self.fake_B.get_device())
 
     def forwardT(self):
