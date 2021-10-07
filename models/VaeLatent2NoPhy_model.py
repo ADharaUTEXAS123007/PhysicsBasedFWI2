@@ -303,7 +303,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("device of fake B:",str(self.fake_B.get_device()))
         
         filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
-        np.save(filen, self.z.cpu().detach.numpy()) 
+        
+        np.save(filen, self.z.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
