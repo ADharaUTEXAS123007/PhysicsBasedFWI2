@@ -3104,11 +3104,17 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     
     def prop(self, inputs, vel, lstart, epoch1):
             #---------deepwave------------#
+            
+        torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        GPU_string='cuda:'+str(7)
+        devicek = torch.device(GPU_string)
+        
         net1out1 = vel * 100
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        devicek = net1out1.get_device()
+        #devicek = net1out1.get_device()
+        net1out1 = net1out1.to(devicek)
         
         freq = 14
         dx = 10
@@ -3133,7 +3139,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 1
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
