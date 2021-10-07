@@ -3082,7 +3082,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
             de2 = torch.unsqueeze(de2,0)
             #print("shape of de2")
             #print(np.shape(de2)) 
-        return  de1, mu, log_var, de2
+        return  de1, mu, log_var, z, de2
 
     # Initialization of Parameters
     def  _initialize_weights(self):
