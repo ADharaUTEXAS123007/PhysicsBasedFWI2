@@ -282,7 +282,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #if (epoch1 > lstart):
         #    self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #else:
-        #    self.loss_M1_MSE = 0.0
+        self.loss_M1_MSE = 0.0
 
         
         self.loss_D_MSE = 0.0
