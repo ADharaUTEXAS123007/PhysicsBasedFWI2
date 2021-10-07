@@ -3071,7 +3071,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #log_var = torch.randn(1,64).to(inputs2.get_device())S
         #z = self.reparameterize(mu, log_var)
         de1 = self.decode(inputs1)  
-        de1[:,:,0:26,:] = 15.0
+        #de1[:,:,0:26,:] = 15.0
         
         #print("decoded")
         #print(de1)
@@ -3117,6 +3117,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         #devicek = net1out1.get_device()
         net1out1 = net1out1.to(devicek)
+        net1out1[0:26,:] = 1500.0
         
         freq = 14
         dx = 10
