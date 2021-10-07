@@ -145,7 +145,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print(self.real_B)
         
         [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_D,self.real_C,lstart,epoch1)  # G(A)
-        print("shape of gradient:", np.shape(self.fake_BD))
+        #print("shape of gradient:", np.shape(self.fake_BD))
         #print("fake B ::")
         #print(self.fake_B)
         #self.fake_B = self.real_C
@@ -305,9 +305,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        filen = './marmousi/fakeB' + str(batch)+'ep'+str(epoch1)+'.npy'
+        #filen = './marmousi/fakeB' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        #np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
@@ -330,16 +330,16 @@ class VaeLatent2NoPhyModel(BaseModel):
             lambda2 = 0.5
             
 
-        #self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        ##################self.loss_G.backward(self.fake_BD)
-        grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1)
-        grad = grad.to(self.fake_B.get_device())
-        self.fake_B.backward(grad)
+        #self.loss_G.backward(self.fake_BD)
+        ################grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
+        ################grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
+        ################self.fake_B.backward(grad) #switch on for physics based fwi
         
-        filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy'
+        #############filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi
         
-        np.save(filen, self.fake_BD.cpu().detach().numpy()) 
+        #######np.save(filen, self.fake_BD.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
