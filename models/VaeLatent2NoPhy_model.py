@@ -132,15 +132,15 @@ class VaeLatent2NoPhyModel(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
-        #self.real_C = input['C'].to(self.device1)
-        #self.real_D = input['D'].to(self.device1)      
+        self.real_C = input['C'].to(self.device1)
+        self.real_D = input['D'].to(self.device1)      
         #self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        #print("shape of real B :", np.shape(self.real_B))
+        print("shape of real D :", np.shape(self.real_D))
         #print("real B real B")
         #print(self.real_B)
         [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_A,self.real_A,lstart,epoch1)  # G(A)
@@ -302,9 +302,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
+        #filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        np.save(filen, self.z.cpu().detach().numpy()) 
+        #np.save(filen, self.z.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
