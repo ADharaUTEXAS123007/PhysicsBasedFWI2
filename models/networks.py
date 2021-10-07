@@ -3197,6 +3197,14 @@ class VaeLatent2NoPhy_Net(nn.Module):
         criterion = torch.nn.MSELoss()
 
         #print("shape of mat2 :", np.shape(mat2))
+        
+        #Shuffle shot coordinates
+        idx = torch.randperm(num_shots)
+        x_s = x_s.view(-1,2)[idx].view(x_s.size())
+        #RB Shuffle true's seismograms sources with same random values
+        rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
+        #RB Shuffle direct wave seismograms sources with the same random values
+        receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
 
 
         if (epoch1 > lstart):
