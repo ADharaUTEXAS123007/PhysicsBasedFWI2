@@ -289,6 +289,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         self.loss_D_MSE = 0.0
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
+        #1000 is the best model for vae
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)*1000/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
@@ -305,9 +306,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        #filen = './marmousi/fakeB' + str(batch)+'ep'+str(epoch1)+'.npy'
+        filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        #np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        np.save(filen, self.z.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
@@ -332,7 +333,7 @@ class VaeLatent2NoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        self.loss_G.backward()
+        ######self.loss_G.backward()
         ################grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
         ################grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         ################self.fake_B.backward(grad) #switch on for physics based fwi
@@ -350,7 +351,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
-        self.optimizer_G.step()             # udpate G's weights
+        #####self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
