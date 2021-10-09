@@ -307,9 +307,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        #filen = './marmousi/MMT' + str(batch)+'ep'+str(epoch1)+'.npy'
+        filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        #np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        np.save(filen, self.z.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
@@ -332,9 +332,9 @@ class VaeLatent2NoPhyModel(BaseModel):
             lambda2 = 0.5
             
 
-        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        #############self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        self.loss_G.backward()
+        ############self.loss_G.backward()
         #########grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
         #########grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         ###########self.fake_B.backward(grad) #switch on for physics based fwi
