@@ -162,7 +162,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         [self.fake_BT, self.muT, self.log_varT, self.zT, self.fake_BDT] = self.netG(self.real_A,self.real_C,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
         self.real_AT = self.real_A
-        self.fake_BT[:26,:] = 15.0
+        #self.fake_BT[:26,:] = 15.0
         #self.fake_BT = torch.clamp(self.fake_BT, 1500.0, 3550.0)
 
     def backward_G(self):
