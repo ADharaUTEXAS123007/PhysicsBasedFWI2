@@ -3077,7 +3077,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         #print(de1)
         ##mu = 0*de1 #####switch of for physics guided
         ##log_var = 0*de1 #####switch of for physics guided
-        ##de2 = 0*de1
+        de2 = 0*de1
         ###z = 0*de1 #####switch of for physics guided
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
