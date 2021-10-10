@@ -144,8 +144,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("real B real B")
         #print(self.real_B)
         
-        [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_A,self.real_C,lstart,epoch1)  # G(A)
-        self.fake_B[:26,:] = 15.0
+        [self.fake_B, self.mu, self.log_var, self.z, self.fake_BD] = self.netG(self.real_B,self.real_C,lstart,epoch1)  # G(A)
+        #self.fake_B[:26,:] = 15.0
         #self.fake_B = torch.clamp(self.fake_B, 1500.0, 3550.0)
         #print("shape of gradient:", np.shape(self.fake_BD))
         #print("fake B ::")
@@ -159,7 +159,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.muT, self.log_varT, self.zT, self.fake_BDT] = self.netG(self.real_A,self.real_C,False_lstart,False_epoch)  # G(A)
+        [self.fake_BT, self.muT, self.log_varT, self.zT, self.fake_BDT] = self.netG(self.real_B,self.real_C,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
         self.real_AT = self.real_A
         self.fake_BT[:26,:] = 15.0
@@ -311,13 +311,13 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
+        # filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        np.save(filen, self.z.cpu().detach().numpy()) 
+        # np.save(filen, self.z.cpu().detach().numpy()) 
         
-        filen = './marmousi/MTM' + str(batch)+'ep'+str(epoch1)+'.npy'
+        # filen = './marmousi/MTM' + str(batch)+'ep'+str(epoch1)+'.npy'
         
-        np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        # np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
@@ -340,9 +340,9 @@ class VaeLatent2NoPhyModel(BaseModel):
             lambda2 = 0.5
             
 
-        ######self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
-        #self.loss_G.backward()
+        self.loss_G.backward()
         #####grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
         ####grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         #####self.fake_B.backward(grad) #switch on for physics based fwi
@@ -367,7 +367,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
-        lossMSE = self.criterionMSE(self.fake_BT, self.real_A)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        lossMSE = self.criterionMSE(self.fake_BT, self.real_A)*800/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
