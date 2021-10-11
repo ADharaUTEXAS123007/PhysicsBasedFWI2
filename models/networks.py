@@ -3066,19 +3066,19 @@ class VaeLatent2NoPhy_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        ######[mu,log_var] = self.encode(inputs1)
+        [mu,log_var] = self.encode(inputs1)
         #####mu = torch.randn(1,64).to(inputs2.get_device())
         ######log_var = torch.randn(1,64).to(inputs2.get_device())S
-        #######z = self.reparameterize(mu, log_var)
+        z = self.reparameterize(mu, log_var)
         de1 = self.decode(inputs1)  
         #de1[:,:,0:26,:] = 15.0
         
         #print("decoded")
         #print(de1)
-        mu = 0*de1 #####switch of for physics guided
-        log_var = 0*de1 #####switch of for physics guided
+        ####mu = 0*de1 #####switch of for physics guided
+        ###log_var = 0*de1 #####switch of for physics guided
         de2 = 0*de1
-        z = 0*de1 #####switch of for physics guided
+        ######z = 0*de1 #####switch of for physics guided
         if (epoch1 > lstart):            
             de2 = self.prop(inputs2, de1, lstart, epoch1)
             #de2 = torch.unsqueeze(de2,0)
