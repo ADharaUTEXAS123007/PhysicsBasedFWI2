@@ -315,6 +315,9 @@ class VaeLatent2NoPhyModel(BaseModel):
         ####filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
         ####np.save(filen, self.z.cpu().detach().numpy()) 
         
+        filen = './marmousi/MT3M' + str(batch)+'ep'+str(epoch1)+'.npy'
+        np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        
         #####filen = './marmousi/FinalInv' + str(batch)+'ep'+str(epoch1)+'.npy'
         ######np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
