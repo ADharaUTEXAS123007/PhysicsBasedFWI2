@@ -312,8 +312,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         #print("diff size :", diff_size)
         #print("device of fake B:",str(self.fake_B.get_device()))
         
-        ####filen = './marmousi/ZZ' + str(batch)+'ep'+str(epoch1)+'.npy'
-        ####np.save(filen, self.z.cpu().detach().numpy()) 
+        filen = './marmousi/ZZ3M' + str(batch)+'ep'+str(epoch1)+'.npy'
+        np.save(filen, self.z.cpu().detach().numpy()) 
         
         filen = './marmousi/MT3M' + str(batch)+'ep'+str(epoch1)+'.npy'
         np.save(filen, self.fake_B.cpu().detach().numpy()) 
