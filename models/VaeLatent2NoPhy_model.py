@@ -321,8 +321,8 @@ class VaeLatent2NoPhyModel(BaseModel):
         ########filen = './marmousi/MT3M' + str(batch)+'ep'+str(epoch1)+'.npy'
         ##########np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
-        #####filen = './marmousi/FinalInv' + str(batch)+'ep'+str(epoch1)+'.npy'
-        ######np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        filen = './marmousi/FinalInvConstant' + str(batch)+'ep'+str(epoch1)+'.npy'
+        np.save(filen, self.fake_B.cpu().detach().numpy()) 
         
         # if (epoch1 > lstart):
         #      filen = './deepwave/fake29Sep' + \
