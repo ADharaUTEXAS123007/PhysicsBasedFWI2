@@ -2260,8 +2260,8 @@ class Auto_Net(nn.Module):
         grad = 0*f1
         if (epoch1 > lstart):
             grad = self.prop(inputs1, f1, lstart, epoch1)
-            grad = torch.unsqueeze(grad,1)
-            grad = torch.unsqueeze(grad,1)
+            grad = torch.unsqueeze(grad,0)
+            grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
