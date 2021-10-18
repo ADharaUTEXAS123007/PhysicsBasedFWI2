@@ -2259,7 +2259,7 @@ class Auto_Net(nn.Module):
         
         grad = 0*f1
         if (epoch1 > lstart):
-            grad = self.prop(inputs1, inputs2, lstart, epoch1)
+            grad = self.prop(inputs1, f1, lstart, epoch1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2438,11 +2438,12 @@ class Auto_Net(nn.Module):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        #np.save('./marmousi/after1.npy',net1out1.grad.cpu().detach().numpy())
+        np.save('./marmousi/netgrad.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100
-        #net1out1.grad = net1out1.grad/100           
+        #net1out1.grad = net1out1.grad/100  
+                 
         return net1out1.grad
     
 
