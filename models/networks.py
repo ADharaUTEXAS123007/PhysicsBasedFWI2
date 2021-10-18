@@ -2242,7 +2242,7 @@ class Auto_Net(nn.Module):
         self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
         self.final   = nn.ReLU(inplace=True)
         
-    def forward(self, inputs1, lstart, epoch1):
+    def forward(self, inputs1, inputs2, lstart, epoch1):
         label_dsp_dim = (101,101)
         down1  = self.down1(inputs1[:,:,1:800:2,:])
         down2  = self.down2(down1)
@@ -2259,7 +2259,7 @@ class Auto_Net(nn.Module):
         
         grad = 0*f1
         if (epoch1 > lstart):
-            grad = self.prop(inputs1, f1, lstart, epoch1)
+            grad = self.prop(inputs1, inputs2, lstart, epoch1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2286,19 +2286,13 @@ class Auto_Net(nn.Module):
                     
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
-            #---------deepwave------------#
-            
-        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        #GPU_string='cuda:'+str(7)
-        #devicek = torch.device(GPU_string)
         
         net1out1 = vel * 100
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         devicek = net1out1.get_device()
-        #net1out1 = net1out1.to(devicek)
-        #net1out1[0:26,:] = 1500.0
+
         
         freq = 15
         dx = 10
