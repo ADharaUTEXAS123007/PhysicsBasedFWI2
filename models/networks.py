@@ -2439,7 +2439,7 @@ class Auto_Net(nn.Module):
                     #optimizer2.step()
         #if (epoch1 == 52): 
         np.save('./marmousi/netgrad.npy',model2.cpu().detach().numpy())
-        np.save('./marmousi/netgrad1.npy',model2.grad.cpu().detach().numpy())
+        np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100
