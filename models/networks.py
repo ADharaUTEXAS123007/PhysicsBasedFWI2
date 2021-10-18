@@ -2376,13 +2376,13 @@ class Auto_Net(nn.Module):
 
         #print("shape of mat2 :", np.shape(mat2))
         
-        # #Shuffle shot coordinates
-        # idx = torch.randperm(num_shots)
-        # x_s = x_s.view(-1,2)[idx].view(x_s.size())
-        # #RB Shuffle true's seismograms sources with same random values
-        # rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
-        # #RB Shuffle direct wave seismograms sources with the same random values
-        # receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
+        #Shuffle shot coordinates
+        idx = torch.randperm(num_shots)
+        x_s = x_s.view(-1,2)[idx].view(x_s.size())
+        #RB Shuffle true's seismograms sources with same random values
+        rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
+        #RB Shuffle direct wave seismograms sources with the same random values
+        receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
 
         if (epoch1 > lstart):
             net1out1.requires_grad = True
@@ -2438,7 +2438,7 @@ class Auto_Net(nn.Module):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        np.save('./marmousi/netgrad.npy',net1out1.grad.cpu().detach().numpy())
+        np.save('./marmousi/netgrad.npy',net1out1.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100
