@@ -2393,7 +2393,7 @@ class Auto_Net(nn.Module):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    #model2 = torch.clamp(net1out1,min=2000,max=4500)
+                    model2 = torch.clamp(net1out1,min=2000,max=4500)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2438,7 +2438,7 @@ class Auto_Net(nn.Module):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        np.save('./marmousi/netgrad.npy',net1out1.grad.cpu().detach().numpy())
+        np.save('./marmousi/netgrad.npy',model2.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100
