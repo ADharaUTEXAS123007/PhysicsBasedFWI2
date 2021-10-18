@@ -137,15 +137,15 @@ class Auto2Model(BaseModel):
 
     def forward(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:2000:5, :]
-        self.fake_B = self.netG(netin1)  # G(A)
+        netin1 = self.real_A[:, :, 1:800:2, :]
+        [self.fake_B,self.grad] = self.netG(self.real_A)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:2000:5, :]
-        self.fake_BT = self.netG(netin1)  # G(A)
+        netin1 = self.real_A[:, :, 1:800:2, :]
+        [self.fake_BT,self.gradT] = self.netG(self.real_A)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -173,12 +173,94 @@ class Auto2Model(BaseModel):
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
+        
+    def backward_G11(self, epoch1, batch, lstart):
+            
+        """Calculate GAN and L1 loss for the generator"""
+        #lstart = 1
+        #lstart2 = 50
+        diff_size = self.real_B.size()
+
+        #if (epoch1 > lstart):
+        #    self.loss_M1_MSE = self.criterionMSE(self.fake_B, self.fake_BD)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #else:
+        self.loss_M1_MSE = 0.0
+
+        
+        self.loss_D_MSE = 0.0
+        #print("shape of real_C :", np.shape(self.real_C))
+        #print("shape of fake_B :", np.shape(self.fake_B))
+        #1000 is the best model for vae
+        self.loss_M_MSE = self.criterionMSE(self.real_A, self.fake_B)*800/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #k
+        #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
+        #self.loss_K_MSE = kld_loss/diff_size[0]
+        #self.loss_M_MSE = 0.0
+        #self.loss_K_MSE = 0.0
+        #print("loss_M_MSE : ",self.loss_M_MSE)
+        
+        #print("loss_K_MSE : ",self.loss_K_MSE)
+        #print("mu :", self.mu)
+        #print("shape of mu :", self.mu.size())
+        #print("var :", self.log_var)
+        #print("shape of var :", self.log_var.size())
+        #print("loss MSE example :", self.loss_M_MSE)
+        #print("diff size :", diff_size)
+        #print("device of fake B:",str(self.fake_B.get_device()))
+        
+        ######filen = './marmousi/ZZ3M' + str(batch)+'ep'+str(epoch1)+'.npy'
+        #######np.save(filen, self.z.cpu().detach().numpy()) 
+        
+        ####filen = './marmousi/ZZConstant' + str(batch)+'ep'+str(epoch1)+'.npy'
+        ######np.save(filen, self.z.cpu().detach().numpy())
+        
+        ########filen = './marmousi/MT3M' + str(batch)+'ep'+str(epoch1)+'.npy'
+        ##########np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        
+        ####filen = './marmousi/FinalInvConstant' + str(batch)+'ep'+str(epoch1)+'.npy'
+        ######np.save(filen, self.fake_B.cpu().detach().numpy()) 
+        
+        # if (epoch1 > lstart):
+        #      filen = './deepwave/fake29Sep' + \
+        #          str(batch)+'ep'+str(epoch1)+'.npy'
+        #      np.save(filen, self.fake_B.cpu().detach().numpy())
+        #      filen = './deepwave/realA29Sep' + \
+        #          str(batch)+'ep'+str(epoch1)+'.npy'
+        #      np.save(filen, self.real_A.cpu().detach().numpy())
+        #      filen = './deepwave/realB29Sep' + \s
+        #          str(batch)+'ep'+str(epoch1)+'.npy'
+        #      np.save(filen, self.real_B.cpu().detach().numpy())
+        #     filen = './deepwave/fakeData11Sep' + \
+        #            str(batch)+'ep'+str(epoch1)+'.npy'
+        #     np.save(filen, self.fake_BD.cpu().detach().numpy())
+
+        lambda1 = 1
+        lambda2 = 0
+        if (epoch1>lstart):
+            lambda1 = 0.5
+            lambda2 = 0.5
+            
+
+        ######self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        #####self.loss_G = lambda2 * self.loss_M1_MSE
+        ########self.loss_G.backward()
+        ###grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
+        ###grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
+        ###self.fake_B.backward(grad) #switch on for physics based fwi
+        
+        #############filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi
+        
+        #######np.save(filen, self.fake_BD.cpu().detach().numpy())  #switch on physics based fwi
+        #if (epoch1 == 52):
+        #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
+        #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+
 
     def optimize_parameters(self, epoch):
         self.forward()                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_GKL(epoch)                   # calculate graidents for G
+        self.backward_G11(epoch)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
