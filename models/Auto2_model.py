@@ -258,7 +258,7 @@ class Auto2Model(BaseModel):
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
 
-    def optimize_parameters(self, epoch):
+    def optimize_parameters(self, epoch, batch, lstart):
         self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
