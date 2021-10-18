@@ -253,7 +253,7 @@ class Auto2Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))
         
-        filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        filen = './marmousi/Gr1ad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
