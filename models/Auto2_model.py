@@ -246,7 +246,7 @@ class Auto2Model(BaseModel):
         ###self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
         ##self.loss_G.backward()
-        grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
+        #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         self.fake_B.backward(grad) #switch on for physics based fwi
         
