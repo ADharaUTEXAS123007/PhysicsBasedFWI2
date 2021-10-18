@@ -2244,7 +2244,7 @@ class Auto_Net(nn.Module):
         
     def forward(self, inputs1, lstart, epoch1):
         label_dsp_dim = (101,101)
-        down1  = self.down1(inputs1)
+        down1  = self.down1(inputs1[:,:,1:800:2,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)

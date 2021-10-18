@@ -135,17 +135,19 @@ class Auto2Model(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
-    def forward(self):
+    def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:800:2, :]
-        [self.fake_B,self.grad] = self.netG(self.real_A)  # G(A)
+        #netin1 = self.real_A[:, :, 1:800:2, :]
+        [self.fake_B,self.grad] = self.netG(self.real_A,lstart,epoch1)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
-        netin1 = self.real_A[:, :, 1:800:2, :]
-        [self.fake_BT,self.gradT] = self.netG(self.real_A)  # G(A)
+        False_lstart = 1
+        False_epoch = -1
+        #netin1 = self.real_A[:, :, 1:800:2, :]
+        [self.fake_BT,self.gradT] = self.netG(self.real_A,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -257,10 +259,10 @@ class Auto2Model(BaseModel):
 
 
     def optimize_parameters(self, epoch):
-        self.forward()                   # compute fake images: G(A)
+        self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch)                   # calculate graidents for G
+        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
         self.optimizer_G.step()             # udpate G's weights
 
     def compute_loss_only(self):
