@@ -2256,6 +2256,8 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
+        
+        grad = 0*f1
         if (epoch1 > lstart):
             grad = self.prop(inputs1, f1, lstart, epoch1)
         #result = torch.flatten(f1, start_dim=1)
