@@ -2288,7 +2288,7 @@ class Auto_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
         
-        net1out1 = vel * 100
+        net1out1 = 2000 + vel*(4500-2000)
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
