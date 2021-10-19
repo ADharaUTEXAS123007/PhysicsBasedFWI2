@@ -2440,6 +2440,7 @@ class Auto_Net(nn.Module):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
+        print("shape of inputs :", np.shape(inputs))
         np.save('./marmousi/inputs.npy',inputs.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
