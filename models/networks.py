@@ -2416,7 +2416,7 @@ class Auto_Net(nn.Module):
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_rcv_amps_pred = batch_rcv_amps_pred 
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -2443,7 +2443,7 @@ class Auto_Net(nn.Module):
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = net1out1/100
-        net1out1.grad = net1out1.grad/100  
+        #net1out1.grad = net1out1.grad/100  
                  
         return net1out1.grad
     
