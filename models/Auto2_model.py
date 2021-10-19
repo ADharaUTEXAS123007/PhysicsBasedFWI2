@@ -251,7 +251,7 @@ class Auto2Model(BaseModel):
         
         #filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.fake_B.grad)  #switch on physics based fwi
-        print("shape of fake B grad :", np.shape(self.fake_B.grad))
+        print("shape of fake B grad :", self.fake_B.grad)
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         self.fake_B.backward(self.grad) #switch on for physics based fwi
