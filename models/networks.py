@@ -2288,6 +2288,7 @@ class Auto_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
         
+        
         net1out1 = 2000 + vel*(4500-2000)
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2439,7 +2440,7 @@ class Auto_Net(nn.Module):
                     #epoch_loss += loss.item()
                     #optimizer2.step()
         #if (epoch1 == 52): 
-        #np.save('./marmousi/netgrad.npy',model2.cpu().detach().numpy())
+        np.save('./marmousi/inputs.npy',inputs.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
