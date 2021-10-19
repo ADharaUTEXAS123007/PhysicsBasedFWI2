@@ -245,6 +245,9 @@ class Auto2Model(BaseModel):
             lambda2 = 0.5
             
         self.fake_B.retain_grad()
+        maxb = torch.max(torch.abs(self.fake_B.grad))
+        maxg = torch.max(torch.abs(self.grad))
+        
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
         self.loss_G.backward(retain_graph=True)
@@ -255,7 +258,7 @@ class Auto2Model(BaseModel):
         #print("shape of fake B grad :", self.fake_B.grad)
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-        self.fake_B.backward(self.grad) #switch on for physics based fwi
+        self.fake_B.backward(self.grad*maxb/maxg) #switch on for physics based fwi
         
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))       

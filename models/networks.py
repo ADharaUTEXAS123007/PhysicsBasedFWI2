@@ -2435,7 +2435,7 @@ class Auto_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[0:20,:] = 0
+                    net1out1.grad[0:15,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
@@ -2446,7 +2446,7 @@ class Auto_Net(nn.Module):
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
-        net1out1.grad = net1out1.grad/(4500-2000) 
+        #net1out1.grad = net1out1.grad/(4500-2000) 
                  
         return net1out1.grad
     
