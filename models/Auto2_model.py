@@ -245,12 +245,14 @@ class Auto2Model(BaseModel):
             lambda2 = 0.5
             
         self.fake_B.retain_grad()
-        maxb = torch.max(torch.abs(self.fake_B.grad))
-        maxg = torch.max(torch.abs(self.grad))
+
         
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
         self.loss_G.backward(retain_graph=True)
+        
+        maxb = torch.max(torch.abs(self.fake_B.grad))
+        maxg = torch.max(torch.abs(self.grad))
         
         #self.fake_B.register_hook(print)
         filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
