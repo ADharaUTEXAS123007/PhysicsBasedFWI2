@@ -2446,6 +2446,7 @@ class Auto_Net(nn.Module):
         #print("shape of inputs :", np.shape(inputs))
         np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
+        np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
