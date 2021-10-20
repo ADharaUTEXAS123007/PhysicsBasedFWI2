@@ -264,6 +264,8 @@ class Auto2Model(BaseModel):
         #print("shape of fake B grad :", self.fake_B.grad)
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
+        print("shape of self grad :", np.shape(self.grad))
+        
         self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
