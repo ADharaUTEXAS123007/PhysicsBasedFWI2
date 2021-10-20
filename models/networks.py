@@ -2323,7 +2323,7 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 4
-        num_epochs = 1
+        num_epochs = 200
         if (epoch1 > lstart):
             num_epochs = 200
         #if (epoch1 > 50):
@@ -2396,8 +2396,8 @@ class Auto_Net(nn.Module):
                 receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
         
                 for it in range(num_batches):
-                    if (epoch1 > lstart):
-                        optimizer2.zero_grad()
+                    #if (epoch1 > lstart):
+                    optimizer2.zero_grad()
                     model2 = net1out1.clone()
                     model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
@@ -2409,6 +2409,7 @@ class Auto_Net(nn.Module):
                     #print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
                     batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
+                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
                     batch_x_s = x_s[it::num_batches].to(devicek)
                     ##################batch_x_s = x_s[it::num_batches]
                     #print("shape of batch src amps")
@@ -2421,7 +2422,6 @@ class Auto_Net(nn.Module):
                         batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
@@ -2442,7 +2442,7 @@ class Auto_Net(nn.Module):
                     net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
-                    #optimizer2.step()
+                    optimizer2.step()
         #if (epoch1 == 52): 
         #print("shape of inputs :", np.shape(inputs))
         np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
