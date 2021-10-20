@@ -244,19 +244,19 @@ class Auto2Model(BaseModel):
             lambda1 = 0.5
             lambda2 = 0.5
             
-        self.fake_B.retain_grad()
+        ##self.fake_B.retain_grad()
 
         
-        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        ###self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
-        self.loss_G.backward(retain_graph=True)
+        ####self.loss_G.backward(retain_graph=True)
         
-        maxb = torch.max(torch.abs(self.fake_B.grad))
+        ##maxb = torch.max(torch.abs(self.fake_B.grad))
         
-        if (epoch1>lstart):
-            maxg = torch.max(torch.abs(self.grad))
+        ##if (epoch1>lstart):
+        ##    maxg = torch.max(torch.abs(self.grad))
         
-            self.grad = self.grad*maxb/maxg
+            ##self.grad = self.grad*maxb/maxg
         
         #self.fake_B.register_hook(print)
         #filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
@@ -264,7 +264,7 @@ class Auto2Model(BaseModel):
         #print("shape of fake B grad :", self.fake_B.grad)
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-            self.fake_B.backward(self.grad) #switch on for physics based fwi
+        self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
