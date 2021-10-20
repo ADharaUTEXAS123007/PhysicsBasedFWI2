@@ -2243,8 +2243,8 @@ class Auto_Net(nn.Module):
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        label_dsp_dim = (101,101)
-        down1  = self.down1(inputs1[:,:,1:800:2,:])
+        label_dsp_dim = (151,201)
+        down1  = self.down1(inputs1[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -2297,17 +2297,17 @@ class Auto_Net(nn.Module):
         devicek = net1out1.get_device()
 
         
-        freq = 15
+        freq = 14
         dx = 10
-        nt = 800
-        dt = 0.0015
-        num_shots = 10
-        num_receivers_per_shot = 101
+        nt = 4001
+        dt = 0.001
+        num_shots = 16
+        num_receivers_per_shot = 100
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 101 * dx / num_shots
-        receiver_spacing = 101 * dx / num_receivers_per_shot
+        source_spacing = 201 * dx / num_shots
+        receiver_spacing = 201 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2320,7 +2320,7 @@ class Auto_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 4
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
@@ -2356,7 +2356,7 @@ class Auto_Net(nn.Module):
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
         mat2 = mat2 * min1
-        mat2 = torch.clamp(mat2,min=2000,max=4500)
+        mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
@@ -2396,7 +2396,7 @@ class Auto_Net(nn.Module):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=2000,max=4500)
+                    model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
