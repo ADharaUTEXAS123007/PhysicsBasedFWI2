@@ -2325,7 +2325,7 @@ class Auto_Net(nn.Module):
         num_batches = 4
         num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 1
+            num_epochs = 200
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
@@ -2381,19 +2381,20 @@ class Auto_Net(nn.Module):
 
         #print("shape of mat2 :", np.shape(mat2))
         
-        #Shuffle shot coordinates
-        idx = torch.randperm(num_shots)
-        x_s = x_s.view(-1,2)[idx].view(x_s.size())
-        #RB Shuffle true's seismograms sources with same random values
-        rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
-        #RB Shuffle direct wave seismograms sources with the same random values
-        receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
 
         if (epoch1 > lstart):
             net1out1.requires_grad = True
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
+                #Shuffle shot coordinates
+                idx = torch.randperm(num_shots)
+                x_s = x_s.view(-1,2)[idx].view(x_s.size())
+                #RB Shuffle true's seismograms sources with same random values
+                rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
+                #RB Shuffle direct wave seismograms sources with the same random values
+                receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
+        
                 for it in range(num_batches):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
@@ -2454,7 +2455,7 @@ class Auto_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad/(4500-2000) 
                  
-        return net1out1.grad
+        return net1out1
     
 
 
