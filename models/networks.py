@@ -2296,6 +2296,7 @@ class Auto_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         devicek = net1out1.get_device()
+        net1out1[0:26,:] = 1500.0
 
         
         freq = 14
@@ -2338,7 +2339,7 @@ class Auto_Net(nn.Module):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        receiver_amplitudes_true = inputs[0,:,:,:]/10
+        receiver_amplitudes_true = inputs[0,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         receiver_amplitudes_true = receiver_amplitudes_true.to(devicek)
         #print("shape of receiver amplitudes true")
@@ -2356,8 +2357,8 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1500
-        mat2 = torch.clamp(mat2,min=1500,max=3550)
+        mat2 = mat2 * 1500.0
+        #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
