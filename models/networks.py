@@ -2393,7 +2393,7 @@ class Auto_Net(nn.Module):
         for epoch in range(num_epochs):
                 #Shuffle shot coordinates
                 idx = torch.linspace(1,32,8)
-                idx = tensor.long(idx)
+                idx = torch.long(idx)
                 x_s = x_s.view(-1,2)[idx].view(x_s.size())
                 #RB Shuffle true's seismograms sources with same random values
                 rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
