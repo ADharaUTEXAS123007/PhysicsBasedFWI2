@@ -2252,7 +2252,7 @@ class Auto_Net(nn.Module):
         #center = self.center(down4)
         #up4    = self.up4(down4)
         up3    = self.up3(down4)
-        up2    = self.up2(down3)
+        up2    = self.up2(up3)
         up1    = self.up1(up2)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
@@ -2291,7 +2291,7 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel*100
+        net1out1 = vel*1000
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
