@@ -2392,7 +2392,7 @@ class Auto_Net(nn.Module):
 
         for epoch in range(num_epochs):
                 #Shuffle shot coordinates
-                idx = torch.randperm(num_shots)
+                idx = torch.linspace(1,32,8)
                 x_s = x_s.view(-1,2)[idx].view(x_s.size())
                 #RB Shuffle true's seismograms sources with same random values
                 rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
@@ -2444,7 +2444,7 @@ class Auto_Net(nn.Module):
                     net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
-                    optimizer2.step()
+                    #optimizer2.step()
         #if (epoch1 == 52): 
         #print("shape of inputs :", np.shape(inputs))
         #np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
