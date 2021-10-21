@@ -2407,8 +2407,7 @@ class Auto_Net(nn.Module):
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
-                    batch_src_amps = source_amplitudes_true.repeat(
-                        1, num_shots_per_batch, 1)
+                    batch_src_amps = source_amplitudes_true.repeat(1, num_shots_per_batch, 1)
                     #print("shape of batch src amps")
                     #print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
@@ -2422,8 +2421,7 @@ class Auto_Net(nn.Module):
                     batch_x_r = x_r[it::num_batches].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
-                    batch_rcv_amps_pred = prop(
-                        batch_src_amps, batch_x_s, batch_x_r, dt)
+                    batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
