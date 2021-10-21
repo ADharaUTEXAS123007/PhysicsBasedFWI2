@@ -2246,7 +2246,7 @@ class Auto_Net(nn.Module):
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1):
-        label_dsp_dim = (151,101)
+        label_dsp_dim = (151,201)
         down1  = self.down1(inputs1[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         #down3  = self.down3(down2)
