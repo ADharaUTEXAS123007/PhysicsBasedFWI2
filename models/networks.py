@@ -2326,7 +2326,7 @@ class Auto_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 4
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
@@ -2392,8 +2392,8 @@ class Auto_Net(nn.Module):
 
         for epoch in range(num_epochs):
                 #Shuffle shot coordinates
-                idx = torch.linspace(0,31,8)
-                idx = idx.type(torch.LongTensor)
+                idx = torch.randperm(num_shots)
+                #idx = idx.type(torch.LongTensor)
                 x_s = x_s.view(-1,2)[idx].view(x_s.size())
                 #RB Shuffle true's seismograms sources with same random values
                 rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
