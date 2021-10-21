@@ -2323,9 +2323,9 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 4
-        num_epochs = 200
+        num_epochs = 4
         if (epoch1 > lstart):
-            num_epochs = 200
+            num_epochs = 4
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
@@ -2449,13 +2449,13 @@ class Auto_Net(nn.Module):
         np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
         np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
         np.save('./marmousi/net1out1.npy',net1out1.cpu().detach().numpy())
-        #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
+        np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad/(4500-2000) 
                  
-        return net1out1
+        return net1out1.grad
     
 
 
