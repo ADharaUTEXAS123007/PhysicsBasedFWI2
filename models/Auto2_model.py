@@ -266,7 +266,7 @@ class Auto2Model(BaseModel):
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         #print("shape of self grad :", np.shape(self.grad))
         
-        self.grad = self.grad/1000
+        self.grad = self.grad
         self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
