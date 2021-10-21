@@ -2387,7 +2387,7 @@ class Auto_Net(nn.Module):
         
 
         if (epoch1 > lstart):
-            net1out1.requires_grad = True
+            #net1out1.requires_grad = True
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
