@@ -247,9 +247,9 @@ class Auto2Model(BaseModel):
         ##self.fake_B.retain_grad()
 
         
-        ###self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
-        ####self.loss_G.backward(retain_graph=True)
+        self.loss_G.backward()
         
         ##maxb = torch.max(torch.abs(self.fake_B.grad))
         
@@ -264,18 +264,18 @@ class Auto2Model(BaseModel):
         #print("shape of fake B grad :", self.fake_B.grad)
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-        print("shape of self grad :", np.shape(self.grad))
+        #print("shape of self grad :", np.shape(self.grad))
         
-        self.fake_B.backward(self.grad) #switch on for physics based fwi
+        #self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))       
-        filen = './marmousi/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-        np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
+        #filen = './marmousi/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-        filen = './marmousi/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-        np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
+        #filen = './marmousi/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
