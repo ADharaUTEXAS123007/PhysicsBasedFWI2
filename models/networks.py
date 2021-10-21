@@ -2291,7 +2291,7 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel*1000
+        net1out1 = vel
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
@@ -2453,7 +2453,7 @@ class Auto_Net(nn.Module):
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
-        net1out1.grad = net1out1.grad*1000
+        #net1out1.grad = net1out1.grad*1000
                  
         return net1out1.grad
     
