@@ -2377,7 +2377,7 @@ class Auto_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true
+        receiver_amplitudes_true = receiver_amplitudes_true-receiver_amplitudes_cte
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
 
@@ -2441,7 +2441,7 @@ class Auto_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    #net1out1.grad[0:26,:] = 0
+                    net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     optimizer2.step()
