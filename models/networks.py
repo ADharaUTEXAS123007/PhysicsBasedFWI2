@@ -2339,7 +2339,7 @@ class Auto_Net(nn.Module):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        receiver_amplitudes_true = inputs[0,:,:,:]
+        receiver_amplitudes_true = inputs[0,:,:,:]/10
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         receiver_amplitudes_true = receiver_amplitudes_true.to(devicek)
         #print("shape of receiver amplitudes true")
