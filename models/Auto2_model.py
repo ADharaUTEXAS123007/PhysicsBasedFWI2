@@ -256,7 +256,7 @@ class Auto2Model(BaseModel):
         if (epoch1>lstart):
             #maxg = torch.max(torch.abs(self.grad))
         
-            self.grad = self.grad
+            self.grad = self.grad/1000
         
         #self.fake_B.register_hook(print)
         #filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
