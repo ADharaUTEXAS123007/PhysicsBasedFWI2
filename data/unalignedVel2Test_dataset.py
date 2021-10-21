@@ -62,7 +62,7 @@ class UnalignedVel2TestDataset(BaseDataset):
         B_img = np.load(B_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
         A_img = 10*A_img
-        B_img = B_img/1000
+        B_img = B_img
 
         #A_img = np.expand_dims(A_img,0)
         B_img = np.expand_dims(B_img,0)
