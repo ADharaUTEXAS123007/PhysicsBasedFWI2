@@ -2326,7 +2326,7 @@ class Auto_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 4
+        num_batches = 8
         num_epochs = 200
         if (epoch1 > lstart):
             num_epochs = 200
