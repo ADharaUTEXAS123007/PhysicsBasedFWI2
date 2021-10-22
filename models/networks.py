@@ -2308,7 +2308,7 @@ class Auto_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 32
+        num_shots = 16
         num_receivers_per_shot = 201
         num_sources_per_shot = 1
         num_dims = 2
