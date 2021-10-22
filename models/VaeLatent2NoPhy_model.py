@@ -350,7 +350,7 @@ class VaeLatent2NoPhyModel(BaseModel):
         #self.loss_G.backward()
         grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
         grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-        self.fake_B.backward(grad) #switch on for physics based fwi
+        self.fake_B.backward(grad/100) #switch on for physics based fwi
         
         #############filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi
         
