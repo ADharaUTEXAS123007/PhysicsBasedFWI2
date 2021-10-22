@@ -353,7 +353,10 @@ class VaeLatent2NoPhyModel(BaseModel):
         self.fake_B.backward(grad/100) #switch on for physics based fwi
         
         #############filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi
-        
+        if (epoch1 %1 0 == 0):
+            filen = './marmousi/Mart' + str(batch)+'ep'+str(epoch1)+'.npy'
+            np.save(filen, self.fake_BD.cpu().detach().numpy())
+            
         #######np.save(filen, self.fake_BD.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
