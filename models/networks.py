@@ -2295,7 +2295,8 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel*1000
+        #net1out1 = vel*1000
+        net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
@@ -2326,10 +2327,10 @@ class Auto_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 8
-        num_epochs = 200
+        num_batches = 2
+        num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 200
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
