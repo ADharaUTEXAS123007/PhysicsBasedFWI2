@@ -84,7 +84,7 @@ def get_scheduler(optimizer, opt):
     return scheduler
 
 
-def init_weights(net, init_type='xavier', init_gain=0.02):
+def init_weights(net, init_type='normal', init_gain=0.02):
     """Initialize network weights.
 
     Parameters:
