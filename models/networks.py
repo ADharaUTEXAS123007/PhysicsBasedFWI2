@@ -2260,6 +2260,9 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
+        f1     = f1*100
+        f1     = torch.clamp(f1, min=1500.0, max=3550.0)
+        f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
         
         grad = 0*f1
@@ -2294,13 +2297,13 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel*100
+        net1out1 = vel
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         devicek = net1out1.get_device()
-        net1out1[0:26,:] = 1500.0
+        #net1out1[0:26,:] = 1500.0
 
         
         freq = 14
