@@ -42,7 +42,7 @@ class Auto2Model(BaseModel):
         """
         # changing the default values to match the pix2pix paper (https://phillipi.github.io/pix2pix/)
         parser.set_defaults(norm='batch', netG='Auto',
-                            dataset_mode='unalignedVel2', ngf='32')
+                            dataset_mode='unalignedVelABCD2', ngf='32')
         if is_train:
             parser.set_defaults(pool_size=0, gan_mode='vanilla')
             parser.add_argument('--lambda_L1', type=float,
@@ -133,12 +133,14 @@ class Auto2Model(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
+        self.real_C = input['C'].to(self.device1)
+        self.real_D = input['D'].to(self.device1)  
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
-        [self.fake_B,self.grad] = self.netG(self.real_A,self.real_B,lstart,epoch1)  # G(A)
+        [self.fake_B,self.grad] = self.netG(self.real_A,self.real_C,lstart,epoch1)  # G(A)
         #filen = './marmousi/Gr1ad' + str(131)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_A.cpu().detach().numpy())  #switch on physics based fwi
         # print(np.shape(self.fake_B))
@@ -149,7 +151,7 @@ class Auto2Model(BaseModel):
         False_lstart = 1
         False_epoch = -1
         #netin1 = self.real_A[:, :, 1:800:2, :]
-        [self.fake_BT,self.gradT] = self.netG(self.real_A,self.real_B,False_lstart,False_epoch)  # G(A)
+        [self.fake_BT,self.gradT] = self.netG(self.real_A,self.real_C,False_lstart,False_epoch)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
