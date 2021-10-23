@@ -2227,10 +2227,11 @@ class Auto_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        #filters = [64, 128, 256, 512, 1024]
-        filters = [2, 4, 8, 16, 32]
+        filters = [64, 128, 256, 512, 1024]
+        #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
+        
         
         
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
@@ -2239,7 +2240,8 @@ class Auto_Net(nn.Module):
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-
+        self.decoder_input = nn.Linear(latent_dim, 4*250*51)
+        
         self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
@@ -2250,6 +2252,8 @@ class Auto_Net(nn.Module):
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1):
+        filters = [64, 128, 256, 512, 1024]
+        latent_dim = 8
         label_dsp_dim = (151,201)
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
@@ -2261,7 +2265,12 @@ class Auto_Net(nn.Module):
         #up2    = self.up2(up3)
         print("shape of down 4:", np.shape(down2))
         
-        up1    = self.up1(down2)
+        p = torch.randn([1,1,1,8])
+        
+        z = self.decoder_input(p)
+        z = z.view(-1, filters[1], 250, 51)
+    
+        up1    = self.up1(z)
         up1    = self.upff1(up1)
         up1    = self.upff2(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
