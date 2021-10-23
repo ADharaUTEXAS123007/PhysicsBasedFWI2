@@ -2248,7 +2248,7 @@ class Auto_Net(nn.Module):
         label_dsp_dim = (151,201)
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
-        down3  = self.down3(down2)
+        #down3  = self.down3(down2)
         #down4  = self.down4(down3)
         #center = self.center(down4)
         #up4    = self.up4(center)
@@ -2297,7 +2297,7 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel
+        net1out1 = vel*100
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2407,7 +2407,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1500,max=3550)
+                    #model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
