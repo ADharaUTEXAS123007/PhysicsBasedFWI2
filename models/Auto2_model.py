@@ -260,7 +260,8 @@ class Auto2Model(BaseModel):
         if (epoch1>lstart):
             #maxg = torch.max(torch.abs(self.grad))
         
-            self.grad = self.grad*100000000
+            self.fake_B.grad = None
+            self.grad = self.grad
             
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
@@ -274,7 +275,7 @@ class Auto2Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_B.backward(self.grad,create_graph=True) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
