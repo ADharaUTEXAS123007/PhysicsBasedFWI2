@@ -260,7 +260,7 @@ class Auto2Model(BaseModel):
         if (epoch1>lstart):
             #maxg = torch.max(torch.abs(self.grad))
         
-            self.fake_B.grad = None
+            #self.fake_B.grad = None
             self.grad = self.grad
             
             #maxg = torch.max(torch.abs(self.grad))
