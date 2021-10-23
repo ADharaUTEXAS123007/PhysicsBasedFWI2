@@ -2264,7 +2264,7 @@ class Auto_Net(nn.Module):
         
         grad = 0*f1
         if (epoch1 > lstart):
-            grad = self.prop(inputs1, f1, lstart, epoch1)
+            grad = self.prop(inputs2, f1, lstart, epoch1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2448,11 +2448,11 @@ class Auto_Net(nn.Module):
                     optimizer2.step()
         #if (epoch1 == 52): 
         #print("shape of inputs :", np.shape(inputs))
-        np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
-        np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
-        np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
-        np.save('./marmousi/net1out1.npy',net1out1.cpu().detach().numpy())
-        np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
+        #np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        #np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
+        #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
+        #np.save('./marmousi/net1out1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
