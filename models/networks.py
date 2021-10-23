@@ -3301,7 +3301,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         #devicek = net1out1.get_device()
         net1out1 = net1out1.to(devicek)
-        net1out1[0:26,:] = 1500.0
+        #######net1out1[0:26,:] = 1500.0
         
         freq = 14
         dx = 10
@@ -3403,7 +3403,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     if (epoch1 > lstart):
                         optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1500,max=3550)
+                    model2 = torch.clamp(net1out1,min=2400,max=5500)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -3426,7 +3426,8 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    #batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -3443,7 +3444,7 @@ class VaeLatent2NoPhy_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[0:26,:] = 0
+                    ##########net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
