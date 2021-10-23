@@ -2251,7 +2251,7 @@ class Auto_Net(nn.Module):
         self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
         self.final   = nn.ReLU(inplace=True)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1):
+    def forward(self, inputs1, inputs2, lstart, epoch1, p):
         filters = [64, 128, 256, 512, 1024]
         latent_dim = 8
         label_dsp_dim = (151,201)
@@ -2265,7 +2265,7 @@ class Auto_Net(nn.Module):
         #up2    = self.up2(up3)
         print("shape of down 4:", np.shape(down2))
         
-        p = torch.randn([1,1,1,8])
+        #p = torch.randn([1,1,1,8])
         
         z = self.decoder_input(p)
         z = z.view(-1, filters[1], 250, 51)
