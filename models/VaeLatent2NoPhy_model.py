@@ -347,15 +347,15 @@ class VaeLatent2NoPhyModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        #self.loss_G.backward()
-        grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
-        grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-        self.fake_B.backward(grad/100) #switch on for physics based fwi
+        self.loss_G.backward()
+        ##grad = torch.unsqueeze(torch.unsqueeze(self.fake_BD,0),1) #switch on for physics based fwi
+        ##grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
+        ##self.fake_B.backward(grad/100) #switch on for physics based fwi
         
         #############filen = './marmousi/Grad' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi
-        if (epoch1%50 == 0):
-            filen = './marmousi/Mart2800' + str(batch)+'ep'+str(epoch1)+'.npy'
-            np.save(filen, self.fake_B.cpu().detach().numpy())
+        #if (epoch1%50 == 0):
+        #    filen = './marmousi/Mart2800' + str(batch)+'ep'+str(epoch1)+'.npy'
+        #    np.save(filen, self.fake_B.cpu().detach().numpy())
             
         #######np.save(filen, self.fake_BD.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
