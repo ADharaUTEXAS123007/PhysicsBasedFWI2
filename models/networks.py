@@ -2230,11 +2230,15 @@ class Auto_Net(nn.Module):
         #filters = [64, 128, 256, 512, 1024]
         filters = [2, 4, 8, 16, 32]
         
+        latent_dim = 8
+        
+        
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
+
 
         self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
@@ -2250,11 +2254,13 @@ class Auto_Net(nn.Module):
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         #down3  = self.down3(down2)
-        #down4  = self.down4(down3)
+        #down4  = self.down4(down3)s
         #center = self.center(down4)
         #up4    = self.up4(center)
         #up3    = self.up3(up4)
         #up2    = self.up2(up3)
+        print("shape of down 4:", np.shape(down2))
+        
         up1    = self.up1(down2)
         up1    = self.upff1(up1)
         up1    = self.upff2(up1)
