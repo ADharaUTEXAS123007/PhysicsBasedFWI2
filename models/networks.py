@@ -2296,8 +2296,8 @@ class Auto_Net(nn.Module):
     def prop(self, inputs, vel, lstart, epoch1):
         
         
-        #net1out1 = 2000 + vel*(4500-2000)
-        net1out1 = vel*100
+        net1out1 = 1500 + vel*(3550-1500)
+        #net1out1 = vel*100
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
