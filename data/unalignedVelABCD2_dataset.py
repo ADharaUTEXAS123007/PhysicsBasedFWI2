@@ -75,10 +75,10 @@ class UnalignedVelABCD2Dataset(BaseDataset):
         A_img = A_img/100
         B_img = B_img/100
         #C_img = C_img
-        #r = random.randint(0,1)
-        #if (r==0):
-        #    A_img = -1*A_img
-        #    B_img = -1*B_img
+        r = random.randint(0,1)
+        if (r==0):
+            A_img = np.fliplr(A_img)
+            B_img = np.fliplr(B_img)
 
 
         A_img = np.expand_dims(A_img,0)
