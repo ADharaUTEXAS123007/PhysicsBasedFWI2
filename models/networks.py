@@ -2232,8 +2232,8 @@ class Auto_Net(nn.Module):
         
         latent_dim = 8
 
-        # self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        # self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         # self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         # self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
