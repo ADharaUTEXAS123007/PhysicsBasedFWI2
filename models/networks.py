@@ -2277,7 +2277,7 @@ class Auto_Net(nn.Module):
         f1     = self.f1(up1)
         f1     = self.final(f1)
         f1     = torch.add(f1,lowf)
-        f1     = 1500 + f1*(3550-1500)
+        #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
         #f1     = torch.clamp(f1, min=1500.0, max=3550.0)
         #f1[:,:,0:26,:] = 1500.0
@@ -2314,8 +2314,8 @@ class Auto_Net(nn.Module):
     def prop(self, inputs, vel, lstart, epoch1):
         
         
-        #net1out1 = 1500 + vel*(3550-1500)
-        net1out1 = vel
+        net1out1 = 1500 + vel*(3550-1500)
+        #net1out1 = vel
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2348,9 +2348,9 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 2
-        num_epochs = 1
+        num_epochs = 200
         if (epoch1 > lstart):
-            num_epochs = 1
+            num_epochs = 200
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
