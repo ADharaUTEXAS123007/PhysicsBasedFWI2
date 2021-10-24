@@ -141,6 +141,7 @@ class Auto2Model(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         [self.fake_B,self.grad] = self.netG(self.real_A,self.real_C,lstart,epoch1,self.real_D,self.real_B)  # G(A)
+        self.fake_B = torch.clamp(self.fake_B,min=1.500,max=3.550)
         #filen = './marmousi/Gr1ad' + str(131)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_A.cpu().detach().numpy())  #switch on physics based fwi
         # print(np.shape(self.fake_B))
@@ -152,6 +153,7 @@ class Auto2Model(BaseModel):
         False_epoch = -1
         #netin1 = self.real_A[:, :, 1:800:2, :]
         [self.fake_BT,self.gradT] = self.netG(self.real_A,self.real_C,False_lstart,False_epoch,self.real_D,self.real_B)  # G(A)
+        self.fake_BT = torch.clamp(self.fake_BT,min=1.500,max=3.550)
         self.real_BT = self.real_B
 
     def backward_G(self):
