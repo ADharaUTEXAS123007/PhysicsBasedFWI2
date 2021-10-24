@@ -2232,11 +2232,11 @@ class Auto_Net(nn.Module):
         
         latent_dim = 512
 
-        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        # self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        # self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        # self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        # self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
         self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51)
         
@@ -2255,8 +2255,8 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 512
         label_dsp_dim = (151,201)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
-        down2  = self.down2(down1)
+        #down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        #down2  = self.down2(down1)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
@@ -2275,7 +2275,7 @@ class Auto_Net(nn.Module):
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.f2(f1)
+        #f1     = self.f2(f1)
         #f1     = self.f3(f1)
         f1     = self.final(f1)
         f1     = torch.add(f1,lowf)
