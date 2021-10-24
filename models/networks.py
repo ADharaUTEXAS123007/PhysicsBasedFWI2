@@ -2105,7 +2105,7 @@ class unetConv2(nn.Module):
                                        nn.ReLU(inplace=True),)
     def forward(self, inputs):
         outputs = self.conv1(inputs)
-        #outputs = self.conv2(outputs)
+        outputs = self.conv2(outputs)
         return outputs
 
 
