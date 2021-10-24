@@ -2249,7 +2249,7 @@ class Auto_Net(nn.Module):
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f2      =  nn.Conv2d(1,1,1)
         self.f3      =  nn.Conv2d(1,1,1)
-        self.final   = nn.Sigmoid()
+        self.final   =  nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
