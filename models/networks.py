@@ -2230,7 +2230,7 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 512
+        latent_dim = 128
 
         # self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         # self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2253,7 +2253,7 @@ class Auto_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 512
+        latent_dim = 128
         label_dsp_dim = (151,201)
         #down1  = self.down1(inputs2[:,:,1:4001:4,:])
         #down2  = self.down2(down1)
