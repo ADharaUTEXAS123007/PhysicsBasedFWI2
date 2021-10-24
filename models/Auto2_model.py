@@ -246,9 +246,9 @@ class Auto2Model(BaseModel):
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
-            lambda2 = 0.5 
+            lambda2 = 0.5
             
-        self.fake_B.retain_grad()
+        #self.fake_B.retain_grad()
 
         
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
