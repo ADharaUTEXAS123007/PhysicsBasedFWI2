@@ -2268,7 +2268,7 @@ class Auto_Net(nn.Module):
         #p = torch.randn([1,1,1,8])
         
         z = self.decoder_input(p)
-        z = z.view(-1, filters[1], 250, 51)
+        z = z.view(-1, filters[3], 250, 51)
     
         up1    = self.up3(z)
         up1    = self.up2(up1)
