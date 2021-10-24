@@ -2251,7 +2251,7 @@ class Auto_Net(nn.Module):
         self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
         self.final   = nn.ReLU(inplace=True)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, p):
+    def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [64, 128, 256, 512, 1024]
         latent_dim = 8
         label_dsp_dim = (151,201)
@@ -2276,6 +2276,7 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
+        f1     = torch.add(f1,lowf)
         #f1     = f1*100
         #f1     = torch.clamp(f1, min=1500.0, max=3550.0)
         #f1[:,:,0:26,:] = 1500.0
@@ -2423,7 +2424,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    #model2 = torch.clamp(net1out1,min=1500,max=3550)
+                    model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
