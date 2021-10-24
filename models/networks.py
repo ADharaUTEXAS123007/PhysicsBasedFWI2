@@ -2248,6 +2248,7 @@ class Auto_Net(nn.Module):
         self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f2      =  nn.Conv2d(1,1,1)
+        self.f3      =  nn.Conv2d(1,1,1)
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
@@ -2275,6 +2276,7 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.f2(f1)
+        f1     = self.f3(f1)
         f1     = self.final(f1)
         f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
@@ -2348,9 +2350,9 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 2
-        num_epochs = 200
+        num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 200
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
