@@ -2240,7 +2240,7 @@ class Auto_Net(nn.Module):
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.decoder_input = nn.Linear(latent_dim, filters[1]*250*51)
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51)
         
         self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
@@ -2270,9 +2270,9 @@ class Auto_Net(nn.Module):
         z = self.decoder_input(p)
         z = z.view(-1, filters[1], 250, 51)
     
-        up1    = self.up1(z)
-        up1    = self.upff1(up1)
-        up1    = self.upff2(up1)
+        up1    = self.up3(z)
+        up1    = self.up2(up1)
+        up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
