@@ -2216,7 +2216,7 @@ class autoUp(nn.Module):
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return outputs2
+        return self.conv2(outputs2)
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
@@ -2224,7 +2224,7 @@ class Auto_Net(nn.Module):
         super(Auto_Net, self).__init__()
         self.is_deconv     = True
         self.in_channels   = outer_nc
-        self.is_batchnorm  = True
+        self.is_batchnorm  = False
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
