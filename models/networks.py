@@ -2094,10 +2094,10 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout())
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout())
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True),)
@@ -2348,9 +2348,9 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 2
-        num_epochs = 1
+        num_epochs = 200
         if (epoch1 > lstart):
-            num_epochs = 1
+            num_epochs = 200
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
