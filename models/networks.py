@@ -2146,7 +2146,7 @@ class NewU_Net(nn.Module):
         super(NewU_Net, self).__init__()
         self.is_deconv     = True
         self.in_channels   = outer_nc
-        self.is_batchnorm  = True
+        self.is_batchnorm  = False
         self.n_classes     = inner_nc
         
         filters = [64, 128, 256, 512, 1024]
