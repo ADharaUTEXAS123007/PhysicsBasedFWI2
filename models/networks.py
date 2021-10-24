@@ -2295,7 +2295,7 @@ class Auto_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f4, grad
+        return f1, grad
     
     # Initialization of Parameters
     def  _initialize_weights(self):
