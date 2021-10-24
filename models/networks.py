@@ -2227,7 +2227,7 @@ class Auto_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [64, 128, 256, 512, 1024]
+        filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
@@ -2274,8 +2274,8 @@ class Auto_Net(nn.Module):
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
+        f1     = self.f2(f1)
         f1     = self.final(f1)
-        f2     = self.final(f2)
         f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
