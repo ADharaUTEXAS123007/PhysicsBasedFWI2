@@ -2244,11 +2244,11 @@ class Auto_Net(nn.Module):
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
-        self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
-        self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
+        #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
+        #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f2      =  nn.Conv2d(1,1,1)
-        self.f3      =  nn.Conv2d(1,1,1)
+        #self.f2      =  nn.Conv2d(1,1,1)
+        #self.f3      =  nn.Conv2d(1,1,1)
         self.final   = nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
@@ -2263,7 +2263,7 @@ class Auto_Net(nn.Module):
         #up4    = self.up4(center)
         #up3    = self.up3(up4)
         #up2    = self.up2(up3)
-        print("shape of down 4:", np.shape(down2))
+        #print("shape of down 4:", np.shape(down2))
         
         #p = torch.randn([1,1,1,8])
         
