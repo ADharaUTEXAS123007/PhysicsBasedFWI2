@@ -2255,15 +2255,17 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (151,201)
-        #down1  = self.down1(inputs2[:,:,1:4001:4,:])
-        #down2  = self.down2(down1)
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        down2  = self.down2(down1)
+        result = torch.flatten(down2, start_dim=1)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
         #up4    = self.up4(center)
         #up3    = self.up3(up4)
         #up2    = self.up2(up3)
-        #print("shape of down 4:", np.shape(down2))
+        print("shape of down 4:", np.shape(down2))
+        print("shape of result:", np.shape(result))
         
         #p = torch.randn([1,1,1,8])
         
