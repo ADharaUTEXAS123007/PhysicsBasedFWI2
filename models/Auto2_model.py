@@ -261,7 +261,7 @@ class Auto2Model(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            self.grad = self.grad*(3550-1400)
+            self.grad = self.grad
             
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
