@@ -2259,7 +2259,7 @@ class Auto_Net(nn.Module):
         down2  = self.down2(down1)
         result = torch.flatten(down2, start_dim=1)
         
-        p = self.decoder_input1(result, p)
+        p = self.decoder_input1(result)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
