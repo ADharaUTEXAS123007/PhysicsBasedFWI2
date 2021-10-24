@@ -2283,7 +2283,7 @@ class Auto_Net(nn.Module):
         #f1     = f1*100
         #f1     = torch.clamp(f1, min=15.0, max=35.5)
         with torch.no_grad():
-            f4[:] = f1.clamp(15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
+            f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
         
