@@ -2216,13 +2216,13 @@ class autoUp(nn.Module):
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return self.conv2(outputs2)
+        return self.conv(outputs2)
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Auto_Net, self).__init__()
-        self.is_deconv     = True
+        self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
