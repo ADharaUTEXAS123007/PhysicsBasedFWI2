@@ -255,7 +255,7 @@ class Auto2Model(BaseModel):
         
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
-        self.loss_G.backward(retain_graph=True)
+        #####self.loss_G.backward(retain_graph=True)
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
@@ -266,7 +266,7 @@ class Auto2Model(BaseModel):
         
             #self.fake_B.grad = None
             self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
-            self.grad = tgm.image.gaussian_blur(self.grad, (3, 3), (1.5, 1.5))
+            self.grad = tgm.image.gaussian_blur(self.grad, (3, 3), (5, 5))
             ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
