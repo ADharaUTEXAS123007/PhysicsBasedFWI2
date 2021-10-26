@@ -2257,6 +2257,8 @@ class Auto_Net(nn.Module):
         label_dsp_dim = (101,101)
         down1  = self.down1(inputs2[:,:,1:800:2,:])
         down2  = self.down2(down1)
+        
+        print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down2, start_dim=1)
         
         p = self.decoder_input1(result)
