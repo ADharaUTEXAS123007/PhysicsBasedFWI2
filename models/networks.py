@@ -2277,7 +2277,8 @@ class Auto_Net(nn.Module):
         #p = torch.randn([1,1,1,8])
         
         z = self.decoder_input(p)
-        z = z.view(-1, filters[3], 250, 51)
+        #z = z.view(-1, filters[3], 250, 51)
+        z = z.view(-1, filters[3], 100, 26)
     
         up1    = self.up3(z)
         up1    = self.up2(up1)
@@ -2290,7 +2291,7 @@ class Auto_Net(nn.Module):
         #f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
-        f1     = torch.clamp(f1, min=1.50, max=3.55)
+        ###f1     = torch.clamp(f1, min=1.50, max=3.55) ##clamping for marmousi
         #with torch.no_grad():
         #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
