@@ -265,7 +265,7 @@ class Auto2Model(BaseModel):
         
             #self.fake_B.grad = None
             self.grad = self.grad*1000
-            self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
+            ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
         
