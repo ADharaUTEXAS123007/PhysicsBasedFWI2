@@ -2254,8 +2254,8 @@ class Auto_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (151,201)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        label_dsp_dim = (101,101)
+        down1  = self.down1(inputs2[:,:,1:800:2,:])
         down2  = self.down2(down1)
         result = torch.flatten(down2, start_dim=1)
         
@@ -2332,17 +2332,17 @@ class Auto_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 14
+        freq = 15
         dx = 10
-        nt = 4001
-        dt = 0.001
-        num_shots = 16
-        num_receivers_per_shot = 201
+        nt = 800
+        dt = 0.0015
+        num_shots = 10
+        num_receivers_per_shot = 101
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 201 * dx / num_shots
-        receiver_spacing = 201 * dx / num_receivers_per_shot
+        source_spacing = 101 * dx / num_shots
+        receiver_spacing = 101 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2471,7 +2471,7 @@ class Auto_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[0:26,:] = 0
+                    #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     optimizer2.step()
@@ -2694,7 +2694,7 @@ class Vae_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true 
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
 
@@ -2735,7 +2735,7 @@ class Vae_Net(nn.Module):
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
                     batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
