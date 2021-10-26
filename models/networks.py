@@ -2412,8 +2412,8 @@ class Auto_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true-receiver_amplitudes_cte
-        #receiver_amplitudes_true = receiver_amplitudes_true
+        #receiver_amplitudes_true = receiver_amplitudes_true-receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
 
@@ -2461,7 +2461,7 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
