@@ -243,7 +243,7 @@ class Auto2Model(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 0.000003
+        lambda1 = 0.0000003
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
