@@ -266,7 +266,8 @@ class Auto2Model(BaseModel):
         
             #self.fake_B.grad = None
             self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
-            self.grad = tgm.image.gaussian_blur(self.grad, (9, 9), (5, 5))
+            self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
+            ##self.grad[:,:,0:26,:] = 0
             ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
