@@ -11,7 +11,8 @@ from joblib import Parallel, delayed
 #import ray
 import time
 import os
-import scipy
+#import scipy
+import torchgeometry as tgm
 
 #from skimage import metrics
 
@@ -264,7 +265,7 @@ class Auto2Model(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            self.grad = self.grad*(10**5)
+            self.grad = self.grad*(10**6)   #####(10**5) works for 
             ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
