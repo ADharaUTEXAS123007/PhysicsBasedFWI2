@@ -243,7 +243,7 @@ class Auto2Model(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = (3*10**(-50))
+        lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
@@ -264,7 +264,7 @@ class Auto2Model(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            self.grad = self.grad*1000
+            self.grad = self.grad*(10**50)
             ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
             #maxg = torch.max(torch.abs(self.grad))
             #print("maxg :", maxg)
