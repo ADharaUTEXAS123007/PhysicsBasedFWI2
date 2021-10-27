@@ -51,6 +51,7 @@ if __name__ == '__main__':
     # create a dataset given opt.dataset_mode and other options
     dataset = create_dataset2(opt)
     # create a model given opt.model and other options
+    print("length of dataset :", len(dataset))
     model = create_model(opt)
     # regular setup: load and print networks; create schedulers
     model.setup(opt)
