@@ -127,7 +127,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #print(A.size())
         #print(B.size())
 
-        return {'A':A, 'B': B, 'C':C}
+        return {'A':A, 'B': B, 'C':C, 'A_paths': A_path, 'B_paths': B_path}
 
     def __len__(self):
         """Return the total number of images in the dataset.
