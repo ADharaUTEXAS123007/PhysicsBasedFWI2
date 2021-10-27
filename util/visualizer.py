@@ -238,7 +238,7 @@ class Visualizer():
             self.create_visdom_connections()
 
     # losses: same format as |losses| of plot_current_losses
-    def print_current_losses(self, epoch, iters, losses, t_comp, t_data):
+    def print_current_losses(self, epoch, iters, losses):
         """print current losses on console; also save the losses to the disk
 
         Parameters:
@@ -248,7 +248,7 @@ class Visualizer():
             t_comp (float) -- computational time per data point (normalized by batch_size)
             t_data (float) -- data loading time per data point (normalized by batch_size)
         """
-        message = '(epoch: %d, iters: %d, time: %.3f, data: %.3f) ' % (epoch, iters, t_comp, t_data)
+        message = '(epoch: %d, iters: %d) ' % (epoch, iters)
         for k, v in losses.items():
             message += '%s: %.3f ' % (k, v)
 
