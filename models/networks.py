@@ -21,7 +21,7 @@ import operator
 from functools import reduce
 from functools import partial
 from timeit import default_timer
-from unet_layers import unetConv2
+#from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
 
@@ -2094,15 +2094,15 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout2D(0.2))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout2D(0.2))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
-                                       nn.ReLU(inplace=True),)
+                                       nn.ReLU(inplace=True))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
-                                       nn.ReLU(inplace=True),)
+                                       nn.ReLU(inplace=True))
     def forward(self, inputs):
         outputs = self.conv1(inputs)
         outputs = self.conv2(outputs)
@@ -2114,11 +2114,13 @@ class unetDown(nn.Module):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
         self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
+        self.dropout = nn.Dropout2D(0.2)
+        
 
     def forward(self, inputs):
         outputs = self.conv(inputs)
         outputs = self.down(outputs)
-        return outputs
+        return self.dropout(outputs)
 
 
 class unetUp(nn.Module):
