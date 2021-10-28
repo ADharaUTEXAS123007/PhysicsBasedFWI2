@@ -2239,10 +2239,10 @@ class Auto_Net(nn.Module):
         # self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         # self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
-        ###self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
-        ###self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 151x200
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 151x200
+        self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
+        ######self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
+        #####self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         
         
         self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -2259,8 +2259,8 @@ class Auto_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (101,101)
-        down1  = self.down1(inputs2[:,:,1:800:2,:])
+        label_dsp_dim = (151,201)
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         
         #print("shape of down2 :", np.shape(down2))
@@ -2279,8 +2279,8 @@ class Auto_Net(nn.Module):
         #p = torch.randn([1,1,1,8])
         
         z = self.decoder_input(p)
-        #z = z.view(-1, filters[3], 250, 51)
-        z = z.view(-1, filters[3], 100, 26)
+        z = z.view(-1, filters[3], 250, 51) #for marmousi model
+        #z = z.view(-1, filters[3], 100, 26)
     
         up1    = self.up3(z)
         up1    = self.up2(up1)
@@ -2293,7 +2293,7 @@ class Auto_Net(nn.Module):
         #f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
-        f1     = torch.clamp(f1, min=2.0, max=4.5) ##clamping for marmousi
+        #f1     = torch.clamp(f1, min=2.0, max=4.5) ##clamping for marmousi
         #with torch.no_grad():
         #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
@@ -2340,17 +2340,17 @@ class Auto_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 15
+        freq = 14
         dx = 10
-        nt = 800
-        dt = 0.0015
-        num_shots = 10
-        num_receivers_per_shot = 101
+        nt = 4001
+        dt = 0.001
+        num_shots = 16
+        num_receivers_per_shot = 201
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 101 * dx / num_shots
-        receiver_spacing = 101 * dx / num_receivers_per_shot
+        source_spacing = 201 * dx / num_shots
+        receiver_spacing = 201 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2442,7 +2442,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=2000,max=4500)
+                    model2 = torch.clamp(net1out1,min=1500,max=3550)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
