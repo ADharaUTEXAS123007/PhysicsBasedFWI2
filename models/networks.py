@@ -2293,7 +2293,7 @@ class Auto_Net(nn.Module):
         #f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
-        #f1     = torch.clamp(f1, min=2.0, max=4.5) ##clamping for marmousi
+        f1     = torch.clamp(f1, min=1.5, max=3.55) ##clamping for marmousi
         #with torch.no_grad():
         #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
