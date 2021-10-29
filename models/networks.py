@@ -2364,9 +2364,9 @@ class Auto_Net(nn.Module):
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
         num_batches = 2
-        num_epochs = 400
+        num_epochs = 1
         if (epoch1 > lstart):
-            num_epochs = 400
+            num_epochs = 1
         #if (epoch1 > 50):
         #    num_epochs = 30
         #if (epoch1 > 80):
