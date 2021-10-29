@@ -2094,10 +2094,10 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout2D(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1,inplace=True))
+                                       nn.LeakyReLU(0.1,inplace=True),nn.Dropout2D(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True))
@@ -2114,13 +2114,13 @@ class unetDown(nn.Module):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
         self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
-        #self.dropout = nn.Dropout2d(0.2)
+        self.dropout = nn.Dropout2d(0.1)
         
 
     def forward(self, inputs):
         outputs = self.conv(inputs)
         outputs = self.down(outputs)
-        return outputs
+        return self.dropout(outputs)
 
 
 class unetUp(nn.Module):
