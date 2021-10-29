@@ -2290,7 +2290,7 @@ class Auto_Net(nn.Module):
         f1     = self.f2(f1)
         f1     = self.f3(f1)
         f1     = self.final(f1)
-        f1     = torch.add(f1,lowf)
+        #f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
         #f1     = f1*100
         #f1     = torch.clamp(f1, min=1.5, max=3.55) ##clamping for marmousi
