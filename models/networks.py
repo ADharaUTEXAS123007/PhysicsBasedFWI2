@@ -2239,10 +2239,10 @@ class Auto_Net(nn.Module):
         # self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         # self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
-        self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
-        ######self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
-        #####self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
+        #self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
+        #self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
+        self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         
         
         self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -2259,8 +2259,8 @@ class Auto_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (151,201)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        label_dsp_dim = (101,101)
+        down1  = self.down1(inputs2[:,:,1:800:2,:])
         down2  = self.down2(down1)
         
         #print("shape of down2 :", np.shape(down2))
@@ -2279,8 +2279,8 @@ class Auto_Net(nn.Module):
         #p = torch.randn([1,1,1,8])
         
         z = self.decoder_input(p)
-        z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        #z = z.view(-1, filters[3], 100, 26)
+        #z = z.view(-1, filters[3], 250, 51) #for marmousi model
+        z = z.view(-1, filters[3], 100, 26)
     
         up1    = self.up3(z)
         up1    = self.up2(up1)
