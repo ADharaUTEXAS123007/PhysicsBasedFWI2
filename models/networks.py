@@ -2265,7 +2265,7 @@ class Auto_Net(nn.Module):
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         
-        print("shape of down3 :", np.shape(self.down3))
+        print("shape of down3 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down2, start_dim=1)
