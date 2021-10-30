@@ -2245,7 +2245,7 @@ class Auto_Net(nn.Module):
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         #self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[2]*100*26, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         
         
