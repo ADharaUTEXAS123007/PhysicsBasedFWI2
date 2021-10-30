@@ -201,7 +201,7 @@ class Auto2Model(BaseModel):
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #1000 is the best model for vae
-        self.loss_M_MSE = self.criterionMSE(self.real_C, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         #self.loss_K_MSE = kld_loss/diff_size[0]
@@ -266,7 +266,7 @@ class Auto2Model(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            self.grad = self.grad*(10**4)   #####(10**5) works for marmousi model
+            self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
             #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
             ##self.grad[:,:,0:26,:] = 0
             ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
@@ -317,7 +317,7 @@ class Auto2Model(BaseModel):
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_C)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.fake_BT, self.real_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
