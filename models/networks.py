@@ -2113,12 +2113,16 @@ class unetDown(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
+        self.bn = nn.BatchNorm2d(out_size)
+        self.lr = nn.LeakyReLU(0.1,inplace=True)
         self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
         self.dropout = nn.Dropout2d(0.1)
         
 
     def forward(self, inputs):
         outputs = self.conv(inputs)
+        outputs = self.bn(outputs)
+        outputs = self.lr(outputs)
         outputs = self.down(outputs)
         return outputs
 
@@ -2237,16 +2241,15 @@ class Auto_Net(nn.Module):
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        
-        # self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         #self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[2]*50*13, filters[3]*100*26) #for marmousi 101x101
+        #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         
         
-        self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
+        #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
@@ -2254,7 +2257,6 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f2      =  nn.Conv2d(1,1,1)
-        self.f3      =  nn.Conv2d(1,1,1)
         self.final   =  nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
@@ -2264,8 +2266,9 @@ class Auto_Net(nn.Module):
         down1  = self.down1(inputs2[:,:,1:800:2,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
+        down4  = self.down4(down3)
         
-        print("shape of down3 :", np.shape(down3))
+        print("shape of down3 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down2, start_dim=1)
@@ -2292,7 +2295,6 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.f2(f1)
-        f1     = self.f3(f1)
         f1     = self.final(f1)
         #f1     = torch.add(f1,lowf)
         #f1     = 1500 + f1*(3550-1500)
