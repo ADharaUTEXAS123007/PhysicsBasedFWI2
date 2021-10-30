@@ -2120,7 +2120,7 @@ class unetDown(nn.Module):
     def forward(self, inputs):
         outputs = self.conv(inputs)
         #outputs = self.bn(outputs)
-        outputs = self.lr(outputs)
+        #outputs = self.lr(outputs)
         outputs = self.down(outputs)
         return outputs
 
