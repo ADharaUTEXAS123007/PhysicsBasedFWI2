@@ -2269,7 +2269,7 @@ class Auto_Net(nn.Module):
         print("shape of down2 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down2, start_dim=1)
+        result = torch.flatten(down3, start_dim=1)
         
         p = self.decoder_input1(result)
         #down3  = self.down3(down2)
