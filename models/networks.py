@@ -2113,7 +2113,7 @@ class unetDown(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
-        #self.bn = nn.BatchNorm2d(out_size)
+        self.bn = nn.BatchNorm2d(out_size)
         self.lr = nn.LeakyReLU(0.1,inplace=True)
         self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
         #self.dropout = nn.Dropout2d(0.1)
