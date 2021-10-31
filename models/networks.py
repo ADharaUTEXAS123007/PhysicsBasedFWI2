@@ -2294,6 +2294,8 @@ class Auto_Net(nn.Module):
         f1     = self.f1(up1)
         f1     = self.f2(f1)
         f1     = self.final(f1)
+        
+        f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         #f1     = 1.6 + f1*(2.3-1.6)
         #f1     = f1*100
