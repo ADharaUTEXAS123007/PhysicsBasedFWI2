@@ -2337,7 +2337,7 @@ class Auto_Net(nn.Module):
         
         
         #net1out1 = 1600 + vel*(2300-1600)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
