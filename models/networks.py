@@ -2354,13 +2354,13 @@ class Auto_Net(nn.Module):
         dx = 10
         nt = 800
         dt = 0.0015
-        num_shots = 12
-        num_receivers_per_shot = 101
+        num_shots = 8
+        num_receivers_per_shot = 71
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 101 * dx / num_shots
-        receiver_spacing = 101 * dx / num_receivers_per_shot
+        source_spacing = 71 * dx / num_shots
+        receiver_spacing = 71 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2373,7 +2373,7 @@ class Auto_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
