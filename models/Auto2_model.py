@@ -157,6 +157,7 @@ class Auto2Model(BaseModel):
         [self.fake_BT,self.gradT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.real_B,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
+        
 
     def backward_G(self):
         """Calculate GAN and L1 loss for the generator"""
