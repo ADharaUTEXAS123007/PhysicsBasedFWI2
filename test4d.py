@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # no visdom display; the test code saves the results to a HTML file.
     opt.display_id = -1
     # create a dataset given opt.dataset_mode and other options
-    dataset = create_dataset2(opt)
+    dataset = create_dataset(opt)
     # create a model given opt.model and other options
     print("length of dataset :", len(dataset))
     model = create_model(opt)
