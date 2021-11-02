@@ -2226,7 +2226,7 @@ class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Auto_Net, self).__init__()
-        self.is_deconv     = False
+        self.is_deconv     = True
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
@@ -2344,7 +2344,7 @@ class Auto_Net(nn.Module):
         GPU_string='cuda:'+str(7)
         devicek = torch.device(GPU_string)
         #net1out1 = 1600 + vel*(2300-1600)
-        net1out1 = vel*1000
+        net1out1 = vel
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
