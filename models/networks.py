@@ -2241,7 +2241,8 @@ class Auto_Net(nn.Module):
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         #self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
-        self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
+        #self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
+        self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
@@ -2268,10 +2269,10 @@ class Auto_Net(nn.Module):
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
         
-        print("shape of down2 :", np.shape(down3))
+        #print("shape of down2 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down2, start_dim=1)
+        result = torch.flatten(down3, start_dim=1)
         
         #print("result shape :", np.shape(result))
         
