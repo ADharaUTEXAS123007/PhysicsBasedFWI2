@@ -74,8 +74,6 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #B_img = (B_img - 2000)/(4500 - 2000)
         #B_img = (B_img - 1600)/(2300 - 1600)
         #C_img = (C_img - 1600)/(2300 - 1600)
-        B_img = (B_img - 1600)/(2300 - 1600)
-        C_img = (C_img - 1600)/(2300 - 1600)
         A_img = A_img
         B_img = B_img
         A_img = A_img
