@@ -2289,11 +2289,11 @@ class Auto_Net(nn.Module):
         
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 250, 51)
+        #z = z.view(-1, filters[3], 250, 51)
     
         up1    = self.up3(z)
         
-        print("shape of up1 :", np.shape(up1))
+        #print("shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
