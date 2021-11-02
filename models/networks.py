@@ -2343,7 +2343,7 @@ class Auto_Net(nn.Module):
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
         #net1out1 = 1600 + vel*(2300-1600)
-        net1out1 = vel*10
+        net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
