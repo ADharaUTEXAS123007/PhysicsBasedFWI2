@@ -2262,8 +2262,8 @@ class Auto_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 512
-        label_dsp_dim = (71,71)
-        down1  = self.down1(inputs2[:,:,1:800:2,:])
+        label_dsp_dim = (151,201)
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)

@@ -143,7 +143,7 @@ class Auto2Model(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         [self.fake_B,self.grad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,self.real_C)  # G(A)
-        self.real_C = self.real_B
+        #self.real_C = self.real_B
         #self.real_B = self.real_C
         #self.fake_B = torch.clamp(self.fake_B,min=15.00,max=35.50)
         #filen = './marmousi/Gr1ad' + str(131)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
@@ -159,7 +159,7 @@ class Auto2Model(BaseModel):
         [self.fake_BT,self.gradT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.real_B,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
-        self.real_C = self.real_BT
+        #self.real_C = self.real_BT
         
 
     def backward_G(self):
@@ -205,7 +205,7 @@ class Auto2Model(BaseModel):
         #print("shape of real_C :", np.shape(self.real_C))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #1000 is the best model for vae
-        self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.real_C, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         #self.loss_K_MSE = kld_loss/diff_size[0]
@@ -321,7 +321,7 @@ class Auto2Model(BaseModel):
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.fake_BT, self.real_C)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
