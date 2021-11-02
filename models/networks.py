@@ -2243,7 +2243,7 @@ class Auto_Net(nn.Module):
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*250*51) #for marmousi 151x200
+        self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
@@ -2290,11 +2290,11 @@ class Auto_Net(nn.Module):
         
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 250, 51)
+        z = z.view(-1, filters[2], 500, 102)
     
-        up1    = self.up3(z)
-        print(" shape of up1 :", np.shape(up1))
-        up1    = self.up2(up1)
+        #up1    = self.up3(z)
+        #print(" shape of up1 :", np.shape(up1))
+        up1    = self.up2(z)
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
