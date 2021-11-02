@@ -2292,6 +2292,8 @@ class Auto_Net(nn.Module):
         z = z.view(-1, filters[3], 250, 51)
     
         up1    = self.up3(z)
+        
+        print("shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
@@ -2301,7 +2303,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 160 + f1*(230-160)
+        #f1     = 160 + f1*(230-160)
         #f1     = f1*100
         #f1     = torch.clamp(f1, min=1.6, max=2.3) ##clamping for marmousi
         #with torch.no_grad():
@@ -2339,9 +2341,9 @@ class Auto_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
         
-        torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(7)
-        devicek = torch.device(GPU_string)
+        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
         #net1out1 = 1600 + vel*(2300-1600)
         net1out1 = vel*10
         #net1out1 = (3550-1500)*vel+1500
@@ -2349,7 +2351,7 @@ class Auto_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         net1out1 = net1out1.to(devicek)
-        #devicek = net1out1.get_device()
+        devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
