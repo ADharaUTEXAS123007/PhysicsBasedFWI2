@@ -2348,7 +2348,7 @@ class Auto_Net(nn.Module):
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        net1out1 = net1out1.to(devicek)
+        #net1out1 = net1out1.to(devicek)
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
