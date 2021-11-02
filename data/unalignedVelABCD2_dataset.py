@@ -73,8 +73,8 @@ class UnalignedVelABCD2Dataset(BaseDataset):
         #D_img = np.load(D_path)
         #B_img = (B_img - 1600)/(2300 - 1600)
         #C_img = (C_img - 1600)/(2300 - 1600)
-        B_img = B_img/100
-        C_img = C_img/100
+        B_img = B_img/10
+        C_img = C_img/10
         A_img = A_img
         B_img = B_img
         A_img = A_img
