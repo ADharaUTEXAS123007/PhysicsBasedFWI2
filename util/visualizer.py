@@ -44,7 +44,7 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
     webpage.add_images(ims, txts, links, width=width)
 
 
-def save_matrix(visuals, image_path, aspect_ratio=1.0, width=256, mnumber=1):
+def save_matrix(visuals, image_path, aspect_ratio=1.0, width=256, mnumber):
     """Save images to the disk.
 
     Parameters:
