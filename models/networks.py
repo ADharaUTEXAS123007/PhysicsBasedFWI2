@@ -2354,13 +2354,13 @@ class Auto_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 161
+        num_shots = 16
         num_receivers_per_shot = 201
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 71 * dx / num_shots
-        receiver_spacing = 71 * dx / num_receivers_per_shot
+        source_spacing = 201 * dx / num_shots
+        receiver_spacing = 201 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2426,8 +2426,8 @@ class Auto_Net(nn.Module):
         
         receiver_amplitudes_true = receiver_amplitudes_true-receiver_amplitudes_cte
         
-        print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
-        print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
+        #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
+        #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
         #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
