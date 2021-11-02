@@ -2289,7 +2289,7 @@ class Auto_Net(nn.Module):
         
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 100, 26)
+        z = z.view(-1, filters[3], 250, 51)
     
         up1    = self.up3(z)
         up1    = self.up2(up1)
