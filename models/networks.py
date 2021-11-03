@@ -2271,10 +2271,10 @@ class Auto_Net(nn.Module):
         
         #print("shape of down2 :", np.shape(down3))
         
-        print("shape of down2 :", np.shape(down2))
+        #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down2, start_dim=1)
         
-        print("result shape :", np.shape(result))
+        #print("result shape :", np.shape(result))
         
         p = self.decoder_input1(result)
         #down3  = self.down3(down2)
@@ -2350,7 +2350,7 @@ class Auto_Net(nn.Module):
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        net1out1 = net1out1.to(devicek)
+        #net1out1 = net1out1.to(devicek)
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
