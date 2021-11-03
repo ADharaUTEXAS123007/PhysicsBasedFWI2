@@ -2228,7 +2228,7 @@ class Auto_Net(nn.Module):
         super(Auto_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = True
+        self.is_batchnorm  = False
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
