@@ -2355,17 +2355,17 @@ class Auto_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 15
+        freq = 14
         dx = 10
-        nt = 4001
-        dt = 0.001
+        nt = 800
+        dt = 0.0015
         num_shots = 16
-        num_receivers_per_shot = 201
+        num_receivers_per_shot = 101
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 201 * dx / num_shots
-        receiver_spacing = 201 * dx / num_receivers_per_shot
+        source_spacing = 101 * dx / num_shots
+        receiver_spacing = 101 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2413,7 +2413,7 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1500.0
+        mat2 = mat2 * 2000.0
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -2460,7 +2460,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1500,max=3550)
+                    model2 = torch.clamp(net1out1,min=2000,max=4500)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2498,7 +2498,7 @@ class Auto_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[0:26,:] = 0
+                    #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
