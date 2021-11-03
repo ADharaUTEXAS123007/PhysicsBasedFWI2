@@ -2263,7 +2263,7 @@ class Auto_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (151,201)
+        label_dsp_dim = (101,101)
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         #down3  = self.down3(down2)
@@ -2341,9 +2341,9 @@ class Auto_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
         
-        torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(7)
-        devicek = torch.device(GPU_string)
+        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
         #net1out1 = 1600 + vel*(2300-1600)
         net1out1 = vel
         #net1out1 = (3550-1500)*vel+1500
@@ -2351,7 +2351,7 @@ class Auto_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         net1out1 = net1out1.to(devicek)
-        #devicek = net1out1.get_device()
+        devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
