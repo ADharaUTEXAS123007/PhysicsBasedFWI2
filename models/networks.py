@@ -2238,16 +2238,16 @@ class Auto_Net(nn.Module):
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        #self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         #self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[1]*100*26, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[1]*50*26, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[2]*100*26) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -2290,7 +2290,7 @@ class Auto_Net(nn.Module):
         
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[2], 500, 102)
+        z = z.view(-1, filters[2], 100, 26)
     
         #up1    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
