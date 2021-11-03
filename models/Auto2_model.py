@@ -144,8 +144,6 @@ class Auto2Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             lf = self.real_C
-        if (epoch1 > 1):
-            lf = self.fake_B
         [self.fake_B,self.grad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,lf)  # G(A)
         #self.real_C = self.fake_B
         #self.real_B = self.real_C
