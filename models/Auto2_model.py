@@ -142,9 +142,11 @@ class Auto2Model(BaseModel):
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
+        if (epoch1 == 1):
+            lf = self.real_C
         if (epoch1 > 1):
-            self.real_C = self.fake_B
-        [self.fake_B,self.grad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,self.real_C)  # G(A)
+            lf = self.fake_B
+        [self.fake_B,self.grad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,lf)  # G(A)
         #self.real_C = self.fake_B
         #self.real_B = self.real_C
         #self.fake_B = torch.clamp(self.fake_B,min=15.00,max=35.50)
