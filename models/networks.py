@@ -2355,7 +2355,7 @@ class Auto_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 14
+        freq = 5
         dx = 10
         nt = 800
         dt = 0.0015
