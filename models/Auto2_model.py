@@ -262,7 +262,7 @@ class Auto2Model(BaseModel):
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         #####self.loss_G = lambda2 * self.loss_M1_MSE
         #self.loss_G.backward(retain_graph=True)
-        ##self.loss_G.backward()
+        self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
@@ -324,7 +324,7 @@ class Auto2Model(BaseModel):
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+            self.fake_BT, self.real_C)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
