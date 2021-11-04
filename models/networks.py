@@ -2522,45 +2522,45 @@ class Vae_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Vae_Net, self).__init__()
-        self.is_deconv = True
+        self.is_deconv = False
         self.in_channels = outer_nc
-        self.is_batchnorm = True
+        self.is_batchnorm = False
         self.n_classes = inner_nc
 
-        filters = [64, 128, 256, 512, 1024]
-        latent_dim = 256
+        filters = [16, 32, 64, 128, 512]
+        latent_dim = 8
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+        #self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[-2]*25*7, latent_dim)
-        self.fc_var = nn.Linear(filters[-2]*25*7, latent_dim)
+        self.fc_mu = nn.Linear(filters[2]*50*13, latent_dim)
+        self.fc_var = nn.Linear(filters[2]*50*13, latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*50*13)
 
-        self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
+        #self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
-        self.final = nn.ReLU(inplace=True)
+        self.final = nn.Sigmoid()
 
     def encode(self, inputs):
         label_dsp_dim = (101,101)
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
-        down4 = self.down4(down3)
+        #down4 = self.down4(down3)
         #center = self.center(down4)
         
         #print("shape of down")
         #print(np.shape(down4))
 
-        result = torch.flatten(down4, start_dim=1)
+        result = torch.flatten(down3, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
@@ -2607,21 +2607,21 @@ class Vae_Net(nn.Module):
     #     eps = torch.randn_like(std)
     #     return eps * std + mu
 
-    def forward(self, inputs, lstart, epoch1):
-        mu,log_var = self.encode(inputs[:,:,1:800:2,:])
+    def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
+        mu,log_var = self.encode(inputs2[:,:,1:800:2,:])
         z = self.reparameterize(mu, log_var)
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
         #print("shape of de1 :", np.shape(de1))
         #print(type(de1))
-        de2 = 0*de1
+        grad = 0*de1
         if (epoch1 > lstart):
-            de2 = self.prop(inputs, de1, lstart, epoch1)
-            de2 = torch.unsqueeze(de2,0)
-            de2 = torch.unsqueeze(de2,0)
+            grad = self.prop(inputs2, f1, lstart, epoch1)
+            grad = torch.unsqueeze(grad,0)
+            grad = torch.unsqueeze(grad,0)
             #print("shape of de2")
             #print(np.shape(de2))    
-        return  de1, mu, log_var, de2
+        return  de1, mu, log_var, grad
 
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -2640,15 +2640,24 @@ class Vae_Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
     
+    # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1):
-            #---------deepwave------------#
-        net1out1 = vel * 100
+        
+        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
+        #net1out1 = 1600 + vel*(2300-1600)
+        net1out1 = vel
+        #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
+        #net1out1 = net1out1.to(devicek)
         devicek = net1out1.get_device()
+        #net1out1[0:26,:] = 1500.0
+
         
-        freq = 15
+        freq = 30
         dx = 10
         nt = 800
         dt = 0.0015
@@ -2688,8 +2697,9 @@ class Vae_Net(nn.Module):
 
         #net1out1 = net1out1.to(self.devicek)
 
-        receiver_amplitudes_true = inputs[0,:,:,:]/10
+        receiver_amplitudes_true = inputs[0,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
+        receiver_amplitudes_true = receiver_amplitudes_true.to(devicek)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
 
@@ -2700,13 +2710,13 @@ class Vae_Net(nn.Module):
         #net1out1 = torch.tensor(net1out1)
         #net1out1 = net1out1*(4500-2000)+2000
         #print(np.shape(net1out1))
-        #min1 = torch.min(net1out1)
+        min1 = torch.min(net1out1)
         #print("min1 :", min1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1500.0
-        #mat2 = torch.clamp(mat2,min=1500,max=4400)
+        mat2 = mat2 * 2000.0
+        #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
         #if (epoch1 == 52): 
@@ -2721,34 +2731,47 @@ class Vae_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true 
+        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        
+        #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
+        #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
+        #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
 
         criterion = torch.nn.MSELoss()
 
         #print("shape of mat2 :", np.shape(mat2))
-
+        
 
         if (epoch1 > lstart):
             net1out1.requires_grad = True
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
+                #Shuffle shot coordinates
+                idx = torch.randperm(num_shots)
+                #idx = idx.type(torch.LongTensor)
+                x_s = x_s.view(-1,2)[idx].view(x_s.size())
+                #RB Shuffle true's seismograms sources with same random values
+                rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
+                #RB Shuffle direct wave seismograms sources with the same random values
+                receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
+        
                 for it in range(num_batches):
-                    if (epoch1 > lstart):
-                        optimizer2.zero_grad()
+                    #if (epoch1 > lstart):
+                    optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1500,max=4400)
+                    model2 = torch.clamp(net1out1,min=2000,max=4500)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
-                    batch_src_amps = source_amplitudes_true.repeat(
-                        1, num_shots_per_batch, 1)
+                    batch_src_amps = source_amplitudes_true.repeat(1, num_shots_per_batch, 1)
                     #print("shape of batch src amps")
                     #print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
                     batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
+                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
                     batch_x_s = x_s[it::num_batches].to(devicek)
                     ##################batch_x_s = x_s[it::num_batches]
                     #print("shape of batch src amps")
@@ -2757,12 +2780,10 @@ class Vae_Net(nn.Module):
                     batch_x_r = x_r[it::num_batches].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
-                    batch_rcv_amps_pred = prop(
-                        batch_src_amps, batch_x_s, batch_x_r, dt)
+                    batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_rcv_amps_pred = batch_rcv_amps_pred
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -2771,21 +2792,31 @@ class Vae_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    
+                    #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
-                    if (epoch == num_epochs-1):
-                        sumlossinner += lossinner.item()
-                    if (epoch1 > lstart):
-                        lossinner.backward()
-                        optimizer2.step()
+                    ##############if (epoch == num_epochs-1):
+                    ##########    sumlossinner += lossinner.item()
+                    #########if (epoch1 > lstart):
+                    lossinner.backward()
+                    #net1out1.grad[0:26,:] = 0
+                    ##########optimizer2.step()
                     #epoch_loss += loss.item()
-                    #optimizer2.step()
+                    optimizer2.step()
         #if (epoch1 == 52): 
-        #np.save('./deepwave/after1.npy',net1out1.cpu().detach().numpy())
+        #print("shape of inputs :", np.shape(inputs))
+        #np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
+        #np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
+        #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
+        np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
-        net1out1 = net1out1/100           
-        return net1out1
+        #net1out1 = (net1out1-2000)/(4500-2000)
+        #net1out1.grad = net1out1.grad*1000
+                 
+        return net1out1.grad
     # def sample(self,
     #            num_samples:int,
     #            current_device: int, **kwargs) -> Tensor:
