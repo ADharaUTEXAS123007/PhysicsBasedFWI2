@@ -288,7 +288,7 @@ class VaeModel(BaseModel):
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = kld_loss/(diff_size[0]*1000)
+        self.loss_K_MSE = kld_loss/(diff_size[0])
         #self.loss_M_MSE = 0.0
         #self.loss_K_MSE = 0.0
         #print("loss_M_MSE : ",self.loss_M_MSE)
@@ -328,7 +328,7 @@ class VaeModel(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 100
+        lambda1 = 1
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
