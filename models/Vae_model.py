@@ -98,7 +98,7 @@ class VaeModel(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -288,7 +288,7 @@ class VaeModel(BaseModel):
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = kld_loss/(diff_size[0]*10)
+        self.loss_K_MSE = kld_loss/(diff_size[0])
         #self.loss_M_MSE = 0.0
         #self.loss_K_MSE = 0.0
         #print("loss_M_MSE : ",self.loss_M_MSE)
