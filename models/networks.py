@@ -2570,7 +2570,7 @@ class Vae_Net(nn.Module):
         return [mu, log_var]
 
     def decode(self, inputs):
-        filters = [64, 128, 256, 512, 1024]
+        filters = [16, 32, 64, 128, 512]
         label_dsp_dim = (101,101)
         decoder_input = self.decoder_input(inputs)
         decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
