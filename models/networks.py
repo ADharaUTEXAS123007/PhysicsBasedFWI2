@@ -2533,11 +2533,11 @@ class Vae_Net(nn.Module):
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
+        #self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.fc_mu = nn.Linear(filters[3]*25*7, latent_dim)
-        self.fc_var = nn.Linear(filters[3]*25*7, latent_dim)
+        self.fc_mu = nn.Linear(filters[2]*50*13, latent_dim)
+        self.fc_var = nn.Linear(filters[2]*50*13, latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[3]*50*13)
@@ -2554,13 +2554,13 @@ class Vae_Net(nn.Module):
         down1 = self.down1(inputs)
         down2 = self.down2(down1)
         down3 = self.down3(down2)
-        down4 = self.down4(down3)
+        #down4 = self.down4(down3)
         #center = self.center(down4)
         
         #print("shape of down")
         #print(np.shape(down4))
 
-        result = torch.flatten(down4, start_dim=1)
+        result = torch.flatten(down3, start_dim=1)
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
         #center = self.center(down4)
