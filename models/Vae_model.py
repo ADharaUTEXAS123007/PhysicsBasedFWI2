@@ -328,7 +328,7 @@ class VaeModel(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 10000
+        lambda1 = 100000
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
