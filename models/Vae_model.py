@@ -328,7 +328,7 @@ class VaeModel(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 500
+        lambda1 = 1000
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
@@ -337,7 +337,7 @@ class VaeModel(BaseModel):
         #self.fake_B.retain_grad()
 
         
-        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE 
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         ##self.loss_G.backward(retain_graph=True)
         self.loss_G.backward()
