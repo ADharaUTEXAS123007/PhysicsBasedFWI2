@@ -2612,7 +2612,7 @@ class Vae_Net(nn.Module):
         z = self.reparameterize(mu, log_var)
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
-        de1 = 2 + de1*(4.5-2)
+        de1 = 20 + de1*(45-20)
         #print("shape of de1 :", np.shape(de1))
         #print(type(de1))
         grad = 0*de1
