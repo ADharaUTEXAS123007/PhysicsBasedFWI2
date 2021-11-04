@@ -2573,9 +2573,9 @@ class Vae_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         label_dsp_dim = (101,101)
         decoder_input = self.decoder_input(inputs)
-        decoder_input = decoder_input.view(-1, filters[-2], 25, 7)
-        up4 = self.up4(decoder_input)
-        up3 = self.up3(up4)
+        decoder_input = decoder_input.view(-1, filters[3], 50, 13)
+        #up4 = self.up4(decoder_input)
+        up3 = self.up3(decoder_input)
         up2 = self.up2(up3)
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
