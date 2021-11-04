@@ -2209,7 +2209,7 @@ class autoUp(nn.Module):
         self.conv2 = unetConv2(out_size, out_size, True)
         # Transposed convolution
         if is_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2,stride=2)
+            self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
         else:
             self.up = nn.UpsamplingBilinear2d(scale_factor=2)
 
@@ -2522,7 +2522,7 @@ class Vae_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Vae_Net, self).__init__()
-        self.is_deconv = False
+        self.is_deconv = True
         self.in_channels = outer_nc
         self.is_batchnorm = False
         self.n_classes = inner_nc
@@ -2557,8 +2557,8 @@ class Vae_Net(nn.Module):
         down4 = self.down4(down3)
         #center = self.center(down4)
         
-        print("shape of down")
-        print(np.shape(down4))
+        #print("shape of down")
+        #print(np.shape(down4))
 
         result = torch.flatten(down4, start_dim=1)
         mu = self.fc_mu(result)
