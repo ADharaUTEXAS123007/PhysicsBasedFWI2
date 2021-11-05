@@ -77,8 +77,8 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         A_img = A_img
         B_img = B_img
         A_img = A_img
-        B_img = B_img
-        C_img = C_img
+        B_img = (B_img-2000)/(4500-2000)
+        C_img = (C_img-2000)/(4500-2000)
         #r = random.randint(0,1)
         #if (r==0):
         #    A_img = -1*A_img
