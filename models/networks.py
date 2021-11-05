@@ -2804,7 +2804,7 @@ class Vae_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[(true==2000)] = 0
+                    net1out1.grad[(true[0,0,:,:]==2000)] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
