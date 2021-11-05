@@ -2617,7 +2617,7 @@ class Vae_Net(nn.Module):
         #print(type(de1))
         grad = 0*de1
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, f1, lstart, epoch1)
+            grad = self.prop(inputs2, de1, lstart, epoch1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
             #print("shape of de2")
