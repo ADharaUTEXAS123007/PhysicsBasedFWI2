@@ -2620,7 +2620,7 @@ class Vae_Net(nn.Module):
         #print(type(de1))
         grad = 0*de1
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, de1, lstart, epoch1)
+            grad = self.prop(inputs2, de1, lstart, epoch1, inputs1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
             #print("shape of de2")
@@ -2645,7 +2645,7 @@ class Vae_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1):
+    def prop(self, inputs, vel, lstart, epoch1, true):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
@@ -2804,7 +2804,7 @@ class Vae_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    #net1out1.grad[0:2,:] = 0
+                    net1out1.grad[(true==2000)] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
