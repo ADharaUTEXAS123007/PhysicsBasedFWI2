@@ -2613,7 +2613,7 @@ class Vae_Net(nn.Module):
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
         de1 = 2000 + de1*(4500-2000)
-        de1 = torch.clip(de1, min=2000, max= 4500)
+        #de1 = torch.clip(de1, min=2000, max= 4500)
         #print("shape of de1 :", np.shape(de1))
         #print(type(de1))
         grad = 0*de1
