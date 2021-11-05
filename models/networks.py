@@ -2612,7 +2612,8 @@ class Vae_Net(nn.Module):
         z = self.reparameterize(mu, log_var)
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
-        #de1 = 2.000 + de1*(4.500-2.000)
+        de1 = 2000 + de1*(4500-2000)
+        de1[(inputs1==2000)] = 2000
         
         #de1 = torch.clip(de1, min=2000, max= 4500)
         #print("shape of de1 :", np.shape(de1))
@@ -2649,7 +2650,7 @@ class Vae_Net(nn.Module):
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
-        net1out1 = 2000 + vel*(4500-2000)
+        net1out1 = vel
         #net1out1 = vel
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
