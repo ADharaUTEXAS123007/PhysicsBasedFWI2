@@ -2522,7 +2522,7 @@ class Vae_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(Vae_Net, self).__init__()
-        self.is_deconv = True
+        self.is_deconv = False
         self.in_channels = outer_nc
         self.is_batchnorm = False
         self.n_classes = inner_nc
