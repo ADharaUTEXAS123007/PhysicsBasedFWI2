@@ -2580,7 +2580,7 @@ class Vae_Net(nn.Module):
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1  = self.f1(up1)
-        return self.final(f1)
+        return f1
 
     def reparameterize(self, mu, logvar):
         """
