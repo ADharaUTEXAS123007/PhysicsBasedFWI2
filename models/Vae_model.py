@@ -328,7 +328,7 @@ class VaeModel(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 1
+        lambda1 = 10
         lambda2 = 0
         if (epoch1>lstart):
             lambda1 = 0.5
@@ -350,7 +350,7 @@ class VaeModel(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
+            self.grad = self.grad*(10**6)   #####(10**5) works for marmousi model
             #self.grad = (self.grad-1600)/(2300-1600)
             #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
             ##self.grad[:,:,0:26,:] = 0
