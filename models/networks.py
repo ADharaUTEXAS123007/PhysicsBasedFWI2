@@ -2528,7 +2528,7 @@ class Vae_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 64
+        latent_dim = 8
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2547,7 +2547,7 @@ class Vae_Net(nn.Module):
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
-        self.final = nn.Sigmoid()
+        self.final = nn.ReLU(inplace=True)
 
     def encode(self, inputs):
         label_dsp_dim = (101,101)
@@ -2613,6 +2613,7 @@ class Vae_Net(nn.Module):
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
         de1 = 2000 + de1*(4500-2000)
+        de1 = torch.clip(de1, min=2000, max= 4500)
         #print("shape of de1 :", np.shape(de1))
         #print(type(de1))
         grad = 0*de1
