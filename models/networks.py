@@ -2580,7 +2580,7 @@ class Vae_Net(nn.Module):
         up1 = self.up1(up2)
         up1 = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1  = self.f1(up1)
-        return f1
+        return self.final(f1)
 
     def reparameterize(self, mu, logvar):
         """
@@ -2802,7 +2802,7 @@ class Vae_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad[(net1out1 <= 2000)] = 0
+                    net1out1.grad[(net1out1 == 2000)] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
