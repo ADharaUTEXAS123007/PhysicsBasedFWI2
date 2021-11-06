@@ -2528,7 +2528,7 @@ class Vae_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
+        latent_dim = 512
 
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2608,7 +2608,7 @@ class Vae_Net(nn.Module):
     #     return eps * std + mu
 
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
-        mu,log_var = self.encode(inputs2[:,:,1:800:2,:])
+        mu,log_var = self.encode(inputs2[:,:,1:800:2,:]*10)
         z = self.reparameterize(mu, log_var)
         #print("shape of z: ", np.shape(z))
         de1 = self.decode(z)
