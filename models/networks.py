@@ -2810,7 +2810,7 @@ class Vae_Net(nn.Module):
                     po = 1 - po.float()
                     po = tgm.image.gaussian_blur(po, (5, 5), (8.0, 8.0))
                     #print("type :", net1out1.type())
-                    net1out1.grad = net1out1.grad*po
+                    net1out1.grad = net1out1.grad*po[0,0,:,:]
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
