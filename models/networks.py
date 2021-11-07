@@ -2808,7 +2808,8 @@ class Vae_Net(nn.Module):
                     net1out1.grad[(true[0,0,:,:]==2000)] = 0
                     po = (true[:,:,:,:] == 2000)
                     po = 1 - po.double()
-                    po = tgm.image.gaussian_blur(po, (5, 5), (5.0, 5.0))
+                    po = tgm.image.gaussian_blur(po, (5, 5), (8.0, 8.0))
+                    net1out1.grad = net1out1.grad*po
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
@@ -2819,7 +2820,7 @@ class Vae_Net(nn.Module):
         #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
         #np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
-        np.save('./marmousi/po.npy',po.cpu().detach().numpy())
+        #np.save('./marmousi/po.npy',po.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
