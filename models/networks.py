@@ -2805,6 +2805,7 @@ class Vae_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad[(true[0,0,:,:]==2000)] = 0
+                    po = (true[0,0,:,:] == 2000)
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
                     #optimizer2.step()
@@ -2815,6 +2816,7 @@ class Vae_Net(nn.Module):
         #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
         #np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
+        np.save('./marmousi/po.npy',po.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
         #net1out1 = (net1out1-2000)/(4500-2000)
