@@ -52,7 +52,7 @@ if __name__ == '__main__':
          epoch_iter = 0                  # the number of training iterations in current epoch, reset to 0 every epoch
          visualizer.reset()              # reset the visualizer: make sure it saves the results to HTML at least once every epoch
 
-         model.eval()  #For going to validation
+         model.eval()  #For going to validation 
          Validationloss = 0.0
          for k, data2 in enumerate(dataset2):
              model.set_input(data2)
