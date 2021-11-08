@@ -345,8 +345,8 @@ class VaeModel(BaseModel):
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
         #print("maxb :", maxb)
-        lstart1 = 40
-        lstart2 = 90
+        lstart1 = 35
+        lstart2 = 60
         
         if (epoch1>lstart):
             #maxg = torch.max(torch.abs(self.grad))
