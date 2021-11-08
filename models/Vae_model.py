@@ -288,7 +288,7 @@ class VaeModel(BaseModel):
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #k
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = kld_loss*10
+        self.loss_K_MSE = kld_loss
         #self.loss_M_MSE = 0.0
         #self.loss_K_MSE = 0.0
         #print("loss_M_MSE : ",self.loss_M_MSE)
@@ -358,11 +358,11 @@ class VaeModel(BaseModel):
                 
             if (epoch1>lstart1 and epoch1<=lstart2):
                 self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
-                self.grad = torch.clip(self.grad, min=-0.5, max=0.5)
+                self.grad = torch.clip(self.grad, min=-0.2, max=0.2)
                 
             if (epoch1>lstart2):
                 self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
-                self.grad = torch.clip(self.grad, min=-2.0, max=2.0)
+                self.grad = torch.clip(self.grad, min=-1.0, max=1.0)
             #self.fake_B.backward(self.grad)
             #self.grad = (self.grad-1600)/(2300-1600)
             #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
