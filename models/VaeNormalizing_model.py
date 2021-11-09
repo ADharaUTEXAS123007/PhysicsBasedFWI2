@@ -42,7 +42,7 @@ class VaeNormalizingModel(BaseModel):
         """
         # changing the default values to match the pix2pix paper (https://phillipi.github.io/pix2pix/)
         parser.set_defaults(norm='batch', netG='VaeNormalizing',
-                            dataset_mode='unalignedVel2', ngf='32')
+                            dataset_mode='unalignedVelABCD2', ngf='32')
         if is_train:
             parser.set_defaults(pool_size=0, gan_mode='vanilla')
             parser.add_argument('--lambda_L1', type=float,
@@ -139,7 +139,7 @@ class VaeNormalizingModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        [self.fake_B, self.kld_loss, self.fake_BD] = self.netG(self.real_A,lstart,epoch1)  # G(A)
+        [self.fake_B, self.kld_loss, self.fake_BD] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,self.real_C)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -148,7 +148,7 @@ class VaeNormalizingModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.kld_loss, self.fake_BDT] = self.netG(self.real_A,False_lstart,False_epoch)  # G(A)
+        [self.fake_BT, self.kld_loss, self.fake_BDT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.real_B,self.real_C)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
@@ -283,7 +283,7 @@ class VaeNormalizingModel(BaseModel):
         self.loss_D_MSE = 0.0
         self.loss_M_MSE = self.criterionMSE(self.fake_B, self.real_B)*100/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
-        self.loss_K_MSE = torch.mean(self.kld_loss)/10
+        self.loss_K_MSE = torch.mean(self.kld_loss)
         #print("kld loss :",self.loss_K_MSE)
         #print("mse loss :",self.loss_M_MSE)
         #print("loss MSE example :", self.loss_M_MSE)
@@ -310,7 +310,59 @@ class VaeNormalizingModel(BaseModel):
 
         self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
         #self.loss_G = lambda2 * self.loss_M1_MSE
-        self.loss_G.backward()
+        self.loss_G.backward(retain_graph=True)
+        #if (epoch1 == 52):
+        #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
+        #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+        if (epoch1>lstart):
+                #maxg = torch.max(torch.abs(self.grad))
+        
+            #self.fake_B.grad = None
+            # if (epoch1>lstart and epoch1<=lstart1):
+            #     self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
+            #     self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+                
+            # if (epoch1>lstart1 and epoch1<=lstart2):
+            #     self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
+            #     self.grad = torch.clip(self.grad, min=-0.2, max=0.2)
+                
+            # if (epoch1>lstart2):
+            self.grad = self.grad*(10**6)   #####(10**5) works for marmousi model
+            self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+            #self.fake_B.backward(self.grad)
+            #self.grad = (self.grad-1600)/(2300-1600)
+            #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
+            ##self.grad[:,:,0:26,:] = 0
+            ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
+            #maxg = torch.max(torch.abs(self.grad))
+            #print("maxg :", maxg)
+        
+        #self.fake_B.register_hook(print)
+        #filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #np.save(filen, self.fake_B.grad.cpu().detach().numpy())  #switch on physics based fwi
+        #print("shape of fake B grad :", self.fake_B.grad)
+        #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
+        #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
+        #print("shape of self grad :", np.shape(self.grad))
+        
+        #self.grad = self.grad/torch.max(self.grad.abs())
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
+        
+        
+        #print("shape of fake_B :", np.shape(self.fake_B))
+        #print("shape of grad :", np.shape(self.grad))   
+        if (epoch1 % 1 == 0): 
+            filen = './marmousi/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
+        
+            filen = './marmousi/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
+            
+            filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        
+        #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
