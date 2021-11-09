@@ -2235,7 +2235,7 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 8
+        latent_dim = 64
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2258,12 +2258,12 @@ class Auto_Net(nn.Module):
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Sigmoid()
+        #self.f2      =  nn.Conv2d(1,1,1)
+        self.final   =  nn.ReLU(inplace=True)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
+        latent_dim = 64
         label_dsp_dim = (101,101)
         down1  = self.down1(inputs2[:,:,1:800:2,:])
         down2  = self.down2(down1)
@@ -2299,12 +2299,13 @@ class Auto_Net(nn.Module):
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.f2(f1)
+        #f1     = self.f2(f1)
         f1     = self.final(f1)
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         f1     = 2000 + f1*(4500-2000)
+        f1[(inputs1==2000)] = 2000
         #f1     = f1*100
         #f1     = torch.clip(f1, min=1500, max=3550) ##clamping for marmousi
         #with torch.no_grad():
