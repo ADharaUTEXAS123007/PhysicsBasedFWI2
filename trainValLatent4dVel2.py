@@ -118,7 +118,7 @@ if __name__ == '__main__':
                  
                 
              #KLloss = KLloss + model.loss_K_MSE.item()
-             KLloss = KLloss + model.loss_K_MSE.item()
+             KLloss = KLloss + model.loss_K_MSE
 
 
          
