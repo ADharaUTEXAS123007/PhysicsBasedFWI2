@@ -133,6 +133,7 @@ class VaeNormalizingModel(BaseModel):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device1)
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
+        self.real_C = input['C'].to(self.device1)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
