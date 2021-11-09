@@ -3691,7 +3691,7 @@ class VaeNormalizing_Net(nn.Module):
         self.flow_enc.weight.data.uniform_(-0.01, 0.01)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[-2]*25*7)
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*50*13)
 
         #self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
