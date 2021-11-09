@@ -140,7 +140,7 @@ class VaeNormalizingModel(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #lstart = 1
-        [self.fake_B, self.kld_loss, self.fake_BD] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,self.real_C)  # G(A)
+        [self.fake_B, self.kld_loss, self.grad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.real_B,self.real_C)  # G(A)
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
 
@@ -149,7 +149,7 @@ class VaeNormalizingModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         False_lstart = 1
         False_epoch = -1
-        [self.fake_BT, self.kld_loss, self.fake_BDT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.real_B,self.real_C)  # G(A)
+        [self.fake_BT, self.kld_loss, self.fake_gradT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.real_B,self.real_C)  # G(A)
         self.real_BT = self.real_B
 
     def backward_G(self):
