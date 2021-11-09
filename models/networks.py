@@ -2315,7 +2315,7 @@ class Auto_Net(nn.Module):
         
         grad = 0*f1
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, f1, lstart, epoch1)
+            grad = self.prop(inputs2, f1, lstart, epoch1, inputs1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2341,7 +2341,7 @@ class Auto_Net(nn.Module):
                     m.bias.data.zero_()
                     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1):
+    def prop(self, inputs, vel, lstart, epoch1, true):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
@@ -2500,16 +2500,17 @@ class Auto_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
+                    net1out1.grad[(true[0,0,:,:]==2000)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
-                    optimizer2.step()
+                    #optimizer2.step()
         #if (epoch1 == 52): 
         #print("shape of inputs :", np.shape(inputs))
         #np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
         #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
-        np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
