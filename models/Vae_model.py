@@ -352,17 +352,17 @@ class VaeModel(BaseModel):
             #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            if (epoch1>lstart and epoch1<=lstart1):
-                self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
-                self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+            # if (epoch1>lstart and epoch1<=lstart1):
+            #     self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
+            #     self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
                 
-            if (epoch1>lstart1 and epoch1<=lstart2):
-                self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
-                self.grad = torch.clip(self.grad, min=-0.2, max=0.2)
+            # if (epoch1>lstart1 and epoch1<=lstart2):
+            #     self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
+            #     self.grad = torch.clip(self.grad, min=-0.2, max=0.2)
                 
-            if (epoch1>lstart2):
-                self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
-                self.grad = torch.clip(self.grad, min=-2.0, max=2.0)
+            # if (epoch1>lstart2):
+            self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
+            self.grad = torch.clip(self.grad, min=-2.0, max=2.0)
             #self.fake_B.backward(self.grad)
             #self.grad = (self.grad-1600)/(2300-1600)
             #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
