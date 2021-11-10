@@ -2265,7 +2265,7 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 64
         label_dsp_dim = (70,70)
-        down1  = self.down1(inputs2[:,:,1000,:])
+        down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
