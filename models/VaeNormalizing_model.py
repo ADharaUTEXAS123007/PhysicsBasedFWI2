@@ -98,7 +98,7 @@ class VaeNormalizingModel(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -315,21 +315,23 @@ class VaeNormalizingModel(BaseModel):
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+        lstart1 = 40
+        lstart2 = 200
         if (epoch1>lstart):
                 #maxg = torch.max(torch.abs(self.grad))
         
             #self.fake_B.grad = None
-            # if (epoch1>lstart and epoch1<=lstart1):
-            #     self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
-            #     self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+            if (epoch1>lstart and epoch1<=lstart1):
+                self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
+                self.grad = torch.clip(self.grad, min=-0.01, max=0.01)
                 
-            # if (epoch1>lstart1 and epoch1<=lstart2):
-            #     self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
-            #     self.grad = torch.clip(self.grad, min=-0.2, max=0.2)
+            if (epoch1>lstart1 and epoch1<=lstart2):
+                self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
+                self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
                 
             # if (epoch1>lstart2):
-            self.grad = self.grad*(10**6)   #####(10**5) works for marmousi model
-            self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+            #self.grad = self.grad*(10**6)   #####(10**5) works for marmousi model
+            #self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
             #self.fake_B.backward(self.grad)
             #self.grad = (self.grad-1600)/(2300-1600)
             #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))

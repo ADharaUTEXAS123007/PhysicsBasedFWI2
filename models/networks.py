@@ -3832,7 +3832,7 @@ class VaeNormalizing_Net(nn.Module):
             logs -= torch.sum(ladj)
             return z_k, (logs / float(n_batch))
         
-        # forward modeling to compute gradients
+    # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, true):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
