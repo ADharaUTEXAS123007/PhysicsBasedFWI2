@@ -2245,7 +2245,7 @@ class Auto_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[2]*50*9, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[2]*50*18, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*50*13) #for marmousi 101x101
@@ -2265,7 +2265,7 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 64
         label_dsp_dim = (70,70)
-        down1  = self.down1(inputs2[:,:,1:800:2,:])
+        down1  = self.down1(inputs2[:,:,1000,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
@@ -2305,6 +2305,7 @@ class Auto_Net(nn.Module):
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         f1     = 3000 + f1*(6000-3000)
+        print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
         #f1     = torch.clip(f1, min=1500, max=3550) ##clamping for marmousi
