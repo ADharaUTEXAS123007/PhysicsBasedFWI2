@@ -2270,7 +2270,7 @@ class Auto_Net(nn.Module):
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
         
-        print("shape of down3 :", np.shape(down3))
+        #print("shape of down3 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down3, start_dim=1)
@@ -2305,7 +2305,7 @@ class Auto_Net(nn.Module):
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         f1     = 3000 + f1*(6000-3000)
-        print("shape of f1 :", np.shape(f1))
+        #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
         #f1     = torch.clip(f1, min=1500, max=3550) ##clamping for marmousi
