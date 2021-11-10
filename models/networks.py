@@ -3673,7 +3673,7 @@ class VaeNormalizing_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
+        latent_dim = 64
         
 
 
@@ -3686,7 +3686,7 @@ class VaeNormalizing_Net(nn.Module):
         self.fc_mu = nn.Linear(filters[2]*50*13, latent_dim)
         self.fc_sigma = nn.Sequential(nn.Linear(filters[2]*50*13, latent_dim),nn.Softplus(),nn.Hardtanh(min_val=1e-4, max_val=5.))
         
-        self.flow = NormalizingFlow(dim=8, blocks=[PlanarFlow], flow_length=6, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
+        self.flow = NormalizingFlow(dim=64, blocks=[PlanarFlow], flow_length=6, density=distrib.MultivariateNormal(torch.zeros(2), torch.eye(2)))
         self.flow_enc = nn.Linear(filters[2]*50*13, self.flow.n_parameters())
         self.flow_enc.weight.data.uniform_(-0.01, 0.01)
         
