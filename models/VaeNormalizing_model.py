@@ -309,7 +309,7 @@ class VaeNormalizingModel(BaseModel):
             lambda2 = 0.3
             
 
-        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE + self.loss_K_MSE 
         #self.loss_G = lambda2 * self.loss_M1_MSE
         self.loss_G.backward(retain_graph=True)
         #if (epoch1 == 52):
