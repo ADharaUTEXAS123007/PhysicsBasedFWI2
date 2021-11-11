@@ -2286,11 +2286,11 @@ class Auto_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        #if (epoch1 <= lstart):
-        latent1 = p
-        #else:
-        #    latent1 = latentI
-        #    p = latent1
+        if (epoch1 <= lstart):
+            latent1 = p
+        else:
+            latent1 = latentI
+            p = latent1
         #    latent1 = p
             
 
