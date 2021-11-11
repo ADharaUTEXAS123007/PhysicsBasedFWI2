@@ -2288,9 +2288,9 @@ class Auto_Net(nn.Module):
         #print("shape of result:", np.shape(result))
         if (epoch1 <= lstart):
             latent1 = p
-        else:
-            p = latentI
-            latent1 = p
+        #else:
+        #    p = latentI
+        #    latent1 = p
             
 
         #p = torch.randn([1,1,1,8])
