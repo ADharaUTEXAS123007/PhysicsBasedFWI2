@@ -2311,7 +2311,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 3000 + f1*(6000-3000)
+        f1     = 3885 + f1*(4785-3885)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
@@ -2423,7 +2423,7 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 3000.0
+        mat2 = mat2 * 3885.0
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -2439,7 +2439,7 @@ class Auto_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true
+        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -2471,7 +2471,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=3000,max=6000)
+                    model2 = torch.clamp(net1out1,min=3885,max=4785)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2492,7 +2492,7 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
