@@ -2261,7 +2261,7 @@ class Auto_Net(nn.Module):
         #self.f2      =  nn.Conv2d(1,1,1)
         self.final   =  nn.ReLU(inplace=True)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 64
         label_dsp_dim = (70,70)
@@ -2289,7 +2289,7 @@ class Auto_Net(nn.Module):
         if (epoch1 <= 10):
             latent1 = p
         else:
-            p = latent1
+            p = latentI
             
 
         #p = torch.randn([1,1,1,8])
@@ -2327,7 +2327,7 @@ class Auto_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad
+        return f1, grad, latent1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
