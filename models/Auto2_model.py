@@ -259,14 +259,14 @@ class Auto2Model(BaseModel):
             lambda1 = 0.5
             lambda2 = 0.5
             
-        self.fake_B.retain_grad()
+        #self.fake_B.retain_grad()
 
         
         self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
         if (epoch1 <= lstart):
-            self.loss_G.backward(retain_graph=True)
+            self.loss_G.backward()
         #self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
