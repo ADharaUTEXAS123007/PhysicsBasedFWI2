@@ -2286,7 +2286,12 @@ class Auto_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        
+        if (epoch1 <= 10):
+            latent1 = p
+        else:
+            p = latent1
+            
+
         #p = torch.randn([1,1,1,8])
         z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
