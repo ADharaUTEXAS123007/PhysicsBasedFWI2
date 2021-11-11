@@ -2311,7 +2311,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 3885 + f1*(4785-3885)
+        #f1     = 3885 + f1*(4785-3885)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
