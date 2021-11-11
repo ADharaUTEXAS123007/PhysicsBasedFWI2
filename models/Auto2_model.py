@@ -145,6 +145,7 @@ class Auto2Model(BaseModel):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
         [self.fake_B,self.grad,self.latent] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        print("latent :", self.latent)
         #self.real_C = self.fake_B
         #self.real_B = self.real_C
         #self.fake_B = torch.clamp(self.fake_B,min=15.00,max=35.50)
