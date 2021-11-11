@@ -2439,6 +2439,7 @@ class Auto_Net(nn.Module):
         #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion = torch.nn.L1Loss()
 
@@ -2488,6 +2489,7 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
                     ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
                     
                     #print("shape of receiver amplitudes predicted")
