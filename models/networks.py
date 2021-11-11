@@ -2288,8 +2288,8 @@ class Auto_Net(nn.Module):
         #print("shape of result:", np.shape(result))
         if (epoch1 <= lstart):
             latent1 = p
-        #else:
-        #    p = latentI
+        else:
+            latent1 = 0*p
         #    latent1 = p
             
 
