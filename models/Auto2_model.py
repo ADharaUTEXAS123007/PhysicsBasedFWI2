@@ -266,6 +266,7 @@ class Auto2Model(BaseModel):
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
         if (epoch1 <= lstart):
+            print("1st epoch1 :", epoch1)
             self.loss_G.backward()
         #self.loss_G.backward()
         
@@ -276,6 +277,7 @@ class Auto2Model(BaseModel):
         lstart2 = 60
         
         if (epoch1>lstart):
+            print("2nd epoch1 :", epoch1)
             #self.loss_G.backward(retain_graph=True)
             #self.optimizer_G.zero_grad()
             #maxb = torch.max(torch.abs(self.fake_B.grad))
