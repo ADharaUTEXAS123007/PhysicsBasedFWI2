@@ -267,9 +267,9 @@ class Auto2Model(BaseModel):
             self.loss_G.backward(retain_graph=True)
         #self.loss_G.backward()
         
-        maxb = torch.max(torch.abs(self.fake_B.grad))
+        #maxb = torch.max(torch.abs(self.fake_B.grad))
         
-        print("maxb :", maxb)
+        #print("maxb :", maxb)
         lstart1 = 35
         lstart2 = 60
         
@@ -279,8 +279,8 @@ class Auto2Model(BaseModel):
             #self.fake_B.grad = None
             #self.fake_B.grad = None
             #if (epoch1>lstart and epoch1<=lstart1):
-            self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
-            self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
+            self.grad = self.grad*(10**5)   #####(10**5) works for marmousi model
+            #self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
                 
             #if (epoch1>lstart1 and epoch1<=lstart2):
             #    self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
