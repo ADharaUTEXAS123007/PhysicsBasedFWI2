@@ -2288,7 +2288,7 @@ class Auto_Net(nn.Module):
         #print("shape of result:", np.shape(result))
         
         #p = torch.randn([1,1,1,8])
-        
+        z = 0.5*torch.ones(torch.size(p))
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 50, 13)
