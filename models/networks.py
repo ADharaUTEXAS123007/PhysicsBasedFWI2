@@ -2439,7 +2439,7 @@ class Auto_Net(nn.Module):
         #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-        rcv_amps_true_norm = receiver_amplitudes_true
+        #rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion = torch.nn.L1Loss()
 
@@ -2464,7 +2464,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    #model2 = torch.clamp(net1out1,min=3000,max=6000)
+                    model2 = torch.clamp(net1out1,min=3000,max=6000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2485,11 +2485,11 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred-batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
-                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
+                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
                     ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
                     
                     #print("shape of receiver amplitudes predicted")
