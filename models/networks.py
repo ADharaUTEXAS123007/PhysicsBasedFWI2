@@ -2259,7 +2259,7 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.ReLU(inplace=True)
+        self.final   =  nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
@@ -2311,7 +2311,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        #f1     = 3885 + f1*(4785-3885)
+        f1     = 3885 + f1*(4785-3885)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
