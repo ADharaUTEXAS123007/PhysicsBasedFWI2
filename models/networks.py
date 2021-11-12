@@ -2449,8 +2449,8 @@ class Auto_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        criterion = torch.nn.L1Loss()
-
+        criterion1 = torch.nn.L1Loss()
+        criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -2502,8 +2502,9 @@ class Auto_Net(nn.Module):
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    lossinner = criterion(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    
+                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner = lossinner1 + lossinner2
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
