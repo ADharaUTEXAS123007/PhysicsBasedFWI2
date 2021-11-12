@@ -2449,7 +2449,7 @@ class Auto_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        criterion = torch.nn.SmoothL1Loss()
+        criterion = torch.nn.L1Loss()
 
         #print("shape of mat2 :", np.shape(mat2))
         
