@@ -2311,7 +2311,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 3885 + f1*(4785-3885)
+        f1     = 3.885 + f1*(4.785-3.885)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
@@ -2355,7 +2355,7 @@ class Auto_Net(nn.Module):
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
         #net1out1 = 1600 + vel*(2300-1600)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2423,7 +2423,7 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 3885.0
+        mat2 = mat2 * 3885
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
