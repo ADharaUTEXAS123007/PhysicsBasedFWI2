@@ -54,7 +54,8 @@ class MALA(Optimizer):
                 )
 
                 p.data.add_(-group['lr'], d_p.data)
-                p.data.add_(noise.sample())
+                
+                p.data.add_(noise.sample().to(p.get_device()))
         return loss
 
 
