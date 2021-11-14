@@ -14,6 +14,7 @@ import os
 #import scipy
 import torchgeometry as tgm
 from seisgan.optimizers import MALA, SGHMC
+from vgg import Vgg16
 
 #from skimage import metrics
 
