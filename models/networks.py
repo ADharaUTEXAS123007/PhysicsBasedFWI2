@@ -2344,7 +2344,7 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         #f1     = self.f2(f1)
-        f1     = self.final(f1)
+        #f1     = self.final(f1)
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
