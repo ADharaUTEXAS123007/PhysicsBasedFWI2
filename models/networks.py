@@ -2312,7 +2312,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 3.885 + f1*(4.785-3.885)
+        f1     = 3.0 + f1*(6.0-3.0)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
@@ -2472,7 +2472,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=3885,max=4785)
+                    model2 = torch.clamp(net1out1,min=3000,max=6000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
