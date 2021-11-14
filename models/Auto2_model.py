@@ -13,6 +13,7 @@ import time
 import os
 #import scipy
 import torchgeometry as tgm
+from seisgan.optimizers import MALA, SGHMC
 
 #from skimage import metrics
 
@@ -117,6 +118,7 @@ class Auto2Model(BaseModel):
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
             self.optimizer_G = torch.optim.Adam(
                 self.netG.parameters(), lr=opt.lr)
+            #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:

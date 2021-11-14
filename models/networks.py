@@ -2265,6 +2265,8 @@ class Auto_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 64
         label_dsp_dim = (70,70)
+        mintrue = torch.min(inputs1)
+        maxtrue = torch.max(inputs1)
         down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
@@ -2312,7 +2314,7 @@ class Auto_Net(nn.Module):
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
-        f1     = 3.0 + f1*(6.0-3.0)
+        f1     = mintrue + f1*(maxtrue-mintrue)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
@@ -2324,7 +2326,7 @@ class Auto_Net(nn.Module):
         
         grad = 0*f1
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, f1, lstart, epoch1, inputs1)
+            grad = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2350,7 +2352,7 @@ class Auto_Net(nn.Module):
                     m.bias.data.zero_()
                     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1, true):
+    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
@@ -2419,12 +2421,12 @@ class Auto_Net(nn.Module):
         #net1out1 = torch.tensor(net1out1)
         #net1out1 = net1out1*(4500-2000)+2000
         #print(np.shape(net1out1))
-        min1 = torch.min(net1out1)
+        #min1 = torch.min(net1out1)
         #print("min1 :", min1)
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 3000
+        mat2 = mat2 * mintrue
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -2440,7 +2442,7 @@ class Auto_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true
+        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -2450,7 +2452,7 @@ class Auto_Net(nn.Module):
         #rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion1 = torch.nn.L1Loss()
-        criterion2 = torch.nn.MSELoss()
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -2472,7 +2474,7 @@ class Auto_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=3000,max=6000)
+                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2493,7 +2495,7 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -2503,8 +2505,8 @@ class Auto_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1 + lossinner2
+                    #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner = lossinner1
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
