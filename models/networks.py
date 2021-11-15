@@ -2731,17 +2731,17 @@ class AutoMarmousi_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 25
-        dx = 15
-        nt = 1000
+        freq = 14
+        dx = 10
+        nt = 4001
         dt = 0.001
-        num_shots = 5
-        num_receivers_per_shot = 70
+        num_shots = 20
+        num_receivers_per_shot = 400
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 70 * dx / num_shots
-        receiver_spacing = 70 * dx / num_receivers_per_shot
+        source_spacing = 400 * dx / num_shots
+        receiver_spacing = 400 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2754,7 +2754,7 @@ class AutoMarmousi_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 1
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
