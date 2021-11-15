@@ -2670,6 +2670,8 @@ class AutoMarmousi_Net(nn.Module):
         
         f1     = mintrue + ((f1+1)*(maxtrue-mintrue)+1)/2
         
+        print("shape of f1 ", np.shape(f1))
+        
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         #f1     = 3.0 + f1*(6.0-3.0)
