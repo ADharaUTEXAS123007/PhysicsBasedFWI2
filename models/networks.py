@@ -2722,6 +2722,8 @@ class AutoMarmousi_Net(nn.Module):
         devicek = torch.device(GPU_string)
         #net1out1 = 3.0 + vel*(6.0-3.0)
         net1out1 = vel*1000
+        print("min of net1out1 :", torch.min(net1out1))
+        print("max of net1out1 :", torch.max(net1out1))
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2814,9 +2816,9 @@ class AutoMarmousi_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        criterion1 = torch.nn.L1Loss()
+        #criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
-        #criterion2 = torch.nn.MSELoss()
+        criterion1 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
