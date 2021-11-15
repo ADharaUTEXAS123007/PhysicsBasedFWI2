@@ -2293,14 +2293,14 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Sigmoid()
+        self.final   =  nn.ReLU()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (70,70)
-        mintrue = torch.min(inputs1*(6.0-3.0)+3.0)
-        maxtrue = torch.max(inputs1*(6.0-3.0)+3.0)
+        mintrue = torch.min(inputs1)
+        maxtrue = torch.max(inputs1)
         down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
@@ -2344,12 +2344,12 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         #f1     = self.f2(f1)
-        #f1     = self.final(f1)
+        f1     = self.final(f1)
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         #f1     = 3.0 + f1*(6.0-3.0)
-        #f1     = torch.clip(f1, min=mintrue, max=maxtrue)
+        f1     = torch.clip(f1, min=mintrue, max=maxtrue)
         #print("shape of f1 :", np.shape(f1))
         #f1[(inputs1==2000)] = 2000
         #f1     = f1*100
@@ -2392,8 +2392,8 @@ class Auto_Net(nn.Module):
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
-        net1out1 = 3.0 + vel*(6.0-3.0)
-        net1out1 = net1out1*1000
+        #net1out1 = 3.0 + vel*(6.0-3.0)
+        net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
