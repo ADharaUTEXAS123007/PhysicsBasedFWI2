@@ -2579,7 +2579,7 @@ class Auto_Net(nn.Module):
 class AutoMarmousi_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        super(Auto_Net, self).__init__()
+        super(AutoMarmousi_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = False
