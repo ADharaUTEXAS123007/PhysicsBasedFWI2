@@ -183,7 +183,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
@@ -2294,7 +2294,7 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Tanh()
+        self.final   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
@@ -2398,8 +2398,8 @@ class Auto_Net(nn.Module):
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
-        #net1out1 = 3.0 + vel*(6.0-3.0)
-        net1out1 = vel*1000
+        net1out1 = 3000.0 + vel*(6000.0-3000.0)
+        #net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2467,7 +2467,7 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * mintrue * 1000
+        mat2 = mat2 * 3000
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -2483,7 +2483,7 @@ class Auto_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -2537,7 +2537,7 @@ class Auto_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
