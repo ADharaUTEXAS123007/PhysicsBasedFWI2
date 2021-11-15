@@ -2724,6 +2724,7 @@ class AutoMarmousi_Net(nn.Module):
         net1out1 = vel*1000
         print("min of net1out1 :", torch.min(net1out1))
         print("max of net1out1 :", torch.max(net1out1))
+        print("shape of net1out1 :", np.shape(net1out1))
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
