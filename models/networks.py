@@ -2718,7 +2718,7 @@ class AutoMarmousi_Net(nn.Module):
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(7)
+        GPU_string='cuda:'+str(6)
         devicek = torch.device(GPU_string)
         #net1out1 = 3.0 + vel*(6.0-3.0)
         net1out1 = vel*1000
