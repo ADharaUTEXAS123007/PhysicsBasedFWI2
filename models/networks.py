@@ -2295,6 +2295,7 @@ class Auto_Net(nn.Module):
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
         self.final   =  nn.Sigmoid()
+        self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
@@ -2344,7 +2345,8 @@ class Auto_Net(nn.Module):
         up1    = self.up1(up1)
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        #f1     = self.f2(f1)
+        f1     = self.final(f1)
+        f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         
