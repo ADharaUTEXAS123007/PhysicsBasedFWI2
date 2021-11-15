@@ -2200,7 +2200,8 @@ class NewU_Net(nn.Module):
         self.up2     = unetUp(filters[2], filters[1], self.is_deconv)
         self.up1     = unetUp(filters[1], filters[0], self.is_deconv)
         self.f1      = nn.Conv2d(filters[0],self.n_classes, 1)
-        self.final   = nn.ReLU(inplace=True)
+        #self.final   = nn.ReLU(inplace=True)
+        self.final   = nn.Conv2d(self.n_classes, self.n_classes, 1)
         
     def forward(self, inputs):
         label_dsp_dim = (101,101)
@@ -2293,7 +2294,7 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Softmax()
+        self.final   =  nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
@@ -2344,7 +2345,7 @@ class Auto_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         #f1     = self.f2(f1)
-        f1     = self.final(f1)
+        #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         
         f1     = mintrue + f1*(maxtrue-mintrue)
