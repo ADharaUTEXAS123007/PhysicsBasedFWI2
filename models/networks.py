@@ -2294,7 +2294,7 @@ class Auto_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Tanh(inplace=True)
+        self.final   =  nn.Tanh()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
@@ -2350,7 +2350,7 @@ class Auto_Net(nn.Module):
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         
-        f1     = mintrue + f1*(maxtrue-mintrue)
+        f1     = mintrue + ((f1+1)*(maxtrue-mintrue)+1)/2
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
         #f1     = 3.0 + f1*(6.0-3.0)
