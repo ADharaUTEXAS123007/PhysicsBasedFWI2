@@ -2576,6 +2576,7 @@ class Auto_Net(nn.Module):
                  
         return net1out1.grad
     
+
 class AutoMarmousi_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
@@ -2598,7 +2599,7 @@ class AutoMarmousi_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[2]*125*50, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[2]*125*9, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*50*13) #for marmousi 101x101
@@ -2621,7 +2622,6 @@ class AutoMarmousi_Net(nn.Module):
         label_dsp_dim = (100,400)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        print("shape of inputs2 :", np.shape(inputs2))
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
@@ -2656,13 +2656,12 @@ class AutoMarmousi_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 13, 50)
+        z = z.view(-1, filters[3], 50, 13)
     
         up1    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
-        print("shhape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
@@ -2670,9 +2669,7 @@ class AutoMarmousi_Net(nn.Module):
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         
-        f1     = mintrue + f1 * (maxtrue-mintrue)
-        
-        print("shape of f1 ", np.shape(f1))
+        f1     = mintrue + f1*(maxtrue-mintrue)
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
@@ -2718,34 +2715,30 @@ class AutoMarmousi_Net(nn.Module):
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(6)
-        devicek = torch.device(GPU_string)
-        #net1out1 = 3.0 + vel*(6.0-3.0)
-        net1out1 = vel*1000
-        print("min of net1out1 :", torch.min(net1out1))
-        print("max of net1out1 :", torch.max(net1out1))
-        print("shape of net1out1 :", np.shape(net1out1))
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
+        net1out1 = 3000.0 + vel*(6000.0-3000.0)
+        #net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        print("shape of net1out1 :", np.shape(net1out1))
-        net1out1 = net1out1.to(devicek)
-        #devicek = net1out1.get_device()
+        #net1out1 = net1out1.to(devicek)
+        devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 14
-        dx = 10
-        nt = 4001
+        freq = 25
+        dx = 15
+        nt = 1000
         dt = 0.001
         num_shots = 5
-        num_receivers_per_shot = 400
+        num_receivers_per_shot = 70
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 400 * dx / num_shots
-        receiver_spacing = 400 * dx / num_receivers_per_shot
+        source_spacing = 70 * dx / num_shots
+        receiver_spacing = 70 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
@@ -2793,7 +2786,7 @@ class AutoMarmousi_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = 1510.0 * mat2
+        mat2 = mat2 * 3000
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -2809,7 +2802,7 @@ class AutoMarmousi_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -2818,9 +2811,9 @@ class AutoMarmousi_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        #criterion1 = torch.nn.L1Loss()
+        criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
-        criterion1 = torch.nn.MSELoss()
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -2842,7 +2835,7 @@ class AutoMarmousi_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=1510,max=4800)
+                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -2860,14 +2853,10 @@ class AutoMarmousi_Net(nn.Module):
                     batch_x_r = x_r[it::num_batches].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
-                    print("shape of batch_x_r :", np.shape(batch_x_r))
-                    print("shape of batch_x_s :", np.shape(batch_x_s))
-                    print("shape of batch_src_amps :", np.shape(batch_src_amps))
-                    print("dt :", dt)
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -2897,7 +2886,7 @@ class AutoMarmousi_Net(nn.Module):
         #np.save('./marmousi/rcv_amplitudes.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #np.save('./marmousi/rcv_amplitudes_true.npy',batch_rcv_amps_true.cpu().detach().numpy())
         #np.save('./marmousi/rcv_amplitudes_true_cte.npy',batch_rcv_amps_cte.cpu().detach().numpy())
-        np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
+        #np.save('./marmousi/net1o420ut1.npy',net1out1.cpu().detach().numpy())
         #np.save('./marmousi/netgrad1.npy',net1out1.grad.cpu().detach().numpy())
         #np.save('./deepwave/seis231.npy',batch_rcv_amps_pred.cpu().detach().numpy())
         #net1out1 = (net1out1 - 2000)/(4500-2000)
