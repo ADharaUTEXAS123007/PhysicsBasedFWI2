@@ -2367,14 +2367,14 @@ class Auto_Net(nn.Module):
         #f1     = torch.clamp(f1,min=20,max=45)
         
         grad = 0*f1
-        lossT = torch.tensor([0.0])
+        lossT = 0*f1
         if (epoch1 > lstart):
             [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
-        print("lossT : ",lossT)
+        #print("lossT : ",lossT)
         return f1, grad, latent1, lossT
     
     # Initialization of Parameters
@@ -2576,7 +2576,7 @@ class Auto_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad, tensor[lossinner.item()]
+        return net1out1.grad, lossinner
     
 
 class AutoMarmousi_Net(nn.Module):
