@@ -2719,8 +2719,8 @@ class AutoMarmousi_Net(nn.Module):
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
-        net1out1 = 3000.0 + vel*(6000.0-3000.0)
-        #net1out1 = vel*1000
+        net1out1 = mintrue + vel*(maxtrue-mintrue)
+        net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
@@ -2730,12 +2730,12 @@ class AutoMarmousi_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 25
-        dx = 15
-        nt = 1000
+        freq = 14
+        dx = 10
+        nt = 4001
         dt = 0.001
         num_shots = 5
-        num_receivers_per_shot = 70
+        num_receivers_per_shot = 400
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
