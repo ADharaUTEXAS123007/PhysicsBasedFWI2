@@ -2723,11 +2723,12 @@ class AutoMarmousi_Net(nn.Module):
         net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
+        print("devicek :", devicek)
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         net1out1 = net1out1.to(devicek)
         
-        print("devicek :", devicek)
+
         #devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
