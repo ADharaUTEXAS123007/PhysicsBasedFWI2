@@ -2739,7 +2739,7 @@ class AutoMarmousi_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 16
+        num_shots = 5
         num_receivers_per_shot = 400
         num_sources_per_shot = 1
         num_dims = 2
@@ -2758,7 +2758,7 @@ class AutoMarmousi_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 4
+        num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
