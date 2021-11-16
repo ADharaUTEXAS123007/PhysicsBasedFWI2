@@ -2716,17 +2716,19 @@ class AutoMarmousi_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
         
-        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        #GPU_string='cuda:'+str(7)
-        #devicek = torch.device(GPU_string)
+        torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        GPU_string='cuda:'+str(7)
+        devicek = torch.device(GPU_string)
         net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        #net1out1 = net1out1.to(devicek)
-        devicek = net1out1.get_device()
+        net1out1 = net1out1.to(devicek)
+        
+        print("devicek :", devicek)
+        #devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
