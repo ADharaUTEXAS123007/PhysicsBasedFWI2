@@ -2739,8 +2739,8 @@ class AutoMarmousi_Net(nn.Module):
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 70 * dx / num_shots
-        receiver_spacing = 70 * dx / num_receivers_per_shot
+        source_spacing = 400 * dx / num_shots
+        receiver_spacing = 400 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
