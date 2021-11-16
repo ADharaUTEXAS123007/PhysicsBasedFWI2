@@ -2734,7 +2734,7 @@ class AutoMarmousi_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 5
+        num_shots = 8
         num_receivers_per_shot = 400
         num_sources_per_shot = 1
         num_dims = 2
