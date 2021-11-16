@@ -2374,7 +2374,7 @@ class Auto_Net(nn.Module):
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
-
+        print("lossT : " lossT)
         return f1, grad, latent1, lossT
     
     # Initialization of Parameters
