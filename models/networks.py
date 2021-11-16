@@ -2304,6 +2304,8 @@ class Auto_Net(nn.Module):
         label_dsp_dim = (70,70)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
+        
+        print("input2 device :", input2.get_device())
         down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
