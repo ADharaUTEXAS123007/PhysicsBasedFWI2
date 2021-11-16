@@ -2719,6 +2719,7 @@ class AutoMarmousi_Net(nn.Module):
         torch.cuda.set_device(7)  #RB Necessary if device <> 0
         GPU_string='cuda:'+str(7)
         devicek = torch.device(GPU_string)
+        vel = vel.to(devicek)
         net1out2 = mintrue + vel*(maxtrue-mintrue)
         net1out2 = vel*1000
         net1out1 = net1out2.to(devicek)
