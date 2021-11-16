@@ -183,7 +183,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
@@ -2349,6 +2349,7 @@ class Auto_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
+        f1     = mintrue + f1*(maxtrue-mintrue)
         
         #f1     = mintrue + ((f1+1)*(maxtrue-mintrue)+1)/2
         
@@ -2398,7 +2399,7 @@ class Auto_Net(nn.Module):
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
-        net1out1 = 3000.0 + vel*(6000.0-3000.0)
+        net1out1 = vel*1000
         #net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -2467,7 +2468,7 @@ class Auto_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 3000
+        mat2 = mat2 * mintrue * 1000
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
