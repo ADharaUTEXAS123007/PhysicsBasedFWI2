@@ -217,7 +217,7 @@ class Auto2Model(BaseModel):
         #1000 is the best model for vae
         print("shape of real_B :", np.shape(self.real_B))
         print("shape of fake_B :", np.shape(self.fake_B))
-        print("shape of D_MSE :", np.shape(self.D_MSE))
+        print("shape of D_MSE :", np.shape(self.loss_D_MSE))
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
