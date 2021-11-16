@@ -2687,14 +2687,15 @@ class AutoMarmousi_Net(nn.Module):
         #f1     = torch.clamp(f1,min=20,max=45)
         
         grad = 0*f1
+        lossT = 0.0
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
+            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1
+        return f1, grad, latent1, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -2899,7 +2900,7 @@ class AutoMarmousi_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad
+        return net1out1.grad, lossinner.item()
 
 class Vae_Net(nn.Module):
     def __init__(self, outer_nc, inner_nc, input_nc=None,
