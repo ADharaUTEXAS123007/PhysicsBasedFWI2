@@ -2273,7 +2273,7 @@ class Auto_Net(nn.Module):
         latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.down2   = unetDown(filters[0], filters[1], ++++self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         #self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
@@ -2367,14 +2367,15 @@ class Auto_Net(nn.Module):
         #f1     = torch.clamp(f1,min=20,max=45)
         
         grad = 0*f1
+        lossT = 0.0
         if (epoch1 > lstart):
-            grad = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
+            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1
+        return f1, grad, latent1, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -2575,7 +2576,7 @@ class Auto_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad
+        return net1out1.grad, lossinner.item()
     
 
 class AutoMarmousi_Net(nn.Module):
