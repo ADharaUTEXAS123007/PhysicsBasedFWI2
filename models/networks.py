@@ -2716,13 +2716,13 @@ class AutoMarmousi_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
         
-        torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(7)
-        devicek = torch.device(GPU_string)
-        vel = vel.to(devicek)
-        net1out2 = mintrue + vel*(maxtrue-mintrue)
-        net1out2 = vel*1000
-        net1out1 = net1out2.to(devicek)
+        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
+        #vel = vel.to(devicek)
+        net1out1 = mintrue + vel*(maxtrue-mintrue)
+        net1out1 = vel*1000
+        #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         print("devicek :", devicek)
@@ -2738,13 +2738,13 @@ class AutoMarmousi_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 8
-        num_receivers_per_shot = 400
+        num_shots = 16
+        num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        source_spacing = 400 * dx / num_shots
-        receiver_spacing = 400 * dx / num_receivers_per_shot
+        source_spacing = 200 * dx / num_shots
+        receiver_spacing = 200 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
