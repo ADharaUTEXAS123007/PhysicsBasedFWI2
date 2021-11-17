@@ -2947,7 +2947,7 @@ class AutoN_Net(nn.Module):
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         
-        print("input2 device :", inputs2.get_device())
+        #print("input2 device :", inputs2.get_device())
         down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
@@ -3050,7 +3050,7 @@ class AutoN_Net(nn.Module):
         #net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
-        net1out1 = net1out1.detach()
+        #net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         #net1out1 = net1out1.to(devicek)
         devicek = net1out1.get_device()
@@ -3147,7 +3147,8 @@ class AutoN_Net(nn.Module):
         
 
         if (epoch1 > lstart):
-            net1out1.requires_grad = True
+            #net1out1.requires_grad = True
+            net1out1.retain_grad()
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
