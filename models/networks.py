@@ -184,7 +184,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = Auto_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
