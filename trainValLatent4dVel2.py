@@ -114,10 +114,10 @@ if __name__ == '__main__':
              #if (epoch > lstart):
              #   Model1loss = Model1loss + model.loss_M1_MSE.item()     
              #else:
-             Model1loss = Model1loss + model.loss_M1_MSE
+             #Model1loss = Model1loss + model.loss_M1_MSE
                  
                 
-             KLloss = KLloss + model.loss_K_MSE
+             KLloss = KLloss + model.loss_K_MSE.item()
              #KLloss = KLloss + model.loss_K_MSE
 
 
