@@ -3015,7 +3015,7 @@ class AutoN_Net(nn.Module):
         print("f1 device :", f1.get_device())
         #lossT = 0*f1
         if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
+            grad = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -3050,7 +3050,7 @@ class AutoN_Net(nn.Module):
         #net1out1 = vel*1000
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
-        #net1out1 = net1out1.detach()
+        net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         #net1out1 = net1out1.to(devicek)
         devicek = net1out1.get_device()
@@ -3147,8 +3147,8 @@ class AutoN_Net(nn.Module):
         
 
         if (epoch1 > lstart):
-            #net1out1.requires_grad = True
-            net1out1.retain_grad()
+            net1out1.requires_grad = True
+            #net1out1.retain_grad()
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
 
         for epoch in range(num_epochs):
