@@ -3012,7 +3012,7 @@ class AutoN_Net(nn.Module):
         #f1     = torch.clamp(f1,min=20,max=45)
         
         grad = 0*f1
-        print("f1 device :", f1.get_device())
+        #print("f1 device :", f1.get_device())
         #lossT = 0*f1
         if (epoch1 > lstart):
             grad = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
