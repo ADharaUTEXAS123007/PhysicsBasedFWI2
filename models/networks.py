@@ -184,7 +184,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoN_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
@@ -2695,7 +2695,7 @@ class AutoMarmousi_Net(nn.Module):
         grad = 0*f1
         lossT = 0.0
         if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue)
+            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
@@ -2721,7 +2721,7 @@ class AutoMarmousi_Net(nn.Module):
                     m.bias.data.zero_()
                     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue):
+    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
         
         #torch.cuda.set_device(7)  #RB Necessary if device <> 0
         #GPU_string='cuda:'+str(7)
@@ -2889,7 +2889,7 @@ class AutoMarmousi_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    #net1out1.grad[(true[0,0,:,:]==2000)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
