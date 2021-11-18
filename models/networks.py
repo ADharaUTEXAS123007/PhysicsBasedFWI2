@@ -2932,7 +2932,7 @@ class AutoN_Net(nn.Module):
         #self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.decoder_input1 = nn.Linear(filters[2]*63*9,latent_dim)
+        self.decoder_input1 = nn.Linear(filters[2]*125*9,latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[2]*18*18)
