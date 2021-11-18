@@ -2935,10 +2935,10 @@ class AutoN_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[2]*125*9,latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[2]*18*18)
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*9*9)
 
         #self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
-        #self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
@@ -2989,9 +2989,9 @@ class AutoN_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[2], 18, 18)
     
-        #up1    = self.up3(z)
+        up1    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
-        up1    = self.up2(z)
+        up1    = self.up2(up1)
         up1    = self.up1(up1)
         print(" shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
