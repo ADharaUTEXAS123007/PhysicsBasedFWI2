@@ -2942,7 +2942,7 @@ class AutoN_Net(nn.Module):
         self.up2 = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1 = autoUp(filters[1], filters[0], self.is_deconv)
         self.f1 = nn.Conv2d(filters[0], self.n_classes, 1)
-        self.final = nn.Sigmoid()
+        self.final = nn.Tanh()
         
 
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
@@ -3000,8 +3000,9 @@ class AutoN_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        f1     = mintrue + f1*(maxtrue-mintrue)
-        
+        #f1     = mintrue + f1*(maxtrue-mintrue)
+        f1      = lowf + f1
+        f1      = torch.clamp(f1, vmin=mintrue,max=maxtrue)
         #f1     = mintrue + ((f1+1)*(maxtrue-mintrue)+1)/2
         
         #f1     = torch.add(f1,1600.0)
@@ -3139,7 +3140,7 @@ class AutoN_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true
+        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -3194,7 +3195,7 @@ class AutoN_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred
+                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
