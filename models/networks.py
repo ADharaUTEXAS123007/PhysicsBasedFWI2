@@ -2935,7 +2935,7 @@ class AutoN_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[2]*63*9,latent_dim)
         
 
-        self.decoder_input = nn.Linear(latent_dim, filters[2]*25*20)
+        self.decoder_input = nn.Linear(latent_dim, filters[2]*18*18)
 
         #self.up4 = autoUp(filters[3], filters[3], self.is_deconv)
         #self.up3 = autoUp(filters[3], filters[2], self.is_deconv)
