@@ -184,7 +184,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = AutoN_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
@@ -2993,6 +2993,7 @@ class AutoN_Net(nn.Module):
         #print(" shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
+        print(" shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
@@ -3066,7 +3067,7 @@ class AutoN_Net(nn.Module):
         dx = 15
         nt = 1000
         dt = 0.001
-        num_shots = 5
+        num_shots = 8
         num_receivers_per_shot = 70
         num_sources_per_shot = 1
         num_dims = 2
@@ -3074,7 +3075,8 @@ class AutoN_Net(nn.Module):
         source_spacing = 70 * dx / num_shots
         receiver_spacing = 70 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
-        x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
+        #x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
+        x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
         x_r[0, :, 1] = torch.arange(
             num_receivers_per_shot).float() * receiver_spacing
