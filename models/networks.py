@@ -3002,7 +3002,7 @@ class AutoN_Net(nn.Module):
         #f1     = f1/torch.max(f1)
         #f1     = mintrue + f1*(maxtrue-mintrue)
         f1      = lowf + f1
-        f1      = torch.clamp(f1, vmin=mintrue,max=maxtrue)
+        f1      = torch.clamp(f1, min=mintrue,max=maxtrue)
         #f1     = mintrue + ((f1+1)*(maxtrue-mintrue)+1)/2
         
         #f1     = torch.add(f1,1600.0)
