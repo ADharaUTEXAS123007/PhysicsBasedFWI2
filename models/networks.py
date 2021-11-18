@@ -2958,7 +2958,7 @@ class AutoN_Net(nn.Module):
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
         
-        print("shape of down3 :", np.shape(down3))
+        #print("shape of down3 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down3, start_dim=1)
@@ -2993,7 +2993,7 @@ class AutoN_Net(nn.Module):
         #print(" shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
-        print(" shape of up1 :", np.shape(up1))
+        #print(" shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
