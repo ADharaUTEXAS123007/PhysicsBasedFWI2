@@ -2993,7 +2993,7 @@ class AutoN_Net(nn.Module):
         #print(" shape of up1 :", np.shape(up1))
         up1    = self.up2(z)
         up1    = self.up1(up1)
-        #print(" shape of up1 :", np.shape(up1))
+        print(" shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
@@ -3067,7 +3067,7 @@ class AutoN_Net(nn.Module):
         dx = 15
         nt = 1000
         dt = 0.001
-        num_shots = 8
+        num_shots = 6
         num_receivers_per_shot = 70
         num_sources_per_shot = 1
         num_dims = 2
