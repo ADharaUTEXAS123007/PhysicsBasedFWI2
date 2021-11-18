@@ -3071,6 +3071,7 @@ class AutoN_Net(nn.Module):
         num_receivers_per_shot = 70
         num_sources_per_shot = 1
         num_dims = 2
+        ny = 70
         #ModelDim = [201,301]
         source_spacing = 70 * dx / num_shots
         receiver_spacing = 70 * dx / num_receivers_per_shot
