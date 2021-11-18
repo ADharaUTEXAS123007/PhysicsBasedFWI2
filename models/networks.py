@@ -2953,17 +2953,17 @@ class AutoN_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         
         #print("input2 device :", inputs2.get_device())
-        down1  = self.down1(inputs2)
+        down1  = self.down1(inputs2[:,:,1:1000:2,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         #down4  = self.down4(down3)
         
-        #print("shape of down3 :", np.shape(down3))
+        print("shape of down3 :", np.shape(down3))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down3, start_dim=1)
         
-        #print("result shape :", np.shape(result))
+        print("result shape :", np.shape(result))
         
         p = self.decoder_input1(result)
         #down3  = self.down3(down2)
