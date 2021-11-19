@@ -3149,7 +3149,7 @@ class AutoN_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        criterion1 = torch.nn.L1Loss()
+        criterion1 = torch.nn.MSELoss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
         #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
