@@ -2932,7 +2932,7 @@ class AutoN_Net(nn.Module):
         self.down4 = unetDown(filters[2], filters[3], self.is_batchnorm)
         #self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
 
-        self.decoder_input1 = nn.Linear(filters[2]*125*9,latent_dim)
+        self.decoder_input1 = nn.Linear(filters[3]*63*5,latent_dim)
         
 
         self.decoder_input = nn.Linear(latent_dim, filters[3]*9*9)
@@ -2961,7 +2961,7 @@ class AutoN_Net(nn.Module):
         print("shape of down4 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down3, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         
         #print("result shape :", np.shape(result))
         
