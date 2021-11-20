@@ -2947,7 +2947,7 @@ class AutoN_Net(nn.Module):
 
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 64
+        latent_dim = 6
         label_dsp_dim = (70,70)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
