@@ -2924,7 +2924,7 @@ class AutoN_Net(nn.Module):
         self.n_classes = inner_nc
 
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 6
+        latent_dim = 16
 
         #self.conv1 = nn.Conv2d(self.in_channels, 4, 3, 1, 1, 1)
         self.down1 = unetDown(self.in_channels, filters[0], self.is_batchnorm)
@@ -2948,7 +2948,7 @@ class AutoN_Net(nn.Module):
 
     def forward(self, inputs1, inputs2, lstart, epoch1, p, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 6
+        latent_dim = 16
         label_dsp_dim = (70,70)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
