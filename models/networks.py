@@ -2926,7 +2926,7 @@ class AutoN_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 6
 
-        self.conv1 = nn.Conv2d(self.in_channels, 4, 3, 1, 1, 1)
+        #self.conv1 = nn.Conv2d(self.in_channels, 4, 3, 1, 1, 1)
         self.down1 = unetDown(4, filters[0], self.is_batchnorm)
         self.down2 = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3 = unetDown(filters[1], filters[2], self.is_batchnorm)
@@ -2954,8 +2954,8 @@ class AutoN_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         
         #print("input2 device :", inputs2.get_device())
-        cc1 = self.conv1(inputs2)
-        down1  = self.down1(cc1)
+        #cc1 = self.conv1(inputs2)
+        down1  = self.down1(inputs2)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
