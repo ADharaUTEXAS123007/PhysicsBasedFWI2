@@ -2953,6 +2953,7 @@ class AutoN_Net(nn.Module):
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         
+        inputs2 = (inputs2 - torch.mean(inputs2))/torch.std(inputs2)
         #print("input2 device :", inputs2.get_device())
         #cc1 = self.conv1(inputs2)
         down1  = self.down1(inputs2)
