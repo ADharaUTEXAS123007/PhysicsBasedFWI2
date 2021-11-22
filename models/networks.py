@@ -2897,7 +2897,7 @@ class AutoMarmousi_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     p1 = torch.rand(net1out1.grad.size()).to(devicek)
-                    p1 = p1*0.005*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
+                    p1 = p1*0.001*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
                     net1out1.grad = p1 + net1out1.grad
                     net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
