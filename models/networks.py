@@ -2636,7 +2636,7 @@ class AutoMarmousi_Net(nn.Module):
         print("shape of down4 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down3, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         
         #print("result shape :", np.shape(result))
         
