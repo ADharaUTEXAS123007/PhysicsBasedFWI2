@@ -184,7 +184,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'NewU':
         net = NewU_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Auto':
-        net = AutoN_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
+        net = AutoMarmousi_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'Vae':
         net = Vae_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout) 
     elif netG == 'VaeNoPhy':
@@ -2600,7 +2600,7 @@ class AutoMarmousi_Net(nn.Module):
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        #self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
@@ -2631,9 +2631,9 @@ class AutoMarmousi_Net(nn.Module):
         down1  = self.down1(inputs2[:,:,1:4001:4,:]*100)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
-        #down4  = self.down4(down3)
+        down4  = self.down4(down3)
         
-        print("shape of down3 :", np.shape(down3))
+        print("shape of down4 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down3, start_dim=1)
