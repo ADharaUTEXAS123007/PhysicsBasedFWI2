@@ -3500,7 +3500,7 @@ class AutoMarmousi22_Net(nn.Module):
 
         criterion1 = torch.nn.L1Loss()
         vgg = Vgg16().type(torch.cuda.FloatTensor)
-        #criterion2 = torch.nn.MSELoss()
+        criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -3554,9 +3554,18 @@ class AutoMarmousi22_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
+                    y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
+                    y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
+                    y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
+                    y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
+                    y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
                     
-                    y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    lossinner2 = criterion2(y_pred1,ytrue1) + criterion2(y_pred2,ytrue2) + criterion2(y_pred3,ytrue3)
+                    
+                    lossinner = lossinner1 + lossinner2
+                    
+                    ####y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
