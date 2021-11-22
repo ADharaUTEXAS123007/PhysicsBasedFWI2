@@ -3556,7 +3556,7 @@ class AutoMarmousi22_Net(nn.Module):
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner = lossinner1
                     
-                    y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true,2,1),0))
+                    y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true,0,1),0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
