@@ -3501,7 +3501,7 @@ class AutoMarmousi22_Net(nn.Module):
 
         criterion1 = torch.nn.L1Loss()
         vgg = Vgg16().type(torch.cuda.FloatTensor)
-        #criterion2 = torch.nn.MSELoss()
+        criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
