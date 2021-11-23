@@ -3270,12 +3270,12 @@ class AutoMarmousi22_Net(nn.Module):
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        #self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[2]*125*25, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*25*13) #for marmousi 101x101
@@ -3301,13 +3301,13 @@ class AutoMarmousi22_Net(nn.Module):
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
-        down4  = self.down4(down3)
+        #down4  = self.down4(down3)
         
-        print("shape of down3 :", np.shape(down3))
-        print("shape of down4 :", np.shape(down4))
+        #print("shape of down3 :", np.shape(down3))
+        #print("shape of down4 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down4, start_dim=1)
+        result = torch.flatten(down3, start_dim=1)
         
         #print("result shape :", np.shape(result))
         
