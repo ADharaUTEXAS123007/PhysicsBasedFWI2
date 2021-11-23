@@ -3070,7 +3070,7 @@ class AutoMarmousi21_Net(nn.Module):
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
-        net1out1 = mintrue + vel*(maxtrue-mintrue)
+        #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
@@ -3224,7 +3224,7 @@ class AutoMarmousi21_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
+                    #lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
