@@ -2108,8 +2108,8 @@ class Vgg16(nn.Module):
             self.to_relu_2_2.add_module(str(x), features[x])
         for x in range(9, 16):
             self.to_relu_3_3.add_module(str(x), features[x])
-        for x in range(16, 23):
-            self.to_relu_4_3.add_module(str(x), features[x])
+        #for x in range(16, 23):
+        #    self.to_relu_4_3.add_module(str(x), features[x])
         
         # don't need the gradients, just want the features
         for param in self.parameters():
@@ -2122,9 +2122,9 @@ class Vgg16(nn.Module):
         h_relu_2_2 = h
         h = self.to_relu_3_3(h)
         h_relu_3_3 = h
-        h = self.to_relu_4_3(h)
-        h_relu_4_3 = h
-        out = h_relu_4_3
+        #h = self.to_relu_4_3(h)
+        #h_relu_4_3 = h
+        out = h_relu_3_3
         return out
 #######################UNET 2##############################################
 class unetConv2(nn.Module):
@@ -3401,7 +3401,7 @@ class AutoMarmousi22_Net(nn.Module):
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
-        net1out1 = mintrue + vel*(maxtrue-mintrue)
+        #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
@@ -3501,7 +3501,7 @@ class AutoMarmousi22_Net(nn.Module):
 
         criterion1 = torch.nn.L1Loss()
         vgg = Vgg16().type(torch.cuda.FloatTensor)
-        criterion2 = torch.nn.MSELoss()
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
