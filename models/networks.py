@@ -3456,7 +3456,7 @@ class AutoMarmousi22_Net(nn.Module):
         sumlossinner = 0.0
         ss = ss.to(devicek)
         
-        print("shape of ss :", torch.size(ss))
+        print("shape of ss :", ss.size())
         ################data misfit calculation##########################################
 
         #net1out1 = net1out1.to(self.devicek)
