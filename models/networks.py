@@ -2134,10 +2134,12 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1))
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1))
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True))
@@ -2154,7 +2156,7 @@ class unetDown(nn.Module):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
         self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
-        #self.dropout = nn.Dropout2d(0.1)
+        self.dropout = nn.Dropout2d(0.1)
         
 
     def forward(self, inputs):
@@ -2743,7 +2745,10 @@ class AutoMarmousi_Net(nn.Module):
         #print("devicek :", devicek)
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
-        
+        g1 = torch.arange(net1out1.size(dim=0))
+        g1 = g1**2
+        ss = g1.tile((200,1))
+        ss = torch.transpose(ss,0,1)
 
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
@@ -2832,9 +2837,9 @@ class AutoMarmousi_Net(nn.Module):
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
-
+        ss = ss.to(devicek)
         criterion1 = torch.nn.L1Loss()
-        #vgg = Vgg16().type(torch.cuda.FloatTensor)
+        vgg = Vgg16().type(torch.cuda.FloatTensor)
         #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
@@ -2888,8 +2893,18 @@ class AutoMarmousi_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    
+                    y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
+                    y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
+                    y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
+                    y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
+                    y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
+                    
+                    lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
+                    lossinner = lossinner1 + lossinner2
+                    
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
@@ -2898,9 +2913,10 @@ class AutoMarmousi_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    p1 = torch.rand(net1out1.grad.size()).to(devicek)
-                    p1 = p1*0.00005*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
-                    net1out1.grad = p1 + net1out1.grad
+                    #p1 = torch.rand(net1out1.grad.size()).to(devicek)
+                    #p1 = p1*0.00005*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
+                    #net1out1.grad = p1 + net1out1.grad
+                    net1out1.grad = net1out1.grad*ss
                     net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
