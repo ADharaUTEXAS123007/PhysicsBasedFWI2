@@ -3410,6 +3410,8 @@ class AutoMarmousi22_Net(nn.Module):
         #print("devicek :", devicek)
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
+        g1 = torch.arange(net1out1.size(dim=0))
+        ss = g1.tile((200,))
         
 
         devicek = net1out1.get_device()
@@ -3452,7 +3454,9 @@ class AutoMarmousi22_Net(nn.Module):
         #print("size of self.realA")
         # print(np.shape(self.real_A))
         sumlossinner = 0.0
-
+        ss = ss.to(devicek)
+        
+        print("shape of ss :", torch.size(ss))
         ################data misfit calculation##########################################
 
         #net1out1 = net1out1.to(self.devicek)
