@@ -3412,7 +3412,7 @@ class AutoMarmousi22_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
         ss = g1.tile((200,1))
-        ss = torch.transpose(ss)
+        ss = torch.transpose(ss,0,1)
 
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
