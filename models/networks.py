@@ -3411,6 +3411,7 @@ class AutoMarmousi22_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
+        g1 = g1**2
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
 
@@ -3456,7 +3457,7 @@ class AutoMarmousi22_Net(nn.Module):
         sumlossinner = 0.0
         ss = ss.to(devicek)
         
-        print("shape of ss :", ss.size())
+        #print("shape of ss :", ss.size())
         ################data misfit calculation##########################################
 
         #net1out1 = net1out1.to(self.devicek)
@@ -3578,6 +3579,7 @@ class AutoMarmousi22_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
+                    net1out1.grad = net1out1.grad*ss
                     net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
