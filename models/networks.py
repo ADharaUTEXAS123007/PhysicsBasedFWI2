@@ -3340,7 +3340,7 @@ class AutoMarmousi21_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Tanh()
+        self.final   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
@@ -3398,12 +3398,12 @@ class AutoMarmousi21_Net(nn.Module):
         #f1     = f1/torch.max(f1)
         #print("shape of f1 :", np.shape(f1))
         
-        #f1    = mintrue + f1*(maxtrue-mintrue)
-        #f1[(inputs1==1.5100)] = 1.510
-        f1     = lowf + f1
+        f1    = mintrue + f1*(maxtrue-mintrue)
+        f1[(inputs1==1.5100)] = 1.510
+        #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
-        f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
-        f1[(inputs1 == 1.510)] = 1.510
+        #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
+        #f1[(inputs1 == 1.510)] = 1.510
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
