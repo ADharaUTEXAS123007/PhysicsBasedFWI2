@@ -3399,7 +3399,7 @@ class AutoMarmousi21_Net(nn.Module):
         #print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1.5100)] = 1.510
+        f1[(inputs1==1.5)] = 1.5
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -3529,7 +3529,7 @@ class AutoMarmousi21_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1510
+        mat2 = mat2 * 1500
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -3620,7 +3620,7 @@ class AutoMarmousi21_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad = net1out1.grad * ss
-                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
