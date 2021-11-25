@@ -3346,7 +3346,7 @@ class AutoMarmousi21_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (100,200)
+        label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         down1  = self.down1(inputs2[:,:,1:4001:4,:])
