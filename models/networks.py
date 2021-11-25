@@ -3345,7 +3345,7 @@ class AutoMarmousi21_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 64
+        latent_dim = 4
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
@@ -3622,7 +3622,7 @@ class AutoMarmousi21_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad = net1out1.grad
+                    net1out1.grad = net1out1.grad * ss
                     net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
