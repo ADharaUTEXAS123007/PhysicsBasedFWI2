@@ -228,7 +228,7 @@ class Auto2Model(BaseModel):
         
         wavelet = wav.ormsby(0.2,1e-3,[30,40,70,90])
         wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
-        tr1 = self.real_B * 0
+        tr1 = self.real_A * 0
         
         for i in range(self.real_B.shape[3]):
             reflect = self.fake_B[:,:,:,i]
