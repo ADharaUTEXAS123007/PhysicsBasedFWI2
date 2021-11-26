@@ -226,6 +226,16 @@ class Auto2Model(BaseModel):
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
+        wavelet = wav.ormsby(0.2,1e-3,[30,40,70,90])
+        wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float()
+        tr1 = self.real_B * 0
+        
+        for i in range(self.real_B.shape[3]):
+            reflect = self.fake_B[:,:,:,i]
+            synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
+            tr1[:,:,:,i] = synth 
+        
+        print("shape of tr1 :", np.shape(tr1))    
         
         
         #print("shape of grad :", np.shape(self.grad))
