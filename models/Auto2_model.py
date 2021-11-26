@@ -15,6 +15,9 @@ import os
 import torchgeometry as tgm
 from seisgan.optimizers import MALA, SGHMC
 sys.path.append('./bruges/.')
+from bruges.reflection import reflection as avo
+from bruges.filters import wavelets as wav 
+from torch.nn.functional import conv1d
 
 #from vgg import Vgg16
 
