@@ -127,6 +127,7 @@ class Auto2Model(BaseModel):
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
+            self.criterionL1 = torch.nn.L1Loss()
         else:
             print("----test data----")
             self.criterionL1 = torch.nn.L1Loss()
@@ -236,6 +237,7 @@ class Auto2Model(BaseModel):
             tr1[:,:,:,i] = synth 
         
         print("shape of tr1 :", np.shape(tr1))    
+        self.loss_D_MSE = self.criterionL1(tr1,self.real_A)
         
         
         #print("shape of grad :", np.shape(self.grad))
