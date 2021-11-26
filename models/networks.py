@@ -2704,10 +2704,10 @@ class AutoMarmousi_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
-            grad = torch.unsqueeze(grad,0)
-            grad = torch.unsqueeze(grad,0)
+        #if (epoch1 > lstart):
+        #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+        #    grad = torch.unsqueeze(grad,0)
+        #    grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
