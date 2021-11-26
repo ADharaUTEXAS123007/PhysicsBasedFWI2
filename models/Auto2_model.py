@@ -14,6 +14,8 @@ import os
 #import scipy
 import torchgeometry as tgm
 from seisgan.optimizers import MALA, SGHMC
+sys.path.append('./bruges/.')
+
 #from vgg import Vgg16
 
 #from skimage import metrics
@@ -220,6 +222,8 @@ class Auto2Model(BaseModel):
         #print("shape of D_MSE :", np.shape(self.loss_D_MSE))
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        
+        
         
         #print("shape of grad :", np.shape(self.grad))
         #k
