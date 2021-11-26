@@ -240,6 +240,7 @@ class Auto2Model(BaseModel):
         self.loss_D_MSE = self.criterionL1(tr1,self.real_A)
         
         
+        
         #print("shape of grad :", np.shape(self.grad))
         #k
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
@@ -292,22 +293,22 @@ class Auto2Model(BaseModel):
         #self.fake_B.retain_grad()
 
         
-        self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_D_MSE
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
-        if (epoch1 <= lstart):
-            print("1st epoch1 :", epoch1)
-            self.loss_G.backward()
+        #if (epoch1 <= lstart):
+        #    print("1st epoch1 :", epoch1)
+        self.loss_G.backward()
         #self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
         #print("maxb :", maxb)
-        lstart1 = 35
-        lstart2 = 60
+        #lstart1 = 35
+        #lstart2 = 60
         
-        if (epoch1>lstart):
-            print("2nd epoch1 :", epoch1)
+        #if (epoch1>lstart):
+        #    print("2nd epoch1 :", epoch1)
             #self.loss_G.backward(retain_graph=True)
             #self.optimizer_G.zero_grad()
             #maxb = torch.max(torch.abs(self.fake_B.grad))
@@ -316,7 +317,7 @@ class Auto2Model(BaseModel):
             #self.fake_B.grad = None
             #self.fake_B.grad = None
             #if (epoch1>lstart and epoch1<=lstart1):
-            self.grad = self.grad*(10**5)  #####(10**5) works for marmousi model
+            #self.grad = self.grad*(10**5)  #####(10**5) works for marmousi model
             #self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
                 
             #if (epoch1>lstart1 and epoch1<=lstart2):
@@ -342,20 +343,20 @@ class Auto2Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            self.fake_B.backward(self.grad) #switch on for physics based fwi
+            #self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
-        if (epoch1 % 1 == 0): 
-            filen = './marmousi2/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
+        #if (epoch1 % 1 == 0): 
+        #    filen = './marmousi2/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #    np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-            filen = './marmousi2/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
+        #    filen = './marmousi2/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #    np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi2/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        #    filen = './marmousi2/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #    np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
