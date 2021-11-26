@@ -356,6 +356,8 @@ class Auto2Model(BaseModel):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
+        print("shape of fake_BT :", np.shape(self.fake_BT))
+        print("shape of real_B :", np.shape(self.real_B))
         diff_size = self.real_B.size()
         lossMSE = self.criterionMSE(
             self.fake_BT, self.real_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
