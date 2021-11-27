@@ -18,6 +18,7 @@ sys.path.append('./bruges/.')
 from bruges.reflection import reflection as avo
 from bruges.filters import wavelets as wav 
 from torch.nn.functional import conv1d
+import math
 
 #from vgg import Vgg16
 
@@ -234,7 +235,7 @@ class Auto2Model(BaseModel):
         idx = torch.randperm(self.real_B.shape[3])
         
         ntraces = self.real_B.shape[3]/3
-        ntraces = np.ceil(ntraces)
+        ntraces = math.ceil(ntraces)
         
         tr1 = self.real_A[:,:,:,0:ntraces] * 0
         tr2 = self.real_A[:,:,:,0:ntraces] * 0
