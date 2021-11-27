@@ -227,7 +227,7 @@ class Auto2Model(BaseModel):
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
-        wavelet = wav.ricker(0.2,2e-3,20)
+        wavelet = wav.ricker(0.2,2e-3,30)
         wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
         tr1 = self.real_A * 0
         
@@ -237,7 +237,7 @@ class Auto2Model(BaseModel):
             tr1[:,:,:,i] = synth 
         
         print("shape of tr1 :", np.shape(tr1))    
-        self.loss_D_MSE = self.criterionMSE(tr1,self.real_A)
+        self.loss_D_MSE = self.criterionL1(tr1,self.real_A)
         
         
         
