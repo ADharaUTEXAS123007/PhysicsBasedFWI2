@@ -2620,12 +2620,12 @@ class AutoMarmousi_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.up1     = autoUp(filters[1], 1, self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
-        self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        #self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Linear(self.n_classes,self.n_classes)
+        self.final   =  nn.Linear(1,1)
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
