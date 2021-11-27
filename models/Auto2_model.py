@@ -231,13 +231,28 @@ class Auto2Model(BaseModel):
         wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
         tr1 = self.real_A * 0
         
-        for i in range(self.real_B.shape[3]):
-            reflect = self.fake_B[:,:,:,i]
+        idx = torch.randperm(self.real_B.shape[3])
+        
+        ntraces = self.real_B.shape[3]/3
+        ntraces = torch.ceil(ntraces)
+        
+        tr1 = self.real_A[:,:,:,0:ntraces] * 0
+        tr2 = self.real_A[:,:,:,0:ntraces] * 0
+        
+        for i in range(ntraces):
+            reflect = self.fake_B[:,:,:,idx[i]]
             synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
             tr1[:,:,:,i] = synth 
+            tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
+        
+        
+        #for i in range(self.real_B.shape[3]):
+        #    reflect = self.fake_B[:,:,:,i]
+        #    synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
+        #    tr1[:,:,:,i] = synth 
         
         print("shape of tr1 :", np.shape(tr1))    
-        self.loss_D_MSE = self.criterionL1(tr1,self.real_A)
+        self.loss_D_MSE = self.criterionL1(tr1,tr2)
         
         
         
