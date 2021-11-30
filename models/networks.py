@@ -3105,7 +3105,7 @@ class VaeMarmousi_Net(nn.Module):
         #GPU_string='cuda:'+str(7)
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
-        net1out1 = mintrue + vel*(maxtrue-mintrue)
+        #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
@@ -3207,7 +3207,7 @@ class VaeMarmousi_Net(nn.Module):
         #rcv_amps_true_norm = receiver_amplitudes_true
         ss = ss.to(devicek)
         criterion1 = torch.nn.L1Loss()
-        vgg = Vgg16().type(torch.cuda.FloatTensor)
+        #vgg = Vgg16().type(torch.cuda.FloatTensor)
         #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
@@ -3262,14 +3262,14 @@ class VaeMarmousi_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     
-                    y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
-                    y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
-                    y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
-                    y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
-                    y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
-                    y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
+                    #y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    #y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
+                    #y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
+                    #y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
+                    #y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
+                    #y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
                     
-                    lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
+                    #lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner = lossinner1 + lossinner2
                     
