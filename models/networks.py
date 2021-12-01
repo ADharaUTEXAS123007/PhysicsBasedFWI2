@@ -3625,7 +3625,7 @@ class AutoMarmousi21_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad = net1out1.grad
+                    net1out1.grad = net1out1.grad ** ss
                     net1out1.grad[(true[0,0,:,:]==1500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
