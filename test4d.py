@@ -65,7 +65,7 @@ if __name__ == '__main__':
     # For [pix2pix]: we use batchnorm and dropout in the original pix2pix. You can experiment it with and without eval() mode.
     # For [CycleGAN]: It should not affect CycleGAN as CycleGAN uses instancenorm without dropout.
     # if opt.eval:
-    model.eval()
+    #model.eval()
     for k in range(opt.realization):
         print("realization :", str(k))
         image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(k)
