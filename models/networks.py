@@ -3296,7 +3296,7 @@ class VaeMarmousi3_Net(nn.Module):
                     #p1 = p1*0.00005*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
                     #net1out1.grad = p1 + net1out1.grad
                     net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
