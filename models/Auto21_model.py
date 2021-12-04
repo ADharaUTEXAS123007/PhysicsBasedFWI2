@@ -287,7 +287,7 @@ class Auto21Model(BaseModel):
         lstart1 = 35
         lstart2 = 60
         
-        print("length of model features :", len(model.features))
+        print("length of model features :", len(self.netG.features))
         
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
