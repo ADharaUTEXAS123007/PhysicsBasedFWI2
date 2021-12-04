@@ -293,7 +293,7 @@ class Auto21Model(BaseModel):
         model_weights = []
         conv_layers = []
         model_children = list(self.netG.children())
-        model_childrens = list(model_children[0])
+        model_childrens = list(model_children[0].children())
         
         print("model children :", model_childrens)
         #print("length of model children :", len(model_children))
