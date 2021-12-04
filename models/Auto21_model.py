@@ -295,8 +295,9 @@ class Auto21Model(BaseModel):
         model_children = list(self.netG.children())
         model_childrens = list(model_children[0].children())
         mc = list(model_childrens[0].children())
+        mc1 = list(mc[0].children())
         
-        print("model children :", mc)
+        print("model children :", mc1)
         #print("length of model children :", len(model_children))
         #print("model names :", self.netG.model_names)
         
