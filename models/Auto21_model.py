@@ -313,6 +313,11 @@ class Auto21Model(BaseModel):
                             conv_layers.append(child)
         print(f"Total convolutional layers: {counter}")
         
+        # take a look at the conv layers and the respective weights
+        for weight, conv in zip(model_weights, conv_layers):
+            # print(f"WEIGHT: {weight} \nSHAPE: {weight.shape}")
+            print(f"CONV: {conv} ====> SHAPE: {weight.shape}")
+        
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
             #self.loss_G.backward(retain_graph=True)
