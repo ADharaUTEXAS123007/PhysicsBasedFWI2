@@ -290,6 +290,8 @@ class Auto21Model(BaseModel):
         #print("length of model features :", len(self.netG.parameters()))
         model_children = list(self.netG.children())
         
+        print("model children :", model_children)
+        
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
             #self.loss_G.backward(retain_graph=True)
