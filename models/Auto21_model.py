@@ -288,9 +288,28 @@ class Auto21Model(BaseModel):
         lstart2 = 60
         
         #print("length of model features :", len(self.netG.parameters()))
+        model_weights = []
+        cov_layers = []
         model_children = list(self.netG.children())
         
         print("model children :", model_children)
+        
+        # counter to keep count of the conv layers
+        counter = 0 
+        # append all the conv layers and their respective weights to the list
+        for i in range(len(model_children)):
+            if type(model_children[i]) == nn.Conv2d:
+                counter += 1
+                model_weights.append(model_children[i].weight)
+                conv_layers.append(model_children[i])
+            elif type(model_children[i]) == nn.Sequential:
+                for j in range(len(model_children[i])):
+                    for child in model_children[i][j].children():
+                        if type(child) == nn.Conv2d:
+                            counter += 1
+                            model_weights.append(child.weight)
+                            conv_layers.append(child)
+        print(f"Total convolutional layers: {counter}")
         
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
