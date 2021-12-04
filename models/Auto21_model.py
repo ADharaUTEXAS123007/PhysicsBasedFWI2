@@ -287,6 +287,8 @@ class Auto21Model(BaseModel):
         lstart1 = 35
         lstart2 = 60
         
+        print("length of model features :", len(model.features))
+        
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
             #self.loss_G.backward(retain_graph=True)
@@ -325,7 +327,7 @@ class Auto21Model(BaseModel):
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
         
-        
+  
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
