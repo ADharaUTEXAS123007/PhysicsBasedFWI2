@@ -149,7 +149,7 @@ class Auto21Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.down3,self.up2] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.down3,self.up2,self.up1] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -167,7 +167,7 @@ class Auto21Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -368,14 +368,24 @@ class Auto21Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
-            filen = './marmousi21/Grad4DecADR4' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/GradIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-            filen = './marmousi21/Fake4DecADR4' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/FakeIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/Real4DecADR4' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/RealIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+            
+            filen = './marmousi21/Down3IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.down3.cpu().detach().numpy())  #switch on physics based fwi
+            
+            filen = './marmousi21/Up2IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.up2.cpu().detach().numpy())  #switch on physics based fwi
+            
+            filen = './marmousi21/Up1IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            np.save(filen, self.up1.cpu().detach().numpy())  #switch on physics based fwi
+            
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
