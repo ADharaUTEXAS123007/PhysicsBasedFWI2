@@ -3762,10 +3762,10 @@ class AutoMarmousi21_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 19, 25)
     
-        up1    = self.up3(z)
+        up3    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
-        up1    = self.up2(up1)
-        up1    = self.up1(up1)
+        up2    = self.up2(up3)
+        up1    = self.up1(up2)
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
@@ -3807,7 +3807,7 @@ class AutoMarmousi21_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT
+        return f1, grad, latent1, lossT, down3, up2
     
     # Initialization of Parameters
     def  _initialize_weights(self):

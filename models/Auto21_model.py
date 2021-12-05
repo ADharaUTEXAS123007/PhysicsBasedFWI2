@@ -149,7 +149,7 @@ class Auto21Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.down3,self.up2] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -167,7 +167,7 @@ class Auto21Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,self.dummy] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -290,40 +290,40 @@ class Auto21Model(BaseModel):
         lstart2 = 60
         
         #print("length of model features :", len(self.netG.parameters()))
-        model_weights = []
-        conv_layers = []
-        model_children = list(self.netG.children())
-        model_childrens = list(model_children[0].children())
-        mc = list(model_childrens[0].children())
-        mc1 = list(mc[0].children())
-        mc2 = list(mc1[0].children())
+        # model_weights = []
+        # conv_layers = []
+        # model_children = list(self.netG.children())
+        # model_childrens = list(model_children[0].children())
+        # mc = list(model_childrens[0].children())
+        # mc1 = list(mc[0].children())
+        # mc2 = list(mc1[0].children())
         
-        print("model children 2 :", mc2[0])
-        #print("model children 1 :", mc1[1])
-        #print("length of model children :", len(model_children))
-        #print("model names :", self.netG.model_names)
+        # print("model children 2 :", mc2[0])
+        # #print("model children 1 :", mc1[1])
+        # #print("length of model children :", len(model_children))
+        # #print("model names :", self.netG.model_names)
         
-        # counter to keep count of the conv layers
-        counter = 0 
-        # append all the conv layers and their respective weights to the list
-        for i in range(len(model_children)):
-            if type(model_children[i]) == nn.Conv2d:
-                counter += 1
-                model_weights.append(model_children[i].weight)
-                conv_layers.append(model_children[i])
-            elif type(model_children[i]) == nn.Sequential:
-                for j in range(len(model_children[i])):
-                    for child in model_children[i][j].children():
-                        if type(child) == nn.Conv2d:
-                            counter += 1
-                            model_weights.append(child.weight)
-                            conv_layers.append(child)
-        print(f"Total convolutional layers: {counter}")
+        # # counter to keep count of the conv layers
+        # counter = 0 
+        # # append all the conv layers and their respective weights to the list
+        # for i in range(len(model_children)):
+        #     if type(model_children[i]) == nn.Conv2d:
+        #         counter += 1
+        #         model_weights.append(model_children[i].weight)
+        #         conv_layers.append(model_children[i])
+        #     elif type(model_children[i]) == nn.Sequential:
+        #         for j in range(len(model_children[i])):
+        #             for child in model_children[i][j].children():
+        #                 if type(child) == nn.Conv2d:
+        #                     counter += 1
+        #                     model_weights.append(child.weight)
+        #                     conv_layers.append(child)
+        # print(f"Total convolutional layers: {counter}")
         
-        # take a look at the conv layers and the respective weights
-        for weight, conv in zip(model_weights, conv_layers):
-            # print(f"WEIGHT: {weight} \nSHAPE: {weight.shape}")
-            print(f"CONV: {conv} ====> SHAPE: {weight.shape}")
+        # # take a look at the conv layers and the respective weights
+        # for weight, conv in zip(model_weights, conv_layers):
+        #     # print(f"WEIGHT: {weight} \nSHAPE: {weight.shape}")
+        #     print(f"CONV: {conv} ====> SHAPE: {weight.shape}")
         
         if (epoch1>lstart):
             print("2nd epoch1 :", epoch1)
