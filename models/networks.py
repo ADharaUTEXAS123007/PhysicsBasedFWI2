@@ -4026,7 +4026,7 @@ class AutoMarmousi22_Net(nn.Module):
         super(AutoMarmousi22_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
