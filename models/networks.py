@@ -3778,7 +3778,7 @@ class AutoMarmousi21_Net(nn.Module):
         print("maxtrue :", maxtrue)
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1500)] = 1500
+        f1[(inputs1==1.500)] = 1.500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -3834,7 +3834,7 @@ class AutoMarmousi21_Net(nn.Module):
         devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -3958,7 +3958,7 @@ class AutoMarmousi21_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
+                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
