@@ -2252,8 +2252,8 @@ class NewU_Net(nn.Module):
 class autoUp(nn.Module):
     def __init__(self, in_size, out_size, is_deconv):
         super(autoUp, self).__init__()
-        self.conv = unetConv2(in_size, out_size, True)
-        self.conv2 = unetConv2(out_size, out_size, True)
+        self.conv = unetConv2(in_size, out_size, False)
+        self.conv2 = unetConv2(out_size, out_size, False)
         # Transposed convolution
         if is_deconv:
             self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
