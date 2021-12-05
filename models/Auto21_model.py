@@ -363,7 +363,8 @@ class Auto21Model(BaseModel):
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
         
-  
+        print("shape of down3 :", np.shape(self.down3))
+        print("shape of up2 :", np.shape(self.up2))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
