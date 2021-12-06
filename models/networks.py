@@ -2262,13 +2262,13 @@ class autoUp(nn.Module):
 
     def forward(self, inputs2):
         outputs2 = self.up(inputs2)
-        #outputs3 = self.conv(outputs2)
+        outputs3 = self.conv(outputs2)
         #offset1 = (outputs2.size()[2]-inputs1.size()[2])
         #offset2 = (outputs2.size()[3]-inputs1.size()[3])
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return self.conv(outputs2)
+        return self.conv2(outputs3)
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
