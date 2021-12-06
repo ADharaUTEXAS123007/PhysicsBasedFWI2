@@ -4621,8 +4621,8 @@ class AutoMarmousi23_Net(nn.Module):
         #rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion1 = torch.nn.L1Loss()
-        vgg = Vgg16().type(torch.cuda.FloatTensor)
-        criterion2 = torch.nn.MSELoss()
+        #vgg = Vgg16().type(torch.cuda.FloatTensor)
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
