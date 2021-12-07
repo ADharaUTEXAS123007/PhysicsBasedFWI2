@@ -3015,7 +3015,7 @@ class VaeMarmousi3_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         meantrue = torch.mean(inputs1)
         stdtrue = torch.std(inputs1)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        down1  = self.down1((inputs2[:,:,1:4001:4,:]-meantrue)/stdtrue)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
