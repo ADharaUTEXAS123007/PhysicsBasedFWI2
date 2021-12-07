@@ -3132,7 +3132,7 @@ class VaeMarmousi3_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 3.5
+        freq = 12
         dx = 10
         nt = 4001
         dt = 0.001
