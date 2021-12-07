@@ -4038,7 +4038,7 @@ class AutoMarmousi22_Net(nn.Module):
         
         latent_dim = 8
 
-        self.combine = nn.Conv2d(self.in_channels,1)
+        self.combine = nn.Conv2d(self.in_channels,1,1)
         self.down1   = unetDown(1, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
