@@ -4038,7 +4038,8 @@ class AutoMarmousi22_Net(nn.Module):
         
         latent_dim = 8
 
-        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.combine = nn.Conv2d(self.in_channels,1)
+        self.down1   = unetDown(1, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -4047,7 +4048,7 @@ class AutoMarmousi22_Net(nn.Module):
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
         self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101
-        self.tanhl = nn.LeakyReLU(0.1)
+        #self.tanhl = nn.LeakyReLU(0.1)
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*25*13) #for marmousi 101x101
@@ -4070,7 +4071,8 @@ class AutoMarmousi22_Net(nn.Module):
         label_dsp_dim = (100,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        comb = self.combine(inputs2[:,:,1:4001:4,:])
+        down1  = self.down1(comb)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -4101,7 +4103,7 @@ class AutoMarmousi22_Net(nn.Module):
         #    p = latent1
         #    latent1 = p
             
-        p = self.tanhl(p)
+        # p = self.tanhl(p)
         #p = torch.randn([1,1,1,8])
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
