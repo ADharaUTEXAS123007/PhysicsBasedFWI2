@@ -4080,7 +4080,7 @@ class AutoMarmousi22_Net(nn.Module):
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down4, start_dim=1)
-        result = self.tanhl(result)
+
         
         #print("result shape :", np.shape(result))
         
@@ -4101,7 +4101,7 @@ class AutoMarmousi22_Net(nn.Module):
         #    p = latent1
         #    latent1 = p
             
-
+        p = self.tanhl(p)
         #p = torch.randn([1,1,1,8])
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
