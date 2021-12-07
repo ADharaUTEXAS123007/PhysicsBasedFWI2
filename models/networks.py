@@ -2968,6 +2968,7 @@ class VaeMarmousi3_Net(nn.Module):
         ########self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101 ######earlier
         self.smu = nn.Linear(filters[3]*63*13, latent_dim)
         self.svar = nn.Linear(filters[3]*63*13, latent_dim)
+        self.tanhl = nn.Tanh()
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*25*19) #for marmousi 101x101
@@ -3008,7 +3009,7 @@ class VaeMarmousi3_Net(nn.Module):
         mu = self.smu(result)
         log_var = self.svar(result)
         p = self.reparameterize(mu, log_var)
-        
+        p = self.tanhl(p)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
