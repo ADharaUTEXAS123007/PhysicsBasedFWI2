@@ -2971,7 +2971,7 @@ class VaeMarmousi3_Net(nn.Module):
         super(VaeMarmousi3_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -2997,9 +2997,9 @@ class VaeMarmousi3_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp2(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp2(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp2(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -3069,7 +3069,7 @@ class VaeMarmousi3_Net(nn.Module):
         #print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1500)] = 1500
+        f1[(inputs1==1.500)] = 1.500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -3140,7 +3140,7 @@ class VaeMarmousi3_Net(nn.Module):
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -3265,7 +3265,7 @@ class VaeMarmousi3_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
+                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -3320,7 +3320,7 @@ class VaeMarmousi3_Net(nn.Module):
                     #p1 = p1*0.00005*(torch.max(net1out1.grad)-torch.min(net1out1.grad))
                     #net1out1.grad = p1 + net1out1.grad
                     net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1500)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
