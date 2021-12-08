@@ -4442,7 +4442,7 @@ class AutoMarmousi23_Net(nn.Module):
         label_dsp_dim = (100,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        down1  = self.down1(inputs2[:,:,1:4001:4,:]*1000)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
