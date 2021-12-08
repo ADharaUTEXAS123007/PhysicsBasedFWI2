@@ -4563,7 +4563,7 @@ class AutoMarmousi23_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 11
+        freq = 14
         dx = 10
         nt = 4001
         dt = 0.001
