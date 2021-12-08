@@ -4555,7 +4555,7 @@ class AutoMarmousi23_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**3.0
+        g1 = g1**2.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
 
