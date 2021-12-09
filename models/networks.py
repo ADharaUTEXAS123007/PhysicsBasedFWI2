@@ -2336,6 +2336,46 @@ class autoUp3(nn.Module):
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
         return outputs3
+    
+class unetConv4(nn.Module):
+    def __init__(self, in_size, out_size, is_batchnorm):
+        super(unetConv4, self).__init__()
+        # Kernel size: 3*3, Stride: 1, Padding: 1
+        if is_batchnorm:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.LeakyReLU(0.1))
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.LeakyReLU(0.1))
+        else:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True))
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True))
+    def forward(self, inputs):
+        outputs = self.conv1(inputs)
+        outputs = self.conv2(outputs)
+        return outputs
+    
+class autoUp4(nn.Module):
+    def __init__(self, in_size, out_size, is_deconv):
+        super(autoUp4, self).__init__()
+        self.conv = unetConv4(in_size, out_size, True)
+        self.conv2 = unetConv4(out_size, out_size, True)
+        # Transposed convolution
+        if is_deconv:
+            self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
+        else:
+            self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+
+    def forward(self, inputs2):
+        outputs2 = self.up(inputs2)
+        outputs3 = self.conv(outputs2)
+        #offset1 = (outputs2.size()[2]-inputs1.size()[2])
+        #offset2 = (outputs2.size()[3]-inputs1.size()[3])
+        #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
+        # Skip and concatenate 
+        #outputs1 = F.pad(inputs1, padding)
+        return outputs3
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
@@ -3016,7 +3056,7 @@ class VaeMarmousi3_Net(nn.Module):
         super(VaeMarmousi3_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -3042,9 +3082,9 @@ class VaeMarmousi3_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp4(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp4(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp4(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
