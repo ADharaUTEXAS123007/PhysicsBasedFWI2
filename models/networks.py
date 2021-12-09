@@ -3077,6 +3077,7 @@ class VaeMarmousi3_Net(nn.Module):
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
         ########self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101 ######earlier
+        self.com = nn.LeakyReLU(0.2)
         self.smu = nn.Linear(filters[3]*63*13, latent_dim)
         self.svar = nn.Linear(filters[3]*63*13, latent_dim)
         #self.tanhl = nn.Tanh()
@@ -3115,7 +3116,7 @@ class VaeMarmousi3_Net(nn.Module):
         result = torch.flatten(down4, start_dim=1)
         
         #print("result shape :", np.shape(result))
-        
+        result = self.com(result)
         #p = self.decoder_input1(result)
         mu = self.smu(result)
         log_var = self.svar(result)
