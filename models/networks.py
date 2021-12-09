@@ -2300,19 +2300,19 @@ class unetConv3(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.1))
+                                       nn.LeakyReLU(0.05),
+                                       nn.Dropout2d(0.05))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.1))
+                                       nn.LeakyReLU(0.05),
+                                       nn.Dropout2d(0.05))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True),
-                                       nn.Dropout2d(0.1))
+                                       nn.Dropout2d(0.05))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True),
-                                       nn.Dropout2d(0.1))
+                                       nn.Dropout2d(0.05))
     def forward(self, inputs):
         outputs = self.conv1(inputs)
         outputs = self.conv2(outputs)
@@ -2337,7 +2337,7 @@ class autoUp3(nn.Module):
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return self.conv2(outputs3)
+        return outputs3
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
