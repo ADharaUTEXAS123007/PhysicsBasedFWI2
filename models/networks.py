@@ -3077,7 +3077,7 @@ class VaeMarmousi3_Net(nn.Module):
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
         ########self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101 ######earlier
-        self.com = nn.LeakyReLU(0.2)
+        self.com = nn.Tanh()
         self.smu = nn.Linear(filters[3]*63*13, latent_dim)
         self.svar = nn.Linear(filters[3]*63*13, latent_dim)
         #self.tanhl = nn.Tanh()
