@@ -2291,6 +2291,53 @@ class autoUp2(nn.Module):
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
         return outputs3
+    
+
+class unetConv3(nn.Module):
+    def __init__(self, in_size, out_size, is_batchnorm):
+        super(unetConv3, self).__init__()
+        # Kernel size: 3*3, Stride: 1, Padding: 1
+        if is_batchnorm:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.BatchNorm2d(out_size),
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.BatchNorm2d(out_size),
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
+        else:
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True),
+                                       nn.Dropout2d(0.1))
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.ReLU(inplace=True),
+                                       nn.Dropout2d(0.1))
+    def forward(self, inputs):
+        outputs = self.conv1(inputs)
+        outputs = self.conv2(outputs)
+        return outputs
+    
+class autoUp3(nn.Module):
+    def __init__(self, in_size, out_size, is_deconv):
+        super(autoUp3, self).__init__()
+        self.conv = unetConv3(in_size, out_size, True)
+        self.conv2 = unetConv3(out_size, out_size, True)
+        # Transposed convolution
+        if is_deconv:
+            self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
+        else:
+            self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+
+    def forward(self, inputs2):
+        outputs2 = self.up(inputs2)
+        outputs3 = self.conv(outputs2)
+        #offset1 = (outputs2.size()[2]-inputs1.size()[2])
+        #offset2 = (outputs2.size()[3]-inputs1.size()[3])
+        #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
+        # Skip and concatenate 
+        #outputs1 = F.pad(inputs1, padding)
+        return self.conv2(outputs3)
 
 class Auto_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
@@ -3736,9 +3783,9 @@ class AutoMarmousi21_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp3(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp3(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp3(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
