@@ -3066,7 +3066,7 @@ class VaeMarmousi3_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 128
+        latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
