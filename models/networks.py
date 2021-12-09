@@ -4491,6 +4491,7 @@ class AutoMarmousi23_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
+        print("shapes of inputs2 :", np.shape(inputs2))
         down1  = self.down1(2*(inputs2[:,:,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
@@ -4617,7 +4618,7 @@ class AutoMarmousi23_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 18
+        num_shots = 27
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
@@ -4637,7 +4638,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 3
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
