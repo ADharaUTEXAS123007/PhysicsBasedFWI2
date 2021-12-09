@@ -4638,7 +4638,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 3
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
@@ -4702,7 +4702,7 @@ class AutoMarmousi23_Net(nn.Module):
 
         criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
-        #criterion2 = torch.nn.MSELoss()
+        criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -4754,7 +4754,7 @@ class AutoMarmousi23_Net(nn.Module):
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner1 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
                     #y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
