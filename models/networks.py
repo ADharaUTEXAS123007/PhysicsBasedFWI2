@@ -4484,10 +4484,10 @@ class AutoMarmousi23_Net(nn.Module):
         z = z.view(-1, filters[3], 13, 25)
     
         up1    = self.up3(z)
-        #print(" shape of up1 :", np.shape(up1))
+        print(" shape of up3 :", np.shape(up1))
         up1    = self.up2(up1)
         up1    = self.up1(up1)
-        #print("shape of up1 :", np.shape(up1))
+        print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
