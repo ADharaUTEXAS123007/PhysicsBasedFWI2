@@ -223,7 +223,7 @@ class Vae3Model(BaseModel):
         kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
         
         print("self.mu :", self.mu)
-        print("self.var :", self.var)
+        print("self.var :", self.log_var)
         self.loss_K_MSE = kld_loss
         #print("shape of grad :", np.shape(self.grad))
         #k
