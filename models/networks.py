@@ -2342,7 +2342,7 @@ class autoUp3(nn.Module):
 
 class unetConv5(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
-        super(unetConv4, self).__init__()
+        super(unetConv5, self).__init__()
         # Kernel size: 3*3, Stride: 1, Padding: 1
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
