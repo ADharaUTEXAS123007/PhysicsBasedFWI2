@@ -4316,7 +4316,7 @@ class AutoMarmousi24_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 18
+        num_shots = 24
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
@@ -4451,8 +4451,8 @@ class AutoMarmousi24_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
+                    lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner = lossinner1 + lossinner2
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
