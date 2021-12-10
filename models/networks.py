@@ -4537,7 +4537,7 @@ class AutoMarmousi23_Net(nn.Module):
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(2*(inputs2[:,1:30:2,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
+        down1  = self.down1(2*(inputs2[:,:,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
