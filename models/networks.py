@@ -4450,7 +4450,7 @@ class AutoMarmousi24_Net(nn.Module):
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    lossinner1 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner = lossinner1 + lossinner2
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
