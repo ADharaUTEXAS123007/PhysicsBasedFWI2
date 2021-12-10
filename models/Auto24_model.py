@@ -21,7 +21,7 @@ import torch.nn as nn
 #from skimage import metrics
 
 
-class Auto21Model(BaseModel):
+class Auto24Model(BaseModel):
     """ This class implements the pix2pix model, for learning a mapping from input images to output images given paired data.
 
     The model training requires '--dataset_mode aligned' dataset.
