@@ -4503,7 +4503,7 @@ class AutoMarmousi23_Net(nn.Module):
         
         latent_dim = 8
 
-        self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
+        self.down1   = unetDown(int(self.in_channels)/2, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -4537,7 +4537,7 @@ class AutoMarmousi23_Net(nn.Module):
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(2*(inputs2[:,:,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
+        down1  = self.down1(2*(inputs2[:,0:30:2,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -4660,10 +4660,10 @@ class AutoMarmousi23_Net(nn.Module):
 
         
         freq = 14
-        dx = 8
+        dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 14
+        num_shots = 30
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
@@ -4673,6 +4673,22 @@ class AutoMarmousi23_Net(nn.Module):
         receiver_spacing = 200 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
+        x_s[1,0,1] = 30
+        x_s[2,0,1] = 80
+        x_s[3,0,1] = 120
+        x_s[4,0,1] = 160
+        x_s[5,0,1] = 180
+        x_s[6,0,1] = 200
+        x_s[7,0,1] = 250
+        x_s[29,0,1] = 1990
+        x_s[28,0,1] = 1960
+        x_s[27,0,1] = 1900
+        x_s[26,0,1] = 1870
+        x_s[25,0,1] = 1850
+        x_s[24,0,1] = 1820
+        x_s[23,0,1] = 1790
+        x_s[22,0,1] = 1780
+        x_s[21,0,1] = 1750
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
         x_r[0, :, 1] = torch.arange(
             num_receivers_per_shot).float() * receiver_spacing
@@ -4683,7 +4699,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 3
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
