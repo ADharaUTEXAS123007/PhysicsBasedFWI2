@@ -3064,7 +3064,7 @@ class VaeMarmousi3_Net(nn.Module):
         super(VaeMarmousi3_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -3255,7 +3255,7 @@ class VaeMarmousi3_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 18
+        num_shots = 24
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
