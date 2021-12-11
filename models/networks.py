@@ -3120,7 +3120,7 @@ class VaeMarmousi3_Net(nn.Module):
         result = torch.flatten(down4, start_dim=1)
         
         #print("result shape :", np.shape(result))
-        result = self.com(result)
+        #result = self.com(result)
         #p = self.decoder_input1(result)
         mu = self.smu(result)
         log_var = self.svar(result)
