@@ -3091,9 +3091,9 @@ class VaeMarmousi3_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp4(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp4(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp4(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -3326,7 +3326,7 @@ class VaeMarmousi3_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
