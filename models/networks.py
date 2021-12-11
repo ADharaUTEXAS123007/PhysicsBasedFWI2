@@ -3072,7 +3072,7 @@ class VaeMarmousi3_Net(nn.Module):
         
         latent_dim = 8
 
-        self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
+        self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -3109,7 +3109,7 @@ class VaeMarmousi3_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         meandata = torch.mean(inputs2)
         stdata = torch.std(inputs2)
-        down1  = self.down1(inputs2[:,0:24:2,1:4001:4,:])
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -3275,7 +3275,7 @@ class VaeMarmousi3_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 3
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
