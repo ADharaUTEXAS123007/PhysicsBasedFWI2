@@ -3403,7 +3403,7 @@ class VaeMarmousi3_Net(nn.Module):
                     
                     #lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
+                    lossinner = lossinner1*100
                     
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
