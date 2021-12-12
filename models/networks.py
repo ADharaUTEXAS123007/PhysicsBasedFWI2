@@ -3107,7 +3107,7 @@ class VaeMarmousi3_Net(nn.Module):
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        inputs2 = inputs2/100
+        inputs2 = inputs2*100
         meandata = torch.mean(inputs2)
         stdata = torch.std(inputs2)
         mindata = torch.min(inputs2)
