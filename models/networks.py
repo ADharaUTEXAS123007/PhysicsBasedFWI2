@@ -3110,7 +3110,7 @@ class VaeMarmousi3_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stdata = torch.std(inputs2)
         print("meandata :", meandata)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:]*100)
+        down1  = self.down1(inputs2[:,:,1:4001:4,:]*1000)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
