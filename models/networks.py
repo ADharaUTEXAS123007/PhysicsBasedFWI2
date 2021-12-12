@@ -3112,7 +3112,7 @@ class VaeMarmousi3_Net(nn.Module):
         stdata = torch.std(inputs2)
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:]/(1))
+        down1  = self.down1(inputs2[:,:,1:4001:4,:]/(10))
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
