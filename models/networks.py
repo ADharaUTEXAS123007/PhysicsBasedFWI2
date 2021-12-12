@@ -4932,7 +4932,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1.5100)] = 1.510
+        f1[(inputs1==1510.0)] = 1510
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4986,7 +4986,7 @@ class AutoMarmousi23_Net(nn.Module):
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel*1000
+        net1out1 = vel
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -5101,8 +5101,8 @@ class AutoMarmousi23_Net(nn.Module):
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
         #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
-        rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-        #rcv_amps_true_norm = receiver_amplitudes_true
+        #rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
@@ -5128,7 +5128,7 @@ class AutoMarmousi23_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
+                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -5152,8 +5152,8 @@ class AutoMarmousi23_Net(nn.Module):
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
-                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
-                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
+                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
                     ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
                     
                     #print("shape of receiver amplitudes predicted")
@@ -5179,7 +5179,7 @@ class AutoMarmousi23_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
