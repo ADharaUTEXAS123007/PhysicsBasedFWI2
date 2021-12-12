@@ -368,22 +368,22 @@ class Auto24Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
-            filen = './marmousi21/GradIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/GradIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-            filen = './marmousi21/FakeIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/FakeIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/RealIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/RealIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/Down3IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/Down3IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.down3.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/Up2IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/Up2IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.up2.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/Up1IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi24/Up1IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.up1.cpu().detach().numpy())  #switch on physics based fwi
             
         
