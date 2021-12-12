@@ -4998,7 +4998,7 @@ class AutoMarmousi23_Net(nn.Module):
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(200)
-        wb = 0*true.numpy
+        wb = 0*true
         wb[(true==1.510)] = 1
         for i in range(200):
             nnz[i] = torch.max(torch.nonzero(wb[:,i]))
