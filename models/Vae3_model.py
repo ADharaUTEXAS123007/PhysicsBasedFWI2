@@ -225,6 +225,7 @@ class Vae3Model(BaseModel):
         print("self.mu :", self.mu)
         print("self.var :", self.log_var)
         print("sum :", torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1))
+        print("self.kld_loss :", kld_loss)
         self.loss_K_MSE = kld_loss
         #print("shape of grad :", np.shape(self.grad))
         #k
