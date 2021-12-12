@@ -4998,8 +4998,8 @@ class AutoMarmousi23_Net(nn.Module):
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(200)
-        wb = 0*torch.squeeze(torch.squeeze(true))
-        wb[(true==1.510)] = 1
+        wb = 0*true[0,0,:,:]
+        wb[(true[0,0,:,:]==1.510)] = 1
         print("nnz :", nnz)
         print("nnzi :", nnz[100])
         print(" np shape of wb :", np.shape(wb))
