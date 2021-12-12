@@ -4880,7 +4880,7 @@ class AutoMarmousi23_Net(nn.Module):
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(2*(inputs2[:,0:30:2,1:4001:4,:]-mindata)/(maxdata-mindata)-1)
+        down1  = self.down1(inputs2[:,0:30:2,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -4932,7 +4932,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1510.0)] = 1510
+        f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4986,7 +4986,7 @@ class AutoMarmousi23_Net(nn.Module):
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -4997,6 +4997,11 @@ class AutoMarmousi23_Net(nn.Module):
         g1 = g1**1.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
+        nnz = np.zeros(200)
+        wb = 0*true
+        wb[(true==1.510)] = 1
+        for i in range(200):
+            nnz[i] = np.max(np.nonzero(wb[:,i]))
 
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
@@ -5033,10 +5038,11 @@ class AutoMarmousi23_Net(nn.Module):
         x_s[22,0,1] = 1780
         x_s[21,0,1] = 1750
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
-        x_r[0, :, 1] = torch.arange(
-            num_receivers_per_shot).float() * receiver_spacing
+        x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
+        for i in range(200):
+            x_r[0,i,0] = nnz[i]  
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
-
+        x_r[:, :, 0] = x_r[0, :, 0].repeat(num_shots, 1)
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
@@ -5128,7 +5134,7 @@ class AutoMarmousi23_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
+                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -5179,7 +5185,7 @@ class AutoMarmousi23_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1510)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
