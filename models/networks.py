@@ -3070,7 +3070,7 @@ class VaeMarmousi3_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 16
+        latent_dim = 128
 
         self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -3110,7 +3110,7 @@ class VaeMarmousi3_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stdata = torch.std(inputs2)
         print("meandata :", meandata)
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        down1  = self.down1(inputs2[:,:,1:4001:4,:]*100)
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
