@@ -4997,11 +4997,11 @@ class AutoMarmousi23_Net(nn.Module):
         g1 = g1**1.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
-        nnz = np.zeros(200)
-        wb = 0*true
+        nnz = torch.zeros(200)
+        wb = 0*true.numpy
         wb[(true==1.510)] = 1
         for i in range(200):
-            nnz[i] = np.max(np.nonzero(wb[:,i]))
+            nnz[i] = torch.max(torch.nonzero(wb[:,i]))
 
         devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
