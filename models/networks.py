@@ -3064,7 +3064,7 @@ class VaeMarmousi3_Net(nn.Module):
         super(VaeMarmousi3_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -3107,6 +3107,7 @@ class VaeMarmousi3_Net(nn.Module):
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
+        inputs2 = inputs2/100
         meandata = torch.mean(inputs2)
         stdata = torch.std(inputs2)
         mindata = torch.min(inputs2)
