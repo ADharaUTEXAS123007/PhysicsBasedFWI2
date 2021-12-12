@@ -5000,6 +5000,7 @@ class AutoMarmousi23_Net(nn.Module):
         nnz = torch.zeros(200)
         wb = 0*true
         wb[(true==1.510)] = 1
+        print("nnz :", nnz)
         for i in range(200):
             nnz[i] = torch.max(torch.nonzero(wb[:,i]))
 
