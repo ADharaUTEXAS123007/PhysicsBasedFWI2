@@ -47,7 +47,7 @@ class Auto25Model(BaseModel):
         By default, we use vanilla GAN loss, UNet with batchnorm, and aligned datasets.
         """
         # changing the default values to match the pix2pix paper (https://phillipi.github.io/pix2pix/)
-        parser.set_defaults(norm='batch', netG='Auto24',
+        parser.set_defaults(norm='batch', netG='Auto25',
                             dataset_mode='unalignedVelABCD2', ngf='32')
         if is_train:
             parser.set_defaults(pool_size=0, gan_mode='vanilla')
