@@ -4703,6 +4703,7 @@ class AutoMarmousi25_Net(nn.Module):
         receiver_amplitudes_true = inputs[0,:,:,:]
         receiver_amplitudes_true = receiver_amplitudes_true.swapaxes(0,1)
         receiver_amplitudes_true = receiver_amplitudes_true.to(devicek)
+        mintrue1 = mintrue.to(devicek)
         #print("shape of receiver amplitudes true")
         #print(np.shape(receiver_amplitudes_true))
 
@@ -4718,7 +4719,7 @@ class AutoMarmousi25_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * mintrue * 1000
+        mat2 = mat2 * mintrue1 * 1000
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
