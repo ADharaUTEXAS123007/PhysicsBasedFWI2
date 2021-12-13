@@ -4587,6 +4587,8 @@ class AutoMarmousi25_Net(nn.Module):
         
         f1    = mintrue + f1*(maxtrue-mintrue)
         f1[(inputs1==mintrue)] = mintrue
+        
+        print("mintrue assigned")
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
