@@ -5361,7 +5361,7 @@ class AutoMarmousi23_Net(nn.Module):
         freq = 1.2
         dx = 130
         nt = 4001
-        dt = 0.001
+        dt = 0.01
         num_shots = 30
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
