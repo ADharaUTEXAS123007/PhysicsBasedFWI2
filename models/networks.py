@@ -2349,10 +2349,12 @@ class unetConv5(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1))
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1))
+                                       nn.LeakyReLU(0.1),
+                                       nn.Dropout2d(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
@@ -4296,8 +4298,8 @@ class AutoMarmousi24_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
         
-        torch.cuda.set_device(5)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(5)
+        torch.cuda.set_device(1)  #RB Necessary if device <> 0
+        GPU_string='cuda:'+str(1)
         devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
