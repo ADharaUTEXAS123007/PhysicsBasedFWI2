@@ -2350,11 +2350,11 @@ class unetConv5(nn.Module):
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.InstanceNorm2d(out_size),
                                        nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.01))
+                                       nn.Dropout2d(0.04))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.InstanceNorm2d(out_size),
                                        nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.01))
+                                       nn.Dropout2d(0.04))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.InstanceNorm2d(out_size),
