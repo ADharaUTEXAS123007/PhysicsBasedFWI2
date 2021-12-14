@@ -5359,7 +5359,7 @@ class AutoMarmousi23_Net(nn.Module):
 
         
         freq = 14
-        dx = 10
+        dx = 130
         nt = 4001
         dt = 0.001
         num_shots = 30
@@ -5371,23 +5371,24 @@ class AutoMarmousi23_Net(nn.Module):
         source_spacing = 200 * dx / num_shots
         receiver_spacing = 200 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
-        x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
-        x_s[1,0,1] = 30
-        x_s[2,0,1] = 80
-        x_s[3,0,1] = 120
-        x_s[4,0,1] = 160
-        x_s[5,0,1] = 180
-        x_s[6,0,1] = 200
-        x_s[7,0,1] = 250
-        x_s[29,0,1] = 1990
-        x_s[28,0,1] = 1960
-        x_s[27,0,1] = 1900
-        x_s[26,0,1] = 1870
-        x_s[25,0,1] = 1850
-        x_s[24,0,1] = 1820
-        x_s[23,0,1] = 1790
-        x_s[22,0,1] = 1780
-        x_s[21,0,1] = 1750
+        x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
+        #x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
+        #x_s[1,0,1] = 30
+        #x_s[2,0,1] = 80
+        #x_s[3,0,1] = 120
+        #x_s[4,0,1] = 160
+        #x_s[5,0,1] = 180
+        #x_s[6,0,1] = 200
+        #x_s[7,0,1] = 250
+        #x_s[29,0,1] = 1990
+        #x_s[28,0,1] = 1960
+        #x_s[27,0,1] = 1900
+        #x_s[26,0,1] = 1870
+        #x_s[25,0,1] = 1850
+        #x_s[24,0,1] = 1820
+        #x_s[23,0,1] = 1790
+        #x_s[22,0,1] = 1780
+        #x_s[21,0,1] = 1750
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
         x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
         for i in range(200):
