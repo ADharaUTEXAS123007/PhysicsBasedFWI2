@@ -4923,7 +4923,7 @@ class AutoMarmousi26_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [16, 32, 64, 128, 512]
+        filters = [4, 8, 16, 32, 128]
         latent_dim = 64
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
