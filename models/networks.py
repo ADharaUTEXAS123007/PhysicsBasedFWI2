@@ -2431,7 +2431,7 @@ class autoUp6(nn.Module):
         #padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
         # Skip and concatenate 
         #outputs1 = F.pad(inputs1, padding)
-        return self.conv2(outputs3)
+        return outputs3
 
 
 class Auto_Net(nn.Module):
@@ -4892,7 +4892,7 @@ class AutoMarmousi26_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [16, 32, 64, 128, 512]
+        filters = [4, 8, 16, 32, 128]
         #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 64
