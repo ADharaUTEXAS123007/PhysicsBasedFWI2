@@ -4161,8 +4161,11 @@ class AutoMarmousi24_Net(nn.Module):
         latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.drop1   = nn.Dropout2d(0.1)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.drop2   = nn.Dropout2d(0.1)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.drop3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
@@ -4194,8 +4197,11 @@ class AutoMarmousi24_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
         down1  = self.down1((inputs2[:,:,1:4001:4,:]))
+        down1  = self.drop1(down1)
         down2  = self.down2(down1)
+        down2  = self.drop2(down2)
         down3  = self.down3(down2)
+        down3  = self.drop3(down3)
         down4  = self.down4(down3)
         
         #print("shape of down3 :", np.shape(down))
