@@ -5198,7 +5198,7 @@ class AutoMarmousi23_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 8
+        latent_dim = 64
 
         self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -5227,7 +5227,7 @@ class AutoMarmousi23_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
+        latent_dim = 64
         label_dsp_dim = (100,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
@@ -5364,10 +5364,10 @@ class AutoMarmousi23_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 1.2
-        dx = 130
+        freq = 14
+        dx = 10
         nt = 4001
-        dt = 0.01
+        dt = 0.001
         num_shots = 30
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
@@ -5533,7 +5533,7 @@ class AutoMarmousi23_Net(nn.Module):
                     #y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
                     
                     #lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
-                    lossinner = lossinner1*100000
+                    lossinner = lossinner1
                     
                     ####y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
                     #########model2.grad[0:26,:] = 0
