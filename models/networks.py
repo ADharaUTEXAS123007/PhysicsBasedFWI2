@@ -5198,7 +5198,7 @@ class AutoMarmousi23_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 64
+        latent_dim = 128
 
         self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -5227,7 +5227,7 @@ class AutoMarmousi23_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 64
+        latent_dim = 128
         label_dsp_dim = (100,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
