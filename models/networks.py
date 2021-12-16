@@ -4894,8 +4894,9 @@ class AutoMarmousi26_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [4, 8, 16, 32, 128]
+        #filters = [4, 8, 16, 32, 128]
         #filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 256]
         
         latent_dim = 64
 
@@ -4925,7 +4926,8 @@ class AutoMarmousi26_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [4, 8, 16, 32, 128]
+        #filters = [4, 8, 16, 32, 128]
+        filters = [8, 16, 32, 64, 256]
         latent_dim = 64
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
@@ -5142,9 +5144,9 @@ class AutoMarmousi26_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        #criterion1 = torch.nn.L1Loss()
+        criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
-        criterion2 = torch.nn.MSELoss()
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -5196,9 +5198,9 @@ class AutoMarmousi26_Net(nn.Module):
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    #lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner2
+                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
