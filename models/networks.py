@@ -4549,10 +4549,11 @@ class AutoMarmousi25_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [16, 32, 64, 128, 512]
+        #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 512
+        latent_dim = 64
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -4580,8 +4581,9 @@ class AutoMarmousi25_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [16, 32, 64, 128, 512]
-        latent_dim = 512
+        #filters = [16, 32, 64, 128, 512]
+        filters = [8, 16, 32, 64, 256]
+        latent_dim = 64
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
@@ -5740,7 +5742,7 @@ class AutoMarmousi23_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**1.0
+        g1 = g1**2.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(200)
