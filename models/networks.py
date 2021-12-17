@@ -5595,7 +5595,7 @@ class AutoMarmousi23_Net(nn.Module):
         
         latent_dim = 8
 
-        self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
+        self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -5630,7 +5630,7 @@ class AutoMarmousi23_Net(nn.Module):
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(inputs2[:,0:30:2,1:4001:4,:])
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
