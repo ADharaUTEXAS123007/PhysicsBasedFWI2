@@ -5593,7 +5593,7 @@ class AutoMarmousi23_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 64
+        latent_dim = 128
 
         self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -5803,7 +5803,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 3
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
