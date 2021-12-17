@@ -5624,7 +5624,7 @@ class AutoMarmousi23_Net(nn.Module):
         #filters = [16, 32, 64, 128, 512]
         filters = [8, 16, 32, 64, 256]
         latent_dim = 4
-        label_dsp_dim = (100,200)
+        label_dsp_dim = (100,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         mindata = torch.min(inputs2)
@@ -5679,7 +5679,7 @@ class AutoMarmousi23_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        #print("shape of f1 :", np.shape(f1))
+        print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
         f1[(inputs1==1.5100)] = 1.510
@@ -5745,15 +5745,15 @@ class AutoMarmousi23_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
         g1 = g1**2.0
-        ss = g1.tile((200,1))
+        ss = g1.tile((250,1))
         ss = torch.transpose(ss,0,1)
-        nnz = torch.zeros(200)
+        nnz = torch.zeros(250)
         wb = 0*true[0,0,:,:]
         wb[(true[0,0,:,:]==1.510)] = 1
         #print("nnz :", nnz)
         #print("nnzi :", nnz[100])
         #print(" np shape of wb :", np.shape(wb))
-        for i in range(200):
+        for i in range(250):
             nnz[i] = torch.max(torch.nonzero(wb[:,i]))
 
         devicek = net1out1.get_device()
@@ -5765,36 +5765,36 @@ class AutoMarmousi23_Net(nn.Module):
         nt = 4001
         dt = 0.001
         num_shots = 30
-        num_receivers_per_shot = 200
+        num_receivers_per_shot = 250
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        ny = 200
-        source_spacing = 200 * dx / num_shots
-        receiver_spacing = 200 * dx / num_receivers_per_shot
+        ny = 250
+        source_spacing = 250 * dx / num_shots
+        receiver_spacing = 250 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         #x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
-        x_s[1,0,1] = 0
-        x_s[1,0,1] = 30
-        x_s[2,0,1] = 80
-        x_s[3,0,1] = 120
-        x_s[4,0,1] = 160
-        x_s[5,0,1] = 180
-        x_s[6,0,1] = 200
-        x_s[7,0,1] = 250
-        x_s[29,0,1] = 1990
-        x_s[28,0,1] = 1980
-        x_s[27,0,1] = 1890
-        x_s[26,0,1] = 1840
-        x_s[25,0,1] = 1820
-        x_s[24,0,1] = 1790
-        x_s[23,0,1] = 1770
-        x_s[22,0,1] = 1750
-        x_s[21,0,1] = 1730
+        #x_s[1,0,1] = 0
+        #x_s[1,0,1] = 30
+        #x_s[2,0,1] = 80
+        #x_s[3,0,1] = 120
+        #x_s[4,0,1] = 160
+        #x_s[5,0,1] = 180
+        #x_s[6,0,1] = 200
+        #x_s[7,0,1] = 250
+        #x_s[29,0,1] = 1990
+        #x_s[28,0,1] = 1980
+        #x_s[27,0,1] = 1890
+        #x_s[26,0,1] = 1840
+        #x_s[25,0,1] = 1820
+        #x_s[24,0,1] = 1790
+        #x_s[23,0,1] = 1770
+        #x_s[22,0,1] = 1750
+        #x_s[21,0,1] = 1730
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
         x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
-        for i in range(200):
+        for i in range(250):
             x_r[0,i,0] = nnz[i]*dx
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
         x_r[:, :, 0] = x_r[0, :, 0].repeat(num_shots, 1)
