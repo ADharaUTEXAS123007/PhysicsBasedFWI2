@@ -4908,10 +4908,10 @@ class AutoMarmousi26_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*63*16, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*19) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*32*19) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -4929,7 +4929,7 @@ class AutoMarmousi26_Net(nn.Module):
         #filters = [4, 8, 16, 32, 128]
         filters = [8, 16, 32, 64, 256]
         latent_dim = 64
-        label_dsp_dim = (151,200)
+        label_dsp_dim = (151,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         meandata = torch.mean(inputs2)
@@ -4968,7 +4968,7 @@ class AutoMarmousi26_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 25)
+        z = z.view(-1, filters[3], 19, 32)
     
         up3    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
@@ -4981,7 +4981,7 @@ class AutoMarmousi26_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        #print("shape of f1 :", np.shape(f1))
+        print("shape of f1 :", np.shape(f1))
         print("mintrue :", mintrue)
         print("maxtrue :", maxtrue)
         
@@ -5053,7 +5053,7 @@ class AutoMarmousi26_Net(nn.Module):
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
         g1 = g1**2.0
-        ss = g1.tile((200,1))
+        ss = g1.tile((250,1))
         ss = torch.transpose(ss,0,1)
         net1out1 = net1out1.to(devicek)
         #devicek = net1out1.get_device()
@@ -5065,13 +5065,13 @@ class AutoMarmousi26_Net(nn.Module):
         nt = 4001
         dt = 0.001
         num_shots = 30
-        num_receivers_per_shot = 200
+        num_receivers_per_shot = 250
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        ny = 200
-        source_spacing = 200 * dx / num_shots
-        receiver_spacing = 200 * dx / num_receivers_per_shot
+        ny = 250
+        source_spacing = 250 * dx / num_shots
+        receiver_spacing = 250 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
