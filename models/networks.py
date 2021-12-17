@@ -5144,9 +5144,9 @@ class AutoMarmousi26_Net(nn.Module):
         rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
         #rcv_amps_true_norm = receiver_amplitudes_true
 
-        criterion1 = torch.nn.L1Loss()
+        #criterion1 = torch.nn.L1Loss()
         #vgg = Vgg16().type(torch.cuda.FloatTensor)
-        #criterion2 = torch.nn.MSELoss()
+        criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -5198,7 +5198,7 @@ class AutoMarmousi26_Net(nn.Module):
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
-                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    lossinner1 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
@@ -5593,9 +5593,9 @@ class AutoMarmousi23_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 8
+        latent_dim = 128
 
-        self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
+        self.down1   = unetDown(int(self.in_channels)/2, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -5623,14 +5623,14 @@ class AutoMarmousi23_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         #filters = [8, 16, 32, 64, 256]
-        latent_dim = 8
+        latent_dim = 128
         label_dsp_dim = (100,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(inputs2[:,:,1:4001:4,:])
+        down1  = self.down1(inputs2[:,0:30:2,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
@@ -5764,7 +5764,7 @@ class AutoMarmousi23_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 20
+        num_shots = 30
         num_receivers_per_shot = 250
         num_sources_per_shot = 1
         num_dims = 2
