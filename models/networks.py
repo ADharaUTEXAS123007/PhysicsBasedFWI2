@@ -5589,11 +5589,11 @@ class AutoMarmousi23_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        #filters = [16, 32, 64, 128, 512]
+        filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
-        filters = [8, 16, 32, 64, 256]
+        #filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 128
+        latent_dim = 8
 
         self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -5621,9 +5621,9 @@ class AutoMarmousi23_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        #filters = [16, 32, 64, 128, 512]
-        filters = [8, 16, 32, 64, 256]
-        latent_dim = 4
+        filters = [16, 32, 64, 128, 512]
+        #filters = [8, 16, 32, 64, 256]
+        latent_dim = 8
         label_dsp_dim = (100,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
@@ -5760,11 +5760,11 @@ class AutoMarmousi23_Net(nn.Module):
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 14
+        freq = 15
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 30
+        num_shots = 20
         num_receivers_per_shot = 250
         num_sources_per_shot = 1
         num_dims = 2
@@ -5803,7 +5803,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 3
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
