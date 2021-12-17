@@ -5773,8 +5773,8 @@ class AutoMarmousi23_Net(nn.Module):
         source_spacing = 250 * dx / num_shots
         receiver_spacing = 250 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
-        x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
-        #x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
+        #x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
+        x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
         #x_s[1,0,1] = 0
         #x_s[1,0,1] = 30
         #x_s[2,0,1] = 80
