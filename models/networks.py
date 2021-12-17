@@ -5606,7 +5606,7 @@ class AutoMarmousi23_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*16, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*26*20) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*26*16) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -5665,7 +5665,7 @@ class AutoMarmousi23_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 20, 26)
+        z = z.view(-1, filters[3], 16, 26)
     
         up1    = self.up3(z)
         print(" shape of up3 :", np.shape(up1))
