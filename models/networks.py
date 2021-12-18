@@ -5593,7 +5593,7 @@ class AutoMarmousi23_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 128
+        latent_dim = 512
 
         self.down1   = unetDown(int(self.in_channels/2), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
