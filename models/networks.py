@@ -4207,11 +4207,11 @@ class AutoMarmousi24_Net(nn.Module):
         latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.drop1   = nn.Dropout2d(0.1)
+        #self.drop1   = nn.Dropout2d(0.1)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.drop2   = nn.Dropout2d(0.1)
+        #self.drop2   = nn.Dropout2d(0.1)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.drop3   = nn.Dropout2d(0.1)
+        #self.drop3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
@@ -4243,11 +4243,11 @@ class AutoMarmousi24_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
         down1  = self.down1((inputs2[:,:,1:4001:4,:]))
-        down1  = self.drop1(down1)
+        #down1  = self.drop1(down1)
         down2  = self.down2(down1)
-        down2  = self.drop2(down2)
+        #down2  = self.drop2(down2)
         down3  = self.down3(down2)
-        down3  = self.drop3(down3)
+        #down3  = self.drop3(down3)
         down4  = self.down4(down3)
         
         #print("shape of down3 :", np.shape(down))
@@ -4361,7 +4361,7 @@ class AutoMarmousi24_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**1.0
+        g1 = g1**2.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         net1out1 = net1out1.to(devicek)
@@ -4373,7 +4373,7 @@ class AutoMarmousi24_Net(nn.Module):
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 24
+        num_shots = 18
         num_receivers_per_shot = 200
         num_sources_per_shot = 1
         num_dims = 2
@@ -4384,8 +4384,7 @@ class AutoMarmousi24_Net(nn.Module):
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
-        x_r[0, :, 1] = torch.arange(
-            num_receivers_per_shot).float() * receiver_spacing
+        x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
@@ -4393,7 +4392,7 @@ class AutoMarmousi24_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 3
+        num_batches = 2
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
