@@ -4204,7 +4204,7 @@ class AutoMarmousi24_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 64
+        latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         #self.drop1   = nn.Dropout2d(0.1)
@@ -4236,7 +4236,7 @@ class AutoMarmousi24_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 64
+        latent_dim = 8
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
@@ -4508,7 +4508,7 @@ class AutoMarmousi24_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1/0.014
+                    lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
