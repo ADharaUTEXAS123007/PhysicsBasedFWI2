@@ -5623,14 +5623,14 @@ class AutoMarmousi23_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         #filters = [8, 16, 32, 64, 256]
-        latent_dim = 128
+        latent_dim = 512
         label_dsp_dim = (100,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         mindata = torch.min(inputs2)
         maxdata = torch.max(inputs2)
         print("shapes of inputs2 :", np.shape(inputs2))
-        down1  = self.down1(inputs2[:,0:30:2,1:4001:4,:])
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
