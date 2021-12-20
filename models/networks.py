@@ -4232,10 +4232,10 @@ class AutoMarmousi21_Net(nn.Module):
                  
         return net1out1.grad, lossinner.item()
     
-class AutoMarmousi24_Net(nn.Module):
+class AutoMarmousi22_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        super(AutoMarmousi24_Net, self).__init__()
+        super(AutoMarmousi22_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
@@ -4483,7 +4483,7 @@ class AutoMarmousi24_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -4537,7 +4537,7 @@ class AutoMarmousi24_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -5268,10 +5268,11 @@ class AutoMarmousi26_Net(nn.Module):
                  
         return net1out1.grad, lossinner.item()
     
-class AutoMarmousi22_Net(nn.Module):
+
+class AutoMarmousi24_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
-        super(AutoMarmousi22_Net, self).__init__()
+        super(AutoMarmousi24_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
@@ -5282,26 +5283,27 @@ class AutoMarmousi22_Net(nn.Module):
         
         latent_dim = 8
 
-        self.combine = nn.Conv2d(self.in_channels,1,1)
-        self.down1   = unetDown(1, filters[0], self.is_batchnorm)
+        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        #self.drop1   = nn.Dropout2d(0.1)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        #self.drop2   = nn.Dropout2d(0.1)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        #self.drop3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
         self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101
-        #self.tanhl = nn.LeakyReLU(0.1)
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*13) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*19) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -5312,21 +5314,23 @@ class AutoMarmousi22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (100,200)
+        label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        comb = self.combine(inputs2[:,:,1:4001:4,:])
-        down1  = self.down1(comb)
+        meandata = torch.mean(inputs2)
+        stddata = torch.std(inputs2)
+        down1  = self.down1((inputs2[:,:,1:4001:4,:]))
+        #down1  = self.drop1(down1)
         down2  = self.down2(down1)
+        #down2  = self.drop2(down2)
         down3  = self.down3(down2)
+        #down3  = self.drop3(down3)
         down4  = self.down4(down3)
         
-        #print("shape of down3 :", np.shape(down3))
-        #print("shape of down4 :", np.shape(down4))
+        #print("shape of down3 :", np.shape(down))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down4, start_dim=1)
-
         
         #print("result shape :", np.shape(result))
         
@@ -5347,18 +5351,18 @@ class AutoMarmousi22_Net(nn.Module):
         #    p = latent1
         #    latent1 = p
             
-        # p = self.tanhl(p)
+
         #p = torch.randn([1,1,1,8])
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 13, 25)
+        z = z.view(-1, filters[3], 19, 25)
     
-        up1    = self.up3(z)
+        up3    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
-        up1    = self.up2(up1)
-        up1    = self.up1(up1)
-        #print("shape of up1 :", np.shape(up1))
+        up2    = self.up2(up3)
+        up1    = self.up1(up2)
+        print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
@@ -5366,12 +5370,15 @@ class AutoMarmousi22_Net(nn.Module):
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         #print("shape of f1 :", np.shape(f1))
+        print("mintrue :", mintrue)
+        print("maxtrue :", maxtrue)
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1.5100)] = 1.510
+        f1[(inputs1==1.500)] = 1.500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
+        #f1[(inputs1 == 1.510)] = 1.510
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
@@ -5390,12 +5397,13 @@ class AutoMarmousi22_Net(nn.Module):
         lossT = 0.0
         if (epoch1 > lstart):
             [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT
+        return f1, grad, latent1, lossT, down3, up2, up1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -5417,9 +5425,9 @@ class AutoMarmousi22_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
         
-        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
-        #GPU_string='cuda:'+str(7)
-        #devicek = torch.device(GPU_string)
+        torch.cuda.set_device(1)  #RB Necessary if device <> 0
+        GPU_string='cuda:'+str(1)
+        devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
@@ -5430,15 +5438,15 @@ class AutoMarmousi22_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**2.5
+        g1 = g1**2.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
-
-        devicek = net1out1.get_device()
+        net1out1 = net1out1.to(devicek)
+        #devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 14
+        freq = 8
         dx = 10
         nt = 4001
         dt = 0.001
@@ -5453,8 +5461,7 @@ class AutoMarmousi22_Net(nn.Module):
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
-        x_r[0, :, 1] = torch.arange(
-            num_receivers_per_shot).float() * receiver_spacing
+        x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
@@ -5475,8 +5482,6 @@ class AutoMarmousi22_Net(nn.Module):
         # print(np.shape(self.real_A))
         sumlossinner = 0.0
         ss = ss.to(devicek)
-        
-        #print("shape of ss :", ss.size())
         ################data misfit calculation##########################################
 
         #net1out1 = net1out1.to(self.devicek)
@@ -5499,7 +5504,7 @@ class AutoMarmousi22_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1510
+        mat2 = mat2 * 1500
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -5521,12 +5526,12 @@ class AutoMarmousi22_Net(nn.Module):
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
         #receiver_amplitudes_true = receiver_amplitudes_true
         rcv_amps_true_max, _ = torch.abs(receiver_amplitudes_true).max(dim=0, keepdim=True)
-        #rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
-        rcv_amps_true_norm = receiver_amplitudes_true
+        rcv_amps_true_norm = receiver_amplitudes_true / (rcv_amps_true_max.abs() + 1e-10)
+        #rcv_amps_true_norm = receiver_amplitudes_true
 
         criterion1 = torch.nn.L1Loss()
-        vgg = Vgg16().type(torch.cuda.FloatTensor)
-        criterion2 = torch.nn.MSELoss()
+        #vgg = Vgg16().type(torch.cuda.FloatTensor)
+        #criterion2 = torch.nn.MSELoss()
         #print("shape of mat2 :", np.shape(mat2))
         
 
@@ -5572,25 +5577,16 @@ class AutoMarmousi22_Net(nn.Module):
                     batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
-                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
-                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
+                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
                     ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
                     
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    #y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
-                    #y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
-                    #y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
-                    #y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
-                    #y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
-                    #y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
-                    
-                    #lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
                     lossinner = lossinner1
-                    
-                    ####y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
@@ -5598,8 +5594,8 @@ class AutoMarmousi22_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
+                    net1out1.grad = net1out1.grad * ss
+                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
