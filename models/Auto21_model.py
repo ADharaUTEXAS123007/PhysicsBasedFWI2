@@ -167,7 +167,7 @@ class Auto21Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,self.dummy] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -363,8 +363,8 @@ class Auto21Model(BaseModel):
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
         
-        print("shape of down3 :", np.shape(self.down3))
-        print("shape of up2 :", np.shape(self.up2))
+        #print("shape of down3 :", np.shape(self.down3))
+        #print("shape of up2 :", np.shape(self.up2))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
