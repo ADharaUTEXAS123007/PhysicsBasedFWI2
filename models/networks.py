@@ -3858,15 +3858,16 @@ class AutoMarmousi21_Net(nn.Module):
         super(AutoMarmousi21_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
+        #filters = [8, 16, 32, 64, 256]
         
-        latent_dim = 8
+        latent_dim = 512
 
-        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.down1   = unetDown(int(self.in_channels), filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
@@ -3874,16 +3875,16 @@ class AutoMarmousi21_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*63*13, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*63*16, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*19) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*32*16) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp3(filters[3], filters[2], self.is_deconv)
-        self.up2     = autoUp3(filters[2], filters[1], self.is_deconv)
-        self.up1     = autoUp3(filters[1], filters[0], self.is_deconv)
+        self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
+        self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
+        self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -3893,18 +3894,21 @@ class AutoMarmousi21_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
-        label_dsp_dim = (151,200)
+        #filters = [8, 16, 32, 64, 256]
+        latent_dim = 512
+        label_dsp_dim = (100,250)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
-        meandata = torch.mean(inputs2)
-        stddata = torch.std(inputs2)
-        down1  = self.down1((inputs2[:,:,1:4001:4,:]-meandata)/stddata)
+        mindata = torch.min(inputs2)
+        maxdata = torch.max(inputs2)
+        print("shapes of inputs2 :", np.shape(inputs2))
+        down1  = self.down1(inputs2[:,:,1:4001:4,:])
         down2  = self.down2(down1)
         down3  = self.down3(down2)
         down4  = self.down4(down3)
         
-        #print("shape of down3 :", np.shape(down))
+        #print("shape of down3 :", np.shape(down3))
+        print("shape of down4 :", np.shape(down4))
         
         #print("shape of down2 :", np.shape(down2))
         result = torch.flatten(down4, start_dim=1)
@@ -3933,29 +3937,27 @@ class AutoMarmousi21_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 25)
+        z = z.view(-1, filters[3], 16, 32)
     
-        up3    = self.up3(z)
-        #print(" shape of up1 :", np.shape(up1))
-        up2    = self.up2(up3)
-        up1    = self.up1(up2)
+        up1    = self.up3(z)
+        print(" shape of up3 :", np.shape(up1))
+        up1    = self.up2(up1)
+        print(" shape of up2 :", np.shape(up1))
+        up1    = self.up1(up1)
         print("shape of up1 :", np.shape(up1))
-        up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
+        up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        #print("shape of f1 :", np.shape(f1))
-        print("mintrue :", mintrue)
-        print("maxtrue :", maxtrue)
+        print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1.500)] = 1.500
+        f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
-        #f1[(inputs1 == 1.510)] = 1.510
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
@@ -3974,13 +3976,12 @@ class AutoMarmousi21_Net(nn.Module):
         lossT = 0.0
         if (epoch1 > lstart):
             [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
-            grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT, down3, up2, up1
+        return f1, grad, latent1, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -4002,9 +4003,9 @@ class AutoMarmousi21_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
         
-        torch.cuda.set_device(5)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(5)
-        devicek = torch.device(GPU_string)
+        #torch.cuda.set_device(7)  #RB Necessary if device <> 0
+        #GPU_string='cuda:'+str(7)
+        #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel*1000
@@ -4015,33 +4016,60 @@ class AutoMarmousi21_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**1.0
-        ss = g1.tile((200,1))
+        g1 = g1**2.0
+        ss = g1.tile((250,1))
         ss = torch.transpose(ss,0,1)
-        net1out1 = net1out1.to(devicek)
-        #devicek = net1out1.get_device()
+        nnz = torch.zeros(250)
+        wb = 0*true[0,0,:,:]
+        wb[(true[0,0,:,:]==1.510)] = 1
+        #print("nnz :", nnz)
+        #print("nnzi :", nnz[100])
+        #print(" np shape of wb :", np.shape(wb))
+        for i in range(250):
+            nnz[i] = torch.max(torch.nonzero(wb[:,i]))
+
+        devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
         
-        freq = 8
+        freq = 15
         dx = 10
         nt = 4001
         dt = 0.001
-        num_shots = 18
-        num_receivers_per_shot = 200
+        num_shots = 20
+        num_receivers_per_shot = 250
         num_sources_per_shot = 1
         num_dims = 2
         #ModelDim = [201,301]
-        ny = 200
-        source_spacing = 200 * dx / num_shots
-        receiver_spacing = 200 * dx / num_receivers_per_shot
+        ny = 250
+        source_spacing = 250 * dx / num_shots
+        receiver_spacing = 250 * dx / num_receivers_per_shot
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
+        #x_s[:, 0, 1] = torch.arange(num_shots).float() * source_spacing
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
+        #x_s[1,0,1] = 0
+        #x_s[1,0,1] = 30
+        #x_s[2,0,1] = 80
+        #x_s[3,0,1] = 120
+        #x_s[4,0,1] = 160
+        #x_s[5,0,1] = 180
+        #x_s[6,0,1] = 200
+        #x_s[7,0,1] = 250
+        #x_s[29,0,1] = 1990
+        #x_s[28,0,1] = 1980
+        #x_s[27,0,1] = 1890
+        #x_s[26,0,1] = 1840
+        #x_s[25,0,1] = 1820
+        #x_s[24,0,1] = 1790
+        #x_s[23,0,1] = 1770
+        #x_s[22,0,1] = 1750
+        #x_s[21,0,1] = 1730
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
-        x_r[0, :, 1] = torch.arange(
-            num_receivers_per_shot).float() * receiver_spacing
+        x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
+        for i in range(250):
+            x_r[0,i,0] = nnz[i]*dx
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
-
+        x_r[:, :, 0] = x_r[0, :, 0].repeat(num_shots, 1)
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
@@ -4060,6 +4088,8 @@ class AutoMarmousi21_Net(nn.Module):
         # print(np.shape(self.real_A))
         sumlossinner = 0.0
         ss = ss.to(devicek)
+        
+        #print("shape of ss :", ss.size())
         ################data misfit calculation##########################################
 
         #net1out1 = net1out1.to(self.devicek)
@@ -4082,7 +4112,7 @@ class AutoMarmousi21_Net(nn.Module):
         #print(min1.get_device())
         #min1 = min1.to(self.device1)
         mat2 = torch.ones(net1out1.size()[0],net1out1.size()[1]).to(devicek)
-        mat2 = mat2 * 1500
+        mat2 = mat2 * 1510
         #mat2 = torch.clamp(mat2,min=1500,max=3550)
         #min1 = torch.min(net1out1)
         #max1 = torch.max(net1out1)
@@ -4098,7 +4128,8 @@ class AutoMarmousi21_Net(nn.Module):
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
-        receiver_amplitudes_true = receiver_amplitudes_true - receiver_amplitudes_cte
+        receiver_amplitudes_true = receiver_amplitudes_true
+        #receiver_amplitudes_true = receiver_amplitudes_true
         
         #print("receiver_amplitudes_true :", np.shape(receiver_amplitudes_true))
         #print("receiver_amplitudes_cte :", np.shape(receiver_amplitudes_cte))
@@ -4152,7 +4183,7 @@ class AutoMarmousi21_Net(nn.Module):
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
                     #print("batch_rcv_amps_pred")
                     #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+                    batch_rcv_amps_pred = batch_rcv_amps_pred
                     batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
                     # Normalize amplitudes by dividing by the maximum amplitude of each receiver
                     batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
@@ -4163,8 +4194,17 @@ class AutoMarmousi21_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    #y_true1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
+                    #y_pred1 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,0:3,:],0,1),0))
+                    #y_true2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,3:6,:],0,1),0))
+                    #y_pred2 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,3:6,:],0,1),0))
+                    #y_true3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,6:9,:],0,1),0))
+                    #y_pred3 = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_pred_norm[:,6:9,:],0,1),0))
+                    
+                    #lossinner2 = criterion1(y_pred1,y_true1) + criterion1(y_pred2,y_true2) + criterion1(y_pred3,y_true3)
                     lossinner = lossinner1
-                    #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
+                    
+                    ####y_c_features = vgg(torch.unsqueeze(torch.swapaxes(batch_rcv_amps_true[:,0:3,:],0,1),0))
                     #########model2.grad[0:26,:] = 0
                     #filen = './deepwave/epoch1'+str(epoch)+'.npy'
                     #np.save(filen,net1out1.cpu().detach().numpy())
@@ -4172,8 +4212,8 @@ class AutoMarmousi21_Net(nn.Module):
                     ##########    sumlossinner += lossinner.item()
                     #########if (epoch1 > lstart):
                     lossinner.backward()
-                    net1out1.grad = net1out1.grad * ss
-                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
+                    net1out1.grad = net1out1.grad*ss
+                    net1out1.grad[(true[0,0,:,:]==1.510)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
