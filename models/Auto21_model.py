@@ -368,13 +368,13 @@ class Auto21Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 10 == 0): 
-            filen = './marmousi21/GradIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/GradInt2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-            filen = './marmousi21/FakeIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/FakeInt2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi21/RealIntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi21/RealInt2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
             
             #filen = './marmousi21/Down3IntAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
