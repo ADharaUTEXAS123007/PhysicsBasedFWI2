@@ -367,7 +367,7 @@ class Auto24Model(BaseModel):
         print("shape of up2 :", np.shape(self.up2))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
-        if (epoch1 % 10 == 0): 
+        if (epoch1 % 30 == 0): 
             filen = './marmousi24/GradInt22DecAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
