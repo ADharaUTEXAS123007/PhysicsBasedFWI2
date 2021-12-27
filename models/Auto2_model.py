@@ -241,7 +241,10 @@ class Auto2Model(BaseModel):
         tr2 = self.real_A[:,:,:,0:ntraces] * 0
         
         for i in range(ntraces):
-            reflect = self.fake_B[:,:,:,idx[i]]
+            zp = self.fake_B[:,:,:,idx[i]]
+            zp1 = zp[:-1]
+            zp2 = zp[1:]
+            reflect = (zp2 - zp1)/(zp2 + zp1)
             synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
             tr1[:,:,:,i] = synth 
             tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
