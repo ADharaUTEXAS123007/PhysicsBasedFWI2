@@ -243,6 +243,7 @@ class Auto2Model(BaseModel):
         
         for i in range(ntraces):
             zp = self.fake_B[:,:,:,idx[i]]
+            print("shape of zp :", np.shape(zp))
             zp1 = zp[:-1]
             zp2 = zp[1:]
             reflect = (zp2 - zp1)/(zp2 + zp1)
