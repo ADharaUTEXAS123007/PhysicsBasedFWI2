@@ -2792,7 +2792,7 @@ class AutoMarmousi_Net(nn.Module):
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        #self.f2      =  nn.Conv2d(1,1,1)
+        self.f2      =  nn.Conv2d(1,1,1)
         self.final   =  nn.Tanh()
         #self.final  =  nn.Sigmoid()
         
@@ -2846,6 +2846,7 @@ class AutoMarmousi_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
+        f1     = self.f2(f1)
         f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
