@@ -2761,7 +2761,7 @@ class AutoMarmousi_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(AutoMarmousi_Net, self).__init__()
-        self.is_deconv     = True
+        self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
@@ -2769,7 +2769,7 @@ class AutoMarmousi_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 8
+        latent_dim = 512
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
