@@ -2262,7 +2262,7 @@ class autoUp(nn.Module):
         self.conv2 = unetConv2(out_size, out_size, True)
         # Transposed convolution
         if is_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2,stride=2)
+            self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
         else:
             self.up = nn.UpsamplingBilinear2d(scale_factor=2)
 
