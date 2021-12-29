@@ -2763,7 +2763,7 @@ class AutoMarmousi_Net(nn.Module):
         super(AutoMarmousi_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -2792,8 +2792,8 @@ class AutoMarmousi_Net(nn.Module):
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Sigmoid()
+        self.f2      =  nn.Linear(249,249)
+        self.final   =  nn.Tanh()
         #self.final  =  nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
