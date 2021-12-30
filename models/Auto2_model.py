@@ -309,11 +309,11 @@ class Auto2Model(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        lambda1 = 1
+        lambda1 = 10.0
         lambda2 = 0
         if (epoch1>lstart):
-            lambda1 = 0.5
-            lambda2 = 0.5
+            lambda1 = 10.0
+            lambda2 = 10.0
             
         #self.fake_B.retain_grad()
 
