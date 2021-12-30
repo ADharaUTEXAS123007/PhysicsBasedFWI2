@@ -2782,7 +2782,7 @@ class AutoMarmousi_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*69*16, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*135*31) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*136*32) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
