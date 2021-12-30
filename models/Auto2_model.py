@@ -248,9 +248,9 @@ class Auto2Model(BaseModel):
             zp1 = zp[:,:,:-1]
             zp2 = zp[:,:,1:]
             reflect = (zp2 - zp1)/(zp2 + zp1)
-            print("shape of reflect :", np.shape(reflect))
+            #print("shape of reflect :", np.shape(reflect))
             synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
-            print("shape of synth :", np.shape(synth))
+            #print("shape of synth :", np.shape(synth))
             tr1[:,:,:,i] = synth 
             tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
         
