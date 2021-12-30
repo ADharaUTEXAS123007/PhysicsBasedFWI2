@@ -2766,8 +2766,8 @@ class AutoMarmousi_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [16, 32, 64, 128, 512]
-        #filters = [2, 4, 8, 16, 32]
+        #filters = [16, 32, 64, 128, 512]
+        filters = [2, 4, 8, 16, 32]
         
         latent_dim = 512
 
@@ -2793,12 +2793,13 @@ class AutoMarmousi_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f2      =  nn.Linear(249,249)
-        self.final   =  nn.Tanh()
+        self.final   =  nn.Sigmoid()
         #self.final  =  nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [16, 32, 64, 128, 512]
-        latent_dim = 8
+        #filters = [16, 32, 64, 128, 512]
+        filters = [2, 4, 8, 16, 32]
+        latent_dim = 512
         label_dsp_dim = (1098,249)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
