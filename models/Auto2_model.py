@@ -261,6 +261,7 @@ class Auto2Model(BaseModel):
         #    tr1[:,:,:,i] = synth 
         
         print("shape of tr1 :", np.shape(tr1))    
+        print("shape of tr2 :", np.shape(tr2))
         self.loss_D_MSE = self.criterionL1(tr1,tr2)
         
         
