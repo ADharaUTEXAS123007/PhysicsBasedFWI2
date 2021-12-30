@@ -234,7 +234,8 @@ class Auto2Model(BaseModel):
         wavelet = wavelet*100
         tr1 = self.real_A * 0
         
-        idx = torch.randperm(self.real_B.shape[3])
+        #idx = torch.randperm(self.real_B.shape[3])
+        idx = torch.arange(0,self.real_B.shape[3])
         
         ntraces = self.real_B.shape[3]
         ntraces = math.ceil(ntraces)
