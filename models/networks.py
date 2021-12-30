@@ -2838,7 +2838,7 @@ class AutoMarmousi_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 135, 31)
+        z = z.view(-1, filters[3], 136, 32)
     
         up1    = self.up3(z)
         #print(" shape of up1 :", np.shape(up1))
