@@ -2858,7 +2858,7 @@ class AutoMarmousi_Net(nn.Module):
         #f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
-        #f1     = torch.clip(f1,min=mintrue,max=maxtrue)
+        f1     = torch.clip(f1,min=mintrue,max=maxtrue)
         
         #f1     = torch.add(f1,1600.0)
         #f1     = torch.add(f1,lowf)
