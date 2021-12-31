@@ -2769,7 +2769,7 @@ class AutoMarmousi_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 512
+        latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
@@ -2847,13 +2847,13 @@ class AutoMarmousi_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.f2(f1)
+        #f1     = self.f2(f1)
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         #print("shape of f1 :", np.shape(f1))
-        f1     = lowf + 0.5*f1
+        f1     = lowf + 0.25*f1
         #f1    = mintrue + f1*(maxtrue-mintrue)
         #f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
