@@ -4288,7 +4288,7 @@ class AutoMarmousi22_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
-        down1  = self.down1((inputs2[:,:,1:4001:4,:]))
+        down1  = self.down1((inputs2[:,:,1:4001:4,:]-meandata)/stddata)
         #down1  = self.drop1(down1)
         down2  = self.down2(down1)
         #down2  = self.drop2(down2)
