@@ -155,6 +155,8 @@ class Auto2Model(BaseModel):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
         [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.var] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        self.fake_B = torch.unsqueeze(self.fake_B,1)
+        self.var = torch.unsqueeze(self.var,1)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -248,7 +250,9 @@ class Auto2Model(BaseModel):
         
         tr1 = self.real_A[:,:,:,0:ntraces] * 0
         tr2 = self.real_A[:,:,:,0:ntraces] * 0
-        var = self.var[:,:,:,0:ntraces] * 0
+        var = self.real_A[:,:,:,0:ntraces] * 0
+        
+        
         
         for i in range(ntraces):
             zp = self.fake_B[:,:,:,idx[i]]
