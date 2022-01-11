@@ -250,7 +250,7 @@ class Auto2Model(BaseModel):
         
         tr1 = self.real_A[:,:,:,0:ntraces] * 0
         tr2 = self.real_A[:,:,:,0:ntraces] * 0
-        var = self.real_A[:,:,:,0:ntraces] * 0
+        lvar = self.real_A[:,:,:,0:ntraces] * 0
         
         
         
