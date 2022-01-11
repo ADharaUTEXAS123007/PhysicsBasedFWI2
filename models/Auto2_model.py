@@ -177,6 +177,12 @@ class Auto2Model(BaseModel):
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
         
+    # Loss
+    def gaussian_nll(self, mu, neg_logvar, target, reduction='mean'):
+        neg_logvar = torch.clamp(neg_logvar, min=-20, max=20)  # prevent nan loss
+        loss = torch.exp(neg_logvar) * torch.pow(target - mu, 2) - neg_logvar
+        return loss.mean() if reduction == 'mean' else loss.sum()
+        
 
     def backward_G(self):
         """Calculate GAN and L1 loss for the generator"""

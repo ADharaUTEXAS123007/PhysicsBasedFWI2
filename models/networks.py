@@ -2765,7 +2765,7 @@ class AutoMarmousi_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = inner_nc
+        self.n_classes     = 2
         
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
@@ -2861,7 +2861,8 @@ class AutoMarmousi_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        #print("shape of f1 :", np.shape(f1))
+        print("shape of f1 :", np.shape(f1))
+        
         f1     = lowf + 0.005*f1
         #f1    = mintrue + f1*(maxtrue-mintrue)
         #f1[(inputs1==1.5100)] = 1.510
