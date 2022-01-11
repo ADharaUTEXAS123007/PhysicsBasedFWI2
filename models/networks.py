@@ -2149,8 +2149,7 @@ class unetConv2(nn.Module):
                                        nn.LeakyReLU(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.1))
+                                       nn.LeakyReLU(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True))
@@ -2774,8 +2773,10 @@ class AutoMarmousi_Net(nn.Module):
         latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.dropD1   = nn.Dropout2d(0.1)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
+        self.dropD3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
@@ -2789,8 +2790,10 @@ class AutoMarmousi_Net(nn.Module):
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
+        self.dropU3  = nn.Dropout2d(0.1)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
         self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
+        self.dropU1  = nn.Dropout2d(0.1)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -2855,7 +2858,7 @@ class AutoMarmousi_Net(nn.Module):
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         #print("shape of f1 :", np.shape(f1))
-        f1     = lowf + 0.25*f1
+        f1     = lowf + 0.05*f1
         #f1    = mintrue + f1*(maxtrue-mintrue)
         #f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
