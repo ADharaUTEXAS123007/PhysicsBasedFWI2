@@ -2149,8 +2149,7 @@ class unetConv2(nn.Module):
                                        nn.LeakyReLU(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(0.1),
-                                       nn.Dropout2d(0.3))
+                                       nn.LeakyReLU(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.ReLU(inplace=True))
@@ -2791,10 +2790,11 @@ class AutoMarmousi_Net(nn.Module):
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp(filters[3], filters[2], self.is_deconv)
-        self.dropU3  = nn.Dropout2d(0.1)
+        self.dropU3  = nn.Dropout2d(0.3)
         self.up2     = autoUp(filters[2], filters[1], self.is_deconv)
+        self.dropU2  = nn.Dropout2d(0.3)
         self.up1     = autoUp(filters[1], filters[0], self.is_deconv)
-        self.dropU1  = nn.Dropout2d(0.1)
+        self.dropU1  = nn.Dropout2d(0.3)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
@@ -2847,9 +2847,12 @@ class AutoMarmousi_Net(nn.Module):
         z = z.view(-1, filters[3], 138, 32)
     
         up1    = self.up3(z)
+        up1    = self.dropU3(up1)
         #print(" shape of up1 :", np.shape(up1))
         up1    = self.up2(up1)
+        up1    = self.dropU2(up1)
         up1    = self.up1(up1)
+        up1    = self.dropU1(up1)
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
