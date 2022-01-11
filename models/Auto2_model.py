@@ -154,7 +154,7 @@ class Auto2Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.var] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -172,7 +172,7 @@ class Auto2Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,self.dummy] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,self.dummy,self.var] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -248,6 +248,7 @@ class Auto2Model(BaseModel):
         
         tr1 = self.real_A[:,:,:,0:ntraces] * 0
         tr2 = self.real_A[:,:,:,0:ntraces] * 0
+        var = self.var[:,:,:,0:ntraces] * 0
         
         for i in range(ntraces):
             zp = self.fake_B[:,:,:,idx[i]]
@@ -260,6 +261,7 @@ class Auto2Model(BaseModel):
             #print("shape of synth :", np.shape(synth))
             tr1[:,:,:,i] = synth 
             tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
+            var[:,:,:,i] = self.var[:,:,:,idx[i]]
         
         
         #for i in range(self.real_B.shape[3]):
@@ -269,7 +271,10 @@ class Auto2Model(BaseModel):
         
         print("shape of tr1 :", np.shape(tr1))    
         print("shape of tr2 :", np.shape(tr2))
-        self.loss_D_MSE = self.criterionMSE(tr1,tr2)
+        #self.loss_D_MSE = self.criterionMSE(tr1,tr2)
+        neg_logvar = torch.clamp(var, min=-20, max=20)  # prevent nan loss
+        loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
+        self.loss_D_MSE = loss.mean()
         
         
         

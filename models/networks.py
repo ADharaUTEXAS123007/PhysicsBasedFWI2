@@ -2863,7 +2863,8 @@ class AutoMarmousi_Net(nn.Module):
         #f1     = f1/torch.max(f1)
         print("shape of f1 :", np.shape(f1))
         
-        f1     = lowf + 0.005*f1
+        f1     = lowf + 0.005*f1[:,0,:,:]
+        f2     = f1[:,1,:,:]
         #f1    = mintrue + f1*(maxtrue-mintrue)
         #f1[(inputs1==1.5100)] = 1.510
         #f1     = lowf + f1
@@ -2892,7 +2893,7 @@ class AutoMarmousi_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT
+        return f1, grad, latent1, lossT, f2
     
     # Initialization of Parameters
     def  _initialize_weights(self):
