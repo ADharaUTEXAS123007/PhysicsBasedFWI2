@@ -265,7 +265,7 @@ class Auto2Model(BaseModel):
             #print("shape of synth :", np.shape(synth))
             tr1[:,:,:,i] = synth 
             tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
-            var[:,:,:,i] = self.var[:,:,:,idx[i]]
+            lvar[:,:,:,i] = self.var[:,:,:,idx[i]]
         
         
         #for i in range(self.real_B.shape[3]):
@@ -276,7 +276,7 @@ class Auto2Model(BaseModel):
         print("shape of tr1 :", np.shape(tr1))    
         print("shape of tr2 :", np.shape(tr2))
         #self.loss_D_MSE = self.criterionMSE(tr1,tr2)
-        neg_logvar = torch.clamp(var, min=-20, max=20)  # prevent nan loss
+        neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
         loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
         self.loss_D_MSE = loss.mean()
         
