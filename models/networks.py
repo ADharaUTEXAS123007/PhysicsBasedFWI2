@@ -3141,7 +3141,7 @@ class UnetMarmousi_Net(nn.Module):
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.dropD3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center  = unetConv2(filters[3], int(filters[4]/2), self.is_batchnorm)
+        self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
