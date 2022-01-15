@@ -3183,6 +3183,9 @@ class UnetMarmousi_Net(nn.Module):
     
         up1    = self.up4(down4,center)
         up1    = self.dropU4(up1)
+        print("shape of up1 :", np.shape(up1))
+        print("shape of down3 :", np.shape(down3))
+        
         up1    = self.up3(down3,up1)
         up1    = self.dropU3(up1)
         up1    = self.up2(down2,up1)
