@@ -3226,7 +3226,7 @@ class UnetMarmousi_Net(nn.Module):
         f2 = 0*f1
         grad = 0*f1
         lossT = 0.0
-        latent = 0.0
+        latent1 = 0.0
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = torch.unsqueeze(grad,0)
