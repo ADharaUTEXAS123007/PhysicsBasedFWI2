@@ -3129,7 +3129,7 @@ class UnetMarmousi_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        filters = [16, 32, 64, 128, 512]
+        filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 512
