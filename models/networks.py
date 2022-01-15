@@ -3153,13 +3153,13 @@ class UnetMarmousi_Net(nn.Module):
         
         
         self.up4     = unetUp(filters[4], filters[3], self.is_deconv)
-        self.dropU4  = nn.Dropout2d(0.3)
+        self.dropU4  = nn.Dropout2d(0.05)
         self.up3     = unetUp(filters[3], filters[2], self.is_deconv)
-        self.dropU3  = nn.Dropout2d(0.3)
+        self.dropU3  = nn.Dropout2d(0.05)
         self.up2     = unetUp(filters[2], filters[1], self.is_deconv)
-        self.dropU2  = nn.Dropout2d(0.3)
+        self.dropU2  = nn.Dropout2d(0.05)
         self.up1     = unetUp(filters[1], filters[0], self.is_deconv)
-        self.dropU1  = nn.Dropout2d(0.3)
+        self.dropU1  = nn.Dropout2d(0.05)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
