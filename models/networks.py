@@ -3140,7 +3140,7 @@ class UnetMarmousi_Net(nn.Module):
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
         self.dropD3   = nn.Dropout2d(0.1)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        self.center  = unetConv2(filters[3], int(filters[4]/2), self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
@@ -3180,36 +3180,6 @@ class UnetMarmousi_Net(nn.Module):
         down4  = self.down4(down3)
         
         center = self.center(down4)
-        #print("shape of down4 :", np.shape(down4))
-        
-        #print("shape of down2 :", np.shape(down2))
-        #result = torch.flatten(down4, start_dim=1)
-        
-        #print("result shape :", np.shape(result))
-        
-        #p = self.decoder_input1(result)
-        #down3  = self.down3(down2)
-        #down4  = self.down4(down3)s
-        #center = self.center(down4)
-        #up4    = self.up4(center)
-        #up3    = self.up3(up4)
-        #up2    = self.up2(up3)
-        #print("shape of down 4:", np.shape(down2))
-        #print("shape of result:", np.shape(result))
-        #latent1 = p
-        #if (epoch1 <= lstart):
-        #    latent1 = p
-        #else:
-        #    latent1 = latentI
-        #    p = latent1
-        #    latent1 = p
-            
-
-        #p = torch.randn([1,1,1,8])
-        #z = 0.5*torch.ones([1,1,1,64])
-        #z = self.decoder_input(p)
-        #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        #z = z.view(-1, filters[3], 138, 32)
     
         up1    = self.up4(down4,center)
         up1    = self.dropU4(up1)
