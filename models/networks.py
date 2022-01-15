@@ -2191,7 +2191,7 @@ class unetUp(nn.Module):
             self.conv1 = nn.Conv2d(in_size, out_size, 3, 1, 1)
 
     def forward(self, inputs1, inputs2):
-        outputs2 = self.up(inputs2)
+        outputs2 = self.conv1(self.up(inputs2))
         offset1 = (outputs2.size()[2]-inputs1.size()[2])
         offset2 = (outputs2.size()[3]-inputs1.size()[3])
         padding=[offset2//2,(offset2+1)//2,offset1//2,(offset1+1)//2]
