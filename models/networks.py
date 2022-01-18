@@ -3130,7 +3130,7 @@ class UnetMarmousi_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 2
         
-        filters = [8, 16, 32, 64, 128]
+        filters = [64, 128, 256, 512, 1024]
         #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 512
@@ -3168,7 +3168,7 @@ class UnetMarmousi_Net(nn.Module):
         #self.final  =  nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [16, 32, 64, 128, 512]
+        filters = [64, 128, 256, 512, 1024]
         #filters = [2, 4, 8, 16, 32]
         latent_dim = 512
         label_dsp_dim = (1098,249)
