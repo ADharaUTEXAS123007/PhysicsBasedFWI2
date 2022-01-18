@@ -182,7 +182,7 @@ class Unet2Model(BaseModel):
     # Loss
     def gaussian_nll(self, mu, neg_logvar, target, reduction='mean'):
         neg_logvar = torch.clamp(neg_logvar, min=-20, max=20)  # prevent nan loss
-        loss = torch.exp(neg_logvar) * torch.pow(target - mu, 2) - neg_logvar
+        loss = torch.exp(neg_logvar) * torch.pow(torch.abs(target - mu), 1) - neg_logvar
         return loss.mean() if reduction == 'mean' else loss.sum()
         
 
@@ -237,7 +237,7 @@ class Unet2Model(BaseModel):
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
-        wavelet = wav.ricker(0.1,2e-3,20)
+        wavelet = wav.ricker(0.1,2e-3,30)
         wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
         wavelet = wavelet*100
         tr1 = self.real_A * 0
@@ -275,10 +275,10 @@ class Unet2Model(BaseModel):
         
         print("shape of tr1 :", np.shape(tr1))    
         print("shape of tr2 :", np.shape(tr2))
-        self.loss_D_MSE = self.criterionL1(tr1,tr2)
-        #neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
-        #loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
-        #self.loss_D_MSE = loss.mean()
+        #self.loss_D_MSE = self.criterionL1(tr1,tr2)
+        neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
+        loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 1) - neg_logvar
+        self.loss_D_MSE = loss.mean()
         
         
         

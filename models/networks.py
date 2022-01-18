@@ -3128,7 +3128,7 @@ class UnetMarmousi_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = 1
+        self.n_classes     = 2
         
         filters = [8, 16, 32, 64, 128]
         #filters = [2, 4, 8, 16, 32]
@@ -3202,7 +3202,7 @@ class UnetMarmousi_Net(nn.Module):
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
         print("shape of f1 :", np.shape(f1))
-        #f2     = 0.001*0.001*torch.unsqueeze(f1[:,1,:,:],1)
+        f2     = 0.001*0.001*torch.unsqueeze(f1[:,1,:,:],1)
         f1     = lowf + 0.001*torch.unsqueeze(f1[:,0,:,:],1)
 
         #f1    = mintrue + f1*(maxtrue-mintrue)
@@ -3223,7 +3223,7 @@ class UnetMarmousi_Net(nn.Module):
         #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
-        f2 = 0*f1
+        #f2 = 0*f1
         grad = 0*f1
         lossT = 0.0
         latent1 = 0.0
