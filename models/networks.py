@@ -3136,11 +3136,13 @@ class UnetMarmousi_Net(nn.Module):
         latent_dim = 512
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.dropD1   = nn.Dropout2d(0.1)
+        self.dropD1   = nn.Dropout2d(0.05)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
+        self.dropD2   = nn.Dropout2d(0.05)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.dropD3   = nn.Dropout2d(0.1)
+        self.dropD3   = nn.Dropout2d(0.05)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
+        self.dropD4   = nn.Dropout2d(0.05)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
@@ -3176,9 +3178,13 @@ class UnetMarmousi_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         print("shape of inputs2 :", np.shape(inputs2))
         down1  = self.down1(inputs2)
+        down1 = self.dropD1(down1)
         down2  = self.down2(down1)
+        down2 = self.dropD2(down2)
         down3  = self.down3(down2)
+        down3 = self.dropD3(down3)
         down4  = self.down4(down3)
+        down4 = self.dropD4(down4)
         
         center = self.center(down4)
     
