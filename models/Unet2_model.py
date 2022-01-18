@@ -277,7 +277,7 @@ class Unet2Model(BaseModel):
         print("shape of tr2 :", np.shape(tr2))
         #self.loss_D_MSE = self.criterionL1(tr1,tr2)
         neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
-        loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 1) - neg_logvar
+        loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
         self.loss_D_MSE = loss.mean()
         
         
