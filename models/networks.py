@@ -3128,7 +3128,7 @@ class UnetMarmousi_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = 1
+        self.n_classes     = 2
         
         filters = [64, 128, 256, 512, 1024]
         #filters = [2, 4, 8, 16, 32]
