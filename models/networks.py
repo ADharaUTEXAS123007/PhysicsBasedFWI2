@@ -3136,13 +3136,13 @@ class UnetMarmousi_Net(nn.Module):
         latent_dim = 512
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.dropD1   = nn.Dropout2d(0.05)
+        self.dropD1   = nn.Dropout2d(0.025)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.dropD2   = nn.Dropout2d(0.05)
+        self.dropD2   = nn.Dropout2d(0.025)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.dropD3   = nn.Dropout2d(0.05)
+        self.dropD3   = nn.Dropout2d(0.025)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.dropD4   = nn.Dropout2d(0.05)
+        self.dropD4   = nn.Dropout2d(0.025)
         self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
@@ -3155,13 +3155,13 @@ class UnetMarmousi_Net(nn.Module):
         
         
         self.up4     = unetUp(filters[4], filters[3], self.is_deconv)
-        self.dropU4  = nn.Dropout2d(0.05)
+        self.dropU4  = nn.Dropout2d(0.025)
         self.up3     = unetUp(filters[3], filters[2], self.is_deconv)
-        self.dropU3  = nn.Dropout2d(0.05)
+        self.dropU3  = nn.Dropout2d(0.025)
         self.up2     = unetUp(filters[2], filters[1], self.is_deconv)
-        self.dropU2  = nn.Dropout2d(0.05)
+        self.dropU2  = nn.Dropout2d(0.025)
         self.up1     = unetUp(filters[1], filters[0], self.is_deconv)
-        self.dropU1  = nn.Dropout2d(0.05)
+        self.dropU1  = nn.Dropout2d(0.025)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
