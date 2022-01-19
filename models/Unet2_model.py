@@ -108,7 +108,7 @@ class Unet2Model(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT']
+        self.visual_names = ['fake_B', 'real_B','fake_BT', 'real_BT', 'var_B']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -154,7 +154,7 @@ class Unet2Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.var] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.var_B] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
         #self.fake_B = torch.unsqueeze(self.fake_B,1)
         #self.var = torch.unsqueeze(self.var,1)
         #self.latent = self.latent.clone().detach()
@@ -174,7 +174,7 @@ class Unet2Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,self.dummy,self.var] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,self.dummy,self.var_B] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -265,7 +265,7 @@ class Unet2Model(BaseModel):
             #print("shape of synth :", np.shape(synth))
             tr1[:,:,:,i] = synth 
             tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
-            lvar[:,:,:,i] = self.var[:,:,:,idx[i]]
+            lvar[:,:,:,i] = self.var_B[:,:,:,idx[i]]
         
         
         #for i in range(self.real_B.shape[3]):
