@@ -68,7 +68,7 @@ if __name__ == '__main__':
     #model.eval()
     for k in range(opt.realization):
         print("realization :", str(k))
-        image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(k)
+        image_dir = '/disk/student/adhara/ImpedanceOutput/Output' + str(k)
         shutil.rmtree(image_dir,ignore_errors=True)
         os.mkdir(image_dir)
         for i, data in enumerate(dataset):
