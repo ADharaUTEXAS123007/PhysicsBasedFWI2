@@ -46,7 +46,7 @@ class AutoEl22Model(BaseModel):
         """
         # changing the default values to match the pix2pix paper (https://phillipi.github.io/pix2pix/)
         parser.set_defaults(norm='batch', netG='AutoEl22',
-                            dataset_mode='unalignedVelABCD2', ngf='32')
+                            dataset_mode='unalignedVelABCDEl', ngf='32')
         if is_train:
             parser.set_defaults(pool_size=0, gan_mode='vanilla')
             parser.add_argument('--lambda_L1', type=float,
