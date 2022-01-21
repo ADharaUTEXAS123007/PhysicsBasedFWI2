@@ -4973,7 +4973,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*19*14, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*40*19) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*38*19) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -4993,7 +4993,7 @@ class AutoElMarmousi22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
-        label_dsp_dim = (151,300)
+        label_dsp_dim = (150,300)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         meandata = torch.mean(inputs2)
@@ -5001,7 +5001,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
-        down1  = self.down1((inputs2[:,:,1:4001:4,:]))
+        down1  = self.down1((inputs2[:,:,1:1200:2,:]))
         #down1  = self.dropD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
@@ -5039,7 +5039,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 40)
+        z = z.view(-1, filters[3], 19, 38)
     
         up3    = self.up3(z)
         #up3    = self.dropU3(up3)
