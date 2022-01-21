@@ -5039,7 +5039,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 30)
+        z = z.view(-1, filters[3], 19, 40)
     
         up3    = self.up3(z)
         #up3    = self.dropU3(up3)
