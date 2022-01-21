@@ -5001,7 +5001,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
-        down1  = self.down1((inputs2[:,:,1:1200:2,:]))
+        down1  = self.down1((inputs2[:,:,1:1200:4,:]))
         #down1  = self.dropD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
