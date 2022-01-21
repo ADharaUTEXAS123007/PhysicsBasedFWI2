@@ -4973,7 +4973,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*19*14, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*19) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*30*19) #for marmousi 101x101
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -5039,7 +5039,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 25)
+        z = z.view(-1, filters[3], 19, 30)
     
         up3    = self.up3(z)
         #up3    = self.dropU3(up3)
