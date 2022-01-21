@@ -7,7 +7,7 @@ import numpy as np
 import torch
 
 
-class UnalignedVelABCD2Dataset(BaseDataset):
+class UnalignedVelABCDElDataset(BaseDataset):
     """
     This dataset class can load unaligned/unpaired datasets.
 
