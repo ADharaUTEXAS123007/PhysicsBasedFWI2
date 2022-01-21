@@ -4951,7 +4951,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = inner_nc
+        self.n_classes     = 3
         
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
@@ -4987,7 +4987,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f2      =  nn.Conv2d(1,1,1)
-        self.final   =  nn.Sigmoid()
+        #self.final   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
@@ -5059,8 +5059,8 @@ class AutoElMarmousi22_Net(nn.Module):
         print("mintrue :", mintrue)
         print("maxtrue :", maxtrue)
         
-        f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1500)] = 1500
+        #f1    = mintrue + f1*(maxtrue-mintrue)
+        #f1[(inputs1==1500)] = 1500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -5089,7 +5089,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT, down3, up2, up1
+        return f1, grad, latent1, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):
