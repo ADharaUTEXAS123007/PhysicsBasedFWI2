@@ -102,7 +102,7 @@ class AutoEl22Model(BaseModel):
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
-        self.visual_names = ['fake_B','real_B','fake_BT', 'real_BT']
+        self.visual_names = ['fake_Vp','real_Vp','fake_Vs', 'real_Vs','fake_Rho','real_Rho']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
@@ -148,6 +148,13 @@ class AutoEl22Model(BaseModel):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
         [self.fake_B,self.grad,self.latent] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C)  # G(A)
+        self.real_Vp = self.real_B[:,0,:,:]
+        self.real_Vs = self.real_B[:,1,:,:]
+        self.real_Rho = self.real_B[:,2,:,:]
+        
+        self.fake_Vp = self.fake_B[:,0,:,:]
+        self.fake_Vs = self.fake_B[:,1,:,:]
+        self.fake_Rho = self.fake_B[:,2,:,:]
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -167,7 +174,14 @@ class AutoEl22Model(BaseModel):
         self.latentT = torch.ones(1,1,1,1)
         [self.fake_BT,self.gradT,self.latentT] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
-        self.real_BT = self.real_B
+        #self.real_VpT = self.real_B[:,0,:,:]
+        #self.real_VsT = self.real_B[:,1,:,:]
+        #self.real_RhoT = self.real_B[:,2,:,:]
+        
+        #self.fake_VpT = self.fake_BT[:,0,:,:]
+        #self.fake_VsT = self.fake_BT[:,1,:,:]
+        #self.fake_RhoT = self.fake_BT[:,2,:,:]
+        
         #self.real_C = self.real_BT
         
 
@@ -219,7 +233,7 @@ class AutoEl22Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("D_MSE :", self.loss_D_MSE)
         
-        #self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
         #print("shape of grad :", np.shape(self.grad))
         #k
