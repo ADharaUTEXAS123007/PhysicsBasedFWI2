@@ -233,7 +233,8 @@ class AutoEl22Model(BaseModel):
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("D_MSE :", self.loss_D_MSE)
         
-        self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        self.loss_M_MSE = self.criterionMSE(self.real_Vp, self.fake_Vp) + self.criterionMSE(self.real_Vs, self.fake_Vs) + self.criterionMSE(self.real_Rho, self.fake_Rho)
         
         #print("shape of grad :", np.shape(self.grad))
         #k
