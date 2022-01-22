@@ -278,8 +278,8 @@ class AutoEl22Model(BaseModel):
         #            str(batch)+'ep'+str(epoch1)+'.npy'
         #     np.save(filen, self.fake_BD.cpu().detach().numpy())
 
-        #lambda1 = 1
-        #lambda2 = 0
+        lambda1 = 1
+        lambda2 = 0
         #if (epoch1>lstart):
         #    lambda1 = 0.5
         #    lambda2 = 0.5
@@ -287,13 +287,13 @@ class AutoEl22Model(BaseModel):
         #self.fake_B.retain_grad()
 
         
-        #self.loss_G = lambda1 * self.loss_M_MSE + lambda2 * self.loss_M1_MSE
+        self.loss_G = lambda1 * self.loss_M_MSE 
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
         #if (epoch1 <= lstart):
             #print("1st epoch1 :", epoch1)
             #self.loss_G.backward()
-        #self.loss_G.backward()
+        self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
