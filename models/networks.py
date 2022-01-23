@@ -5109,7 +5109,11 @@ class AutoElMarmousi22_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1)
+        vp_grad = vp1*0
+        vs_grad = vs1*0
+        rho_grad = rho1*0
+        if (epoch1 > lstart):
+            [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5118,7 +5122,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f11, grad, latent1
+        return f11, grad, latent1, vp_grad, vs_grad, rho_grad
     
     # Initialization of Parameters
     def  _initialize_weights(self):
