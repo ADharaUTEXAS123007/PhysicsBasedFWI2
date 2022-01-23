@@ -5223,6 +5223,8 @@ class AutoElMarmousi22_Net(nn.Module):
         d.fwi(model_init, src, rec)
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        
+        print("shape of grads :", np.shape(grads))
         vp_grad = np.array(grads[0])
         vs_grad = np.array(grads[1])
         rho_grad = np.array(grads[2])
