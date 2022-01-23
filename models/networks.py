@@ -5109,7 +5109,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        #[vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1)
+        [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5138,19 +5138,29 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp, vs, rho):
-        vp = vp.cpu().detach().numpy()
-        vs = vs.cpu().detach().numpy()
-        rho = rho.cpu().detach().numpy()
-        vp = np.squeeze(np.squeeze(vp))
-        vs = np.squeeze(np.squeeze(vs))
-        rho = np.squeeze(np.squeeze(rho))
-        vp = vp*1000
-        vs = vs*1000
-        rho = rho*1000
-        
+    def prop(self, vp, vs, rho, true):
         dx = 20.0
+        vp = true[:,0,:,:].cpu().detach().numpy()
+        vs = true[:,1,:,:].cpu().detach().numpy()
+        rho = true[:,2,:,:].cpu().detach().numpy()
         
+        vp = np.squeeze(vp)*1000
+        vs = np.squeeze(vs)*1000
+        rho = np.squeeze(rho)*1000
+        
+        model = api.Model(vp, vs, rho, dx)
+        
+        vpst = vp.cpu().detach().numpy()
+        vsst = vs.cpu().detach().numpy()
+        rhost = rho.cpu().detach().numpy()
+        vpst = np.squeeze(np.squeeze(vpst))
+        vsst = np.squeeze(np.squeeze(vsst))
+        rhost = np.squeeze(np.squeeze(rhost))
+        vpst = vpst*1000
+        vsst = vsst*1000
+        rhost = rhost*1000
+        
+      
         #Receivers
         drec = 20.0
         depth_rec = 400. #receiver_depth [m]
@@ -5191,7 +5201,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 0
         
-        model_init = api.Model(vp, vs, rho, dx)
+        model_init = api.Model(vpst, vsst, rhost, dx)
         
         d.fwi_stages = []
         for i, freq in enumerate([20]):
