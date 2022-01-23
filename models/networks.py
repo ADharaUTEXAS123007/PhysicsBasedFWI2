@@ -5122,7 +5122,7 @@ class AutoElMarmousi22_Net(nn.Module):
     def prop(self):
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
-        d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition//outputs1/'
+        d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
         d.set_paths()
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         print('grads names')
