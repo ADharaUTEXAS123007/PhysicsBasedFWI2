@@ -5145,6 +5145,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vp = np.squeeze(np.squeeze(vp))
         vs = np.squeeze(np.squeeze(vs))
         rho = np.squeeze(np.squeeze(rho))
+        vp = vp*1000
+        vs = vs*1000
+        rho = rho*1000
         
         dx = 20.0
         
@@ -5194,6 +5197,8 @@ class AutoElMarmousi22_Net(nn.Module):
         for i, freq in enumerate([20]):
             d.add_fwi_stage(fc_low=0.0, fc_high=freq)
             print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+            
+        d.fwi(model_init, src, rec)
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         vp_grad = np.array(grads[0])
