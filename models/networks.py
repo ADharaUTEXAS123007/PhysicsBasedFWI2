@@ -4999,10 +4999,17 @@ class AutoElMarmousi22_Net(nn.Module):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (150,300)
-        mintrue = torch.min(inputs1)
-        maxtrue = torch.max(inputs1)
-        meandata = torch.mean(inputs2)
-        stddata = torch.std(inputs2)
+        minvp = torch.min(inputs1[:,0,:,:])
+        maxvp = torch.max(inputs1[:,0,:,:])
+        
+        minvs = torch.min(inputs1[:,1,:,:])
+        maxvs = torch.max(inputs1[:,1,:,:])
+        
+        minrho = torch.min(inputs1[:,2,:,:])
+        maxrho = torch.max(inputs1[:,2,:,:])
+        
+        #meandata = torch.mean(inputs2)
+        #stddata = torch.std(inputs2)
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
@@ -5056,9 +5063,21 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
-        vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
-        rho1   = self.rho(torch.unsqueeze(f1[:,2,:,:],1))
+        vp1    = self.vp(f1[:,0,:,:])
+        vs1    = self.vs(f1[:,1,:,:])
+        rho1   = self.rho(f1[:,2,:,:])
+        
+        vp1    = lowf[:,0,:,:] + vp1
+        vs1    = lowf[:,1,:,:] + vs1
+        rho1   = lowf[:,2,:,:] + rho1
+        
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        
+        vp1    = torch.unsqueeze(vp1,1)
+        vs1    = torch.unsqueeze(vs1,1)
+        rho1   = torch.unsqueeze(rho1,1)
         f11    = torch.cat((vp1,vs1,rho1),dim=1)
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
@@ -5090,7 +5109,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1)
+        #[vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5150,6 +5169,9 @@ class AutoElMarmousi22_Net(nn.Module):
         src = api.Sources(xsrc, ysrc)
                 
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
+        vp = vp*1000
+        vs = vs*1000
+        rho = rho*1000
         #model = api.Model(vp, vs, rho, dx)
         
         
