@@ -5090,7 +5090,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        grad1 = self.prop()
+        [vp_grad, vs_grad, rho_grad] = self.prop()
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5144,12 +5144,7 @@ class AutoElMarmousi22_Net(nn.Module):
         rho_grad = rho_grad.float()
         print('grads names')
         print(fnames)
-        print("shape of vp grad :", np.shape(vp_grad))
-        print("shape of vs grad :", np.shape(vs_grad))
-        print("shape of rho grad :", np.shape(rho_grad))
-        grad = 0
-        return grad
-                   
+        return vp_grad, vs_grad, rho_grad                   
     
 
     
