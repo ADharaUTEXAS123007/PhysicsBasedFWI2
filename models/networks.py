@@ -5120,7 +5120,7 @@ class AutoElMarmousi22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self):
-        denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/src'
+        denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition//outputs1/'
         d.set_paths()
