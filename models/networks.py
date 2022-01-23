@@ -4986,6 +4986,10 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        self.vp     =   nn.Conv2d(1,1,1)
+        self.vs     =   nn.Conv2d(1,1,1)
+        self.rho    =   nn.Conv2d(1,1,1)
+        
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
@@ -5051,6 +5055,10 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
+        vp1    = self.vp(f1[:,0,:,:])
+        vs1    = self.vs(f1[:,1,:,:])
+        rho1   = self.rho(f1[:,2,:,:])
+        f11    = torch.cat((vp1,vs1,rho1),dim=1)
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
@@ -5089,7 +5097,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1
+        return f11, grad, latent1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
@@ -5107,6 +5115,13 @@ class AutoElMarmousi22_Net(nn.Module):
                 m.weight.data.normal_(0, sqrt(2. / n))
                 if m.bias is not None:
                     m.bias.data.zero_()
+    
+    # forward modeling to compute gradients  
+    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
+        grad = 0
+        return grad
+                   
+    
 
     
 class AutoMarmousi25_Net(nn.Module):
