@@ -5123,6 +5123,13 @@ class AutoElMarmousi22_Net(nn.Module):
         vp = vp.cpu().detach().numpy()
         vs = vs.cpu().detach().numpy()
         rho = rho.cpu().detach().numpy()
+        dx = 20.0
+        
+        
+        print("shape of vp passed :", np.shape(vp), np.shape(vs), np.shape(rho))
+        #model = api.Model(vp, vs, rho, dx)
+        
+        
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
