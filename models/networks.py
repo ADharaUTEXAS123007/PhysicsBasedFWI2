@@ -5127,6 +5127,7 @@ class AutoElMarmousi22_Net(nn.Module):
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         print('grads names')
         print(grads)
+        grad = 0
         return grad
                    
     
