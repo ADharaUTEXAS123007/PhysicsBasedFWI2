@@ -5147,6 +5147,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
+        vp = np.flipud(vp)
+        vs = np.flipud(vs)
+        rho = np.flipud(rho)
         
         vp = np.squeeze(vp)*1000
         vs = np.squeeze(vs)*1000
@@ -5157,6 +5160,11 @@ class AutoElMarmousi22_Net(nn.Module):
         vpst = vp1.cpu().detach().numpy()
         vsst = vs1.cpu().detach().numpy()
         rhost = rho1.cpu().detach().numpy()
+        
+        vpst = np.flipud(vpst)
+        vsst = np.flipud(vsst)
+        rhost = np.flipud(rhost)
+        
         vpst = np.squeeze(np.squeeze(vpst))
         vsst = np.squeeze(np.squeeze(vsst))
         rhost = np.squeeze(np.squeeze(rhost))
