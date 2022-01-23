@@ -5215,7 +5215,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NY = 150
         d.DH = 20.0
         d.ITERMAX = 1
-        d.verbose = 0
+        d.verbose = 1
         
         model_init = api.Model(vpst, vsst, rhost, dx)
         
