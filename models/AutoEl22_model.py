@@ -155,6 +155,8 @@ class AutoEl22Model(BaseModel):
         self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
         self.fake_Rho = torch.unsqueeze(self.fake_B[:,2,:,:],1)
+        
+        print("shape of vp_grad :", np.shape(self.vp_grad))
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
