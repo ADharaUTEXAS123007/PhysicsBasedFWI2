@@ -26,7 +26,6 @@ from timeit import default_timer
 #from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
-
 import pyapi_denise as api
 
 ###############################################################################
@@ -5120,7 +5119,8 @@ class AutoElMarmousi22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, inputs, vp, vs, rho, lstart, epoch1, mintrue, maxtrue, true):
-        grad = 0
+        denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/src'
+        d = api.Denise(denise_root, verbose=1)
         return grad
                    
     
