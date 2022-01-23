@@ -5133,9 +5133,9 @@ class AutoElMarmousi22_Net(nn.Module):
         d.ITERMAX = 10
         d.verbose = 0
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
-        vp_grad = grads[0]
-        vs_grad = grads[1]
-        rho_grad = grads[2]
+        vp_grad = np.array(grads[0])
+        vs_grad = np.array(grads[1])
+        rho_grad = np.array(grads[2])
         vp_grad = torch.from_numpy(vp_grad)
         vp_grad = vp_grad.float()
         vs_grad = torch.from_numpy(vs_grad)
