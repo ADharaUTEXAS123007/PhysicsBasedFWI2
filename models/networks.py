@@ -5133,8 +5133,14 @@ class AutoElMarmousi22_Net(nn.Module):
         d.ITERMAX = 10
         d.verbose = 0
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        vp_grad = grads[0]
+        vs_grad = grads[1]
+        rho_grad = grads[2]
         print('grads names')
         print(fnames)
+        print("shape of vp grad :", np.shape(vp_grad))
+        print("shape of vs grad :", np.shape(vs_grad))
+        print("shape of rho grad :", np.shape(rho_grad))
         grad = 0
         return grad
                    
