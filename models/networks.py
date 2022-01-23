@@ -27,6 +27,8 @@ from timeit import default_timer
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
 
+import pyapi_denise as api
+
 ###############################################################################
 # Helper Functions
 ###############################################################################
@@ -5117,7 +5119,7 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
+    def prop(self, inputs, vp, vs, rho, lstart, epoch1, mintrue, maxtrue, true):
         grad = 0
         return grad
                    
