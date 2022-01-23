@@ -5090,7 +5090,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
-        [vp_grad, vs_grad, rho_grad] = self.prop()
+        [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5119,7 +5119,10 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self):
+    def prop(self, vp, vs, rho):
+        vp = vp.cpu().detach().numpy()
+        vs = vs.cpu().detach().numpy()
+        rho = rho.cpu().detach().numpy()
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
