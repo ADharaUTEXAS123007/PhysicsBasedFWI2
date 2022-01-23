@@ -5129,8 +5129,27 @@ class AutoElMarmousi22_Net(nn.Module):
         
         dx = 20.0
         
+        #Receivers
+        drec = 20.0
+        depth_rec = 400. #receiver_depth [m]
+        xrec1 = 780. #1st receiver position[m]
+        xrec2 = 5220 #last receiver position[m]
+        xrec = np.arange(xrec1, xrec2+dx, drec)
+        yrec = depth_rec * (xrec/xrec)
         
-        print("shape of vp passed :", np.shape(vp), np.shape(vs), np.shape(rho))
+        #Sources
+        dsrc = 160. #source spacing [m]
+        depth_src = 40. # source depth [m]
+        xsrc1 = 780. #1st source position [m]
+        xsrc2 = 5220. #last source position [m]
+        xsrc = np.arange(xsrc1, xsrc2+dx, dsrc)
+        ysrc = depth_src * xsrc/ xsrc
+        
+        # Wrap into api
+        rec = api.Receivers(xrec, yrec)
+        src = api.Sources(xsrc, ysrc)
+                
+        print("max of vp passed :", np.max(vp), np.max(vs), np.e(rho))
         #model = api.Model(vp, vs, rho, dx)
         
         
@@ -5138,14 +5157,22 @@ class AutoElMarmousi22_Net(nn.Module):
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
         d.set_paths()
-        d.NX = 300
-        d.NY = 150
-        d.DH = 20.0
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.ITERMAX = 10
+        d.NX = 300
+        d.NY = 150
+        d.DH = 20.0
+        d.ITERMAX = 1
         d.verbose = 0
+        
+        model_init = api.Model(vp, vs, rho, dx)
+        
+        d.fwi_stages = []
+        for i, freq in enumerate([20]):
+            d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         vp_grad = np.array(grads[0])
         vs_grad = np.array(grads[1])
