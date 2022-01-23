@@ -5138,7 +5138,7 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp, vs, rho, true):
+    def prop(self, vp1, vs1, rho1, true):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -5150,9 +5150,9 @@ class AutoElMarmousi22_Net(nn.Module):
         
         model = api.Model(vp, vs, rho, dx)
         
-        vpst = vp.cpu().detach().numpy()
-        vsst = vs.cpu().detach().numpy()
-        rhost = rho.cpu().detach().numpy()
+        vpst = vp1.cpu().detach().numpy()
+        vsst = vs1.cpu().detach().numpy()
+        rhost = rho1.cpu().detach().numpy()
         vpst = np.squeeze(np.squeeze(vpst))
         vsst = np.squeeze(np.squeeze(vsst))
         rhost = np.squeeze(np.squeeze(rhost))
