@@ -5123,6 +5123,10 @@ class AutoElMarmousi22_Net(nn.Module):
         vp = vp.cpu().detach().numpy()
         vs = vs.cpu().detach().numpy()
         rho = rho.cpu().detach().numpy()
+        vp = np.squeeze(np.squeeze(vp))
+        vs = np.squeeze(np.squeeze(vs))
+        rho = np.squeeze(np.squeeze(rho))
+        
         dx = 20.0
         
         
