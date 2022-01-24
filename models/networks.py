@@ -5217,10 +5217,13 @@ class AutoElMarmousi22_Net(nn.Module):
         #d.DH = 20.0
         #d.ITERMAX = 1
         #d.verbose = 1
+        print("shape of vp :", np.shape(vp))
+        print("shape of vs :", np.shape(vs))
+        print("shape of rho :", np.shape(rho))
         
         model = api.Model(vp, vs, rho, dx)
         
-        d.forward(model, src, rec)
+        #d.forward(model, src, rec)
         
         
         #d.NT = 1200
