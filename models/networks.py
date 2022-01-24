@@ -5205,9 +5205,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
         d.set_paths()
-        d.NPROCX = 6
-        d.NPROCY = 6
-        d.PHYSICS = 1
+
         #d.help()
         #d.NX = 300
         #d.NY = 150
@@ -5222,7 +5220,10 @@ class AutoElMarmousi22_Net(nn.Module):
         print(model)
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        #d.forward(model, src, rec)
+        d.NPROCX = 6
+        d.NPROCY = 6
+        d.PHYSICS = 1
+        d.forward(model, src, rec)
         
         
         #d.NT = 1200
