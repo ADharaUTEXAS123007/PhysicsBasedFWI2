@@ -5198,9 +5198,6 @@ class AutoElMarmousi22_Net(nn.Module):
         src = api.Sources(xsrc, ysrc)
                 
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
-        vp = vp*1000
-        vs = vs*1000
-        rho = rho*1000
         #model = api.Model(vp, vs, rho, dx)
         
         
