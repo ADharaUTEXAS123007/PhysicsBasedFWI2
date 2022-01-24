@@ -5176,27 +5176,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = vsst*1000
         rhost = rhost*1000
         
-      
-        #Receivers
-        drec = 20.0
-        depth_rec = 400. #receiver_depth [m]
-        xrec1 = 780. #1st receiver position[m]
-        xrec2 = 5220 #last receiver position[m]
-        xrec = np.arange(xrec1, xrec2+dx, drec)
-        yrec = depth_rec * (xrec/xrec)
-        
-        #Sources
-        dsrc = 160. #source spacing [m]
-        depth_src = 40. # source depth [m]
-        xsrc1 = 780. #1st source position [m]
-        xsrc2 = 5220. #last source position [m]
-        xsrc = np.arange(xsrc1, xsrc2+dx, dsrc)
-        ysrc = depth_src * xsrc/ xsrc
-        
-        # Wrap into api
-        rec = api.Receivers(xrec, yrec)
-        src = api.Sources(xsrc, ysrc)
-                
+               
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
         #model = api.Model(vp, vs, rho, dx)
         
@@ -5205,6 +5185,29 @@ class AutoElMarmousi22_Net(nn.Module):
         d = api.Denise(denise_root, verbose=1)
         d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
         d.set_paths()
+        
+        model = api.Model(vp, vs, rho, dx)
+        print(model)
+        
+        # Receivers
+        drec = 20.
+        depth_rec = 400.  # receiver depth [m]
+        xrec1 = 780.      # 1st receiver position [m]
+        xrec2 = 5220.     # last receiver position [m]
+        xrec = np.arange(xrec1, xrec2 + dx, drec)
+        yrec = depth_rec * (xrec / xrec)
+
+        # Sources
+        dsrc = 160. # source spacing [m]
+        depth_src = 40.  # source depth [m]
+        xsrc1 = 780.  # 1st source position [m]
+        xsrc2 = 5220.  # last source position [m]
+        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        ysrc = depth_src * xsrc / xsrc
+
+        # Wrap into api
+        rec = api.Receivers(xrec, yrec)
+        src = api.Sources(xsrc, ysrc)
 
         #d.help()
         #d.NX = 300
@@ -5215,9 +5218,9 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
+        print("shape of xsrc :", np.shape(xsrc))
         
-        model = api.Model(vp, vs, rho, dx)
-        print(model)
+
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
         d.NPROCX = 6
