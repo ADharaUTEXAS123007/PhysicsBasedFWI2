@@ -5222,6 +5222,7 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of rho :", np.shape(rho))
         
         model = api.Model(vp, vs, rho, dx)
+        print(model)
         
         #d.forward(model, src, rec)
         
