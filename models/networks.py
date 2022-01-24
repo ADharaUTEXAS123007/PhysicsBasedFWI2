@@ -5217,7 +5217,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 1
         d.NT = 1200
-        d.JACOBIAN = 'sacobian/jacobian_Test'
+        #d.JACOBIAN = 'sacobian/jacobian_Test'
         
         model_init = api.Model(vpst, vsst, rhost, dx)
         
