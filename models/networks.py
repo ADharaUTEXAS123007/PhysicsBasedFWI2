@@ -5226,6 +5226,7 @@ class AutoElMarmousi22_Net(nn.Module):
             d.add_fwi_stage(fc_low=0.0, fc_high=freq)
             print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
+        print(f'Target data: {d.DATA_DIR}')
         d.fwi(model_init, src, rec)
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
