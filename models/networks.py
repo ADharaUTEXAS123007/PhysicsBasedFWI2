@@ -5220,7 +5220,8 @@ class AutoElMarmousi22_Net(nn.Module):
         
         model = api.Model(vp, vs, rho, dx)
         print(model)
-        
+        print(f'NSRC:\t{len(src)}')
+        print(f'NREC:\t{len(rec)}')
         #d.forward(model, src, rec)
         
         
