@@ -5211,38 +5211,47 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.NX = 300
-        d.NY = 150
-        d.DH = 20.0
-        d.ITERMAX = 1
-        d.verbose = 1
-        d.NT = 1200
+        #d.NX = 300
+        #d.NY = 150
+        #d.DH = 20.0
+        #d.ITERMAX = 1
+        #d.verbose = 1
+        
+        model = api.Model(vp, vs, rho, dx)
+        
+        d.forward(model, src, rec)
+        
+        
+        #d.NT = 1200
         #d.JACOBIAN = 'sacobian/jacobian_Test'
         
-        model_init = api.Model(vpst, vsst, rhost, dx)
+        #model_init = api.Model(vpst, vsst, rhost, dx)
         
-        d.fwi_stages = []
-        for i, freq in enumerate([20]):
-            d.add_fwi_stage(fc_low=0.0, fc_high=freq)
-            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        #d.fwi_stages = []
+        #for i, freq in enumerate([20]):
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+        #    print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
-        print(f'Target data: {d.DATA_DIR}')
-        d.fwi(model_init, src, rec)
+        #print(f'Target data: {d.DATA_DIR}')
+        #d.fwi(model_init, src, rec)
         
-        grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        #grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
-        print("shape of grads :", np.shape(grads))
-        vp_grad = np.array(grads[0])
-        vs_grad = np.array(grads[1])
-        rho_grad = np.array(grads[2])
-        vp_grad = torch.from_numpy(vp_grad)
-        vp_grad = vp_grad.float()
-        vs_grad = torch.from_numpy(vs_grad)
-        vs_grad = vs_grad.float()
-        rho_grad = torch.from_numpy(rho_grad)
-        rho_grad = rho_grad.float()
-        print('grads names')
-        print(fnames)
+        #print("shape of grads :", np.shape(grads))
+        #vp_grad = np.array(grads[0])
+        #vs_grad = np.array(grads[1])
+        #rho_grad = np.array(grads[2])
+        #vp_grad = torch.from_numpy(vp_grad)
+        #vp_grad = vp_grad.float()
+        #vs_grad = torch.from_numpy(vs_grad)
+        #vs_grad = vs_grad.float()
+        #rho_grad = torch.from_numpy(rho_grad)
+        #rho_grad = rho_grad.float()
+        #print('grads names')
+        #print(fnames)
+        vp_grad = 0
+        vs_grad = 0
+        rho_grad = 0
         return vp_grad, vs_grad, rho_grad                   
     
 
