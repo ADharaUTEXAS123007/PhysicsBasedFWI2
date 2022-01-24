@@ -5220,7 +5220,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         model = api.Model(vp, vs, rho, dx)
         
-        d.forward(model, src, rec)
+        #d.forward(model, src, rec)
         
         
         #d.NT = 1200
