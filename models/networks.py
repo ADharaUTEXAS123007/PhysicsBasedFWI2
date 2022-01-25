@@ -27,6 +27,7 @@ from timeit import default_timer
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
 import pyapi_denise as api
+import os
 
 ###############################################################################
 # Helper Functions
@@ -5226,7 +5227,9 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.forward(model, src, rec)
+        #d.forward(model, src, rec)
+        os.system('mpirun -n 4 ../hello')
+        
         
         
         #d.NT = 1200
