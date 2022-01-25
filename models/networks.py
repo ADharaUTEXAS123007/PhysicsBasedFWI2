@@ -5227,8 +5227,8 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        #d.forward(model, src, rec)
-        os.system('mpirun -np 4 hello')
+        d.forward(model, src, rec)
+        #os.system('mpirun -np 4 hello')
         
         
         
