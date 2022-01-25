@@ -5188,7 +5188,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.set_paths()
         
         model = api.Model(vp, vs, rho, dx)
-        print(model)
+        #print(model)
         
         # Receivers
         drec = 20.
@@ -5227,7 +5227,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.forward(model, src, rec)
+        #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         
         
@@ -5235,17 +5235,17 @@ class AutoElMarmousi22_Net(nn.Module):
         #d.NT = 1200
         #d.JACOBIAN = 'sacobian/jacobian_Test'
         
-        #model_init = api.Model(vpst, vsst, rhost, dx)
+        model_init = api.Model(vpst, vsst, rhost, dx)
         
-        #d.fwi_stages = []
-        #for i, freq in enumerate([20]):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=freq)
-        #    print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        d.fwi_stages = []
+        for i, freq in enumerate([20]):
+            d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
-        #print(f'Target data: {d.DATA_DIR}')
-        #d.fwi(model_init, src, rec)
+        print(f'Target data: {d.DATA_DIR}')
+        d.fwi(model_init, src, rec)
         
-        #grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
         #print("shape of grads :", np.shape(grads))
         #vp_grad = np.array(grads[0])
@@ -5257,8 +5257,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs_grad = vs_grad.float()
         #rho_grad = torch.from_numpy(rho_grad)
         #rho_grad = rho_grad.float()
-        #print('grads names')
-        #print(fnames)
+        print('grads names')
+        print(fnames)
         vp_grad = 0
         vs_grad = 0
         rho_grad = 0
