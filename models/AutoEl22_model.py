@@ -345,6 +345,7 @@ class AutoEl22Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
+            print(self.grad.get_device())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
