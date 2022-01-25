@@ -5251,6 +5251,11 @@ class AutoElMarmousi22_Net(nn.Module):
         vp_grad = np.array(grads[0])
         vs_grad = np.array(grads[1])
         rho_grad = np.array(grads[2])
+        
+        print("shape of vp_grad :", np.shape(vp_grad))
+        print("shape of vs_grad :", np.shape(vs_grad))
+        print("shape of rho_grad :", np.shape(rho_grad))
+        
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
