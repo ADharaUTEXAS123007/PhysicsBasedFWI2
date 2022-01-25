@@ -5264,11 +5264,11 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of vs_grad1 :", np.shape(vs_grad))
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
-        vp_grad = torch.from_numpy(vp_grad)
+        vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
-        vs_grad = torch.from_numpy(vs_grad)
+        vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
-        rho_grad = torch.from_numpy(rho_grad)
+        rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         
         print('grads names')
