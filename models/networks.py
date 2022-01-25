@@ -5259,6 +5259,11 @@ class AutoElMarmousi22_Net(nn.Module):
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
+        
+        print("shape of vp_grad1 :", np.shape(vp_grad))
+        print("shape of vs_grad1 :", np.shape(vs_grad))
+        print("shape of rho_grad1 :", np.shape(rho_grad))
+        
         vp_grad = torch.from_numpy(vp_grad)
         vp_grad = vp_grad.float()
         vs_grad = torch.from_numpy(vs_grad)
