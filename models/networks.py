@@ -5184,7 +5184,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
-        d.save_folder = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/outputs1/'
+        d.save_folder = '/disk/student/adhara/DOUTPUTS/'
         d.set_paths()
         
         model = api.Model(vp, vs, rho, dx)
