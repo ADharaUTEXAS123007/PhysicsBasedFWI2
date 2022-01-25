@@ -5251,12 +5251,16 @@ class AutoElMarmousi22_Net(nn.Module):
         vp_grad = np.array(grads[0])
         vs_grad = np.array(grads[1])
         rho_grad = np.array(grads[2])
+        vp_grad = np.flipud(vp_grad)
+        vs_grad = np.flipud(vs_grad)
+        rho_grad = np.flipud(rho_grad)
         vp_grad = torch.from_numpy(vp_grad)
         vp_grad = vp_grad.float()
         vs_grad = torch.from_numpy(vs_grad)
         vs_grad = vs_grad.float()
         rho_grad = torch.from_numpy(rho_grad)
         rho_grad = rho_grad.float()
+        
         print('grads names')
         print(fnames)
         #vp_grad = 0
