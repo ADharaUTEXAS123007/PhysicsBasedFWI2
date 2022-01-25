@@ -5248,20 +5248,20 @@ class AutoElMarmousi22_Net(nn.Module):
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
         #print("shape of grads :", np.shape(grads))
-        #vp_grad = np.array(grads[0])
-        #vs_grad = np.array(grads[1])
-        #rho_grad = np.array(grads[2])
-        #vp_grad = torch.from_numpy(vp_grad)
-        #vp_grad = vp_grad.float()
-        #vs_grad = torch.from_numpy(vs_grad)
-        #vs_grad = vs_grad.float()
-        #rho_grad = torch.from_numpy(rho_grad)
-        #rho_grad = rho_grad.float()
+        vp_grad = np.array(grads[0])
+        vs_grad = np.array(grads[1])
+        rho_grad = np.array(grads[2])
+        vp_grad = torch.from_numpy(vp_grad)
+        vp_grad = vp_grad.float()
+        vs_grad = torch.from_numpy(vs_grad)
+        vs_grad = vs_grad.float()
+        rho_grad = torch.from_numpy(rho_grad)
+        rho_grad = rho_grad.float()
         print('grads names')
         print(fnames)
-        vp_grad = 0
-        vs_grad = 0
-        rho_grad = 0
+        #vp_grad = 0
+        #vs_grad = 0
+        #rho_grad = 0
         return vp_grad, vs_grad, rho_grad                   
     
 
