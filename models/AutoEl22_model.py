@@ -161,6 +161,7 @@ class AutoEl22Model(BaseModel):
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
         self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        self.grad = torch.unsqueeze(self.grad,0)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -300,7 +301,7 @@ class AutoEl22Model(BaseModel):
         #if (epoch1 <= lstart):
             #print("1st epoch1 :", epoch1)
             #self.loss_G.backward()
-        self.loss_G.backward()
+        #self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
@@ -344,7 +345,7 @@ class AutoEl22Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            #self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
