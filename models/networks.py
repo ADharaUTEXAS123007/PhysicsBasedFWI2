@@ -5254,7 +5254,7 @@ class AutoElMarmousi22_Net(nn.Module):
             d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
-        print(f'Stage {1}:\n\t{d.fwi_stages[1]}\n')
+        print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
 
         
         
