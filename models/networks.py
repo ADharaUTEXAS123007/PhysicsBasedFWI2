@@ -26,8 +26,8 @@ from timeit import default_timer
 #from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
-#import pyapi_denise as api
-#import os
+import pyapi_denise as api
+import os
 
 ###############################################################################
 # Helper Functions
@@ -5241,9 +5241,24 @@ class AutoElMarmousi22_Net(nn.Module):
         
         d.fwi_stages = []
         #for i, freq in enumerate([20]):
-        #if (epoch1 < 100  )
-        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
-        print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        if ((epoch1 >= 0) and (epoch1 <=50 )):
+            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        else if ((epoch1 >= 51) and (epoch1 <=100)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        else if (epoch1 >= 101) and (epoch1 <=150)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        else:
+            d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+            
+        print(f'Stage {1}:\n\t{d.fwi_stages[1]}\n')
+
+        
+        
+
             
         print(f'Target data: {d.DATA_DIR}')
         d.grad(model_init, src, rec)
