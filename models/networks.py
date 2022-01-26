@@ -5032,7 +5032,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #####print("result shape :", np.shape(result))
         
-        p = self.decoder_input1(inputs2)
+        #p = self.decoder_input1(inputs2)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
@@ -5041,7 +5041,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        latent1 = p
+        #latent1 = p
         #if (epoch1 <= lstart):
         #    latent1 = p
         #else:
@@ -5052,7 +5052,7 @@ class AutoElMarmousi22_Net(nn.Module):
 
         #p = torch.randn([1,1,1,8])
         #z = 0.5*torch.ones([1,1,1,64])
-        z = self.decoder_input(p)
+        z = self.decoder_input(inputs2)
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 19, 38)
     
