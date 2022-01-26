@@ -5143,7 +5143,7 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true):
+    def prop(self, vp1, vs1, rho1, true, epoch1):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -5244,10 +5244,10 @@ class AutoElMarmousi22_Net(nn.Module):
         if ((epoch1 >= 0) and (epoch1 <=50 )):
             d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        else if ((epoch1 >= 51) and (epoch1 <=100)):
+        elif ((epoch1 >= 51) and (epoch1 <=100)):
             d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        else if (epoch1 >= 101) and (epoch1 <=150)):
+        elif (epoch1 >= 101) and (epoch1 <=150)):
             d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         else:
