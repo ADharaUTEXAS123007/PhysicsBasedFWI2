@@ -5214,7 +5214,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #d.NY = 150
         #d.DH = 20.0
         d.ITERMAX = 1
-        #d.verbose = 1
+        d.verbose = 0
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
