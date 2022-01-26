@@ -5114,7 +5114,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = vs1*0
         rho_grad = rho1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5262,7 +5262,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         loss = np.loadtxt('loss_curve_grad.out')
         
-        print("loss :", loss)
+        #print("loss :", loss)
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
@@ -5298,7 +5298,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #vp_grad = 0
         #vs_grad = 0
         #rho_grad = 0
-        return vp_grad, vs_grad, rho_grad                   
+        return vp_grad, vs_grad, rho_grad, loss                 
     
 
     
