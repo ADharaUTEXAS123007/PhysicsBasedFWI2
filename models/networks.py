@@ -5123,7 +5123,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f11, grad, latent1, vp_grad, vs_grad, rho_grad
+        return f11, grad, latent1, vp_grad, vs_grad, rho_grad, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):
