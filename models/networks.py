@@ -5114,7 +5114,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = vs1*0
         rho_grad = rho1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1)
+            [vp_grad, vs_grad, rho_grad] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5240,9 +5240,10 @@ class AutoElMarmousi22_Net(nn.Module):
         model_init = api.Model(vpst, vsst, rhost, dx)
         
         d.fwi_stages = []
-        for i, freq in enumerate([20]):
-            d.add_fwi_stage(fc_low=0.0, fc_high=freq)
-            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        #for i, freq in enumerate([20]):
+        if (epoch1 < 100  )
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+        print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Target data: {d.DATA_DIR}')
         d.grad(model_init, src, rec)
