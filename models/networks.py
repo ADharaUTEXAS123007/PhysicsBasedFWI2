@@ -5256,13 +5256,13 @@ class AutoElMarmousi22_Net(nn.Module):
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         os.system('rm -rf loss_curve_grad.out')
+    
+        print(f'Target data: {d.DATA_DIR}')
+        d.grad(model_init, src, rec)
         
         loss = np.loadtxt('loss_curve_grad.out')
         
         print("loss :", loss)
-    
-        print(f'Target data: {d.DATA_DIR}')
-        d.grad(model_init, src, rec)
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
