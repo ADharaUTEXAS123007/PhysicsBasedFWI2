@@ -4992,7 +4992,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.vs     =   nn.Conv2d(1,1,1)
         self.rho    =   nn.Conv2d(1,1,1)
         
-        self.final     =   nn.Tanh()
+        self.final     =   nn.ReLU()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
@@ -5067,11 +5067,15 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.final(f1)
+        
         
         vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         rho1   = self.rho(torch.unsqueeze(f1[:,2,:,:],1))
+        
+        vp1    = self.final(vp1)
+        vs1    = self.final(vs1)
+        rho1   = self.final(rho1)
         
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
