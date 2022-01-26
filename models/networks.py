@@ -5241,7 +5241,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         d.fwi_stages = []
         #for i, freq in enumerate([20]):
-        if (epoch1 < 100  )
+        #if (epoch1 < 100  )
         d.add_fwi_stage(fc_low=0.0, fc_high=freq)
         print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
