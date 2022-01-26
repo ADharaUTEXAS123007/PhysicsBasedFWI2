@@ -5049,7 +5049,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #    p = latent1
         #    latent1 = p
             
-
+        latent1 = 0
         #p = torch.randn([1,1,1,8])
         #z = 0.5*torch.ones([1,1,1,64])
         #z = self.decoder_input(inputs2)
