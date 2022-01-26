@@ -5163,8 +5163,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vpst = vp1.cpu().detach().numpy()
         vsst = vs1.cpu().detach().numpy()
         rhost = rho1.cpu().detach().numpy()
-        
-      
+
         vpst = np.squeeze(np.squeeze(vpst))
         vsst = np.squeeze(np.squeeze(vsst))
         rhost = np.squeeze(np.squeeze(rhost))
@@ -5234,6 +5233,9 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #d.NT = 1200
         #d.JACOBIAN = 'sacobian/jacobian_Test'
+        print("min max vpst :", np.min(vpst), np.max(vpst))
+        print("min max vsst :", np.min(vsst), np.max(vsst))
+        print("min max rhost :", np.min(rhost), np.max(rhost))
         
         model_init = api.Model(vpst, vsst, rhost, dx)
         
