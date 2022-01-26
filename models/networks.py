@@ -5247,7 +5247,7 @@ class AutoElMarmousi22_Net(nn.Module):
         elif ((epoch1 >= 51) and (epoch1 <=100)):
             d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        elif (epoch1 >= 101) and (epoch1 <=150)):
+        elif ((epoch1 >= 101) and (epoch1 <=150)):
             d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         else:
