@@ -5255,7 +5255,7 @@ class AutoElMarmousi22_Net(nn.Module):
             #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
-        os.system('rm -rf /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/loss_curve_grad.out')
+        #os.system('rm -rf /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/loss_curve_grad.out')
     
         print(f'Target data: {d.DATA_DIR}')
         d.grad(model_init, src, rec)
