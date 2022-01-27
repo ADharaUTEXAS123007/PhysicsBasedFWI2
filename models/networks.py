@@ -5149,7 +5149,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
         
-        grad = 0*f1
+        grad = 0*vp1
         lossT = 0.0
         vp_grad = vp1*0
         vs_grad = vs1*0
