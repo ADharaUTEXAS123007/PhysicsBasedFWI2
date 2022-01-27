@@ -5007,7 +5007,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.vs     =   nn.Conv2d(1,1,1)
         self.rho    =   nn.Conv2d(1,1,1)
         
-        #self.final     =   nn.Tanh()
+        self.final     =   nn.Sigmoid()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
@@ -5104,18 +5104,22 @@ class AutoElMarmousi22_Net(nn.Module):
         vs1    = self.vs(f12)
         rho1   = self.rho(f13)
         
-        #vp1    = self.final(vp1)
-        #vs1    = self.final(vs1)
-        #rho1   = self.final(rho1)
+        vp1    = self.final(vp1)
+        vs1    = self.final(vs1)
+        rho1   = self.final(rho1)
         
         
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        vp1    = minvp + vp1*(maxvp-minvp)
+        vs1    = minvs + vs1*(maxvs-minvs)
+        rho1   = minrho + rho1*(maxrho-minrho)
+        
+        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1    = torch.unsqueeze(vp1,1)
         #vs1    = torch.unsqueeze(vs1,1)
