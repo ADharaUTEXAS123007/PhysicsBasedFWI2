@@ -5696,9 +5696,9 @@ class AutoElMarmousi22_Net(nn.Module):
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         
         #print("shape of grads :", np.shape(grads))
-        vp_grad = np.array(grads[0])
-        vs_grad = np.array(grads[1])
-        rho_grad = np.array(grads[2])
+        vp_grad = np.array(grads[1])
+        vs_grad = np.array(grads[2])
+        rho_grad = np.array(grads[0])
         
         print("shape of vp_grad :", np.shape(vp_grad))
         print("shape of vs_grad :", np.shape(vs_grad))
