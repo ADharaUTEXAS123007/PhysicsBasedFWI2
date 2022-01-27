@@ -5661,6 +5661,12 @@ class AutoElMarmousi22_Net(nn.Module):
         
         model_init = api.Model(vp, vsst, rho, dx)
         
+        filen = './marmousiEl/vpp.npy' #switch on for physics based fwi       
+        np.save(filen, model.vp)  #switch on physics based fwi
+        
+        filen = './marmousiEl/rhoo.npy' #switch on for physics based fwi       
+        np.save(filen, model.rho)  #switch on physics based fwi
+        
         d.fwi_stages = []
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]):
