@@ -5104,22 +5104,22 @@ class AutoElMarmousi22_Net(nn.Module):
         vs1    = self.vs(f12)
         rho1   = self.rho(f13)
         
-        vp1    = self.final(vp1)
-        vs1    = self.final(vs1)
-        rho1   = self.final(rho1)
+        #vp1    = self.final(vp1)
+        #vs1    = self.final(vs1)
+        #rho1   = self.final(rho1)
         
         
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
-        vp1    = minvp + vp1*(maxvp-minvp)
-        vs1    = minvs + vs1*(maxvs-minvs)
-        rho1   = minrho + rho1*(maxrho-minrho)
+        #vp1    = minvp + vp1*(maxvp-minvp)
+        #vs1    = minvs + vs1*(maxvs-minvs)
+        #rho1   = minrho + rho1*(maxrho-minrho)
         
-        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        #vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1    = torch.unsqueeze(vp1,1)
         #vs1    = torch.unsqueeze(vs1,1)
@@ -5285,19 +5285,19 @@ class AutoElMarmousi22_Net(nn.Module):
         model_init = api.Model(vpst, vsst, rhost, dx)
         
         d.fwi_stages = []
-        d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]):
-        #if ((epoch1 >= 0) and (epoch1 <=50 )):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+        if ((epoch1 >= 0) and (epoch1 <=50 )):
+            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 51) and (epoch1 <=100)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 101) and (epoch1 <=150)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
         #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #elif ((epoch1 >= 51) and (epoch1 <=100)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-       # elif ((epoch1 >= 101) and (epoch1 <=150)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        else:
+            d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
