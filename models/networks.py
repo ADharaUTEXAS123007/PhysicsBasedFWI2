@@ -5058,7 +5058,7 @@ class UnetMarmousi22_Net(nn.Module):
         #print(" shape of up1 :", np.shape(up1))
         up2    = self.up2(down2,up3)
         #up2    = self.dropU2(up2)
-        up1    = self.up1(down1,up1)
+        up1    = self.up1(down1,up2)
         #up1    = self.dropU1(up1)
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
