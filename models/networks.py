@@ -5036,7 +5036,7 @@ class UnetMarmousi22_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        latent1 = p
+        #latent1 = p
         #if (epoch1 <= lstart):
         #    latent1 = p
         #else:
