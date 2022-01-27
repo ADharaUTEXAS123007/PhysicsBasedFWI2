@@ -5672,10 +5672,10 @@ class AutoElMarmousi22_Net(nn.Module):
         #for i, freq in enumerate([20]):
         if ((epoch1 >= 0) and (epoch1 <=50 )):
            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         elif ((epoch1 >= 51) and (epoch1 <=100)):
            d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         elif ((epoch1 >= 101) and (epoch1 <=150)):
            d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
