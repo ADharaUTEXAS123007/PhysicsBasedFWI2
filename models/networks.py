@@ -5376,7 +5376,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.vs     =   nn.Conv2d(1,1,1)
         self.rho    =   nn.Conv2d(1,1,1)
         
-        self.final     =   nn.Sigmoid()
+        #self.final     =   nn.Sigmoid()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
@@ -5479,15 +5479,15 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         #vp1    = minvp + vp1*(maxvp-minvp)
-        vs1    = minvs + vs1*(maxvs-minvs)
+        #vs1    = minvs + vs1*(maxvs-minvs)
         #rho1   = minrho + rho1*(maxrho-minrho)
         
         #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        #vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
