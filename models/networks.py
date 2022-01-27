@@ -4762,7 +4762,7 @@ class AutoMarmousi22_Net(nn.Module):
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel
-        lvar = var
+        #lvar = var
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
