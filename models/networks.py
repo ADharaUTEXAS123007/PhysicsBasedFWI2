@@ -2364,21 +2364,19 @@ class unetConv5(nn.Module):
                                        nn.LeakyReLU(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
-                                       nn.InstanceNorm2d(out_size),
-                                       nn.ReLU(inplace=True))
+                                       nn.LeakyReLU(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
-                                       nn.InstanceNorm2d(out_size),
-                                       nn.ReLU(inplace=True))
+                                       nn.LeakyReLU(0.1))
     def forward(self, inputs):
         outputs = self.conv1(inputs)
         outputs = self.conv2(outputs)
         return outputs
     
 class autoUp5(nn.Module):
-    def __init__(self, in_size, out_size, is_deconv):
+    def __init__(self, in_size, out_size, is_deconv, is_batchnorm=True):
         super(autoUp5, self).__init__()
-        self.conv = unetConv5(in_size, out_size, True)
-        self.conv2 = unetConv5(out_size, out_size, True)
+        self.conv = unetConv5(in_size, out_size, is_batchnorm)
+        self.conv2 = unetConv5(out_size, out_size, is_batchnorm)
         # Transposed convolution
         if is_deconv:
             self.up = nn.ConvTranspose2d(in_size, in_size, kernel_size=2,stride=2)
@@ -4599,8 +4597,8 @@ class AutoMarmousi22_Net(nn.Module):
         super(AutoMarmousi22_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = True
-        self.n_classes     = 1
+        self.is_batchnorm  = False
+        self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
@@ -4626,11 +4624,11 @@ class AutoMarmousi22_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv, self.is_batchnorm)
         self.dropU3  = nn.Dropout2d(0.05)
-        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv, self.is_batchnorm)
         self.dropU2  = nn.Dropout2d(0.05)
-        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv, self.is_batchnorm)
         self.dropU1  = nn.Dropout2d(0.05)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
