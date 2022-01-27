@@ -26,8 +26,8 @@ from timeit import default_timer
 #from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
-#import pyapi_denise as api
-#import os
+import pyapi_denise as api
+import os
 
 ###############################################################################
 # Helper Functions
@@ -5442,58 +5442,63 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 19, 38)
     
-        up31    = self.up31(z)
+        #up31    = self.up31(z)
         up32    = self.up32(z)
-        up33    = self.up33(z)
+        #up33    = self.up33(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
-        up21    = self.up21(up31)
+        #up21    = self.up21(up31)
         up22    = self.up22(up32)
-        up23    = self.up23(up33)
+        #up23    = self.up23(up33)
         
         #up2    = self.dropU2(up2)
-        up11    = self.up11(up21)
+        #up11    = self.up11(up21)
         up12    = self.up12(up22)
-        up13    = self.up13(up23)
+        #up13    = self.up13(up23)
         
         
         #up1    = self.dropU1(up1)
         #print("shape of up1 :", np.shape(up1))
-        up11    = up11[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        #up11    = up11[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        #up13    = up13[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         
-        f11     = self.f11(up11)
+        #f11     = self.f11(up11)
         f12     = self.f12(up12)
-        f13     = self.f13(up13)
+        #f13     = self.f13(up13)
         
         
-        vp1    = self.vp(f11)
+        #vp1    = self.vp(f11)
         vs1    = self.vs(f12)
-        rho1   = self.rho(f13)
+        #rho1   = self.rho(f13)
         
         #vp1    = self.final(vp1)
         #vs1    = self.final(vs1)
         #rho1   = self.final(rho1)
         
         
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-minvs)
         #rho1   = minrho + rho1*(maxrho-minrho)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        
+        #vp1     = inputs1[:,0,:,:]
+        #rho1     = inputs1[:,2,:,:]
+        
         
         #vp1    = torch.unsqueeze(vp1,1)
         #vs1    = torch.unsqueeze(vs1,1)
         #rho1   = torch.unsqueeze(rho1,1)
-        f11    = torch.cat((vp1,vs1,rho1),dim=1)
+        #f11    = torch.cat((vp1,vs1,rho1),dim=1)
+        f11     = vs1
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
@@ -5522,11 +5527,14 @@ class AutoElMarmousi22_Net(nn.Module):
         #f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
         
-        grad = 0*vp1
+        grad = 0*vs1
         lossT = 0.0
-        vp_grad = vp1*0
+        vp_grad = vs1*0
         vs_grad = vs1*0
-        rho_grad = rho1*0
+        rho_grad = vs1*0
+        
+        vp1 = vs1*0
+        rho1 = vs1*0
         if (epoch1 > lstart):
             [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
         #if (epoch1 > lstart):
@@ -5651,7 +5659,7 @@ class AutoElMarmousi22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
-        model_init = api.Model(vpst, vsst, rhost, dx)
+        model_init = api.Model(vp, vsst, rho, dx)
         
         d.fwi_stages = []
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
