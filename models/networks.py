@@ -4705,7 +4705,7 @@ class AutoMarmousi22_Net(nn.Module):
         print("maxtrue :", maxtrue)
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1500)] = 1500
+        f1[(inputs1==1.500)] = 1.500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4761,7 +4761,7 @@ class AutoMarmousi22_Net(nn.Module):
         devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel
+        net1out1 = vel*1000
         #lvar = var
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
@@ -4933,7 +4933,7 @@ class AutoMarmousi22_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad = net1out1.grad * ss
-                    net1out1.grad[(true[0,0,:,:]==1500)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
