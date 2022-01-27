@@ -5039,6 +5039,7 @@ class UnetMarmousi22_Net(nn.Module):
         #latent1 = p
         #if (epoch1 <= lstart):
         #    latent1 = p
+        latent1 = 0
         #else:
         #    latent1 = latentI
         #    p = latent1
