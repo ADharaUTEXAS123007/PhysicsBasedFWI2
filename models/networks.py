@@ -4597,7 +4597,7 @@ class AutoMarmousi22_Net(nn.Module):
         super(AutoMarmousi22_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
-        self.is_batchnorm  = False
+        self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
         filters = [16, 32, 64, 128, 512]
@@ -4606,13 +4606,13 @@ class AutoMarmousi22_Net(nn.Module):
         latent_dim = 8
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
-        self.dropD1   = nn.Dropout2d(0.05)
+        #self.dropD1   = nn.Dropout2d(0.05)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
-        self.dropD2   = nn.Dropout2d(0.05)
+        #self.dropD2   = nn.Dropout2d(0.05)
         self.down3   = unetDown(filters[1], filters[2], self.is_batchnorm)
-        self.dropD3   = nn.Dropout2d(0.05)
+        #self.dropD3   = nn.Dropout2d(0.05)
         self.down4   = unetDown(filters[2], filters[3], self.is_batchnorm)
-        self.dropD4  = nn.Dropout2d(0.05)
+        #self.dropD4  = nn.Dropout2d(0.05)
         # self.center  = unetConv2(filters[3], filters[4], self.is_batchnorm)
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
@@ -4696,6 +4696,7 @@ class AutoMarmousi22_Net(nn.Module):
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
+        #f2     = np.unsqueeze(ft[:,1,:,:],1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
@@ -4761,6 +4762,7 @@ class AutoMarmousi22_Net(nn.Module):
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
         net1out1 = vel
+        lvar = var
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
@@ -4772,6 +4774,7 @@ class AutoMarmousi22_Net(nn.Module):
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         net1out1 = net1out1.to(devicek)
+        lvar = lvar.to(devicek)
         #devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
@@ -4914,6 +4917,11 @@ class AutoMarmousi22_Net(nn.Module):
                     #print("shape of receiver amplitudes predicted")
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    
+                    #neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
+                    #loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
+                    #self.loss_D_MSE = loss.mean()
+                    
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
