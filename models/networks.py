@@ -5376,7 +5376,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.vs     =   nn.Conv2d(1,1,1)
         self.rho    =   nn.Conv2d(1,1,1)
         
-        self.final     =   nn.Sigmoid()
+        self.final     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
@@ -5474,7 +5474,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #rho1   = self.rho(f13)
         
         #vp1    = self.final(vp1)
-        #vs1    = self.final(vs1)
+        vs1    = self.final(vs1)
         #rho1   = self.final(rho1)
         
         
