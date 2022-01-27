@@ -5474,7 +5474,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #rho1   = self.rho(f13)
         
         #vp1    = self.final(vp1)
-        vs1    = self.final(vs1)
+        #vs1    = self.final(vs1)
         #rho1   = self.final(rho1)
         
         
