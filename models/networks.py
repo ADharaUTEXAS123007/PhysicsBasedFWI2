@@ -4646,13 +4646,13 @@ class AutoMarmousi22_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
         down1  = self.down1((inputs2[:,:,1:4001:4,:]))
-        down1  = self.dropD1(down1)
+        #down1  = self.dropD1(down1)
         down2  = self.down2(down1)
-        down2  = self.dropD2(down2)
+        #down2  = self.dropD2(down2)
         down3  = self.down3(down2)
-        down3  = self.dropD3(down3)
+        #down3  = self.dropD3(down3)
         down4  = self.down4(down3)
-        down4  = self.dropD4(down4)
+        #down4  = self.dropD4(down4)
         
         #print("shape of down3 :", np.shape(down))
         
