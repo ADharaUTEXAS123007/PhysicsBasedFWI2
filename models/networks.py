@@ -5668,20 +5668,20 @@ class AutoElMarmousi22_Net(nn.Module):
         np.save(filen, model.rho)  #switch on physics based fwi
         
         d.fwi_stages = []
-        d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
-        #for i, freq in enumerate([20]):
-        #if ((epoch1 >= 0) and (epoch1 <=50 )):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #elif ((epoch1 >= 51) and (epoch1 <=100)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #elif ((epoch1 >= 101) and (epoch1 <=150)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        for i, freq in enumerate([20]):
+        if ((epoch1 >= 0) and (epoch1 <=50 )):
+           d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 51) and (epoch1 <=100)):
+           d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+            print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 101) and (epoch1 <=150)):
+           d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        else:
+           d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         os.system('rm -rf loss_curve_grad.out')
