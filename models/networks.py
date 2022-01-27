@@ -4774,7 +4774,7 @@ class AutoMarmousi22_Net(nn.Module):
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         net1out1 = net1out1.to(devicek)
-        lvar = lvar.to(devicek)
+        #lvar = lvar.to(devicek)
         #devicek = net1out1.get_device()
         #net1out1[0:26,:] = 1500.0
 
