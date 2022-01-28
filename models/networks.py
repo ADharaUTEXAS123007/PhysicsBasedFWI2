@@ -5680,18 +5680,18 @@ class AutoElMarmousi22_Net(nn.Module):
         d.fwi_stages = []
         d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]):
-        # if ((epoch1 >= 0) and (epoch1 <=100 )):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-        #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 101) and (epoch1 <=200)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 201) and (epoch1 <=300)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        if ((epoch1 >= 0) and (epoch1 <=100 )):
+           d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 101) and (epoch1 <=200)):
+           d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        elif ((epoch1 >= 201) and (epoch1 <=300)):
+           d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        else:
+           d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
+           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         os.system('rm -rf loss_curve_grad.out')
@@ -5724,13 +5724,13 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
-        vp_grad = vp_grad*10**(-7)/torch.max(vp_grad)
+        vp_grad = vp_grad*10**(5)
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
-        vs_grad = vs_grad
+        vs_grad = vs_grad*10**(5)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = rho_grad
+        rho_grad = rho_grad*10**(5)
         
         print('grads names')
         print(fnames)
