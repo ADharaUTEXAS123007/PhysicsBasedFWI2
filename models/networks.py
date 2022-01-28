@@ -5678,7 +5678,7 @@ class AutoElMarmousi22_Net(nn.Module):
         np.save(filen, model_init.rho)  #switch on physics based fwi
         
         d.fwi_stages = []
-        d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]):
         if ((epoch1 >= 0) and (epoch1 <=100 )):
            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
