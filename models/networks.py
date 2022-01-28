@@ -5378,7 +5378,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.vs     =   nn.Conv2d(1,1,1)
         self.rho    =   nn.Conv2d(1,1,1)
         
-        #self.final     =   nn.Sigmoid()
+        self.final     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final   =  nn.Sigmoid()
@@ -5480,7 +5480,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1    = self.vs(f12)
         #rho1   = self.rho(f13)
         
-        #vp1    = self.final(vp1)
+        vp1    = self.final(vp1)
         #vs1    = self.final(vs1)
         #rho1   = self.final(rho1)
         
@@ -5669,10 +5669,13 @@ class AutoElMarmousi22_Net(nn.Module):
         model_init = api.Model(vpst, vs, rho, dx)
         
         filen = './marmousiEl/vpp.npy' #switch on for physics based fwi       
-        np.save(filen, model.vp)  #switch on physics based fwi
+        np.save(filen, model_init.vp)  #switch on physics based fwi
+        
+        filen = './marmousiEl/vss.npy' #switch on for physics based fwi       
+        np.save(filen, model_init.vs)  #switch on physics based fwi
         
         filen = './marmousiEl/rhoo.npy' #switch on for physics based fwi       
-        np.save(filen, model.rho)  #switch on physics based fwi
+        np.save(filen, model_init.rho)  #switch on physics based fwi
         
         d.fwi_stages = []
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
