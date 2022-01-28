@@ -5334,8 +5334,10 @@ class AutoElMarmousi22_Net(nn.Module):
         filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
-
-        self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
+        self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
+        self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
+        
+        self.down1   = unetDown(2, filters[0], self.is_batchnorm)
         #self.dropD1   = nn.Dropout2d(0.025)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         #self.dropD2   = nn.Dropout2d(0.025)
@@ -5382,7 +5384,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.final   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3):
         #filters = [16, 32, 64, 128, 512]
         filters = [2, 4, 8, 16, 32]
         latent_dim = 8
@@ -5398,10 +5400,15 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
+        combine1 = self.combine1((inputs2[:,:,1:1200:4,:]))
+        combine2 = self.combine2((inputs3[:,:,1:1200:4,:]))
+        
+        c1c2 = torch.cat((combine1,combine2),axis=1)
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
-        down1  = self.down1((inputs2[:,:,1:1200:4,:]))
+        #down1  = self.down1((inputs2[:,:,1:1200:4,:]))
+        down1  = self.down1(c1c2)
         #down1  = self.dropD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
