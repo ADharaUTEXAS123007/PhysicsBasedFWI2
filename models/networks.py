@@ -5724,13 +5724,13 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
-        vp_grad = vp_grad*10**(6)
+        vp_grad = vp_grad*10**(4)
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
-        vs_grad = vs_grad*10**(6)
+        vs_grad = vs_grad*10**(4)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = rho_grad*10**(6)
+        rho_grad = rho_grad*10**(4)
         
         print('grads names')
         print(fnames)
