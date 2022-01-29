@@ -5691,7 +5691,7 @@ class AutoElMarmousi22_Net(nn.Module):
            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         else:
            d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-           print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         os.system('rm -rf loss_curve_grad.out')
