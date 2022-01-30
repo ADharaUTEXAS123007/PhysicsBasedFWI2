@@ -5331,10 +5331,10 @@ class AutoElMarmousi22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 512]
-        #filters = [2, 4, 8, 16, 32]
-        filters = [8, 16, 32, 64, 128]
+        filters = [2, 4, 8, 16, 32]
+        #filters = [8, 16, 32, 64, 128]
         
-        latent_dim = 8
+        latent_dim = 64
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -5387,9 +5387,9 @@ class AutoElMarmousi22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3):
         #filters = [16, 32, 64, 128, 512]
-        #filters = [2, 4, 8, 16, 32]
-        filters = [8, 16, 32, 64, 128]
-        latent_dim = 8
+        filters = [2, 4, 8, 16, 32]
+        #filters = [8, 16, 32, 64, 128]
+        latent_dim = 64
         label_dsp_dim = (150,300)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -5680,19 +5680,20 @@ class AutoElMarmousi22_Net(nn.Module):
         np.save(filen, model_init.rho)  #switch on physics based fwi
         
         d.fwi_stages = []
-        d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]):
-        # if ((epoch1 >= 0) and (epoch1 <=100 )):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+        if ((epoch1 >= 0) and (epoch1 <=100 )):
+            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 101) and (epoch1 <=200)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+        elif ((epoch1 >= 101) and (epoch1 <=200)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
         #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 201) and (epoch1 <=300)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+        elif ((epoch1 >= 201) and (epoch1 <=300)):
+            d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
         #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
+        else:
+            d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
