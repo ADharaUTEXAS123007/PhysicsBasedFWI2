@@ -370,7 +370,7 @@ class AutoEl22Model(BaseModel):
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
             #filen = './marmousi22/Real20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+            #np.save(filen, self.real_B.cpu().det2ach().numpy())  #switch on physics based fwi
             
             filen = './marmousiEl/Real2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
