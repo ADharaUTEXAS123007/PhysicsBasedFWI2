@@ -5668,7 +5668,7 @@ class AutoElMarmousi22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
-        model_init = api.Model(vpst, vs, rho, dx)
+        model_init = api.Model(vpst, vsst, rho, dx)
         
         filen = './marmousiEl/vpp.npy' #switch on for physics based fwi       
         np.save(filen, model_init.vp)  #switch on physics based fwi
