@@ -5331,7 +5331,8 @@ class AutoElMarmousi22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32]
+        #filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 128]
         
         latent_dim = 8
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
@@ -5386,7 +5387,8 @@ class AutoElMarmousi22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3):
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32]
+        #filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 128]
         latent_dim = 8
         label_dsp_dim = (150,300)
         minvp = torch.min(inputs1[:,0,:,:])
