@@ -5707,12 +5707,12 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #print("loss :", loss)
         
-        grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        grads, fnames = d.get_fwi_gradients(['c','old'],return_filenames=True)
         
         #print("shape of grads :", np.shape(grads))
-        vp_grad = np.array(grads[1])
+        vp_grad = np.array(grads[0])
         vs_grad = np.array(grads[2])
-        rho_grad = np.array(grads[0])
+        rho_grad = np.array(grads[1])
         
         print("shape of vp_grad :", np.shape(vp_grad))
         print("shape of vs_grad :", np.shape(vs_grad))
