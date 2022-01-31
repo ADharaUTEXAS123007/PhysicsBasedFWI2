@@ -5374,7 +5374,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.dropU1  = nn.Dropout2d(0.025)
         #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
-        self.f11      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f12      =  nn.Conv2d(filters[0],self.n_classes, 1)
         #self.f13      =  nn.Conv2d(filters[0],self.n_classes, 1)
         
