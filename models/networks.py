@@ -5332,7 +5332,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
-        filters = [1, 2, 4, 6, 8]
+        filters = [1, 2, 4, 8, 16]
         #filters = [8, 16, 32, 64, 128]
         
         latent_dim = 8
@@ -5702,13 +5702,19 @@ class AutoElMarmousi22_Net(nn.Module):
         elif ((epoch1 >= 101) and (epoch1 <=200)):
             d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
         #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        #elif ((epoch1 >= 201) and (epoch1 <=300))
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
-        elif ((epoch1 >= 201) and (epoch1 <=300)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+        elif ((epoch1 >= 201) and (epoch1 <=300))
+            d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
+        elif ((epoch1 >= 301) and (epoch1 <=400))
+            d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
+        elif ((epoch1 >= 301) and (epoch1 <=400))
+            d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
+        elif ((epoch1 >= 301) and (epoch1 <=400))
+            d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
+        #elif ((epoch1 >= 201) and (epoch1 <=300)):
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
         #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         else:
-            d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+            d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
