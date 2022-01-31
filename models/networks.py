@@ -5328,7 +5328,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = 1
+        self.n_classes     = 2
         
         #filters = [16, 32, 64, 128, 512]
         filters = [2, 4, 8, 16, 32]
@@ -5487,7 +5487,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
-        #vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
+        vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
         
         #vp1    = self.final(vp1)
@@ -5496,7 +5496,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         #vp1    = minvp + vp1*(maxvp-minvp)
@@ -5504,7 +5504,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #rho1   = minrho + rho1*(maxrho-minrho)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        #vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
@@ -5514,8 +5514,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #vp1    = torch.unsqueeze(vp1,1)
         #vs1    = torch.unsqueeze(vs1,1)
         #rho1   = torch.unsqueeze(rho1,1)
-        #f11    = torch.cat((vp1,vs1),dim=1)
-        f11     = vp1
+        f11    = torch.cat((vp1,vs1),dim=1)
+        #f11     = vp1
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
@@ -5550,7 +5550,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = vp1*0
         rho_grad = vp1*0
         
-        vs1 = vp1*0
+        #vs1 = vp1*0
         rho1 = vp1*0
         if (epoch1 > lstart):
             [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
@@ -5739,7 +5739,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
         vs_grad = vs_grad*10**(5)
-        vs_grad = vs_grad*0
+        #vs_grad = vs_grad*0
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         rho_grad = rho_grad*10**(5)
