@@ -411,7 +411,7 @@ class AutoEl22Model(BaseModel):
         print("loss type")
         loss = torch.from_numpy(loss)
         loss = loss.float()
-        print("shape of loss :", np.shape(loss))
+        print("shape of loss :", loss)
         return loss
 
 
