@@ -420,7 +420,7 @@ class AutoEl22Model(BaseModel):
         #loss1 = loss1.float()
         #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
-        print("shape of loss :", loss1)
+        #print("shape of loss :", loss1)
         return losst
 
 
