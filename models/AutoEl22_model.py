@@ -419,7 +419,7 @@ class AutoEl22Model(BaseModel):
         #loss1 = np.empty([1,1])
         #loss1[0,0] = loss
         loss1 = torch.from_numpy(loss)
-        loss1 = loss1.float()
+        loss1 = loss1.float()*(10**18)
         #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
         #print("shape of loss :", loss1)
