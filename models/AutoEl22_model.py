@@ -117,7 +117,7 @@ class AutoEl22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam(
+            self.optimizer_G = torch.optim.LBFGS(
                 self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
@@ -141,6 +141,15 @@ class AutoEl22Model(BaseModel):
         self.real_C = input['C'].to(self.device1)
         self.real_D = input['D'].to(self.device1)  
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
+        
+    def forward2(self):
+        [_,_,_,vp_grad1,vs_grad1,_,loss1] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)
+        grad1 = torch.cat((vp_grad1,vs_grad1),dim=0)
+        #self.grad = self.vp_grad
+        grad1 = torch.unsqueeze(grad1,0)
+        return grad1, loss1
+
+        
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
@@ -172,6 +181,39 @@ class AutoEl22Model(BaseModel):
         #np.save(filen, self.real_A.cpu().detach().numpy())  #switch on physics based fwi
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
+        
+    def forward2(self,epoch1,lstart):
+            """Run forward pass; called by both functions <optimize_parameters> and <test>."""
+        #netin1 = self.real_A[:, :, 1:800:2, :]
+        if (epoch1 == 1):
+            self.latent = torch.ones(1,1,1,1)
+        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)  # G(A)
+        self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
+        self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
+        self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
+        
+        self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
+        self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
+        self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
+        
+        self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+        self.vs_grad = torch.unsqueeze(self.vs_grad,0)
+        self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+        
+        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        #self.grad = self.vp_grad
+        self.grad = torch.unsqueeze(self.grad,0)
+        #self.latent = self.latent.clone().detach()
+        #print("self.latent :", self.latent)
+        #self.real_C = self.fake_B
+        #self.real_B = self.real_C
+        #self.fake_B = torch.clamp(self.fake_B,min=15.00,max=35.50)
+        #filen = './marmousi/Gr1ad' + str(131)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #np.save(filen, self.real_A.cpu().detach().numpy())  #switch on physics based fwi
+        # print(np.shape(self.fake_B))
+        # print(self.fake_B.get_device())
+        return self.loss_D_MSE
+    
 
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
@@ -218,6 +260,7 @@ class AutoEl22Model(BaseModel):
         # combine loss and calculate gradients
         self.loss_G = self.loss_M_MSE
         self.loss_G.backward()
+        
         
     def backward_G11(self, epoch1, batch, lstart):
             
@@ -380,14 +423,20 @@ class AutoEl22Model(BaseModel):
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+        
+    def closure(self, epoch, batch, lstart):
+        loss = self.forward2(epoch, lstart)
+        self.optimizer_G.zero_grad()
+        self.backward_G11(epoch,batch,lstart)
+        return loss
 
 
     def optimize_parameters(self, epoch, batch, lstart):
-        self.forward(epoch,lstart)                   # compute fake images: G(A)
+        ##########self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
-        self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
-        self.optimizer_G.step()             # udpate G's weights
+        ##########self.optimizer_G.zero_grad()        # set G's gradients to zero
+        ##########self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
+        self.optimizer_G.step(self.closure(epoch,batch,lstart))             # udpate G's weights
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)

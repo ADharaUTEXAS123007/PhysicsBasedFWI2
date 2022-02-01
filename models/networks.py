@@ -5707,12 +5707,12 @@ class AutoElMarmousi22_Net(nn.Module):
             d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
         elif ((epoch1 >= 301) and (epoch1 <=400)):
             d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
-        elif ((epoch1 >= 301) and (epoch1 <=400)):
+        elif ((epoch1 >= 401) and (epoch1 <=500)):
             d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        elif ((epoch1 >= 301) and (epoch1 <=400)):
+        elif ((epoch1 >= 501) and (epoch1 <=600)):
             d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
-        elif ((epoch1 >= 201) and (epoch1 <=300)):
-           d.add_fwi_stage(fc_low=0.0, fc_high=10.0)
+        elif ((epoch1 >= 601) and (epoch1 <=700)):
+           d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
            #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         else:
            d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
