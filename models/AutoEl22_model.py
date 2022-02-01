@@ -404,7 +404,9 @@ class AutoEl22Model(BaseModel):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
         
-    def closure(self, epoch, batch, lstart):
+    def closure(self):
+        epoch = 10
+        lstart = 0
         loss = self.forward2(epoch, lstart)
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
@@ -423,7 +425,7 @@ class AutoEl22Model(BaseModel):
         # update G
         ########self.optimizer_G.zero_grad()        # set G's gradients to zero
         #########self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
-        self.optimizer_G.step(self.closure(epoch,batch,lstart))             # udpate G's weights
+        self.optimizer_G.step(self.closure())             # udpate G's weights
         #########self.optimizer_G.step()
 
     def compute_loss_only(self):
