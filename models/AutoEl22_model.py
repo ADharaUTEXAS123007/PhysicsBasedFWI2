@@ -404,6 +404,7 @@ class AutoEl22Model(BaseModel):
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
+        return self.loss_M_MSE
         
     def closure(self):
         epoch = 1
@@ -411,16 +412,16 @@ class AutoEl22Model(BaseModel):
         batch = 0
         loss = self.forward2(epoch, lstart)
         self.optimizer_G.zero_grad()
-        self.backward_G11(epoch,batch,lstart)
+        losst = self.backward_G11(epoch,batch,lstart)
         print("loss type")
-        loss1 = np.empty([1,1])
-        loss1[0,0] = loss
-        loss1 = torch.from_numpy(loss1)
-        loss1 = loss1.float()
-        loss.item = 1
+        #loss1 = np.empty([1,1])
+        #loss1[0,0] = loss
+        #loss1 = torch.from_numpy(loss1)
+        #loss1 = loss1.float()
+        #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
         print("shape of loss :", loss1)
-        return 1.0
+        return losst
 
 
     def optimize_parameters(self, epoch, batch, lstart):
