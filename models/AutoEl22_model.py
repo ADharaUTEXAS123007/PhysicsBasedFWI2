@@ -409,7 +409,7 @@ class AutoEl22Model(BaseModel):
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
-        print(type(loss))
+        loss = torch.from_numpy(loss)
         return loss
 
 
