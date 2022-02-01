@@ -432,7 +432,7 @@ class AutoEl22Model(BaseModel):
         #########self.backward_G11(epoch,batch,lstart)   
         #                 # calculate graidents for G
         
-        self.optimizer_G.step(self.closure())             # udpate G's weights
+        self.optimizer_G.step(self.closure)             # udpate G's weights
         #########self.optimizer_G.step()
 
     def compute_loss_only(self):
