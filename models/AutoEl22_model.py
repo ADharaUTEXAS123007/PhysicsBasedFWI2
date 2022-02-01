@@ -376,7 +376,7 @@ class AutoEl22Model(BaseModel):
             
             print("gradient shape :", np.shape(self.grad))
             
-            #self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
