@@ -410,6 +410,7 @@ class AutoEl22Model(BaseModel):
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
         loss = torch.from_numpy(loss)
+        print("shape of loss :", np.shape(loss))
         return loss
 
 
