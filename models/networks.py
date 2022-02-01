@@ -5408,31 +5408,31 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
-        combine1 = self.combine1((inputs2[:,:,1:1200:2,:]))
-        combine2 = self.combine2((inputs3[:,:,1:1200:2,:]))
+        #####combine1 = self.combine1((inputs2[:,:,1:1200:2,:]))
+        #####combine2 = self.combine2((inputs3[:,:,1:1200:2,:]))
         
-        c1c2 = torch.cat((combine1,combine2),axis=1)
+        #####c1c2 = torch.cat((combine1,combine2),axis=1)
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
         #down1  = self.down1((inputs2[:,:,1:1200:4,:]))
-        down1  = self.down1(c1c2)
+        ######down1  = self.down1(c1c2)
         #down1  = self.dropD1(down1)
-        down2  = self.down2(down1)
+        #####down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
-        down3  = self.down3(down2)
+        #####down3  = self.down3(down2)
         #down3  = self.dropD3(down3)
-        down4  = self.down4(down3)
+        ####down4  = self.down4(down3)
         #down4  = self.dropD4(down4)
         
-        print("shape of down4 :", np.shape(down4))
+        ####print("shape of down4 :", np.shape(down4))
         
         ####print("shape of down4 :", np.shape(down4))
-        result = torch.flatten(down4, start_dim=1)
+        #####result = torch.flatten(down4, start_dim=1)
         
-        print("result shape :", np.shape(result))
+        #####print("result shape :", np.shape(result))
         
-        p = self.decoder_input1(result)
+        #######p = self.decoder_input1(result)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
@@ -5449,11 +5449,11 @@ class AutoElMarmousi22_Net(nn.Module):
         #    p = latent1
         #latent1 = p
             
-        latent1 = p
-        #p = torch.randn([1,1,1,8])
+        ########latent1 = p
+        p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
-        #z = inputs2
+        #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 19, 38)
     
