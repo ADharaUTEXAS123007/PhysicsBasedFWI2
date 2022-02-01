@@ -141,6 +141,9 @@ class AutoEl22Model(BaseModel):
         self.real_C = input['C'].to(self.device1)
         self.real_D = input['D'].to(self.device1)  
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
+    
+    def forward2(self, epoch1, lstart):
+        return 1
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
@@ -172,7 +175,7 @@ class AutoEl22Model(BaseModel):
         #np.save(filen, self.real_A.cpu().detach().numpy())  #switch on physics based fwi
         # print(np.shape(self.fake_B))
         # print(self.fake_B.get_device())
-    
+           
 
     def forwardT(self):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
