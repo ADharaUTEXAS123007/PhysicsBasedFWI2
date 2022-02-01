@@ -408,6 +408,8 @@ class AutoEl22Model(BaseModel):
         loss = self.forward2(epoch, lstart)
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
+        print("loss type")
+        print(type(loss))
         return loss
 
 
