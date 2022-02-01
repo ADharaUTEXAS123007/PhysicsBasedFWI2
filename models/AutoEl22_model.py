@@ -143,7 +143,23 @@ class AutoEl22Model(BaseModel):
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
     
     def forward2(self, epoch1, lstart):
-        return 1
+        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)  # G(A)
+        self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
+        self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
+        self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
+        
+        self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
+        self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
+        self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
+        
+        self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+        self.vs_grad = torch.unsqueeze(self.vs_grad,0)
+        self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+        
+        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        #self.grad = self.vp_grad
+        self.grad = torch.unsqueeze(self.grad,0)
+        return self.loss_D_MSE
 
     def forward(self,epoch1,lstart):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
