@@ -418,14 +418,16 @@ class AutoEl22Model(BaseModel):
         loss1 = loss1.float()
         #loss = torch.unsqueeze(loss,1)
         print("shape of loss :", loss1)
-        return loss1
+        return 1.0
 
 
     def optimize_parameters(self, epoch, batch, lstart):
         ##########self.forward(epoch,lstart)                   # compute fake images: G(A)
         # update G
         ########self.optimizer_G.zero_grad()        # set G's gradients to zero
-        #########self.backward_G11(epoch,batch,lstart)                   # calculate graidents for G
+        #########self.backward_G11(epoch,batch,lstart)   
+        #                 # calculate graidents for G
+        
         self.optimizer_G.step(self.closure())             # udpate G's weights
         #########self.optimizer_G.step()
 
