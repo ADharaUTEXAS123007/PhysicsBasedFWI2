@@ -5548,7 +5548,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
         #f1[:,:,0:26,:] = 1500.0
         #f1     = torch.clamp(f1,min=20,max=45)
-        
+        latent1 = 0
         grad = 0*vp1
         lossT = 0.0
         vp_grad = vp1*0
