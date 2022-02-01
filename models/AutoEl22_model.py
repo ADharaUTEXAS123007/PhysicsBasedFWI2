@@ -268,6 +268,7 @@ class AutoEl22Model(BaseModel):
         self.loss_M_MSE = self.criterionMSE(self.real_Vp, self.fake_Vp) + self.criterionMSE(self.real_Vs, self.fake_Vs) + self.criterionMSE(self.real_Rho, self.fake_Rho)
         
         print("loss M MSE :", self.loss_M_MSE)
+        
         #print("shape of grad :", np.shape(self.grad))
         #k
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
