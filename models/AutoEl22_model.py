@@ -409,7 +409,7 @@ class AutoEl22Model(BaseModel):
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
-        loss = np.
+        #loss = np.
         loss = torch.from_numpy(loss)
         loss = loss.float()
         loss = torch.unsqueeze(loss,1)
