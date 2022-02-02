@@ -163,12 +163,12 @@ class AutoEl22Model(BaseModel):
         self.grad = torch.unsqueeze(self.grad,0)
         return self.loss_D_MSE
 
-    def forward(self,epoch1,lstart):
+    def forward(self,epoch1,lstart,freq):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
@@ -199,10 +199,11 @@ class AutoEl22Model(BaseModel):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         False_lstart = 1
         False_epoch = -1
+        freq = 3
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D)  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         #self.real_VpT = self.real_B[:,0,:,:]
         #self.real_VsT = self.real_B[:,1,:,:]
@@ -427,8 +428,8 @@ class AutoEl22Model(BaseModel):
         return loss1
 
 
-    def optimize_parameters(self, epoch, batch, lstart):
-        self.forward(epoch,lstart)                   # compute fake images: G(A)
+    def optimize_parameters(self, epoch, batch, lstart,freq):
+        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G11(epoch,batch,lstart)   

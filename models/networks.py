@@ -5390,7 +5390,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 128]
@@ -5558,7 +5558,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1 = vp1*0
         rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5587,7 +5587,7 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -5697,26 +5697,27 @@ class AutoElMarmousi22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        if ((epoch1 >= 0) and (epoch1 <=100 )):
-            d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-        #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        elif ((epoch1 >= 101) and (epoch1 <=200)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        elif ((epoch1 >= 201) and (epoch1 <=300)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
-        elif ((epoch1 >= 301) and (epoch1 <=400)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
-        elif ((epoch1 >= 401) and (epoch1 <=500)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        elif ((epoch1 >= 501) and (epoch1 <=600)):
-            d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
-        elif ((epoch1 >= 601) and (epoch1 <=700)):
-           d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
-           #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        else:
-           d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
-           print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+        # if ((epoch1 >= 0) and (epoch1 <=100 )):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # elif ((epoch1 >= 101) and (epoch1 <=200)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # elif ((epoch1 >= 201) and (epoch1 <=300)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
+        # elif ((epoch1 >= 301) and (epoch1 <=400)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
+        # elif ((epoch1 >= 401) and (epoch1 <=500)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
+        # elif ((epoch1 >= 501) and (epoch1 <=600)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
+        # elif ((epoch1 >= 601) and (epoch1 <=700)):
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # else:
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+        print(f'Stage {1}:\n\t{d.fwi_stages[1]}\n')
             
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         os.system('rm -rf loss_curve_grad.out')
