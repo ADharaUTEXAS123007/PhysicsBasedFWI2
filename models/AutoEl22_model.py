@@ -414,6 +414,7 @@ class AutoEl22Model(BaseModel):
         #batch = 0
         loss = self.forward2(epoch, lstart, freq)
         loss = loss*10**19
+        loss = np.array(loss)
         loss = loss.astype(np.float32)
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
