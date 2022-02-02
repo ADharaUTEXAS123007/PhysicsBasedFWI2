@@ -48,7 +48,7 @@ if __name__ == '__main__':
     lstart = 0
     Lhist = np.zeros(4)
     freqL = [1,2,3,5,8,11,14,17,20]
-    k = 0
+    mop = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
          iter_data_time = time.time()    # timer for data loading per iteration
@@ -79,7 +79,7 @@ if __name__ == '__main__':
              total_iters += opt.batch_size
              epoch_iter += opt.batch_size
              model.set_input(data)         # unpack data from dataset and apply preprocessing
-             model.optimize_parameters(epoch,i,lstart,freqL[k])   # calculate loss functions, get gradients, update network weights
+             model.optimize_parameters(epoch,i,lstart,freqL[mop])   # calculate loss functions, get gradients, update network weights
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()
@@ -123,7 +123,7 @@ if __name__ == '__main__':
                  Lhist[3] = model.loss_D_MSE
                  
              if (np.abs((Lhist[3]-Lhist[1])/Lhist[1]) <= .01):
-                 k = k + 1
+                 mop = mop + 1
                  
              #if (epoch > lstart):
              #   Model1loss = Model1loss + model.loss_M1_MSE.item()     
