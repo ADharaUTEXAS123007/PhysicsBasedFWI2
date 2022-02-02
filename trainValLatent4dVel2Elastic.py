@@ -112,6 +112,11 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
+             
+             if (epoch < 4):
+                 Lhist[epoch-1] = model.loss_D_MSE
+             else:
+                 Lhist[3] = model.loss_D_MSE
              #if (epoch > lstart):
              #   Model1loss = Model1loss + model.loss_M1_MSE.item()     
              #else:
@@ -145,5 +150,7 @@ if __name__ == '__main__':
             #print(losses2)
             visualizer.plot_current_losses(epoch, 0, losses1)
             visualizer.print_current_losses(epoch, epoch_iter, losses1)
+            
+         print("Lhist :", Lhist)
 
          print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.n_epochs + opt.n_epochs_decay, time.time() - epoch_start_time))
