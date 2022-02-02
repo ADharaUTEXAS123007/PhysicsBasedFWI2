@@ -413,6 +413,7 @@ class AutoEl22Model(BaseModel):
         #lstart = 0
         #batch = 0
         loss = self.forward2(epoch, lstart, freq)
+        loss = loss*10**19
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
@@ -420,8 +421,8 @@ class AutoEl22Model(BaseModel):
         #loss1 = np.empty([1,1])
         #loss1[0,0] = loss
         loss1 = torch.from_numpy(loss)
-        loss1 = loss1.double()*(10**19)
         loss1 = loss1.float()
+        #loss1 = loss1.float()
         #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
         #print("shape of loss :", loss1)
