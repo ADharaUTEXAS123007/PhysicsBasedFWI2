@@ -117,8 +117,8 @@ class AutoEl22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam(
-                self.netG.parameters(), lr=opt.lr)
+            self.optimizer_G = torch.optim.LBFGS(
+                self.netG.parameters(), lr=opt.lr, tolerance_change=1e-20, line_search_fn='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
@@ -142,7 +142,7 @@ class AutoEl22Model(BaseModel):
         self.real_D = input['D'].to(self.device1)  
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
     
-    def forward2(self, epoch1, lstart):
+    def forward2(self, epoch1, lstart, freq):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
         [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)  # G(A)
@@ -408,11 +408,11 @@ class AutoEl22Model(BaseModel):
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
 
         
-    def closure(self,epoch,lstart,batch):
+    def closure(self,epoch,lstart,batch,freq):
         #epoch = 1
         #lstart = 0
         #batch = 0
-        loss = self.forward2(epoch, lstart)
+        loss = self.forward2(epoch, lstart, freq)
         self.optimizer_G.zero_grad()
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
@@ -420,7 +420,7 @@ class AutoEl22Model(BaseModel):
         #loss1 = np.empty([1,1])
         #loss1[0,0] = loss
         loss1 = torch.from_numpy(loss)
-        loss1 = loss1.float()*(10**18)
+        loss1 = loss1.float()
         #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
         #print("shape of loss :", loss1)
@@ -429,14 +429,14 @@ class AutoEl22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart,freq):
-        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
+        ##########self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
-        self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)   
+        ##########self.optimizer_G.zero_grad()        # set G's gradients to zero
+        ##########self.backward_G11(epoch,batch,lstart)   
         #                 # calculate graidents for G
         
-        ###########self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch))             # udpate G's weights
-        self.optimizer_G.step()
+        self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
+        ###########self.optimizer_G.step()
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
