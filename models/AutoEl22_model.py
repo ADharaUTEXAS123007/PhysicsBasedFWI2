@@ -145,7 +145,7 @@ class AutoEl22Model(BaseModel):
     def forward2(self, epoch1, lstart, freq):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D)  # G(A)
+        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
