@@ -61,7 +61,7 @@ class AutoEl22Model(BaseModel):
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
         BaseModel.__init__(self, opt)
-        torch.manual_seed(5465)
+        #torch.manual_seed(5465)
         print("number of cuda devices:", torch.cuda.device_count())
         
         
@@ -416,7 +416,7 @@ class AutoEl22Model(BaseModel):
         #lstart = 0
         #batch = 0
         loss = self.forward2(epoch, lstart, freq)
-        loss = loss*10**19
+        loss = loss*10**20
         loss = np.array(loss)
         loss = loss.astype(float)
         self.optimizer_G.zero_grad()
