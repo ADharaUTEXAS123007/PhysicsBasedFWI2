@@ -5649,8 +5649,9 @@ class AutoElMarmousi22_Net(nn.Module):
         ysrc = depth_src * xsrc / xsrc
 
         # Wrap into api
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
-        src = api.Sources(xsrc, ysrc)
+        src = api.Sources(xsrc, ysrc, fsource)
 
         #d.help()
         #d.NX = 300
