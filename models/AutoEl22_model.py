@@ -61,7 +61,10 @@ class AutoEl22Model(BaseModel):
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
         BaseModel.__init__(self, opt)
+        torch.manual_seed(0)
         print("number of cuda devices:", torch.cuda.device_count())
+        
+        
         #for i in range(3):
         #torch.cuda.set_device(1)
 
