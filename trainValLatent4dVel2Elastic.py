@@ -46,7 +46,7 @@ if __name__ == '__main__':
     total_iters = 0                # the total number of training iterations
     losses1 = OrderedDict()
     lstart = 0
-    Lhist = np.zeros(4)
+    Lhist = np.ones(4)
     freqL = [2,4,6,8,10]
     mop = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
