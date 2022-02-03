@@ -5593,9 +5593,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
     
-        vp = np.squeeze(vp)*1000
-        vs = np.squeeze(vs)*1000
-        rho = np.squeeze(rho)*1000
+        vp = np.squeeze(vp)
+        vs = np.squeeze(vs)
+        rho = np.squeeze(rho)
         
         vp = np.flipud(vp)
         vs = np.flipud(vs)
@@ -5615,9 +5615,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1000
-        vsst = vsst*1000
-        rhost = rhost*1000
+        vpst = vpst
+        vsst = vsst
+        rhost = rhost
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
