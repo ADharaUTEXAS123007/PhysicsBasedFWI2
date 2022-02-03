@@ -5759,7 +5759,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vp_grad = vp_grad.float()
         vp_grad = vp_grad*10**(5)
         #if (freq==1):
-        vp_grad = vp_grad 
+        vp_grad = vp_grad + torch.normal(vp_grad,0.002)
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
         vs_grad = vs_grad*10**(5)
