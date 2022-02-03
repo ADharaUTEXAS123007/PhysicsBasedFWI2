@@ -5601,6 +5601,11 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
+        vp = vp*1000
+        vs = vs*1000
+        rho = rho*1000
+        
+        
         #model = api.Model(vp, vs, rho, dx)
         
         vpst = vp1.cpu().detach().numpy()
@@ -5615,9 +5620,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst
-        vsst = vsst
-        rhost = rhost
+        vpst = vpst*1000
+        vsst = vsst*1000
+        rhost = rhost*1000
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
@@ -5687,7 +5692,7 @@ class AutoElMarmousi22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
-        model_init = api.Model(vpst, vsst, rho, dx)
+        model_init = api.Model(vpst, vsst, rhost, dx)
         
         filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, model_init.vp)  #switch on physics based fwi
