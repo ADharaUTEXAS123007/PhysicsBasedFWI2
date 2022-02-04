@@ -5328,7 +5328,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.is_deconv     = False
         self.in_channels   = outer_nc
         self.is_batchnorm  = True
-        self.n_classes     = 2
+        self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
@@ -5358,29 +5358,29 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        #self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
-        #self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.up33     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
+        ###self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
-        #self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
-        #self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.up23     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
+        ###self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
-        #self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
-        #self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.up13     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
+        ####self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
-        #self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
-        #self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
-        self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        #self.f12      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        #self.f13      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
+        ##self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
+        ####self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        self.f11      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        self.f12      =  nn.Conv2d(filters[0],self.n_classes, 1)
         
-        self.vp     =   nn.Conv2d(1,1,1)
-        self.vs     =   nn.Conv2d(1,1,1)
+        #self.vp     =   nn.Conv2d(1,1,1)
+        #self.vs     =   nn.Conv2d(1,1,1)
         #self.rho    =   nn.Conv2d(1,1,1)
         
         self.final1     =   nn.Tanh()
@@ -5457,44 +5457,44 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 19, 38)
     
-        #up31    = self.up31(z)
-        #up32    = self.up32(z)
+        up31    = self.up31(z)
+        up32    = self.up32(z)
         #up33    = self.up33(z)
-        up3      = self.up3(z)
+        #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
-        #up21    = self.up21(up31)
-        #up22    = self.up22(up32)
+        up21    = self.up21(up31)
+        up22    = self.up22(up32)
         #up23    = self.up23(up33)
-        up2     = self.up2(up3)
+        #up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
-        #up11    = self.up11(up21)
-        #up12    = self.up12(up22)
+        up11    = self.up11(up21)
+        up12    = self.up12(up22)
         #up13    = self.up13(up23)
-        up1     = self.up1(up2)
+        #up1     = self.up1(up2)
         
         
         #up1    = self.dropU1(up1)
         #print("shape of up1 :", np.shape(up1))
-        #up11    = up11[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
-        #up12    = up12[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        up11    = up11[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        up12    = up12[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         #up13    = up13[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
-        up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
+        #up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         
-        #f11     = self.f11(up11)
-        #f12     = self.f12(up12)
+        f11     = self.f11(up11)
+        f12     = self.f12(up12)
         #f13     = self.f13(up13)
-        f1    = self.f1(up1)
+        #f1    = self.f1(up1)
         
         
-        vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
-        vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
+        #vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
+        #vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
         
-        vp1    = self.final1(vp1)
-        vs1    = self.final2(vs1)
+        vp1    = self.final1(f11)
+        vs1    = self.final2(f12)
         #rho1   = self.final(rho1)
         
         
