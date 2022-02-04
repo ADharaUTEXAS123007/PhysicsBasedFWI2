@@ -5639,7 +5639,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         # Receivers
         drec = 20.
-        depth_rec = 400.  # receiver depth [m]
+        depth_rec = 200.  # receiver depth [m]
         xrec1 = 780.      # 1st receiver position [m]
         xrec2 = 5220.     # last receiver position [m]
         xrec = np.arange(xrec1, xrec2 + dx, drec)
