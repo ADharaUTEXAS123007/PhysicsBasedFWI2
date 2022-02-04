@@ -47,7 +47,7 @@ if __name__ == '__main__':
     losses1 = OrderedDict()
     lstart = 0
     Lhist = np.ones(4)
-    freqL = [2,4,6,8,10]
+    freqL = [1,2,3,4,5,6,7,8,9,10]
     mop = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
@@ -123,7 +123,7 @@ if __name__ == '__main__':
                  Lhist[3] = model.loss_D_MSE
                  
              if (epoch > 4):
-                if (np.abs((Lhist[3]-Lhist[1])/Lhist[1]) <= .01):
+                if (np.abs((Lhist[3]-Lhist[1])/Lhist[1]) <= .005):
                     mop = mop + 1
                  
              #if (epoch > lstart):
