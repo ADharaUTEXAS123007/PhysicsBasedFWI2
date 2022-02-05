@@ -278,7 +278,7 @@ class AutoEl22Model(BaseModel):
         #print("D_MSE :", self.loss_D_MSE)
         
         #self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
-        self.loss_M_MSE = self.criterionMSE(self.low_Vp, self.fake_Vp) + self.criterionMSE(self.low_Vs, self.fake_Vs) + self.criterionMSE(self.low_Rho, self.fake_Rho)
+        self.loss_M_MSE = self.criterionMSE(self.real_Vp, self.fake_Vp) + self.criterionMSE(self.real_Vs, self.fake_Vs) + self.criterionMSE(self.real_Rho, self.fake_Rho)
         
         print("loss M MSE :", self.loss_M_MSE)
         print("loss D MSE :", self.loss_D_MSE)
