@@ -5685,7 +5685,14 @@ class AutoElMarmousi22_Net(nn.Module):
         d.RHOLOWERLIM = 1929.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
+        filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        np.save(filen, vpst)  #switch on physics based fwi
         
+        filen = './marmousiEl/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        np.save(filen, vsst)  #switch on physics based fwi
+        
+        filen = './marmousiEl/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        np.save(filen, rhost)  #switch on physics based fwi
         
         
         #d.NT = 1200
@@ -5696,14 +5703,6 @@ class AutoElMarmousi22_Net(nn.Module):
         
         model_init = api.Model(vpst, vsst, rho, dx)
         
-        filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
-        np.save(filen, model_init.vp)  #switch on physics based fwi
-        
-        filen = './marmousiEl/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, model_init.vs)  #switch on physics based fwi
-        
-        filen = './marmousiEl/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, model_init.rho)  #switch on physics based fwi
         
         d.fwi_stages = []
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
