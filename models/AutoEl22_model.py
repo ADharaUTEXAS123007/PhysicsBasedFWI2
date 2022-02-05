@@ -180,6 +180,10 @@ class AutoEl22Model(BaseModel):
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
+        self.low_Vp = torch.unsqueeze(self.real_C[:,0,:,:],1)
+        self.low_Vs = torch.unsqueeze(self.real_C[:,1,:,:],1)
+        self.low_Rho = torch.unsqueeze(self.real_C[:,2,:,:],1)
+        
         self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
         self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
