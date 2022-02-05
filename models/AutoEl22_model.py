@@ -341,7 +341,7 @@ class AutoEl22Model(BaseModel):
         #if (epoch1 <= lstart):
             #print("1st epoch1 :", epoch1)
             #self.loss_G.backward()
-        self.loss_G.backward()
+        #self.loss_G.backward()
         
         #maxb = torch.max(torch.abs(self.fake_B.grad))
         
