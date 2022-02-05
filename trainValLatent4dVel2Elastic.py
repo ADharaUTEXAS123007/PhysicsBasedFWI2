@@ -45,7 +45,7 @@ if __name__ == '__main__':
     visualizer = Visualizer(opt)   # create a visualizer that display/save images and plots
     total_iters = 0                # the total number of training iterations
     losses1 = OrderedDict()
-    lstart = 0
+    lstart = 100000
     Lhist = np.ones(4)
     freqL = [1,2,3,4,5,6,7,8,9,10]
     mop = 0
