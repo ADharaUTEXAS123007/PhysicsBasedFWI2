@@ -5521,7 +5521,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #vp1    = torch.unsqueeze(vp1,1)
         #vs1    = torch.unsqueeze(vs1,1)
         #rho1   = torch.unsqueeze(rho1,1)
-        f11    = torch.cat((vp1,vs1),dim=1)
+        #f11    = torch.cat((vp1,vs1),dim=1)
         #f11     = vp1
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
@@ -5569,7 +5569,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f11, grad, latent1, vp_grad, vs_grad, rho_grad, lossT
+        return vp1, vs1, grad, latent1, vp_grad, vs_grad, rho_grad, lossT
     
     # Initialization of Parameters
     def  _initialize_weights(self):

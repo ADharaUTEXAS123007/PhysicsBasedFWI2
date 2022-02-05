@@ -175,7 +175,7 @@ class AutoEl22Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_B,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
+        [self.fake_Vp,self.fake_Vs,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
@@ -184,8 +184,8 @@ class AutoEl22Model(BaseModel):
         self.low_Vs = torch.unsqueeze(self.real_C[:,1,:,:],1)
         self.low_Rho = torch.unsqueeze(self.real_C[:,2,:,:],1)
         
-        self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
-        self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
+        #self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
+        #self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
         self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
@@ -214,7 +214,7 @@ class AutoEl22Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
+        [_,_,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         #self.real_VpT = self.real_B[:,0,:,:]
         #self.real_VsT = self.real_B[:,1,:,:]
@@ -459,8 +459,8 @@ class AutoEl22Model(BaseModel):
         #self.loss_V_L1 = lossL1
         #print("Loss L1 : "+ str(lossL1.cpu().float().numpy()))
         diff_size = self.real_B.size()
-        lossMSE = self.criterionMSE(
-            self.fake_BT, self.real_B[:,0:2,:,:])/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
+        #lossMSE = self.criterionMSE(
+        #    self.fake_BT, self.real_B[:,0:2,:,:])/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
         print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
