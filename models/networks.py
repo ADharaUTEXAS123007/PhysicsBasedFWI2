@@ -5410,31 +5410,31 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
-        #####combine1 = self.combine1((inputs2[:,:,1:1200:2,:]))
-        #####combine2 = self.combine2((inputs3[:,:,1:1200:2,:]))
+        combine1 = self.combine1((inputs2[:,:,1:1600:4,:]))
+        combine2 = self.combine2((inputs3[:,:,1:1600:4,:]))
         
-        #####c1c2 = torch.cat((combine1,combine2),axis=1)
+        c1c2 = torch.cat((combine1,combine2),axis=1)
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
         #down1  = self.down1((inputs2[:,:,1:1200:4,:]))
-        ######down1  = self.down1(c1c2)
+        down1  = self.down1(c1c2)
         #down1  = self.dropD1(down1)
-        #####down2  = self.down2(down1)
+        down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
-        #####down3  = self.down3(down2)
+        down3  = self.down3(down2)
         #down3  = self.dropD3(down3)
-        ####down4  = self.down4(down3)
+        down4  = self.down4(down3)
         #down4  = self.dropD4(down4)
         
-        ####print("shape of down4 :", np.shape(down4))
+        print("shape of down4 :", np.shape(down4))
         
         ####print("shape of down4 :", np.shape(down4))
-        #####result = torch.flatten(down4, start_dim=1)
+        result = torch.flatten(down4, start_dim=1)
         
         #####print("result shape :", np.shape(result))
         
-        #######p = self.decoder_input1(result)
+        p = self.decoder_input1(result)
         #down3  = self.down3(down2)
         #down4  = self.down4(down3)s
         #center = self.center(down4)
@@ -5443,7 +5443,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        #latent1 = p
+        latent1 = p
         #if (epoch1 <= lstart):
         #    latent1 = p
         #else:
@@ -5452,7 +5452,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #latent1 = p
             
         ########latent1 = p
-        p = inputs2
+        #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
         #####z = inputs2
