@@ -5330,6 +5330,7 @@ class AutoElMarmousi22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
+        filters = [16, 32, 64, 128, 512]
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         filters = [1, 1, 2, 4, 16]
@@ -5391,10 +5392,10 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
-        #filters = [16, 32, 64, 128, 512]
+        filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 128]
-        filters = [1, 1, 2, 4, 16]
+        #filters = [1, 1, 2, 4, 16]
         latent_dim = 8
         #label_dsp_dim = (150,300)
         label_dsp_dim = (40,90)
