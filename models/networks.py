@@ -5498,7 +5498,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vp1    = self.final1(vp1)
         vs1    = self.final2(vs1)
         #rho1   = self.final(rho1)
-        
+        print("shape of vp1 :", np.shape(vp1))
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
@@ -5527,7 +5527,6 @@ class AutoElMarmousi22_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        print("shape of vp1 :", np.shape(vp1))
         #print("mintrue :", mintrue)
         #print("maxtrue :", maxtrue)
         
