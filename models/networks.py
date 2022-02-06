@@ -5681,8 +5681,8 @@ class AutoElMarmousi22_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 1
-        d.NPROCY = 1
+        d.NPROCX = 5
+        d.NPROCY = 4
         d.PHYSICS = 1
         d.TIME = 4.0
         #d.VPUPPERLIM = 3000.0
