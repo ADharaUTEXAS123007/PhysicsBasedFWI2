@@ -5396,7 +5396,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #filters = [8, 16, 32, 64, 128]
         filters = [1, 1, 2, 4, 16]
         latent_dim = 8
-        label_dsp_dim = (150,300)
+        #label_dsp_dim = (150,300)
+        label_dsp_ddim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
         
@@ -5477,7 +5478,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         #up1    = self.dropU1(up1)
-        #print("shape of up1 :", np.shape(up1))
+        print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         #up13    = up13[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
