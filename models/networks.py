@@ -5397,7 +5397,7 @@ class AutoElMarmousi22_Net(nn.Module):
         filters = [1, 1, 2, 4, 16]
         latent_dim = 8
         #label_dsp_dim = (150,300)
-        label_dsp_ddim = (40,90)
+        label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
         
