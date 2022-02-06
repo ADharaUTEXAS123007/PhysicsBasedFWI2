@@ -5783,16 +5783,16 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
-        vp_grad = vp_grad*10**(5)
+        #vp_grad = vp_grad*10**(5)
         #if (freq==1):
         vp_grad = vp_grad
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
-        vs_grad = vs_grad*10**(5)
+        #vs_grad = vs_grad*10**(5)
         #vs_grad = vs_grad*0
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = rho_grad*10**(5)
+        #rho_grad = rho_grad*10**(5)
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
