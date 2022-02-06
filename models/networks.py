@@ -5706,7 +5706,7 @@ class AutoElMarmousi22_Net(nn.Module):
         np.save(filen, vsst)  #switch on physics based fwi
         
         filen = './marmousiEl/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, rhost)  #switch on physics based fwi
+        np.save(filen, rho)  #switch on physics based fwi
         
         
         #d.NT = 1200
