@@ -5641,22 +5641,29 @@ class AutoElMarmousi22_Net(nn.Module):
         
         # Receivers
         drec = 20.
-        depth_rec = 200.  # receiver depth [m]
-        xrec1 = 780.      # 1st receiver position [m]
-        xrec2 = 5220.     # last receiver position [m]
+        #depth_rec = 200.  # receiver depth [m]
+        depth_rec = 80.
+        #xrec1 = 780.      # 1st receiver position [m]
+        xrec1 = 100.
+        #xrec2 = 5220.     # last receiver position [m]
+        xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 160. # source spacing [m]
-        depth_src = 40.  # source depth [m]
-        xsrc1 = 780.  # 1st source position [m]
-        xsrc2 = 5220.  # last source position [m]
+        #dsrc = 160. # source spacing [m]
+        dsrc = 120.
+        #depth_src = 40.  # source depth [m]
+        depth_src = 40.
+        #xsrc1 = 780.  # 1st source position [m]
+        xsrc1 = 100.
+        #xsrc2 = 5220.  # last source position [m]
+        xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 8.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
 
@@ -5677,12 +5684,19 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.VPUPPERLIM = 3000.0
-        d.VPLOWERLIM = 1500.0
-        d.VSUPPERLIM = 1732.0
-        d.VSLOWERLIM = 866.0
-        d.RHOUPPERLIM = 2294.0
-        d.RHOLOWERLIM = 1929.0
+        #d.VPUPPERLIM = 3000.0
+        #d.VPLOWERLIM = 1500.0
+        #d.VSUPPERLIM = 1732.0
+        #d.VSLOWERLIM = 866.0
+        #d.RHOUPPERLIM = 2294.0
+        #d.RHOLOWERLIM = 1929.0
+        
+        d.VPUPPERLIM = 3200.0
+        d.VPLOWERLIM = 1800.0
+        d.VSUPPERLIM = 2400.0
+        d.VSLOWERLIM = 1500.0
+        d.RHOUPPERLIM = 2400.0
+        d.RHOLOWERLIM = 700.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
