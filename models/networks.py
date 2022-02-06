@@ -5456,7 +5456,7 @@ class AutoElMarmousi22_Net(nn.Module):
         z = self.decoder_input(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 38)
+        z = z.view(-1, filters[3], 9, 19)
     
         #up31    = self.up31(z)
         #up32    = self.up32(z)
