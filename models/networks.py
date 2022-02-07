@@ -5782,18 +5782,43 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of vs_grad1 :", np.shape(vs_grad))
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
+        if freq == 2:
+            r = 10**5
+        elif freq == 4:
+            r = 10**5
+        elif freq == 6:
+            r = 10**4
+        elif freq == 8:
+            r = 10**4
+        elif freq == 10:
+            r = 10**3
+        elif freq == 12:
+            r = 10**3
+        elif freq == 14:
+            r = 10**2
+        elif freq == 16:
+            r = 10**2
+        elif freq == 18:
+            r = 10**1
+        else:
+            r = 10**1
+            
+            
+            
+            
+        
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
-        vp_grad = vp_grad*10**(5)
+        vp_grad = vp_grad*r
         #if (freq==1):
         vp_grad = vp_grad
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()
-        vs_grad = vs_grad*10**(5)
+        vs_grad = vs_grad*r
         #vs_grad = vs_grad*0
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = rho_grad*10**(5)
+        rho_grad = rho_grad*r
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi

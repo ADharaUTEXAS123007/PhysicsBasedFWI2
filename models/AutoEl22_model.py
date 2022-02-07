@@ -120,8 +120,8 @@ class AutoEl22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.LBFGS(
-                self.netG.parameters(),lr=0.5)
+            self.optimizer_G = torch.optim.Adam(
+                self.netG.parameters(),lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
@@ -447,14 +447,14 @@ class AutoEl22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart,freq):
-        ####self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
+        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
-        #####self.optimizer_G.zero_grad()        # set G's gradients to zero
-        #####self.backward_G11(epoch,batch,lstart)   
+        self.optimizer_G.zero_grad()        # set G's gradients to zero
+        self.backward_G11(epoch,batch,lstart)   
         #                 # calculate graidents for G
         
-        self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        #####self.optimizer_G.step()
+        #####self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
+        self.optimizer_G.step()
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
