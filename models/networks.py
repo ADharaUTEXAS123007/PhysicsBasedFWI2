@@ -5802,7 +5802,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #     r = 10**0
         # else:
         #     r = 10**0
-        r = 10**5
+        r = 10**4
             
             
             
