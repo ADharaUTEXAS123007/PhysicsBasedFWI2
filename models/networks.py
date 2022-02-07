@@ -5783,25 +5783,25 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
         if freq == 2:
-            r = 10**5
+            r = 10**4
         elif freq == 4:
-            r = 10**5
+            r = 10**4
         elif freq == 6:
-            r = 10**4
+            r = 10**3
         elif freq == 8:
-            r = 10**4
+            r = 10**3
         elif freq == 10:
-            r = 10**3
+            r = 10**2
         elif freq == 12:
-            r = 10**3
+            r = 10**2
         elif freq == 14:
-            r = 10**2
+            r = 10**1
         elif freq == 16:
-            r = 10**2
+            r = 10**1
         elif freq == 18:
-            r = 10**1
+            r = 10**0
         else:
-            r = 10**1
+            r = 10**0
             
             
             
