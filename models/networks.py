@@ -5828,6 +5828,7 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = vs_grad*r2
         #vs_grad = vs_grad*0
         
+        
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         rho_grad = rho_grad*r
