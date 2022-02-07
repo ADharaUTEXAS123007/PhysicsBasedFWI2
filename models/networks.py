@@ -5705,6 +5705,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VSLOWERLIM = 1500.0
         d.RHOUPPERLIM = 2400.0
         d.RHOLOWERLIM = 700.0
+        d.SWS_TAPER_GRAD_HOR = 0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
@@ -5782,6 +5783,10 @@ class AutoElMarmousi22_Net(nn.Module):
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
+        
+        vp_grad[0:6,:] = 0.0
+        vs_grad[0:6,:] = 0.0
+        rho_grad[0:6,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
