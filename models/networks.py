@@ -5495,7 +5495,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = self.rhho(f13)
+        rho1    = self.rho(f13)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
