@@ -176,7 +176,7 @@ class AutoEl22Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_Vp,self.fake_Vs,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
+        [self.fake_Vp,self.fake_Vs,self.fake_Rho, self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
@@ -187,14 +187,14 @@ class AutoEl22Model(BaseModel):
         
         #self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         #self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
-        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
-        self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
+        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
-        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
         #self.grad = self.vp_grad
         self.grad = torch.unsqueeze(self.grad,0)
         #self.latent = self.latent.clone().detach()
@@ -216,12 +216,12 @@ class AutoEl22Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.VpT,self.VsT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
+        [self.VpT,self.VsT,self.RhoT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         #self.real_VpT = self.real_B[:,0,:,:]
         #self.real_VsT = self.real_B[:,1,:,:]
         #self.real_RhoT = self.real_B[:,2,:,:]
-        self.fake_BT = torch.cat((self.VpT,self.VsT),axis=1)
+        self.fake_BT = torch.cat((self.VpT,self.VsT,self.RhoT),axis=1)
         #self.fake_VpT = self.fake_BT[:,0,:,:]
         #self.fake_VsT = self.fake_BT[:,1,:,:]
         #self.fake_RhoT = self.fake_BT[:,2,:,:]
