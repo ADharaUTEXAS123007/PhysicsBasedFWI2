@@ -5399,7 +5399,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #filters = [8, 16, 32, 64, 128]
         #filters = [1, 1, 2, 4, 16]
         latent_dim = 8
-        label_dsp_dim = (150,296)
+        label_dsp_dim = (150,294)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -5691,7 +5691,7 @@ class AutoElMarmousi22_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 8
+        d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
         #d.TIME = 6.0
