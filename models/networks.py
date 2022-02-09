@@ -5399,7 +5399,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #filters = [8, 16, 32, 64, 128]
         #filters = [1, 1, 2, 4, 16]
         latent_dim = 8
-        label_dsp_dim = (150,300)
+        label_dsp_dim = (150,296)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -5691,7 +5691,7 @@ class AutoElMarmousi22_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 6
+        d.NPROCX = 8
         d.NPROCY = 6
         d.PHYSICS = 1
         #d.TIME = 6.0
@@ -5788,9 +5788,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:6,:] = 0.0
-        vs_grad[0:6,:] = 0.0
-        rho_grad[0:6,:] = 0.0
+        vp_grad[0:12,:] = 0.0
+        vs_grad[0:12,:] = 0.0
+        rho_grad[0:12,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
