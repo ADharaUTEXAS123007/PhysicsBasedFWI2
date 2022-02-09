@@ -5332,7 +5332,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #filters = [16, 32, 64, 128, 512]
         #filters = [16, 32, 64, 128, 512]
-        filters = [4, 8, 16, 32, 64]
+        filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
         #filters = [8, 16, 32, 64, 128]
         
@@ -5395,7 +5395,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 512]
-        filters = [4, 8, 16, 32, 64]
+        filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 128]
         #filters = [1, 1, 2, 4, 16]
         latent_dim = 8
@@ -5719,7 +5719,7 @@ class AutoElMarmousi22_Net(nn.Module):
         np.save(filen, vsst)  #switch on physics based fwi
         
         filen = './marmousiEl/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, rho)  #switch on physics based fwi
+        np.save(filen, rhost)  #switch on physics based fwi
         
         
         #d.NT = 1200
