@@ -5511,9 +5511,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
-        vp1[:,:,0:12,:] = inputs1[:,0,0:12,:]
-        vs1[:,:,0:12,:] = inputs1[:,1,0:12,:]
-        rho1[:,:,0:12,:] = inputs1[:,2,0:12,:]
+        vp1[:,:,0:15,:] = inputs1[:,0,0:15,:]
+        vs1[:,:,0:15,:] = inputs1[:,1,0:15,:]
+        rho1[:,:,0:15,:] = inputs1[:,2,0:15,:]
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
@@ -5788,9 +5788,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:12,:] = 0.0
-        vs_grad[0:12,:] = 0.0
-        rho_grad[0:12,:] = 0.0
+        vp_grad[0:15,:] = 0.0
+        vs_grad[0:15,:] = 0.0
+        rho_grad[0:15,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
