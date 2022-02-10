@@ -5463,20 +5463,20 @@ class AutoElMarmousi22_Net(nn.Module):
     
         #up31    = self.up31(z)
         #up32    = self.up32(z)
-        #up33    = self.up33(z)
+        up33    = self.up33(z)
         up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
         #up21    = self.up21(up31)
         #up22    = self.up22(up32)
-        #up23    = self.up23(up33)
+        up23    = self.up23(up33)
         up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
         up11    = self.up11(up2)
         up12    = self.up12(up2)
-        up13    = self.up13(up2)
+        up13    = self.up13(up23)
         #up1     = self.up1(up2)
         
         
