@@ -5369,10 +5369,10 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.up23     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
-        #self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
-        #self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        #self.up13     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
+        self.up13     = autoUp5(filters[1], filters[0], self.is_deconv)
+        #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         ##self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5474,22 +5474,22 @@ class AutoElMarmousi22_Net(nn.Module):
         up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
-        #up11    = self.up11(up21)
-        #up12    = self.up12(up22)
-        #up13    = self.up13(up23)
-        up1     = self.up1(up2)
+        up11    = self.up11(up2)
+        up12    = self.up12(up2)
+        up13    = self.up13(up2)
+        #up1     = self.up1(up2)
         
         
         #up1    = self.dropU1(up1)
         #print("shape of up11 :", np.shape(up11))
-        #up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        #up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        #up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
-        f11     = self.f11(up1)
-        f12     = self.f12(up1)
-        f13     = self.f13(up1)
+        f11     = self.f11(up11)
+        f12     = self.f12(up12)
+        f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
         
@@ -5835,7 +5835,7 @@ class AutoElMarmousi22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = rho_grad*r3
+        rho_grad = rho_grad*r3*0.5
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
