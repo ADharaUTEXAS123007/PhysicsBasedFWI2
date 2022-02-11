@@ -5710,7 +5710,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.RHOUPPERLIM = 2294.0
         d.RHOLOWERLIM = 1929.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 3.0
+        d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
