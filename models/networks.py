@@ -5503,9 +5503,9 @@ class AutoElMarmousi22_Net(nn.Module):
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
         
-        #vp1    = self.final1(vp1)
-        #vs1    = self.final2(vs1)
-        #rho1   = self.final3(rho1)
+        vp1    = self.final1(vp1)
+        vs1    = self.final2(vs1)
+        rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         vp1[:,:,0:15,:] = 0
         vs1[:,:,0:15,:] = 0
