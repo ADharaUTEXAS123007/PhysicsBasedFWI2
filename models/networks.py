@@ -5330,8 +5330,8 @@ class AutoElMarmousi22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        #filters = [16, 32, 64, 128, 512]
-        filters = [32, 64, 128, 256, 512]
+        filters = [16, 32, 64, 128, 256]
+        #filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
@@ -5361,15 +5361,15 @@ class AutoElMarmousi22_Net(nn.Module):
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
-        self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up33     = autoUp5(filters[3], filters[2], self.is_deconv)
-        #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
+        #self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
+        #self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
+        #self.up33     = autoUp5(filters[3], filters[2], self.is_deconv)
+        self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
-        self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up23     = autoUp5(filters[2], filters[1], self.is_deconv)
-        #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
+        #self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
+        #self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
+        #self.up23     = autoUp5(filters[2], filters[1], self.is_deconv)
+        self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -5396,11 +5396,11 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
-        #filters = [16, 32, 64, 128, 512]
+        filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 64, 128]
         #filters = [1, 1, 2, 4, 16]
-        filters = [32, 64, 128, 256, 512]
+        #filters = [32, 64, 128, 256, 512]
         latent_dim = 8
         label_dsp_dim = (150,294)
         #label_dsp_dim = (40,90)
@@ -5464,22 +5464,22 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 20, 38)
     
-        up31    = self.up31(z)
-        up32    = self.up32(z)
-        up33    = self.up33(z)
-        #up3      = self.up3(z)
+        #up31    = self.up31(z)
+        #up32    = self.up32(z)
+        #up33    = self.up33(z)
+        up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
-        up21    = self.up21(up31)
-        up22    = self.up22(up32)
-        up23    = self.up23(up33)
-        #up2     = self.up2(up3)
+        #up21    = self.up21(up31)
+        #up22    = self.up22(up32)
+        #up23    = self.up23(up33)
+        up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
-        up11    = self.up11(up21)
-        up12    = self.up12(up22)
-        up13    = self.up13(up23)
+        up11    = self.up11(up2)
+        up12    = self.up12(up2)
+        up13    = self.up13(up2)
         #up1     = self.up1(up2)
         
         
