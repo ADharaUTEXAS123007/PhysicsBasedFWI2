@@ -5477,17 +5477,17 @@ class AutoElMarmousi22_Net(nn.Module):
         up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
-        up11    = self.up11(up2)
-        up12    = self.up12(up2)
-        up13    = self.up13(up2)
-        #up1     = self.up1(up2)
+        #up11    = self.up11(up2)
+        #up12    = self.up12(up2)
+        #up13    = self.up13(up2)
+        up1     = self.up1(up2)
         
         
         #up1    = self.dropU1(up1)
         #print("shape of up11 :", np.shape(up11))
-        up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up11    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up12    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up13    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
