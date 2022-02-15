@@ -120,8 +120,8 @@ class AutoEl22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.LBFGS(
-                self.netG.parameters())
+            self.optimizer_G = torch.optim.Adam(
+                self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
@@ -386,12 +386,21 @@ class AutoEl22Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            self.grad = self.grad.cuda(self.fake_B.get_device())
-            print("gradient device :",self.grad.get_device())
+            ####self.grad = self.grad.cuda(self.fake_B.get_device())
+            ###print("gradient device :",self.grad.get_device())
             
-            print("gradient shape :", np.shape(self.grad))
+            ####print("gradient shape :", np.shape(self.grad))
             
-            self.fake_B.backward(self.grad) #switch on for physics based fwi
+            ###self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
+            self.fake_Vp.backward(self.vp_grad)
+            
+            self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
+            self.fake_Vs.backward(self.vs_grad)
+            
+            self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+            self.fake_Rho.backward(self.rho_grad)
+            
         
         
         #print("shape of fake_B :", np.shape(self.fake_B))
@@ -447,14 +456,14 @@ class AutoEl22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart,freq):
-        ####self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
+        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
-        ####self.optimizer_G.zero_grad()        # set G's gradients to zero
-        ####self.backward_G11(epoch,batch,lstart)   
+        self.optimizer_G.zero_grad()        # set G's gradients to zero
+        self.backward_G11(epoch,batch,lstart)   
         #                 # calculate graidents for G
         
-        self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        #####self.optimizer_G.step()
+        #####self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
+        self.optimizer_G.step()
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
