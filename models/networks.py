@@ -5496,16 +5496,19 @@ class AutoElMarmousi22_Net(nn.Module):
         #f1    = self.f1(up1)
         
         
-        vp1     = self.vp(f11)
-        vs1     = self.vs(f12)
-        rho1    = self.rho(f13)
+        ##vp1     = self.vp(f11)
+        ##vs1     = self.vs(f12)
+        ##rho1    = self.rho(f13)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
+        vp1     = f11
+        vs1     = f12
+        rho1    = f13
         
-        vp1    = self.final1(vp1)
-        vs1    = self.final2(vs1)
-        rho1   = self.final3(rho1)
+        #vp1    = self.final1(vp1)
+        #vs1    = self.final2(vs1)
+        #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
@@ -5714,8 +5717,8 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VSLOWERLIM = 866.0
         d.RHOUPPERLIM = 750.0
         d.RHOLOWERLIM = 2250.0
-        d.SWS_TAPER_GRAD_HOR = 0
-        #d.EXP_TAPER_GRAD_HOR = 2.0
+        d.SWS_TAPER_GRAD_HOR = 1
+        d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
