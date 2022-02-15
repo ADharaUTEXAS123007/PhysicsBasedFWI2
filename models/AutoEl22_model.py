@@ -396,10 +396,14 @@ class AutoEl22Model(BaseModel):
             self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
             self.fake_Vp.backward(self.vp_grad)
             self.fake_Vs.retain_grad()
+            self.fake_Vp.retain_grad()
+            self.fake_Rho.retain_grad()
             
             self.vs_grad = torch.unsqueeze(self.vs_grad,0)
             self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
             self.fake_Vs.backward(self.vs_grad)
+            self.fake_Vs.retain_grad()
+            self.fake_Vp.retain_grad()
             self.fake_Rho.retain_grad()
             
             self.rho_grad = torch.unsqueeze(self.rho_grad,0)
