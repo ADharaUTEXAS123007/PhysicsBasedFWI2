@@ -392,12 +392,15 @@ class AutoEl22Model(BaseModel):
             ####print("gradient shape :", np.shape(self.grad))
             
             ###self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
             self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
             self.fake_Vp.backward(self.vp_grad)
             
+            self.vs_grad = torch.unsqueeze(self.vs_grad,0)
             self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
             self.fake_Vs.backward(self.vs_grad)
             
+            self.rho_grad = torch.unsqueeze(self.rho_grad,0)
             self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
             self.fake_Rho.backward(self.rho_grad)
             
