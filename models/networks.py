@@ -5379,13 +5379,13 @@ class AutoElMarmousi22_Net(nn.Module):
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
         ##self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f11      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f12      =  nn.Conv2d(filters[0],self.n_classes, 1)
-        self.f13      =  nn.Conv2d(filters[0],self.n_classes, 1)
+        self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
+        self.f12      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
+        self.f13      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         
-        self.vp     =   nn.Conv2d(1,1,1)
-        self.vs     =   nn.Conv2d(1,1,1)
-        self.rho    =   nn.Conv2d(1,1,1)
+        self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
+        self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
+        self.rho    =   nn.Conv2d(int(filters[0]/2),1,1)
         
         self.final1     =   nn.Tanh()
         self.final2     =   nn.Tanh()
@@ -5496,15 +5496,15 @@ class AutoElMarmousi22_Net(nn.Module):
         #f1    = self.f1(up1)
         
         
-        ##vp1     = self.vp(f11)
-        ##vs1     = self.vs(f12)
-        ##rho1    = self.rho(f13)
+        vp1     = self.vp(f11)
+        vs1     = self.vs(f12)
+        rho1    = self.rho(f13)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
-        vp1     = f11
-        vs1     = f12
-        rho1    = f13
+        #vp1     = f11
+        #vs1     = f12
+        #rho1    = f13
         
         vp1    = self.final1(vp1)
         vs1    = self.final2(vs1)
