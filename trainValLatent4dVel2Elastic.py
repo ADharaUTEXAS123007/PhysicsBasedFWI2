@@ -114,6 +114,9 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE
+             Vploss = Vploss + model.loss_VP.item()
+             Vsloss = Vsloss + model.loss_VS.item()
+             Rholoss = Rholoss + model.loss_RHO.item()
              
              if (epoch < 5):
                  Lhist[epoch-1] = model.loss_D_MSE
@@ -156,6 +159,9 @@ if __name__ == '__main__':
             losses1['Validationloss'] = Validationloss/(k+1)
             #losses1['Model1loss'] = Model1loss/(i+1)
             losses1['KL divergence'] = KLloss/(i+1)
+            losses1['Vp'] = Vploss/(i+1)
+            losses1['Vs'] = Vsloss/(i+1)
+            losses1['Rho'] = Rholoss/(i+1)
             #print(losses1)
             #losses2 = model.get_current_losses()
             #print(losses2)
