@@ -70,6 +70,9 @@ if __name__ == '__main__':
          Dataloss = 0.0
          Model1loss = 0.0
          KLloss = 0.0
+         Vploss = 0.0
+         Vsloss = 0.0
+         Rholoss = 0.0
          for i, data in enumerate(dataset):  # inner loop within one epoch
              ##print("i: " + str(i))
              iter_start_time = time.time()  # timer for computation per iteration
