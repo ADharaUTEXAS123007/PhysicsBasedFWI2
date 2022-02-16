@@ -2360,10 +2360,10 @@ class unetConv5(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(1.0))
+                                       nn.Tanh())
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.LeakyReLU(1.0))
+                                       nn.Tanh())
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.LeakyReLU(0.1))
