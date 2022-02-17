@@ -5609,7 +5609,7 @@ class AutoElMarmousi22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq):
-        dx = 10.0
+        dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -5659,30 +5659,30 @@ class AutoElMarmousi22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 10.   #simple_model
-        depth_rec = 100.  # receiver depth [m]
+        drec = 20.   #simple_model
+        depth_rec = 200.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
-        xrec1 = 390.      # 1st receiver position [m]
+        xrec1 = 780.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 2610.     # last receiver position [m]
+        xrec2 = 5220.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 80. # source spacing [m]
+        dsrc = 160. # source spacing [m]
         #######dsrc = 120.
-        depth_src = 20.  # source depth [m]
+        depth_src = 40.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 390.  # 1st source position [m]
+        xsrc1 = 780.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 2610.  # last source position [m]
+        xsrc2 = 5220.  # last source position [m]
         #######xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
 
@@ -5703,8 +5703,8 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        #d.TIME = 6.0
-        d.NT = 2.5e-03
+        d.TIME = 6.0
+        #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
         #d.VPLOWERLIM = 1500.0
         #d.VSUPPERLIM = 1732.0
