@@ -2360,10 +2360,10 @@ class unetConv5(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.PReLU())
+                                       nn.LeakyReLU())
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.PReLU())
+                                       nn.LeakyReLU())
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.LeakyReLU(0.1))
@@ -5622,9 +5622,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*10.0
-        vs = vs*10.0
-        rho = rho*10.0
+        vp = vp*100.0
+        vs = vs*100.0
+        rho = rho*100.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -5641,9 +5641,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*100.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
