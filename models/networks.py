@@ -2360,10 +2360,10 @@ class unetConv5(nn.Module):
         if is_batchnorm:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.ReLU())
+                                       nn.LeakyReLU(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
-                                       nn.ReLU())
+                                       nn.LeakyReLU(0.1))
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.LeakyReLU(0.1))
@@ -5331,11 +5331,11 @@ class AutoElMarmousi22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 256]
-        filters = [32, 64, 128, 256, 512]
+        ###filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] ##best result upto now
+        filters = [8, 16, 32, 64, 128] ##best result upto now
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
@@ -5399,9 +5399,9 @@ class AutoElMarmousi22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 256]
         ######filters = [2, 4, 8, 16, 32]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
-        filters = [32, 64, 128, 256, 512]
+        ###filters = [32, 64, 128, 256, 512]
         latent_dim = 8
         label_dsp_dim = (150,294)
         #label_dsp_dim = (40,90)
