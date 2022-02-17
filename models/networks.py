@@ -5716,8 +5716,8 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VPLOWERLIM = 1500.0
         d.VSUPPERLIM = 1732.0
         d.VSLOWERLIM = 866.0
-        d.RHOUPPERLIM = 2073.0
-        d.RHOLOWERLIM = 1929.0
+        d.RHOUPPERLIM = 2600.0
+        d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 0
         #d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
