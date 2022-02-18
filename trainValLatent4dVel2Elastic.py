@@ -49,6 +49,7 @@ if __name__ == '__main__':
     Lhist = np.ones(5)
     freqL = [16]
     mop = 0
+    InitErr = 0
     for epoch in range(opt.epoch_count, opt.n_epochs + opt.n_epochs_decay + 1):    # outer loop for different epochs; we save the model by <epoch_count>, <epoch_count>+<save_latest_freq>
          epoch_start_time = time.time()  # timer for entire epoch
          iter_data_time = time.time()    # timer for data loading per iteration
@@ -120,6 +121,9 @@ if __name__ == '__main__':
              Vploss = Vploss + model.loss_VP.item()
              Vsloss = Vsloss + model.loss_VS.item()
              Rholoss = Rholoss + model.loss_RHO.item()
+             
+             if (epoch == 1):
+                 InitErr = model.loss_D_MSE
              
              if (epoch < 5):
                  Lhist[epoch-1] = model.loss_D_MSE

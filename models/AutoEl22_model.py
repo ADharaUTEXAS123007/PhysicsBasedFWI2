@@ -197,6 +197,7 @@ class AutoEl22Model(BaseModel):
         self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
         #self.grad = self.vp_grad
         self.grad = torch.unsqueeze(self.grad,0)
+        
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
