@@ -5390,9 +5390,9 @@ class AutoElMarmousi22_Net(nn.Module):
         self.rho2    =   nn.Conv2d(int(filters[0]/2),1,1)
         
         
-        self.final1     =   nn.PReLU()
-        self.final2     =   nn.PReLU()
-        self.final3     =   nn.PReLU()
+        self.final1     =   nn.Tanh()
+        self.final2     =   nn.Tanh()
+        self.final3     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -5512,7 +5512,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #vp1    = self.final1(vp1)
         #vs1    = self.final2(vs1)
-        #rho1   = self.final3(rho1)
+        rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
@@ -5848,7 +5848,7 @@ class AutoElMarmousi22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3*0.001
+        rho_grad = 1.0*rho_grad*r3*0.1
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
