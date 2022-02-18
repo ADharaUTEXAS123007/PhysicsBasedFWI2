@@ -471,7 +471,7 @@ class AutoEl22Model(BaseModel):
         return loss1
 
 
-    def optimize_parameters(self, epoch, batch, lstart,freq):
+    def optimize_parameters(self, epoch, batch, lstart,freq,initerror):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
