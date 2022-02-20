@@ -5901,7 +5901,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*38*16, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*32*18, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*20) #for marmousi 101x101
@@ -6032,7 +6032,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         #up1    = self.dropU1(up1)
-        #print("shape of up11 :", np.shape(up11))
+        print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
