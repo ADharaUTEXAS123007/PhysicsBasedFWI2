@@ -5879,9 +5879,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         ###filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32]
+        #filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] ##best result upto now
+        filters = [8, 16, 32, 64, 128] ##best result upto now
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
@@ -5945,8 +5945,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 256]
-        filters = [2, 4, 8, 16, 32]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
         latent_dim = 8
