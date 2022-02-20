@@ -5879,9 +5879,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         ###filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
-        #filters = [2, 4, 8, 16, 32]
+        filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] ##best result upto now
+        #filters = [8, 16, 32, 64, 128] ##best result upto now
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
@@ -5910,17 +5910,17 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
+        self.up33     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]), int(filters[1]/4), self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5928,7 +5928,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(filters[0],filters[0], 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
+        self.f13      =  nn.Conv2d(int(filters[0]), 1, 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
@@ -5945,12 +5945,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 256]
-        ######filters = [2, 4, 8, 16, 32]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [2, 4, 8, 16, 32]
+        #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
         latent_dim = 8
-        label_dsp_dim = (150,300)
+        label_dsp_dim = (100,300)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -5963,8 +5963,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
-        combine1 = self.combine1((inputs2[:,:,1:3000:5,:]))
-        combine2 = self.combine2((inputs3[:,:,1:3000:5,:]))
+        combine1 = self.combine1((inputs2[:,:,1:2500:5,:]))
+        combine2 = self.combine2((inputs3[:,:,1:2500:5,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -6211,9 +6211,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         drec = 20.   #simple_model
         depth_rec = 460.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
-        xrec1 = 680.      # 1st receiver position [m]
+        xrec1 = 380.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 5480.     # last receiver position [m]
+        xrec2 = 5880.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
@@ -6223,9 +6223,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######dsrc = 120.
         depth_src = 40.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 680.  # 1st source position [m]
+        xsrc1 = 380.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 5480.  # last source position [m]
+        xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
@@ -6241,6 +6241,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
+        d.TIME = 5.0
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
