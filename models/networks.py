@@ -5930,8 +5930,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         self.f12      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
         
-        self.vp     =   nn.Conv2d(int(filters[0]/4),1,1)
-        self.vs     =   nn.Conv2d(int(filters[0]/4),1,1)
+        self.vp     =   nn.Conv2d(int(filters[0]),1,1)
+        self.vs     =   nn.Conv2d(int(filters[0]),1,1)
         self.rho1    =   nn.Conv2d(1,1,1)
         
         
@@ -5950,7 +5950,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
         latent_dim = 8
-        label_dsp_dim = (174,497)
+        label_dsp_dim = (150,300)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -5963,8 +5963,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
-        combine1 = self.combine1((inputs2[:,1:50:2,1:3000:5,:]))
-        combine2 = self.combine2((inputs3[:,1:50:2,1:3000:5,:]))
+        combine1 = self.combine1((inputs2[:,:,1:3000:5,:]))
+        combine2 = self.combine2((inputs3[:,:,1:3000:5,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -6210,9 +6210,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         drec = 20.   #simple_model
         depth_rec = 460.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
-        xrec1 = 800.      # 1st receiver position [m]
+        xrec1 = 680.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 8780.     # last receiver position [m]
+        xrec2 = 5480.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
@@ -6222,9 +6222,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######dsrc = 120.
         depth_src = 40.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 800.  # 1st source position [m]
+        xsrc1 = 680.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 8720.  # last source position [m]
+        xsrc2 = 5480.  # last source position [m]
         #######xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
@@ -6260,12 +6260,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4766.0
+        d.VPUPPERLIM = 4727.0
         d.VPLOWERLIM = 1500.0
-        d.VSUPPERLIM = 2752.0
+        d.VSUPPERLIM = 2729.0
         d.VSLOWERLIM = 0.0
-        d.RHOUPPERLIM = 2626.9998
-        d.RHOLOWERLIM = 1009.993
+        d.RHOUPPERLIM = 2627.0
+        d.RHOLOWERLIM = 1009.0
         d.SWS_TAPER_GRAD_HOR = 0
         #d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
