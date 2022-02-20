@@ -6251,7 +6251,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
         d.NPROCX = 6
-        d.NPROCY = 6
+        d.NPROCY = 5
         d.PHYSICS = 1
         #d.TIME = 6.0
         #d.NT = 2.5e-03
