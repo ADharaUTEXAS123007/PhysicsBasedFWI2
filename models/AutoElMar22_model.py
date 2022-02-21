@@ -159,14 +159,16 @@ class AutoElMar22Model(BaseModel):
         
         #self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         #self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
-        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
-        self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        #self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        self.grad = torch.cat((self.vp_grad,self.vs_grad))
         #self.grad = self.vp_grad
         self.grad = torch.unsqueeze(self.grad,0)
         return self.loss_D_MSE
@@ -390,24 +392,24 @@ class AutoElMar22Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            ###self.grad = self.grad.cuda(self.fake_B.get_device())
+            self.grad = self.grad.cuda(self.fake_B.get_device())
             ###print("gradient device :",self.grad.get_device())
             
             ####print("gradient shape :", np.shape(self.grad))
             
-            ####self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
             
             #################
-            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
-            self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
-            self.fake_Vp.backward(self.vp_grad,retain_graph=True)
-            #self.fake_Vs.retain_grad()
-            #self.fake_Vp.retain_grad()
-            #self.fake_Rho.retain_grad()
+            # self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+            # self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
+            # self.fake_Vp.backward(self.vp_grad,retain_graph=True)
+            # #self.fake_Vs.retain_grad()
+            # #self.fake_Vp.retain_grad()
+            # #self.fake_Rho.retain_grad()
             
-            self.vs_grad = torch.unsqueeze(self.vs_grad,0)
-            self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
-            self.fake_Vs.backward(self.vs_grad)
+            # self.vs_grad = torch.unsqueeze(self.vs_grad,0)
+            # self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
+            # self.fake_Vs.backward(self.vs_grad)
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
