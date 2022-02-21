@@ -5910,17 +5910,17 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], int(filters[2]/2), self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
+        #self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(int(filters[2]/2), int(filters[1]/2), self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
+        #self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(int(filters[1]/2), int(filters[0]/2), self.is_deconv)
-        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        #self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5928,16 +5928,16 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(int(filters[0]/2),int(filters[0]/2), 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
+        #self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
-        self.rho1    =   nn.Conv2d(1,1,1)
+        #self.rho1    =   nn.Conv2d(1,1,1)
         
         
         self.final1     =   nn.Tanh()
         self.final2     =   nn.Tanh()
-        self.final3     =   nn.Tanh()
+        #self.final3     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -6014,20 +6014,20 @@ class AutoElMarmousiMar22_Net(nn.Module):
     
         up31    = self.up31(z)
         up32    = self.up32(z)
-        up33    = self.up33(z)
+        #up33    = self.up33(z)
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
         up21    = self.up21(up31)
         up22    = self.up22(up32)
-        up23    = self.up23(up33)
+        #up23    = self.up23(up33)
         #up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
         up11    = self.up11(up21)
         up12    = self.up12(up22)
-        up13    = self.up13(up23)
+        #up13    = self.up13(up23)
         #up1     = self.up1(up2)
         
         
@@ -6035,18 +6035,18 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        #up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
-        f13     = self.f13(up13)
+        #f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = self.rho1(f13)
+        #rho1    = self.rho1(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -6066,11 +6066,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:22,:] = inputs1[:,0,0:22,:]
         vs1[:,:,0:22,:] = inputs1[:,1,0:22,:]
-        rho1[:,:,0:22,:] = inputs1[:,2,0:22,:]
+        #rho1[:,:,0:22,:] = inputs1[:,2,0:22,:]
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
@@ -6081,7 +6081,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
         #rho1     = inputs1[:,2,:,:]
@@ -6126,7 +6126,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         rho_grad = vp1*0
         
         #vs1 = vp1*0
-        #rho1 = vp1*0
+        rho1 = vp1*0
         if (epoch1 > lstart):
             [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
         #if (epoch1 > lstart):
@@ -6266,8 +6266,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.VPLOWERLIM = 1500.0
         d.VSUPPERLIM = 2602.8601
         d.VSLOWERLIM = 0.0
-        d.RHOUPPERLIM = 2588.9998
-        d.RHOLOWERLIM = 1009.9993
+        d.RHOUPPERLIM = 1800.0
+        d.RHOLOWERLIM = 1800.0
         d.SWS_TAPER_GRAD_HOR = 0
         d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
@@ -6288,7 +6288,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
-        model_init = api.Model(vpst, vsst, rhost, dx)
+        model_init = api.Model(vpst, vsst, rho, dx)
         
         
         d.fwi_stages = []
