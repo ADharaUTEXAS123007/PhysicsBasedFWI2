@@ -5879,10 +5879,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         ###filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32] #this works best result so far
+        ##########filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] ##best result upto now
-        #filters = [8, 16, 32, 64, 128]
+        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
