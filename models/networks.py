@@ -5919,7 +5919,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
+        self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
@@ -5935,8 +5935,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.rho1    =   nn.Conv2d(1,1,1)
         
         
-        self.final1     =   nn.Tanh()
-        self.final2     =   nn.Tanh()
+        #self.final1     =   nn.Tanh()
+        #self.final2     =   nn.Tanh()
         #self.final3     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
@@ -6056,8 +6056,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1    = self.final1(vp1)
-        vs1    = self.final2(vs1)
+        #vp1    = self.final1(vp1)
+        #vs1    = self.final2(vs1)
         #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -6172,9 +6172,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1000.0
-        vs = vs*1000.0
-        rho = rho*1000.0
+        vp = vp*100.0
+        vs = vs*100.0
+        rho = rho*100.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -6191,9 +6191,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1000.0
-        vsst = vsst*1000.0
-        rhost = rhost*1000.0
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*100.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
@@ -6263,9 +6263,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4508.2861
+        d.VPUPPERLIM = 4509.0
         d.VPLOWERLIM = 1500.0
-        d.VSUPPERLIM = 2602.8601
+        d.VSUPPERLIM = 2603.0
         d.VSLOWERLIM = 0.0
         d.RHOUPPERLIM = 1800.0
         d.RHOLOWERLIM = 1800.0
