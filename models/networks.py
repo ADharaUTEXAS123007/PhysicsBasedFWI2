@@ -6039,8 +6039,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         ######up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
-        f11     = self.f11(up1)
-        f12     = self.f12(up1)
+        f11     = self.f11(up11)
+        f12     = self.f12(up12)
         #f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
