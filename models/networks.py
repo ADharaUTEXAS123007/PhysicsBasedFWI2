@@ -5879,9 +5879,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######filters = [16, 32, 64, 128, 256]
         ###filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
+        #filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
@@ -5945,8 +5945,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #######filters = [16, 32, 64, 128, 256]
-        filters = [2, 4, 8, 16, 32]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        ########filters = [2, 4, 8, 16, 32]
+        #filters = [4,8,16,32]
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
         latent_dim = 8
@@ -6025,18 +6026,18 @@ class AutoElMarmousiMar22_Net(nn.Module):
         up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
-        #######up11    = self.up11(up21)
-        #######up12    = self.up12(up22)
+        up11    = self.up11(up2)
+        up12    = self.up12(up2)
         #up13    = self.up13(up23)
-        up1     = self.up1(up2)
+        #up1     = self.up1(up2)
         
         
         #up1    = self.dropU1(up1)
         #########print("shape of up11 :", np.shape(up11))
-        ######up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        ######up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         #up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        ######up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up1)
         f12     = self.f12(up1)
