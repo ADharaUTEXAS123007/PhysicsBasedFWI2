@@ -5364,7 +5364,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #self.z1 = nn.Conv2d(filters[3],filters[3],1)
         #self.z2 = nn.Conv2d(filters[3],filters[3],1)
-        self.z3 = nn.Conv2d(filters[3],filters[3],1)
+        #self.z3 = nn.Conv2d(filters[3],filters[3],1)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -5473,11 +5473,11 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #z1 = self.z1(z)
         #z2 = self.z2(z)
-        z3 = self.z3(z)
+        #z3 = self.z3(z)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
-        up33    = self.up33(z3)
+        up33    = self.up33(z)
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
