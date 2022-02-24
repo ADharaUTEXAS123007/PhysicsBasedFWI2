@@ -5362,6 +5362,9 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*20) #for marmousi 101x101
         
+        self.z1 = nn.Conv2d(1,1,1)
+        self.z2 = nn.Conv2d(1,1,1)
+        self.z3 = nn.Conv2d(1,1,1)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -5467,10 +5470,14 @@ class AutoElMarmousi22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 20, 38)
+        
+        z1 = self.z1(z)
+        z2 = self.z2(z)
+        z3 = self.z3(z)
     
-        up31    = self.up31(z)
-        up32    = self.up32(z)
-        up33    = self.up33(z)
+        up31    = self.up31(z1)
+        up32    = self.up32(z2)
+        up33    = self.up33(z3)
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
@@ -5849,7 +5856,7 @@ class AutoElMarmousi22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3*0.5
+        rho_grad = 1.0*rho_grad*r3*0.1
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
