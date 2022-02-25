@@ -88,6 +88,9 @@ if __name__ == '__main__':
              CurrentErr = model.loss_D_MSE
              if (epoch == 1):
                  InitErr = model.loss_D_MSE
+                 
+            print("currenterror :", currentErr)
+            print("initerror :", InitErr)
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()
