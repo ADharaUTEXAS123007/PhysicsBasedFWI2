@@ -257,7 +257,7 @@ class AutoEl22Model(BaseModel):
         self.loss_G.backward()
         
         
-    def backward_G11(self, epoch1, batch, lstart):
+    def backward_G11(self, epoch1, batch, lstart,initerror,currenterror):
             
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
@@ -412,7 +412,7 @@ class AutoEl22Model(BaseModel):
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
             
-            if (epoch1 > 100):
+            if (currenterror < 0.2*initerror):
                 self.rho_grad = torch.unsqueeze(self.rho_grad,0)
                 self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
                 self.fake_Rho.backward(self.rho_grad)
@@ -471,11 +471,11 @@ class AutoEl22Model(BaseModel):
         return loss1
 
 
-    def optimize_parameters(self, epoch, batch, lstart,freq,initerror):
+    def optimize_parameters(self, epoch, batch, lstart,freq,initerror,currenterror):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.backward_G11(epoch,batch,lstart)   
+        self.backward_G11(epoch,batch,lstart,initerror,currenterror)   
         #                 # calculate graidents for G
         
         #####self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights

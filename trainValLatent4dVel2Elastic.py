@@ -83,9 +83,10 @@ if __name__ == '__main__':
              total_iters += opt.batch_size
              epoch_iter += opt.batch_size
              model.set_input(data)         # unpack data from dataset and apply preprocessing
-             #if (epoch == 1):
-             #    InitErr = model.loss_D_MSE
-             model.optimize_parameters(epoch,i,lstart,freqL[mop],InitErr)   # calculate loss functions, get gradients, update network weights
+             CurrentErr = model.loss_D_MSE
+             if (epoch == 1):
+                 InitErr = model.loss_D_MSE
+             model.optimize_parameters(epoch,i,lstart,freqL[mop],InitErr,CurrentErr)   # calculate loss functions, get gradients, update network weights
              #model.test()
              #if (i==190):
              #   visuals = model.get_current_visuals()
