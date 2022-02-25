@@ -5391,7 +5391,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
-        self.rho1    =   nn.Conv2d(int(filters[0]/4),1,1)
+        self.rho1    =   nn.Conv2d(1,1,1)
         
         
         self.final1     =   nn.Tanh()
