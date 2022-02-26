@@ -5927,7 +5927,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        #self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5935,11 +5935,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]), 1)
-        #self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
+        self.f13      =  nn.Conv2d(int(filters[0]/4), 1, 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
-        #self.rho1    =   nn.Conv2d(1,1,1)
+        self.rho    =   nn.Conv2d(1,1,1)
         
         
         #self.final1     =   nn.Tanh()
@@ -6035,7 +6035,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up2    = self.dropU2(up2)
         up11    = self.up11(up2)
         up12    = self.up12(up2)
-        #up13    = self.up13(up23)
+        up13    = self.up13(up2)
         #up1     = self.up1(up2)
         
         
@@ -6043,18 +6043,18 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        #up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         ######up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
-        #f13     = self.f13(up13)
+        f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        #rho1    = self.rho1(f13)
+        rho1    = self.rho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -6074,11 +6074,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
-        #rho1[:,:,0:22,:] = inputs1[:,2,0:22,:]
+        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
@@ -6089,7 +6089,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        #rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
         #rho1     = inputs1[:,2,:,:]
@@ -6274,8 +6274,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.VPLOWERLIM = 1500.0
         d.VSUPPERLIM = 2603.0
         d.VSLOWERLIM = 0.0
-        d.RHOUPPERLIM = 1800.0
-        d.RHOLOWERLIM = 1800.0
+        d.RHOUPPERLIM = 2589.0
+        d.RHOLOWERLIM = 1009.0
         d.SWS_TAPER_GRAD_HOR = 1
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
