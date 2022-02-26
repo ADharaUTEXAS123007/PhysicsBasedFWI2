@@ -6135,7 +6135,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         rho_grad = vp1*0
         
         #vs1 = vp1*0
-        rho1 = vp1*0
+        #rho1 = vp1*0
         if (epoch1 > lstart):
             [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
         #if (epoch1 > lstart):
