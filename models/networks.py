@@ -6052,6 +6052,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #f1    = self.f1(up1)
         
         
+        
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
         rho1    = self.rho(f13)
