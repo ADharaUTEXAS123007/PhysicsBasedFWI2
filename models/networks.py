@@ -5888,8 +5888,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
-        ####filters = [4, 8, 16, 32, 64]
+        #####filters = [8, 16, 32, 64, 128] 
+        filters = [4, 8, 16, 32, 64]
         #########filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
@@ -5939,7 +5939,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
-        self.rho    =   nn.Conv2d(1,1,1)
+        #self.rho    =   nn.Conv2d(1,1,1)
         
         
         #self.final1     =   nn.Tanh()
@@ -5954,10 +5954,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         ########filters = [2, 4, 8, 16, 32]
         #filters = [4,8,16,32]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        ####filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [32, 64, 128, 256, 512]
-        #filters = [4, 8, 16, 32, 64]
+        filters = [4, 8, 16, 32, 64]
         latent_dim = 8
         label_dsp_dim = (100,300)
         #label_dsp_dim = (40,90)
@@ -6056,7 +6056,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = self.rho(f13)
+        rho1    = f13
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
