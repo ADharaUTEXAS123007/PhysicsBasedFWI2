@@ -5917,12 +5917,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
+        self.up33     = autoUp5(filters[3], 1, self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/4), 1, self.is_deconv)
+        self.up23     = autoUp5(1, 1, self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -6237,13 +6237,34 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ######xsrc1 = 100.
         xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
-        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        idx = np.random.permutation(len(xsrcoriginal))
+        xsrc = xsrcoriginal[idx]
+        tshots = 14
+        xsrc = xsrc[0:tshots]
         ysrc = depth_src * xsrc / xsrc
+        
 
         # Wrap into api
         fsource = 10.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
+        
+        os.sytem('-rf /disk/student/adhara/MARMOUSI/su1')
+        os.mkdir('mkdir /disk/student/adhara/MARMOUSI/su1')
+        for i in range(0,tshots):
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(idx[0])+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            os.system(fo)
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(idx[0])+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            os.system(fo)
+            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(idx[0])+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(i+1)
+            os.system(fo)
+            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(idx[0])+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(i+1)
+            os.system(fo)
+        #os.system('mv ./outputs/su1/seis_x.su.shot2 ./outputs/su1/seis_x.su.shot1')
+        #os.system('mv ./outputs/su1/seis_y.su.shot2 ./outputs/su1/seis_y.su.shot1')
+        d.SEIS_FILE_VX = 'su1/seis_x.su'
+        d.SEIS_FILE_VY = 'su1/seis_y.su'
 
         #d.help()
         #d.NX = 300
