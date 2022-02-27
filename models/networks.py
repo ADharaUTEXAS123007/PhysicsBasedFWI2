@@ -6251,7 +6251,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         src = api.Sources(xsrc, ysrc, fsource)
         
         os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
-        os.mkdir('mkdir /disk/student/adhara/MARMOUSI/su1')
+        os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
         for i in range(0,tshots):
             fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(idx[0])+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
             os.system(fo)
