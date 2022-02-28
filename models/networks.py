@@ -6271,6 +6271,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
             #os.system(fo)
         pool = ThreadPool(tshots)
         values = range(0,tshots)
+        print("values :", values)
         pool.starmap(copyshot, zip(idx,values))
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
