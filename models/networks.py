@@ -6020,10 +6020,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
+        zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 14, 38)
-        zrho = z.view(-1, filters[0], 14, 38)
+        zrho = zrho.view(-1, filters[0], 14, 38)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
