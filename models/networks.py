@@ -6256,13 +6256,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
         os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
         os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
         def copyshot(id1, value):
-            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
             os.system(fo)
-            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
             os.system(fo)
-            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
+            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
             os.system(fo)
-            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
+            fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
             os.system(fo)
         #os.system('mv ./outputs/su1/seis_x.su.shot2 ./outputs/su1/seis_x.su.shot1')
         #os.system('mv ./outputs/su1/seis_y.su.shot2 ./outputs/su1/seis_y.su.shot1')
