@@ -6270,7 +6270,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
             #fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
             #os.system(fo)
         pool = ThreadPool(tshots)
-        values = range(0,tshots)
+        values = np.arange(0,tshots)
         print("values :", values)
         print("idx :", idx)
         pool.starmap(copyshot, zip(idx,values))
