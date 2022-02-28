@@ -5914,7 +5914,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*14) #for marmousi 101x101
-        self.decoder_inputRho = nn.Linear(latent_dim, 1*38*14)
+        self.decoder_inputRho = nn.Linear(latent_dim, 1*304*112)
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -6027,26 +6027,26 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 14, 38)
-        zrho = zrho.view(-1, 1, 14, 38)
+        zrho = zrho.view(-1, 1, 112, 304)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
-        up33    = self.up33(zrho)
+        #up33    = self.up33(zrho)
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
         up21    = self.up21(up31)
         up22    = self.up22(up32)
-        up23    = self.up23(up33)
+        #up23    = self.up23(up33)
         #up2     = self.up2(up3)
         
         #up2    = self.dropU2(up2)
         up11    = self.up11(up21)
         up12    = self.up12(up22)
-        print("shape of up12 :", np.shape(up12))
+        #print("shape of up12 :", np.shape(up12))
         
-        up13    = self.up13(up23)
+        up13    = self.up13(zrho)
         #up1     = self.up1(up2)
         
         
