@@ -6044,6 +6044,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up2    = self.dropU2(up2)
         up11    = self.up11(up21)
         up12    = self.up12(up22)
+        print("shape of up12 :", np.shape(up12))
+        
         up13    = self.up13(up23)
         #up1     = self.up1(up2)
         
