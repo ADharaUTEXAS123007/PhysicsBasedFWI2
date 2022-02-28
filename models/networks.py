@@ -5914,13 +5914,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*14) #for marmousi 101x101
-        self.decoder_inputRho = nn.Linear(latent_dim, filters[0]*38*14)
+        self.decoder_inputRho = nn.Linear(latent_dim, 1*38*14)
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
-        self.up33     = autoUp5(filters[0], 1, self.is_deconv)
+        self.up33     = autoUp5(1, 1, self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
@@ -5947,7 +5947,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1     =   nn.Tanh()
         #self.final2     =   nn.Tanh()
-        #self.final3     =   nn.Tanh()
+        self.final3     =   nn.Tanh()
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -6027,7 +6027,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 14, 38)
-        zrho = zrho.view(-1, filters[0], 14, 38)
+        zrho = zrho.view(-1, 1, 14, 38)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
