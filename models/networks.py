@@ -28,6 +28,8 @@ import torch.distributions.transforms as transform
 import torch.distributions as distrib
 import pyapi_denise as api
 import os
+import multiprocessing
+from multiprocessing.dummy import Pool as ThreadPool 
 
 ###############################################################################
 # Helper Functions
