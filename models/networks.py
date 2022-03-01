@@ -6060,6 +6060,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
+        
+        print("shape of f12 :", np.shape(f12))
         f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
