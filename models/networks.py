@@ -5970,8 +5970,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         minvs = torch.min(inputs1[:,1,:,:])
         maxvs = torch.max(inputs1[:,1,:,:])
         
-        minrho = torch.min(inputs1[:,2,:,:])*10
-        maxrho = torch.max(inputs1[:,2,:,:])*10
+        minrho = torch.min(inputs1[:,2,:,:])
+        maxrho = torch.max(inputs1[:,2,:,:])
         
         print("minrho :", minrho)
         print("maxrho :", maxrho)
@@ -6084,11 +6084,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*10 + rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
-        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]*10
+        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
@@ -6208,9 +6208,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
-        rhost = rhost*10.0
+        vpst = vpst*1000.0
+        vsst = vsst*1000.0
+        rhost = rhost*1000.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -6443,7 +6443,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3
+        rho_grad = 1.0*rho_grad*r3*0.5
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
