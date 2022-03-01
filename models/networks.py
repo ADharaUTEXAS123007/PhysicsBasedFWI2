@@ -6084,15 +6084,15 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*10 + rho1
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
         rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
-        vp1     = self.final1(vp1)
-        vs1     = self.final2(vs1)
-        rho1    = self.final3(rho1)
+        #vp1     = self.final1(vp1)
+        #vs1     = self.final2(vs1)
+        #rho1    = self.final3(rho1)
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-minvs)
         #rho1   = minrho + rho1*(maxrho-minrho)
@@ -6208,12 +6208,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        #vpst = vpst*100.0
-        #vsst = vsst*100.0
-        #rhost = rhost*100.0
-        vpst = 1500+(4509-1500)*vpst
-        vsst = 0 + 2603*vsst
-        rhost = 1009 + (2589-1009)*rhost
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*10.0
+        #vpst = 1500+(4509-1500)*vpst
+        #vsst = 0 + 2603*vsst
+        #rhost = 1009 + (2589-1009)*rhost
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))

@@ -189,6 +189,7 @@ class AutoElMar22Model(BaseModel):
         
         #self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         #self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
+        self.fake_Rho = self.fake_Rho/10
         self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
