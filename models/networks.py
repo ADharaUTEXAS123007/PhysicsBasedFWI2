@@ -6027,7 +6027,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 14, 38)
-        zrho = zrho.view(-1, 4, 112, 304)
+        zrho = zrho.view(-1, 16, 112, 304)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
