@@ -5914,7 +5914,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*14) #for marmousi 101x101
-        self.decoder_inputRho = nn.Linear(latent_dim, 4*304*112)
+        self.decoder_inputRho = nn.Linear(latent_dim, 16*304*112)
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -5930,7 +5930,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up13     = autoUp5(4, 1, self.is_deconv)
+        self.up13     = autoUp5(16, 8, self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5938,11 +5938,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]), 1)
-        self.f13      =  nn.Conv2d(1, 1, 1)
+        self.f13      =  nn.Conv2d(8, 4, 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
-        #self.rho    =   nn.Conv2d(1,1,1)
+        self.rho    =   nn.Conv2d(4,1,1)
         
         
         #self.final1     =   nn.Tanh()
@@ -6067,7 +6067,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = f13
+        rho1    = self.rho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
