@@ -6088,7 +6088,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
-        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
+        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]*10
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
