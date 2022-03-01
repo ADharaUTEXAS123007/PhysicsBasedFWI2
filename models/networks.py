@@ -5914,7 +5914,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*14) #for marmousi 101x101
-        self.decoder_inputRho = nn.Linear(latent_dim, 1*304*112)
+        self.decoder_inputRho = nn.Linear(latent_dim, 4*304*112)
         
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
@@ -5930,7 +5930,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up13     = autoUp5(1, 1, self.is_deconv)
+        self.up13     = autoUp5(4, 1, self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -6027,7 +6027,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         z = z.view(-1, filters[3], 14, 38)
-        zrho = zrho.view(-1, 1, 112, 304)
+        zrho = zrho.view(-1, 4, 112, 304)
     
         up31    = self.up31(z)
         up32    = self.up32(z)
@@ -6087,7 +6087,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) - rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
@@ -6443,7 +6443,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3*0.1
+        rho_grad = 1.0*rho_grad*r3
         
         filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
