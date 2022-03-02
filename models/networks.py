@@ -5938,7 +5938,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]), 1)
-        self.f13      =  nn.Conv2dint(int(filters[0]*2), filters[0], 1)
+        self.f13      =  nn.Conv2d(int(filters[0]*2), filters[0], 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
