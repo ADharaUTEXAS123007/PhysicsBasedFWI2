@@ -5946,8 +5946,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         self.final1     =   nn.Sigmoid()
-        self.final2     =   nn.Conv2d(1,1,kernel_size=3,padding=1)
-        self.final3     =   nn.Conv2d(1,1,kernel_size=3,padding=1)
+        self.final2     =   nn.Conv2d(1,1,1)
+        self.final3     =   nn.Conv2d(1,1,1)
         
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
