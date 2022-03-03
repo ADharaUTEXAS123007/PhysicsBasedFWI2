@@ -6064,7 +6064,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = self.rho(f13)
+        rho1    = f13
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -6084,7 +6084,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) - rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
