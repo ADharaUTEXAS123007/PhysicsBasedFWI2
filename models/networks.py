@@ -5947,7 +5947,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1     =   nn.Sigmoid()
         #self.final2     =   nn.Tanh()
-        #self.final3     =   nn.Tanh()
+        self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
