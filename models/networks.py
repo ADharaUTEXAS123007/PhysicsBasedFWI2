@@ -5947,7 +5947,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1     =   nn.Sigmoid()
         #self.final2     =   nn.Tanh()
-        #self.final3     =   nn.Tanh()
+        self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
@@ -6074,7 +6074,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #vp1    = self.final1(vp1)
         #vs1    = self.final2(vs1)
-        #rho1   = self.final3(rho1)
+        rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
