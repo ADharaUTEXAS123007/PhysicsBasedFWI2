@@ -5894,7 +5894,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ###filters = [4, 8, 16, 32, 64]
         #########filters = [2, 4, 8, 16, 32]
         
-        latent_dim = 8
+        latent_dim = 64
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -5947,7 +5947,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1     =   nn.Sigmoid()
         #self.final2     =   nn.Tanh()
-        self.final3     =   nn.Tanh()
+        #self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
@@ -5960,7 +5960,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [1, 1, 2, 4, 16]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4, 8, 16, 32, 64]
-        latent_dim = 8
+        latent_dim = 64
         label_dsp_dim = (100,300)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
@@ -6074,7 +6074,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #vp1    = self.final1(vp1)
         #vs1    = self.final2(vs1)
-        rho1   = self.final3(rho1)
+        #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
