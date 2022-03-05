@@ -288,8 +288,12 @@ class AutoElMar22Model(BaseModel):
         self.loss_VS = self.criterionMSE(self.real_Vs, self.fake_Vs)
         self.loss_RHO = self.criterionMSE(self.real_Rho, self.fake_Rho)
         
+        self.loss_L_MSE = self.criterionMSE(self.low_Vp, self.fake_Vp) + self.criterionMSE(self.low_Vs, self.fake_Vs) + self.criterionMSE(self.low_Rho, self.fake_Rho)
+        
         print("loss M MSE :", self.loss_M_MSE)
         print("loss D MSE :", self.loss_D_MSE)
+        
+        
         
         #print("shape of grad :", np.shape(self.grad))
         #k
@@ -343,7 +347,7 @@ class AutoElMar22Model(BaseModel):
         #self.fake_B.retain_grad()
 
         
-        self.loss_G = lambda1 * self.loss_M_MSE 
+        self.loss_G = lambda1 * self.loss_L_MSE 
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
         if (epoch1 <= lstart):
