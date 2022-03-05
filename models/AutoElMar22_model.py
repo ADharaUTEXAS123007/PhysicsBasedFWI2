@@ -103,7 +103,7 @@ class AutoElMar22Model(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE', 'VP', 'VS', 'RHO']
+        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE', 'VP', 'VS', 'RHO','L_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
         self.visual_names = ['fake_Vp','real_Vp','fake_Vs', 'real_Vs','fake_Rho','real_Rho']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
@@ -290,6 +290,9 @@ class AutoElMar22Model(BaseModel):
         
         self.loss_L_MSE = self.criterionMSE(self.low_Vp, self.fake_Vp) + self.criterionMSE(self.low_Vs, self.fake_Vs) + self.criterionMSE(self.low_Rho, self.fake_Rho)
         
+        self.loss_VPLOW = self.criterionMSE(self.real_Vp, self.low_Vp)
+        self.loss_VSLOW = self.criterionMSE(self.low_Vs, self.fake_Vs)
+        self.loss_RHOLOW = self.criterionMSE(self.low_Rho, self.fake_Rho)
         print("loss M MSE :", self.loss_M_MSE)
         print("loss D MSE :", self.loss_D_MSE)
         
