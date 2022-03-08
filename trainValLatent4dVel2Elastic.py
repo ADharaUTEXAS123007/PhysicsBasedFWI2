@@ -125,6 +125,7 @@ if __name__ == '__main__':
              iter_data_time = time.time()
              Modelloss = Modelloss + model.loss_M_MSE.item()
              Dataloss = Dataloss + model.loss_D_MSE*10**20
+             print("loss_D_MSE :", model.loss_D_MSE)
              Vploss = Vploss + model.loss_VP.item()
              Vsloss = Vsloss + model.loss_VS.item()
              Rholoss = Rholoss + model.loss_RHO.item()
