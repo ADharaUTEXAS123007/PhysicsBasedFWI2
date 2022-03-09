@@ -5920,17 +5920,17 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/8), self.is_deconv)
+        self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/8), int(filters[1]/8), self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up13     = autoUp5(int(filters[1]/8), int(filters[0]/8), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5938,16 +5938,16 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         self.f12      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/8),1, 1)
+        self.f13      =  nn.Conv2d(int(filters[0]/4),int(filters[0]/4), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
-        self.rho    =   nn.Conv2d(1, 1, 1)
+        self.rho    =   nn.Conv2d(int(filters[0]/4), 1, 1)
         
         
         #self.final1     =   nn.Sigmoid()
         #self.final2     =   nn.Tanh()
-        self.final3     =   nn.Tanh()
+        #self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
@@ -6323,13 +6323,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiEl/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiEl9Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiEl/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiEl9Mar/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiEl/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiEl9Mar/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
