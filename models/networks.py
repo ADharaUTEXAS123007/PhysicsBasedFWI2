@@ -5920,12 +5920,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/32), self.is_deconv)
+        self.up33     = autoUp5(filters[3], int(filters[2]/16), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/32), 1, self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]/16), 1, self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -6095,7 +6095,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=1719.00, max=maxrho)
+        rho1   = torch.clip(rho1, min=17190.00, max=maxrho)
         
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
@@ -6192,9 +6192,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1.0
-        vs = vs*1.0
-        rho = rho*1.0
+        vp = vp/10.0
+        vs = vs/10.0
+        rho = rho/10.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -6211,9 +6211,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst/10.0
+        vsst = vsst/10.0
+        rhost = rhost/10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -6446,7 +6446,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         r3 = np.max(rhost)/np.max(rho_grad)
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3*0.05
+        rho_grad = 1.0*rho_grad*r3*0.5
         
         filen = './marmousiEl9Mar/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
