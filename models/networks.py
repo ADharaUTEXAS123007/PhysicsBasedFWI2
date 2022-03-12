@@ -5929,7 +5929,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up12     = autoUp5(filters[1]/2, filters[0]/2, self.is_deconv)
+        self.up12     = autoUp5(int(filters[1]/2), int(filters[0]/2), self.is_deconv)
         self.up13     = autoUp5(int(filters[1]/8), int(filters[0]/8), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
@@ -5937,7 +5937,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ##self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
-        self.f12      =  nn.Conv2d(filters[0]/2,int(filters[0]/2), 1)
+        self.f12      =  nn.Conv2d(int(filters[0]/2),int(filters[0]/2), 1)
         self.f13      =  nn.Conv2d(int(filters[0]/8), int(filters[0]/8), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
