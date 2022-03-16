@@ -123,7 +123,7 @@ class AutoElMar22Model(BaseModel):
             self.optimizer_G = torch.optim.Adam(
                 self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
-            print("parameters list :", list(self.netG.named_parameters())
+            print("parameters list :", list(self.netG.named_parameters()))
             self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
