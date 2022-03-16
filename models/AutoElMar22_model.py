@@ -124,7 +124,7 @@ class AutoElMar22Model(BaseModel):
                 self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             for name, param in self.netG.named_parameters():
-                if name in ['combine']:
+                if 'combine' in name:
                     print("name11 :", name)
         
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
