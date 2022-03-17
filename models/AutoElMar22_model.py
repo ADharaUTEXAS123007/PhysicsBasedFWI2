@@ -123,6 +123,8 @@ class AutoElMar22Model(BaseModel):
             self.optimizer_G = torch.optim.Adam(
                 self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
+            self.optimizer_G1 = torch.optim.Adam(
+                [param for name, param in self.netG.named_parameters() if 'combine' in name], lr=opt.lr)
             for name, param in self.netG.named_parameters():
                 if 'combine' in name:
                     print("name11 :", name)
