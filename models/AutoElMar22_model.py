@@ -436,11 +436,11 @@ class AutoElMar22Model(BaseModel):
             #self.fake_Rho.retain_grad()
             #print("currenterror :", currenterror)
             #print("initerror :", initerror)
-            #if (currenterror < 0.5*initerror):
+            if (currenterror < 0.5*initerror):
                 #print("backpropagating density gradient")
-            self.rho_grad = torch.unsqueeze(self.rho_grad,0)
-            self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
-            self.fake_Rho.backward(self.rho_grad)
+                self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+                self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+                self.fake_Rho.backward(self.rho_grad)
                 
             #self.fake_Rho.retain_grad()
 
