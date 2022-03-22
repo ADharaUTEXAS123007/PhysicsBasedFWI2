@@ -5890,9 +5890,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        ###filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [4, 8, 16, 32, 64]
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #########filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
@@ -5920,17 +5920,17 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up32     = autoUp5(int(filters[3]), int(filters[2]/2), self.is_deconv)
+        self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         self.Rhoup33     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up22     = autoUp5(int(filters[2]/2), int(filters[1]/2), self.is_deconv)
+        self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         self.Rhoup23     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up12     = autoUp5(int(filters[1]/2), int(filters[0]/2), self.is_deconv)
+        self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         self.Rhoup13     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
@@ -5938,7 +5938,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ##self.upff2     = autoUp(filters[0], filters[0], self.is_deconv)
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
-        self.f12      =  nn.Conv2d(int(filters[0]/2),int(filters[0]/2), 1)
+        self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]), 1)
         self.Rhof13      =  nn.Conv2d(int(filters[0]), int(filters[0]/2), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
@@ -5957,9 +5957,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         ########filters = [2, 4, 8, 16, 32]
         #filters = [4,8,16,32]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         latent_dim = 8
         label_dsp_dim = (100,300)
