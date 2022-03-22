@@ -5920,7 +5920,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up32     = autoUp5(int(filters[3]/2), int(filters[2]/2), self.is_deconv)
+        self.up32     = autoUp5(int(filters[3]), int(filters[2]/2), self.is_deconv)
         self.Rhoup33     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
