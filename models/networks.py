@@ -6251,7 +6251,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ######xsrc1 = 100.
         xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
-        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :",xsrcoriginal)
         idx = np.random.permutation(len(xsrcoriginal))
         xsrc = xsrcoriginal[idx]
