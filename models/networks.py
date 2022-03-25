@@ -113,7 +113,8 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             elif init_type == 'orthogonal':
                 init.orthogonal_(m.weight.data, gain=init_gain)
             else:
-                raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
+                #raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
+                init.ones_(m.weight.data)
             if hasattr(m, 'bias') and m.bias is not None:
                 init.constant_(m.bias.data, 0.0)
         elif classname.find('BatchNorm2d') != -1:  # BatchNorm Layer's weight is not a matrix; only normal distribution applies.
