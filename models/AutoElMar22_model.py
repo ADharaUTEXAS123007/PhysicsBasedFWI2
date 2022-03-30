@@ -121,7 +121,7 @@ class AutoElMar22Model(BaseModel):
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
             self.optimizer_G = torch.optim.LBFGS(
-                self.netG.parameters(), lr=opt.lr)
+                self.netG.parameters(), lr=0.01)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G1 = torch.optim.Adam(
             #    [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
