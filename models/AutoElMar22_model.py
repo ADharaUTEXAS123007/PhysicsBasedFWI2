@@ -120,21 +120,21 @@ class AutoElMar22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            ###self.optimizer_G = torch.optim.Adam(
-            ###    self.netG.parameters(), lr=opt.lr)
+            self.optimizer_G = torch.optim.LBFGS(
+                self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
-            self.optimizer_G1 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
-            self.optimizer_G2 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
+            #self.optimizer_G1 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
+            #self.optimizer_G2 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
             #for name, param in self.netG.named_parameters():
             #    if 'Rho' not in name:
             #        print("name11 :", name)
         
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
             #####self.optimizers.append(self.optimizer_G)
-            self.optimizers.append(self.optimizer_G1)
-            self.optimizers.append(self.optimizer_G2)
+            #self.optimizers.append(self.optimizer_G1)
+            #self.optimizers.append(self.optimizer_G2)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
             print("----test data----")
@@ -480,9 +480,9 @@ class AutoElMar22Model(BaseModel):
         loss = loss*10**14
         loss = np.array(loss)
         loss = loss.astype(float)
-        ###self.optimizer_G.zero_grad()
-        self.optimizer_G1.zero_grad()
-        self.optimizer_G2.zero_grad()
+        self.optimizer_G.zero_grad()
+        #self.optimizer_G1.zero_grad()
+        #self.optimizer_G2.zero_grad()
         self.backward_G11(epoch,batch,lstart)
         print("loss type")
         #losst.backward()
@@ -502,14 +502,14 @@ class AutoElMar22Model(BaseModel):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
         #####self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.optimizer_G1.zero_grad()
-        self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart,initerror,currenterror)   
+        ##self.optimizer_G1.zero_grad()
+        ##self.optimizer_G2.zero_grad()
+        ##self.backward_G11(epoch,batch,lstart,initerror,currenterror)   
         #                 # calculate graidents for G
         
-        #####self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        self.optimizer_G2.step()
-        self.optimizer_G1.step()
+        self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
+        ##self.optimizer_G2.step()
+        ##self.optimizer_G1.step()
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
