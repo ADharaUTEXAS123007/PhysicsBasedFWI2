@@ -259,7 +259,7 @@ class AutoEl22Model(BaseModel):
         self.loss_G.backward()
         
         
-    def backward_G11(self, epoch1, batch, lstart,initerror,currenterror):
+    def backward_G11(self, epoch1, batch, lstart):
             
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
