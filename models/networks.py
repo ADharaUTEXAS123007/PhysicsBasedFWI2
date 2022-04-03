@@ -5717,7 +5717,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.TIME = 5.0
+        d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
         #d.VPLOWERLIM = 1500.0
