@@ -5684,7 +5684,7 @@ class AutoElMarmousi22_Net(nn.Module):
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = int(80.*2 # source spacing [m]
+        dsrc = int(80.*2) # source spacing [m]
         #######dsrc = 120.
         depth_src = int(20.*2)  # source depth [m]
         #######depth_src = 40.
