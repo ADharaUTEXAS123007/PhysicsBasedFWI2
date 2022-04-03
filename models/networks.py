@@ -5360,7 +5360,7 @@ class AutoElMarmousi22_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*63*14, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*25*14, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*38*20) #for marmousi 101x101
@@ -5425,8 +5425,8 @@ class AutoElMarmousi22_Net(nn.Module):
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
-        combine1 = self.combine1((inputs2[:,:,1:5000:5,:]))
-        combine2 = self.combine2((inputs3[:,:,1:5000:5,:]))
+        combine1 = self.combine1((inputs2[:,:,1:2400:2,:]))
+        combine2 = self.combine2((inputs3[:,:,1:2400:2,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
