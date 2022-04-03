@@ -5623,7 +5623,7 @@ class AutoElMarmousi22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq):
-        dx = 10.0
+        dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -5673,24 +5673,24 @@ class AutoElMarmousi22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 10.   #simple_model
-        depth_rec = 100.  # receiver depth [m]
+        drec = int(10.*2)   #simple_model
+        depth_rec = int(100.*2)  # receiver depth [m]
         ######depth_rec = 80. #simple_model
-        xrec1 = 390.      # 1st receiver position [m]
+        xrec1 = int(390.*2)     # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 2610.     # last receiver position [m]
+        xrec2 = int(2610.*2)     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 80. # source spacing [m]
+        dsrc = int(80.*2 # source spacing [m]
         #######dsrc = 120.
-        depth_src = 20.  # source depth [m]
+        depth_src = int(20.*2)  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 390.  # 1st source position [m]
+        xsrc1 = int(390.*2) # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 2610.  # last source position [m]
+        xsrc2 = int(2610.*2) # last source position [m]
         #######xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
@@ -5717,7 +5717,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 6
         d.PHYSICS = 1
-        d.TIME = 5.0
+        d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
         #d.VPLOWERLIM = 1500.0
@@ -5730,7 +5730,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VPLOWERLIM = 1500.0
         d.VSUPPERLIM = 1732.0
         d.VSLOWERLIM = 866.0
-        d.RHOUPPERLIM = 2600.0
+        d.RHOUPPERLIM = 2294.0
         d.RHOLOWERLIM = 1929.0
         d.SWS_TAPER_GRAD_HOR = 0
         #d.EXP_TAPER_GRAD_HOR = 3.0
