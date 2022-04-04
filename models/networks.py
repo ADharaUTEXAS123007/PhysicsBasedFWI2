@@ -5373,17 +5373,17 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         self.up32     = autoUp5(filters[3], filters[2], self.is_deconv)
-        self.up33     = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
+        self.up33     = autoUp5(filters[3], int(filters[2]), self.is_deconv)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         self.up22     = autoUp5(filters[2], filters[1], self.is_deconv)
-        self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
         self.up11     = autoUp5(filters[1], filters[0], self.is_deconv)
         self.up12     = autoUp5(filters[1], filters[0], self.is_deconv)
-        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
         ###self.upff1     = autoUp(filters[0], filters[0], self.is_deconv)
@@ -5391,11 +5391,11 @@ class AutoElMarmousi22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],filters[0], 1)
         self.f12      =  nn.Conv2d(filters[0],filters[0], 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/4), 1)
+        self.f13      =  nn.Conv2d(int(filters[0]), int(filters[0]), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]),1,1)
-        self.rho1    =   nn.Conv2d(int(filters[0]/4),1,1)
+        self.rho1    =   nn.Conv2d(int(filters[0]),1,1)
         
         
         self.final1     =   nn.Tanh()
@@ -5548,7 +5548,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=1929.0, max=2073.0)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
         #rho1     = inputs1[:,2,:,:]
