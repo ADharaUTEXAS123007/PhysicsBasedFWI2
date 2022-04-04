@@ -5340,7 +5340,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] ##best result upto now
+        #filters = [8, 16, 32, 64, 128] ##best result upto now
+        filters = [4, 8, 16, 32, 64]
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
         
@@ -5408,9 +5409,10 @@ class AutoElMarmousi22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 256]
         ######filters = [2, 4, 8, 16, 32]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        ######filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
+        filters = [4, 8, 16, 32, 64]
         latent_dim = 8
         label_dsp_dim = (150,294)
         #label_dsp_dim = (40,90)
