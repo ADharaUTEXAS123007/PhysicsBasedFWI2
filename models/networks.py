@@ -5336,11 +5336,11 @@ class AutoElMarmousi22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 256]
-        filters = [32, 64, 128, 256, 512]
+        ####filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] ##best result upto now
+        filters = [8, 16, 32, 64, 128] ##best result upto now
         #filters = [4, 8, 16, 32, 64]
         #filters = [8, 16, 32, 64, 128]
         #########filters = [2, 4, 8, 16, 32]
@@ -5409,10 +5409,10 @@ class AutoElMarmousi22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         #filters = [16, 32, 64, 128, 256]
         ######filters = [2, 4, 8, 16, 32]
-        ######filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         ###filters = [32, 64, 128, 256, 512]
-        filters = [32, 64, 128, 256, 512]
+        ####filters = [32, 64, 128, 256, 512]
         latent_dim = 8
         label_dsp_dim = (150,294)
         #label_dsp_dim = (40,90)
@@ -5625,7 +5625,7 @@ class AutoElMarmousi22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq):
-        dx = 20.0
+        dx = 10.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -5675,30 +5675,30 @@ class AutoElMarmousi22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = int(10.*2)   #simple_model
-        depth_rec = int(100.*2)  # receiver depth [m]
+        drec = int(10.)   #simple_model
+        depth_rec = int(100.)  # receiver depth [m]
         ######depth_rec = 80. #simple_model
-        xrec1 = int(390.*2)     # 1st receiver position [m]
+        xrec1 = int(390.)     # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = int(2610.*2)     # last receiver position [m]
+        xrec2 = int(2610.)     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = int(80.*2) # source spacing [m]
+        dsrc = int(80.) # source spacing [m]
         #######dsrc = 120.
-        depth_src = int(20.*2)  # source depth [m]
+        depth_src = int(20.)  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = int(390.*2) # 1st source position [m]
+        xsrc1 = int(390.) # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = int(2610.*2) # last source position [m]
+        xsrc2 = int(2610.) # last source position [m]
         #######xsrc2 = 1700.
         xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
         ysrc = depth_src * xsrc / xsrc
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 10.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
 
