@@ -5976,9 +5976,9 @@ class AutoElMarmousi22N_Net(nn.Module):
 
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
         
-        vp1 = self.modelVp.clone().detach()
-        vs1 = self.modelVs.clone().detach()
-        rho1 = self.modelRho.clone().detach()
+        vp1 = self.modelVp.clone()
+        vs1 = self.modelVs.clone()
+        rho1 = self.modelRho.clone()
     
         vp1    = torch.unsqueeze(torch.unsqueeze(vp1,0),0)
         vs1    = torch.unsqueeze(torch.unsqueeze(vs1,0),0)
