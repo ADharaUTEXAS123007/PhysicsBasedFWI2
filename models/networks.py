@@ -5908,7 +5908,7 @@ class AutoElMarmousi22_Net(nn.Module):
     
 class AutoElMarmousi22N_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
-                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False, gpu_ids=gpu_ids):
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False, gpu_ids):
         super(AutoElMarmousi22N_Net, self).__init__()
         self.is_deconv     = False
         self.in_channels   = outer_nc
