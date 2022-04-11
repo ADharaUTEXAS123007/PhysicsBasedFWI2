@@ -114,6 +114,8 @@ class AutoEl22NModel(BaseModel):
         # define networks (both generator and discriminator)
         self.netG = networks.define_G(opt.input_nc, opt.output_nc, opt.ngf, opt.netG, opt.norm,
                                       not opt.no_dropout, opt.init_type, opt.init_gain, self.gpu_ids)
+        
+        print("net G : ", self.netG)
 
         if self.isTrain:
             # define loss functions
