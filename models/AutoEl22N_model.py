@@ -120,12 +120,18 @@ class AutoEl22NModel(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            self.optimizer_G = torch.optim.Adam(
-                self.netG.parameters(), lr=opt.lr)
+            self.optimizer_G1 = torch.optim.Adam(
+                self.netG.modelVp, lr=opt.lr)
+            self.optimizer_G2 = torch.optim.Adam(
+                self.netG.modelVs, lr=opt.lr)
+            self.optimizer_G3 = torch.optim.Adam(
+                self.netG.modelRho, lr=opt.lr)
             #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
-            self.optimizers.append(self.optimizer_G)
+            self.optimizers.append(self.optimizer_G1)
+            self.optimizers.append(self.optimizer_G2)
+            self.optimizers.append(self.optimizer_G3)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
             print("----test data----")
