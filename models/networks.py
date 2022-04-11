@@ -5976,9 +5976,9 @@ class AutoElMarmousi22N_Net(nn.Module):
 
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
     
-        vp1    = torch.unsqueeze(torch.unsqueeze(self.modelVp,0))
-        vs1    = torch.unsqueeze(torch.unsqueeze(self.modelVs,0))
-        rho1   = torch.unsqueeze(torch.unsqueeze(self.modelRho,0))
+        vp1    = torch.unsqueeze(torch.unsqueeze(self.modelVp,0),0)
+        vs1    = torch.unsqueeze(torch.unsqueeze(self.modelVs,0),0)
+        rho1   = torch.unsqueeze(torch.unsqueeze(self.modelRho,0),0)
         
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
