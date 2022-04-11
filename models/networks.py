@@ -5989,6 +5989,9 @@ class AutoElMarmousi22N_Net(nn.Module):
         minrho = torch.min(inputs1[:,2,:,:])
         maxrho = torch.max(inputs1[:,2,:,:])
         
+        print("shape of vp1 :", np.shape(vp1))
+        print("shape of inputs1 :", np.shape(inputs1))
+        
         vp1[:,:,0:15,:] = inputs1[:,0,0:15,:]
         vs1[:,:,0:15,:] = inputs1[:,1,0:15,:]
         rho1[:,:,0:15,:] = inputs1[:,2,0:15,:]
