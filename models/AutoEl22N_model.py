@@ -127,7 +127,7 @@ class AutoEl22NModel(BaseModel):
             self.optimizer_G2 = torch.optim.Adam(
                 [self.netG.modelVs], lr=opt.lr)
             self.optimizer_G3 = torch.optim.Adam(
-                [self.netG.modelRho], lr=opt.lr)
+                [self.netG.modelRho], lr=0.0005)
             #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
