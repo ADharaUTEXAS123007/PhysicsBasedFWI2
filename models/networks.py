@@ -5930,7 +5930,7 @@ class AutoElMarmousi22N_Net(nn.Module):
         
         self.modelVp       = self.modelVp.to(device1)
         self.modelVs       = self.modelVs.to(device1)
-        self.modelRho      = self.modelRo.to(device1)
+        self.modelRho      = self.modelRho.to(device1)
         
         self.modelVp.requires_grad = True
         self.modelVs.requires_grad = True
