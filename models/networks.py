@@ -202,8 +202,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = AutoElMarmousi22_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'AutoElMar22':
         net = AutoElMarmousiMar22_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
-    #elif netG == 'AutoElMar22N':
-    #    net = AutoElMarmousi22N_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout, gpu_ids=gpu_ids)
+    elif netG == 'AutoEl22N':
+        net = AutoElMarmousi22N_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout, gpu_ids=gpu_ids)
     elif netG == 'Auto23':
         net = AutoMarmousi23_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'Auto24':
