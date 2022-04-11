@@ -204,7 +204,7 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         net = AutoElMarmousiMar22_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'AutoEl22N':
         print("gpu ids check check :", gpu_ids)
-        net = AutoElMarmousi22N_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+        net = AutoElMarmousi22N_Net(input_nc, output_nc, gpu_ids, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'Auto23':
         net = AutoMarmousi23_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'Auto24':
@@ -5907,7 +5907,7 @@ class AutoElMarmousi22_Net(nn.Module):
         return vp_grad, vs_grad, rho_grad, loss                 
     
 class AutoElMarmousi22N_Net(nn.Module):
-    def __init__(self, outer_nc, inner_nc, input_nc=None,
+    def __init__(self, outer_nc, inner_nc, gpu_ids, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(AutoElMarmousi22N_Net, self).__init__()
         self.is_deconv     = False
