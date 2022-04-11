@@ -5975,10 +5975,14 @@ class AutoElMarmousi22N_Net(nn.Module):
         self.modelRho.requires_grad = True
 
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
+        
+        vp1 = vp1.clone().detach()
+        vs1 = vs1.clone().detach()
+        rho1 = rho1.clone().detach()
     
-        vp1    = torch.unsqueeze(torch.unsqueeze(self.modelVp,0),0)
-        vs1    = torch.unsqueeze(torch.unsqueeze(self.modelVs,0),0)
-        rho1   = torch.unsqueeze(torch.unsqueeze(self.modelRho,0),0)
+        vp1    = torch.unsqueeze(torch.unsqueeze(vp1,0),0)
+        vs1    = torch.unsqueeze(torch.unsqueeze(vs1,0),0)
+        rho1   = torch.unsqueeze(torch.unsqueeze(rho1,0),0)
         
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
