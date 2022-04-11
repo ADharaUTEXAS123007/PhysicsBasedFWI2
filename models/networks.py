@@ -5954,7 +5954,7 @@ class AutoElMarmousi22N_Net(nn.Module):
         self.n_classes     = 1
         
         kk = 1
-        file = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainB/'+str(kk)+'.npy'
+        file = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainC/'+str(kk)+'.npy'
         B = np.load(file)
         B = torch.from_numpy(B)
         B = B.float()
