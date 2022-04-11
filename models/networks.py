@@ -5920,6 +5920,8 @@ class AutoElMarmousi22N_Net(nn.Module):
         B = np.load(file)
         B = torch.from_numpy(B)
         B = B.float()
+        
+        print("shape of B :", np.shape(B))
         device1 = torch.device('cuda:{}'.format(gpu_ids[0])) if gpu_ids else torch.device('cpu')
         
         self.modelVp       = B[:,0,:,:]
