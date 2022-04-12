@@ -141,7 +141,7 @@ if __name__ == '__main__':
                  Lhist[4] = model.loss_D_MSE
                  
              if (epoch > 5):
-                 if (np.abs((Lhist[2]-Lhist[1])/Lhist[1]) <= .005):
+                 if (np.abs((Lhist[4]-Lhist[2])/Lhist[2]) <= .005):
                      mop = mop + 1
                  
              #if (epoch > lstart):
