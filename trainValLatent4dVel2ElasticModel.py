@@ -47,7 +47,7 @@ if __name__ == '__main__':
     losses1 = OrderedDict()
     lstart = 0
     Lhist = np.ones(5)
-    freqL = [10]
+    freqL = [2,5,10,15,20]
     mop = 0
     InitErr = 0
     CurrentErr = 0
@@ -141,7 +141,7 @@ if __name__ == '__main__':
                  Lhist[4] = model.loss_D_MSE
                  
              if (epoch > 5):
-                 if (np.abs((Lhist[4]-Lhist[1])/Lhist[1]) <= .00000005):
+                 if (np.abs((Lhist[4]-Lhist[1])/Lhist[1]) <= .001):
                      mop = mop + 1
                  
              #if (epoch > lstart):

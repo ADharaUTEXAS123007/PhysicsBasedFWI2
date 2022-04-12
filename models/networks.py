@@ -6084,8 +6084,7 @@ class AutoElMarmousi22N_Net(nn.Module):
         vp = vp*1.0
         vs = vs*1.0
         rho = rho*1.0
-        
-        
+
         #model = api.Model(vp, vs, rho, dx)
         
         vpst = vp1.cpu().detach().numpy()
