@@ -836,7 +836,7 @@ class LBFGS(Optimizer):
 
                     t = 0
                     F_new = closure()
-                    F_new.backward()
+                    #F_new.backward()
                     g_new = self._gather_flat_grad()
                     closure_eval += 1
                     grad_eval += 1
@@ -870,7 +870,7 @@ class LBFGS(Optimizer):
                 else:
 
                     # compute gradient
-                    F_new.backward()
+                    #F_new.backward()
                     g_new = self._gather_flat_grad()
                     grad_eval += 1
                     gtd_new = g_new.dot(d)
