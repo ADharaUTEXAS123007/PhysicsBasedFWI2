@@ -850,6 +850,8 @@ class LBFGS(Optimizer):
                     print('Armijo:  F(x+td): %.8e  F-c1*t*g*d: %.8e  F(x): %.8e'
                           % (F_new, F_k + c1 * t * gtd, F_k))
 
+                print("F_new :", F_new)
+                print("F_k :", F_k)
                 # check Armijo condition
                 if F_new > F_k + c1 * t * gtd:
 
