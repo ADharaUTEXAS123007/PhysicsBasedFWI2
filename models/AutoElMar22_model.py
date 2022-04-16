@@ -510,6 +510,11 @@ class AutoElMar22Model(BaseModel):
         self.backward_G11(epoch,batch,lstart)   
                          # calculate graidents for G
         obj = self.loss_D_MSE
+        obj = obj*10**14
+        obj = np.array(obj)
+        obj = obj.astype(float)
+        obj = torch.from_numpy(obj)
+        obj = obj.float()
         lamclosure = lambda : self.closure(epoch, lstart, batch, freq)
         ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
         ###self.optimizer_G2.step()
