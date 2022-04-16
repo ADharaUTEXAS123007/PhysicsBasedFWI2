@@ -125,18 +125,19 @@ class AutoElMar22Model(BaseModel):
            #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), lr=0.001, line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
-            self.optimizer_G1 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
-            self.optimizer_G2 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
+            ####self.optimizer_G1 = torch.optim.Adam(
+            ####    [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
+            ####self.optimizer_G2 = torch.optim.Adam(
+            ####    [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
             #for name, param in self.netG.named_parameters():
             #    if 'Rho' not in name:
             #        print("name11 :", name)
-        
+            self.optimizer_G = FullBatchLBFGS(
+                self.netG.parameters(), lr=1., history_size=10, line_search='Wolfe', debug=True)
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
             #self.optimizers.append(self.optimizer_G)
-            self.optimizers.append(self.optimizer_G1)
-            self.optimizers.append(self.optimizer_G2)
+            self.optimizers.append(self.optimizer_G)
+            ####self.optimizers.append(self.optimizer_G2)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
             print("----test data----")
@@ -275,7 +276,7 @@ class AutoElMar22Model(BaseModel):
         self.loss_G.backward()
         
         
-    def backward_G11(self, epoch1, batch, lstart, initerror, currenterror):
+    def backward_G11(self, epoch1, batch, lstart):
             
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
@@ -438,11 +439,11 @@ class AutoElMar22Model(BaseModel):
             #self.fake_Rho.retain_grad()
             #print("currenterror :", currenterror)
             #print("initerror :", initerror)
-            if (currenterror < 0.4*initerror):
+            #if (currenterror < 0.4*initerror):
                 #print("backpropagating density gradient")
-                self.rho_grad = torch.unsqueeze(self.rho_grad,0)
-                self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
-                self.fake_Rho.backward(self.rho_grad)
+            self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+            self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+            self.fake_Rho.backward(self.rho_grad)
                 
             #self.fake_Rho.retain_grad()
 
@@ -503,15 +504,17 @@ class AutoElMar22Model(BaseModel):
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
-        #self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.optimizer_G1.zero_grad()
-        self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart,initerror,currenterror)   
+        self.optimizer_G.zero_grad()        # set G's gradients to zero
+        ####self.optimizer_G1.zero_grad()
+        ####self.optimizer_G2.zero_grad()
+        self.backward_G11(epoch,batch,lstart)   
                          # calculate graidents for G
         
         ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        self.optimizer_G2.step()
-        self.optimizer_G1.step()
+        ###self.optimizer_G2.step()
+        ####self.optimizer_G1.step()
+        options = {'closure': self.closure(epoch,lstart,batch,freq)}
+        obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
