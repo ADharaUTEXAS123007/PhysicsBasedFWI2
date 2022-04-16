@@ -493,6 +493,7 @@ class AutoElMar22Model(BaseModel):
         #loss1[0,0] = loss
         loss1 = torch.from_numpy(loss)
         loss1 = loss1.float()
+        loss1 = loss1.to(self.device1)
         #loss1 = loss1.float()
         #loss.item = 1
         #loss = torch.unsqueeze(loss,1)
