@@ -514,7 +514,7 @@ class AutoElMar22Model(BaseModel):
         ###self.optimizer_G2.step()
         ####self.optimizer_G1.step()
         options = {'closure': self.closure(epoch,lstart,batch,freq)}
-        obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)
+        obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(lambda : options)
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
