@@ -519,7 +519,7 @@ class AutoElMar22Model(BaseModel):
         ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
         ###self.optimizer_G2.step()
         ####self.optimizer_G1.step()
-        options = {'closure': lamclosure ,'current_loss':obj}
+        options = {'closure': lamclosure}
         obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)
 
     def compute_loss_only(self):
