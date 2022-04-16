@@ -5,7 +5,7 @@ import numpy as np
 import sys
 # sys.path.append('/disk/student/adhara/Fall2021/deepwave/.')
 # sys.path.append('/disk/student/adhara/Fall2021/deepwave/deepwave/.')
-sys.path.append('../functions/.')
+sys.path.append('./functions/.')
 import deepwave
 import multiprocessing
 from joblib import Parallel, delayed
