@@ -6507,7 +6507,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         up12    = self.up12(up22)
         up12    = self.drop12(up12)
         up13    = self.Rhoup13(up23)
-        up13    = self.drop(up13)
+        up13    = self.drop13(up13)
         #up1     = self.up1(up2)
         
         
