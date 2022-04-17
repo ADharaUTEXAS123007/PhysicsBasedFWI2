@@ -277,7 +277,7 @@ class AutoElMarMCDIP22Model(BaseModel):
         self.loss_G.backward()
         
         
-    def backward_G11(self, epoch1, batch, lstart, initerror):
+    def backward_G11(self, epoch1, batch, lstart):
             
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
@@ -504,13 +504,13 @@ class AutoElMarMCDIP22Model(BaseModel):
         return loss1
 
 
-    def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
+    def optimize_parameters(self, epoch, batch, lstart, freq):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         ####self.optimizer_G1.zero_grad()
         ####self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart, initerror, currenterror)   
+        self.backward_G11(epoch, batch, lstart)   
                          # calculate graidents for G
         # obj = self.loss_D_MSE
         # obj = obj
