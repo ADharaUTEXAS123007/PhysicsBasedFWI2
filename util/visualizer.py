@@ -66,6 +66,7 @@ def save_matrix(visuals, image_path, mnumber, aspect_ratio=1.0, width=256):
     for label, im_data in visuals.items():
         image_tensor = im_data.data
         np_matrix = image_tensor[0].cpu().float().numpy()
+        print("np_matrix :", np_matrix)
         image_name = '%s_%s.npy' % (name, label)
         save_path = os.path.join(image_dir, image_name)
         np.save(save_path,np_matrix)
