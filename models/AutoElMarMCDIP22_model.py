@@ -510,7 +510,7 @@ class AutoElMarMCDIP22Model(BaseModel):
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         ####self.optimizer_G1.zero_grad()
         ####self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart)   
+        self.backward_G11(epoch,batch,lstart, initerror, currenterror)   
                          # calculate graidents for G
         # obj = self.loss_D_MSE
         # obj = obj
