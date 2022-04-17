@@ -71,18 +71,18 @@ if __name__ == '__main__':
         image_dir = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Output' + str(k)
         shutil.rmtree(image_dir,ignore_errors=True)
         os.mkdir(image_dir)
-        for i, data in enumerate(dataset):
-            print("i :"+str(i))
-#            if i >= opt.num_test:  # only apply our model to opt.num_test images.
-#                break
-            model.set_input(data)  # unpack data from data loader
-            model.test()           # run inference
-            visuals = model.get_current_visuals()  # get image results
-            img_path = model.get_image_paths()     # get image paths
-            model.compute_loss_only()
-            # if i % 5 == 0:  # save images to an HTML file
-            print('processing (%04d)-th image... %s' % (i, img_path))
-            #save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
-            save_matrix(visuals, img_path, k, aspect_ratio=opt.aspect_ratio,
-                        width=opt.display_winsize)
+#         for i, data in enumerate(dataset):
+#             print("i :"+str(i))
+# #            if i >= opt.num_test:  # only apply our model to opt.num_test images.
+# #                break
+#             model.set_input(data)  # unpack data from data loader
+#             model.test()           # run inference
+#             visuals = model.get_current_visuals()  # get image results
+#             img_path = model.get_image_paths()     # get image paths
+#             model.compute_loss_only()
+#             # if i % 5 == 0:  # save images to an HTML file
+#             print('processing (%04d)-th image... %s' % (i, img_path))
+#             #save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
+#             save_matrix(visuals, img_path, k, aspect_ratio=opt.aspect_ratio,
+#                         width=opt.display_winsize)
     # webpage.save()  # save the HTML
