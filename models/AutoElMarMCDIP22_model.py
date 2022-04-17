@@ -21,7 +21,7 @@ from LBFGS import FullBatchLBFGS
 #from skimage import metrics
 
 
-class AutoElMar22Model(BaseModel):
+class AutoElMarMCDIP22Model(BaseModel):
     """ This class implements the pix2pix model, for learning a mapping from input images to output images given paired data.
 
     The model training requires '--dataset_mode aligned' dataset.
@@ -47,7 +47,7 @@ class AutoElMar22Model(BaseModel):
         By default, we use vanilla GAN loss, UNet with batchnorm, and aligned datasets.
         """
         # changing the default values to match the pix2pix paper (https://phillipi.github.io/pix2pix/)
-        parser.set_defaults(norm='batch', netG='AutoElMar22',
+        parser.set_defaults(norm='batch', netG='AutoElMarMCDIP22',
                             dataset_mode='unalignedVelABCDEl', ngf='32')
         if is_train:
             parser.set_defaults(pool_size=0, gan_mode='vanilla')
