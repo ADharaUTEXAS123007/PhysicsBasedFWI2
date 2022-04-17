@@ -21,7 +21,7 @@ from LBFGS import FullBatchLBFGS
 #from skimage import metrics
 
 
-class AutoElMar22Model(BaseModel):
+class AutoElMar22LBFGSModel(BaseModel):
     """ This class implements the pix2pix model, for learning a mapping from input images to output images given paired data.
 
     The model training requires '--dataset_mode aligned' dataset.
