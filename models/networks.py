@@ -6689,7 +6689,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
-        d = api.Denise(denise_root, verbose=1)
+        d = api.Denise(denise_root)
         d.save_folder = '/disk/student/adhara/MARMOUSI/'
         d.set_paths()
         
