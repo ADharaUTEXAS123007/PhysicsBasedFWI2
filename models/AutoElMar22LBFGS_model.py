@@ -521,7 +521,13 @@ class AutoElMar22LBFGSModel(BaseModel):
         ###self.optimizer_G2.step()
         ####self.optimizer_G1.step()
         options = {'closure': lamclosure}
-        obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)
+        obj, grad, lr, t, ls_step, closure_eval, grad_eval, _, _  = self.optimizer_G.step(options)
+        print("obj :", obj)
+        print("lr :", lr)
+        print("t :", t)
+        print("ls_step :", ls_step)
+        print("closure_eval :", closure_eval)
+        print("grad_eval :", grad_eval)
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
