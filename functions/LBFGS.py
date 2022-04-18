@@ -644,6 +644,7 @@ class LBFGS(Optimizer):
             F_new = closure()
             closure_eval += 1
 
+            print("loop start start :")
             # main loop
             while True:
 

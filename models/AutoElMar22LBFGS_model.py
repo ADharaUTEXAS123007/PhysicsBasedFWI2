@@ -520,7 +520,7 @@ class AutoElMar22LBFGSModel(BaseModel):
         ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
         ###self.optimizer_G2.step()
         ####self.optimizer_G1.step()
-        options = {'closure': lamclosure,'current_loss':obj}
+        options = {'closure': lamclosure,'current_loss':obj,'max_ls':0}
         obj, grad, t, ls_step, closure_eval, grad_eval, _, _  = self.optimizer_G.step(options)
         print("obj :", obj)
         print("t :", t)
