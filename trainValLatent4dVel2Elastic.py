@@ -59,6 +59,7 @@ if __name__ == '__main__':
 
          model.eval()  #For going to validation 
          Validationloss = 0.0
+         print("EPOCHS RUNNING :", epoch)
          for k, data2 in enumerate(dataset2):
              model.set_input(data2)
              model.test()
