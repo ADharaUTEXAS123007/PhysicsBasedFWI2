@@ -675,7 +675,7 @@ class LBFGS(Optimizer):
 
                 print("F_new :", F_new)
                 print("F_k :", F_k)
-                # check Armijo condition
+                # check Wolfe condition
                 if F_new > F_k + c1 * t * gtd:
 
                     # set upper bound
