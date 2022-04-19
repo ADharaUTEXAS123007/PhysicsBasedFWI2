@@ -133,7 +133,7 @@ class AutoElMar22LBFGSModel(BaseModel):
             #    if 'Rho' not in name:
             #        print("name11 :", name)
             self.optimizer_G = FullBatchLBFGS(
-                self.netG.parameters(), lr=1.0, history_size=10, line_search='Wolfe', debug=True)
+                self.netG.parameters(), history_size=10, line_search='Wolfe', debug=True)
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
             #self.optimizers.append(self.optimizer_G)
             self.optimizers.append(self.optimizer_G)
@@ -520,7 +520,7 @@ class AutoElMar22LBFGSModel(BaseModel):
         ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
         ###self.optimizer_G2.step()
         ####self.optimizer_G1.step()
-        options = {'closure': lamclosure,'current_loss':obj,'max_ls':6}
+        options = {'closure': lamclosure,'current_loss':obj}
         obj, grad, t, ls_step, closure_eval, grad_eval, _, _  = self.optimizer_G.step(options)
         print("obj :", obj)
         print("t :", t)
