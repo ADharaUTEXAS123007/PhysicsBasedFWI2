@@ -514,6 +514,8 @@ class LBFGS(Optimizer):
 
         # set search direction
         d = p_k
+        
+        print("g_0k shape", np.shape(g_Ok))
 
         # modify previous gradient
         if prev_flat_grad is None:
