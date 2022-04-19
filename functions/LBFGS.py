@@ -256,7 +256,7 @@ class LBFGS(Optimizer):
             # view as to avoid deprecated pointwise semantics
             #p.data.add_(step_size, update[offset:offset + numel].view_as(p.data))
             #p.data.add_(update[offset:offset + numel].view_as(p.data),*,step_size)
-            p.data.add_(update[offset:offset + numel].view_as(p.data),step_size)
+            p.data.add_(update[offset:offset + numel].view_as(p.data),alpha = step_size)
             offset += numel
         assert offset == self._numel()
 
