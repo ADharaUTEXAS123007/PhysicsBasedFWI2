@@ -108,7 +108,7 @@ class AutoElMarMCDIP22Model(BaseModel):
         self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE', 'VP', 'VS', 'RHO','L_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
         #self.visual_names = ['fake_Vp','real_Vp','fake_Vs', 'real_Vs','fake_Rho','real_Rho']
-        self.visual_names = ['fake_BT']
+        self.visual_names = ['fake_Vp','real_Vp','fake_Vs', 'real_Vs','fake_Rho','real_Rho']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['G']
