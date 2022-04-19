@@ -503,6 +503,8 @@ class LBFGS(Optimizer):
         line_search = group['line_search']
         dtype = group['dtype']
         debug = group['debug']
+        
+        print("lrlrlrlrlrlrlrlr :", lr)
 
         # variables cached in state (for tracing)
         state = self.state['global_state']
