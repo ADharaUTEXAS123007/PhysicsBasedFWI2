@@ -505,7 +505,7 @@ class AutoElMar22LBFGSModel(BaseModel):
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
         self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
         # update G
-        self.optimizer_G.zero_grad()        # set G's gradients to zero
+        # self.optimizer_G.zero_grad()        # set G's gradients to zero
         ####self.optimizer_G1.zero_grad()
         ####self.optimizer_G2.zero_grad()
         self.backward_G11(epoch,batch,lstart)   
