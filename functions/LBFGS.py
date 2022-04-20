@@ -924,6 +924,7 @@ class FullBatchLBFGS(LBFGS):
         
         # gather gradient
         grad = self._gather_flat_grad()
+        grad = grad/5
         
         # update curvature if after 1st iteration
         state = self.state['global_state']
