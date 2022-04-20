@@ -504,7 +504,7 @@ class LBFGS(Optimizer):
         dtype = group['dtype']
         debug = group['debug']
         
-        lr = .00005
+        lr = 1.0
         print("lrlrlrlrl :", lr)
 
         # variables cached in state (for tracing)
@@ -924,7 +924,7 @@ class FullBatchLBFGS(LBFGS):
         
         # gather gradient
         grad = self._gather_flat_grad()
-        grad = grad/5
+        grad = grad/2
         
         # update curvature if after 1st iteration
         state = self.state['global_state']
