@@ -7300,7 +7300,6 @@ class AutoElMarmousiMarZp22_Net(nn.Module):
         d = api.Denise(denise_root)
         d.save_folder = '/disk/student/adhara/MARMOUSI/'
         d.set_paths()
-        d.INVMAT1 = 2
         
         #model = api.Model(vp, vs, rho, dx)
         #print(model)
@@ -7378,6 +7377,7 @@ class AutoElMarmousiMarZp22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
+        d.INVMAT1 = 2
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
