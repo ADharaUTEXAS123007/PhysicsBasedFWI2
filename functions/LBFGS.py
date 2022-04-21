@@ -504,7 +504,7 @@ class LBFGS(Optimizer):
         dtype = group['dtype']
         debug = group['debug']
         
-        lr = 0.0005
+        lr = 0.001
         print("lrlrlrlrl :", lr)
 
         # variables cached in state (for tracing)
@@ -648,7 +648,7 @@ class LBFGS(Optimizer):
                 current_params = self._copy_params()
 
             # update and evaluate at new point
-            self._add_update(t, d)
+            self._add_update(0.0005, d)
             F_new = closure()
             closure_eval += 1
 
