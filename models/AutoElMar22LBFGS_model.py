@@ -479,7 +479,7 @@ class AutoElMar22LBFGSModel(BaseModel):
         #lstart = 0
         #batch = 0
         loss = self.forward2(epoch, lstart, freq)
-        loss = loss*(10**14)
+        loss = loss
         loss = np.array(loss)
         loss = loss.astype(float)
         self.optimizer_G.zero_grad()
@@ -510,7 +510,7 @@ class AutoElMar22LBFGSModel(BaseModel):
         self.backward_G11(epoch,batch,lstart)   
                          # calculate graidents for G
         obj = self.loss_D_MSE
-        obj = obj*(10**14)
+        obj = obj
         obj = np.array(obj)
         obj = obj.astype(float)
         obj = torch.from_numpy(obj)
