@@ -504,7 +504,7 @@ class LBFGS(Optimizer):
         dtype = group['dtype']
         debug = group['debug']
         
-        lr = 0.001
+        lr = 0.5
         print("lrlrlrlrl :", lr)
 
         # variables cached in state (for tracing)
@@ -667,6 +667,7 @@ class LBFGS(Optimizer):
                     F_new = closure()
                     #F_new.backward()
                     g_new = self._gather_flat_grad()
+                    print("g_new :", g_new)
                     closure_eval += 1
                     grad_eval += 1
                     fail = True

@@ -312,8 +312,7 @@ class AutoElMar22LBFGSModel(BaseModel):
         print("loss M MSE :", self.loss_M_MSE)
         print("loss D MSE :", self.loss_D_MSE)
         
-        
-        
+
         #print("shape of grad :", np.shape(self.grad))
         #k
         #kld_loss = torch.mean(-0.5 * torch.sum(1 + self.log_var - self.mu ** 2 - self.log_var.exp(), dim = 1), dim = 0)
