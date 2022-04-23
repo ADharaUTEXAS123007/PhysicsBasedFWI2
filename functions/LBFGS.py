@@ -504,7 +504,7 @@ class LBFGS(Optimizer):
         dtype = group['dtype']
         debug = group['debug']
         
-        lr = 0.00005
+        lr = 0.005
         print("lrlrlrlrl :", lr)
 
         # variables cached in state (for tracing)
