@@ -47,7 +47,7 @@ if __name__ == '__main__':
     losses1 = OrderedDict()
     lstart = 0
     Lhist = np.ones(5)
-    freqL = [2,5,10,15,20]
+    freqL = [20]
     mop = 0
     InitErr = 0
     CurrentErr = 0
