@@ -797,7 +797,7 @@ class LBFGS(Optimizer):
                 current_params = self._copy_params()
 
             # update and evaluate at new point
-            self._add_update(t, d)
+            self._add_update(0.0005, d)
             F_new = closure()
             closure_eval += 1
 
