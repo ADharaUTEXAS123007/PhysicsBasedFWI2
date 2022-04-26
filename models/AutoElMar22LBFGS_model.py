@@ -133,7 +133,7 @@ class AutoElMar22LBFGSModel(BaseModel):
             #    if 'Rho' not in name:
             #        print("name11 :", name)
             self.optimizer_G = FullBatchLBFGS(
-                self.netG.parameters(), lr = 0.00000005, history_size=10, line_search='Armijo', debug=True)
+                self.netG.parameters(), lr = 0.00000005, history_size=10, line_search='Wolfe', debug=True)
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
             #self.optimizers.append(self.optimizer_G)
             self.optimizers.append(self.optimizer_G)
