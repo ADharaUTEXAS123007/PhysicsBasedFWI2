@@ -6563,7 +6563,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=1719.0*1, max=maxrho*1)
+        rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
         
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
@@ -6659,9 +6659,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp
-        vs = vs
-        rho = rho
+        vp = vp*1000.0
+        vs = vs*1000.0
+        rho = rho*1000.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -6678,9 +6678,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst
-        vsst = vsst
-        rhost = rhost/1
+        vpst = vpst*1000.0
+        vsst = vsst*1000.0
+        rhost = rhost*1000.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
