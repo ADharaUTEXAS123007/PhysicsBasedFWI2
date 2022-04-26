@@ -207,8 +207,11 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
     elif netG == 'AutoElMarMCDIP22':
         net = AutoElMarmousiMarMCDIP22_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'AutoEl22N':
-        print("gpu ids check check :", gpu_ids)
+        print("gpu ids check check :", gpu_ids) # for STH model
         net = AutoElMarmousi22N_Net(input_nc, output_nc, gpu_ids, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+    elif netG == 'AutoEl22NMar':
+        print("gpu ids check check :", gpu_ids) # for STH model
+        net = AutoElMarmousiMar22N_Net(input_nc, output_nc, gpu_ids, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'Auto23':
         net = AutoMarmousi23_Net(input_nc, output_nc, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     elif netG == 'Auto24':
@@ -6323,7 +6326,386 @@ class AutoElMarmousi22N_Net(nn.Module):
         #vp_grad = 0
         #vs_grad = 0
         #rho_grad = 0
-        return vp_grad, vs_grad, rho_grad, loss                 
+        return vp_grad, vs_grad, rho_grad, loss  
+    
+
+class AutoElMarmousiMar22N_Net(nn.Module):
+    def __init__(self, outer_nc, inner_nc, gpu_ids, input_nc=None,
+                 submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
+        super(AutoElMarmousiMar22N_Net, self).__init__()
+        self.is_deconv     = False
+        self.in_channels   = outer_nc
+        self.is_batchnorm  = True
+        self.n_classes     = 1
+        
+        kk = 1
+        file = '/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainC/'+str(kk)+'.npy'
+        B = np.load(file)
+        B = torch.from_numpy(B)
+        B = B.float()
+        
+        print("shape of B :", np.shape(B))
+        device1 = torch.device('cuda:{}'.format(gpu_ids[0])) if gpu_ids else torch.device('cpu')
+        
+        self.modelVp       = B[0,:,:]
+        self.modelVs       = B[1,:,:]
+        self.modelRho      = B[2,:,:]
+        
+        self.modelVp       = self.modelVp.to(device1)
+        self.modelVs       = self.modelVs.to(device1)
+        self.modelRho      = self.modelRho.to(device1)
+        
+        self.modelVp.requires_grad = True
+        self.modelVs.requires_grad = True
+        self.modelRho.requires_grad = True
+
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
+        
+        vp1 = self.modelVp.clone()
+        vs1 = self.modelVs.clone()
+        rho1 = self.modelRho.clone()
+    
+        vp1    = torch.unsqueeze(torch.unsqueeze(vp1,0),0)
+        vs1    = torch.unsqueeze(torch.unsqueeze(vs1,0),0)
+        rho1   = torch.unsqueeze(torch.unsqueeze(rho1,0),0)
+        
+        minvp = torch.min(inputs1[:,0,:,:])
+        maxvp = torch.max(inputs1[:,0,:,:])
+        
+        minvs = torch.min(inputs1[:,1,:,:])
+        maxvs = torch.max(inputs1[:,1,:,:])
+        
+        minrho = torch.min(inputs1[:,2,:,:])
+        maxrho = torch.max(inputs1[:,2,:,:])
+        
+        print("shape of vp1 :", np.shape(vp1))
+        print("shape of inputs1 :", np.shape(inputs1))
+        
+        vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
+        vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
+        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
+        
+        #vp1     = self.final1(vp1)
+        #vs1     = self.final2(vs1)
+        #vp1    = minvp + vp1*(maxvp-minvp)
+        #vs1    = minvs + vs1*(maxvs-minvs)
+        #rho1   = minrho + rho1*(maxrho-minrho)
+        
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        
+        #vp1     = inputs1[:,0,:,:]
+        #rho1     = inputs1[:,2,:,:]
+        
+        
+        #vp1    = torch.unsqueeze(vp1,1)
+        #vs1    = torch.unsqueeze(vs1,1)
+        #rho1   = torch.unsqueeze(rho1,1)
+        #f11    = torch.cat((vp1,vs1),dim=1)
+        #f11     = vp1
+        #f1     = self.final(f1)
+        #f1     = self.final1(f1)
+        #f1     = self.final(f1)
+        #f1     = f1/torch.max(f1)
+        #print("mintrue :", mintrue)
+        #print("maxtrue :", maxtrue)
+        
+        #f1    = mintrue + f1*(maxtrue-mintrue)
+        #f1[(inputs1==1500)] = 1500
+        #f1     = lowf + f1
+        #f1[(inputs1 == 1.510)] = 1.510
+        #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
+        #f1[(inputs1 == 1.510)] = 1.510
+        
+        #f1     = torch.add(f1,1600.0)
+        #f1     = torch.add(f1,lowf)
+        #f1     = 3.0 + f1*(6.0-3.0)
+        #f1     = torch.clamp(f1, min=mintrue, max=maxtrue)
+        #print("shape of f1 :", np.shape(f1))
+        #f1[(inputs1==2000)] = 2000
+        #f1     = f1*100
+        #f1     = torch.clip(f1, min=1500, max=3550) ##clamping for marmousi
+        #with torch.no_grad():
+        #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
+        #f1[:,:,0:26,:] = 1500.0
+        #f1     = torch.clamp(f1,min=20,max=45)
+        latent1 = 0
+        grad = 0*vp1
+        lossT = 0.0
+        vp_grad = vp1*0
+        vs_grad = vp1*0
+        rho_grad = vp1*0
+        
+        #vs1 = vp1*0
+        #rho1 = vp1*0
+        if (epoch1 > lstart):
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
+        #if (epoch1 > lstart):
+        #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+        #    grad = grad.to(inputs2.get_device())
+        #    grad = torch.unsqueeze(grad,0)
+        #    grad = torch.unsqueeze(grad,0)
+        #result = torch.flatten(f1, start_dim=1)
+        #print(" shape of grad :", np.shape(grad))
+
+        return vp1, vs1, rho1, grad, latent1, vp_grad, vs_grad, rho_grad, lossT
+    
+    # forward modeling to compute gradients  
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq):
+        dx = 20.0
+        vp = true[:,0,:,:].cpu().detach().numpy()
+        vs = true[:,1,:,:].cpu().detach().numpy()
+        rho = true[:,2,:,:].cpu().detach().numpy()
+    
+        vp = np.squeeze(vp)
+        vs = np.squeeze(vs)
+        rho = np.squeeze(rho)
+        
+        vp = np.flipud(vp)
+        vs = np.flipud(vs)
+        rho = np.flipud(rho)
+        
+        vp = vp*1.0
+        vs = vs*1.0
+        rho = rho*1.0
+
+        #model = api.Model(vp, vs, rho, dx)
+        
+        vpst = vp1.cpu().detach().numpy()
+        vsst = vs1.cpu().detach().numpy()
+        rhost = rho1.cpu().detach().numpy()
+
+        vpst = np.squeeze(np.squeeze(vpst))
+        vsst = np.squeeze(np.squeeze(vsst))
+        rhost = np.squeeze(np.squeeze(rhost))
+        
+        vpst = np.flipud(vpst)
+        vsst = np.flipud(vsst)
+        rhost = np.flipud(rhost)
+        
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
+        
+               
+        print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
+        #model = api.Model(vp, vs, rho, dx)
+        
+        
+        denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
+        d = api.Denise(denise_root, verbose=1)
+        d.save_folder = '/disk/student/adhara/DOUTPUTS/'
+        d.set_paths()
+        
+        #model = api.Model(vp, vs, rho, dx)
+        #print(model)
+        
+        # Receivers
+        drec = int(20.)   #simple_model
+        depth_rec = int(460.)  # receiver depth [m]
+        ######depth_rec = 80. #simple_model
+        xrec1 = int(380.)     # 1st receiver position [m]
+        ######xrec1 = 100.
+        xrec2 = int(5880.)     # last receiver position [m]
+        #####xrec2 = 1700.
+        xrec = np.arange(xrec1, xrec2 + dx, drec)
+        yrec = depth_rec * (xrec / xrec)
+
+        # Sources
+        dsrc = int(160.) # source spacing [m]
+        #######dsrc = 120.
+        depth_src = int(40.)  # source depth [m]
+        #######depth_src = 40.
+        xsrc1 = int(380.) # 1st source position [m]
+        ######xsrc1 = 100.
+        xsrc2 = int(5880.) # last source position [m]
+        #######xsrc2 = 1700.
+        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        ysrc = depth_src * xsrc / xsrc
+
+        # Wrap into api
+        fsource = 10.0
+        rec = api.Receivers(xrec, yrec)
+        src = api.Sources(xsrc, ysrc, fsource)
+
+        #d.help()
+        #d.NX = 300
+        #d.NY = 150
+        #d.DH = 20.0
+        d.ITERMAX = 1
+        d.verbose = 0
+        print("shape of vp :", np.shape(vp))
+        print("shape of vs :", np.shape(vs))
+        print("shape of rho :", np.shape(rho))
+        print("shape of xsrc :", np.shape(xsrc))
+        
+
+        print(f'NSRC:\t{len(src)}')
+        print(f'NREC:\t{len(rec)}')
+        d.NPROCX = 6
+        d.NPROCY = 5
+        d.PHYSICS = 1
+        #d.TIME = 5.0
+        #d.NT = 2.5e-03
+        #d.VPUPPERLIM = 3000.0
+        #d.VPLOWERLIM = 1500.0
+        #d.VSUPPERLIM = 1732.0
+        #d.VSLOWERLIM = 866.0
+        #d.RHOUPPERLIM = 2294.0
+        #d.RHOLOWERLIM = 1929.0
+        
+        d.VPUPPERLIM = 4509.0
+        d.VPLOWERLIM = 1500.0
+        d.VSUPPERLIM = 2603.0
+        d.VSLOWERLIM = 0.0
+        d.RHOUPPERLIM = 2589.0
+        d.RHOLOWERLIM = 1009.0
+        d.SWS_TAPER_GRAD_HOR = 0
+        #d.EXP_TAPER_GRAD_HOR = 3.0
+        #d.forward(model, src, rec)
+        #os.system('mpirun -np 4 hello')
+        filen = './marmousiEl12Apr/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        np.save(filen, vpst)  #switch on physics based fwi
+        
+        filen = './marmousiEl12Apr/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        np.save(filen, vsst)  #switch on physics based fwi
+        
+        filen = './marmousiEl12Apr/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        np.save(filen, rhost)  #switch on physics based fwi
+        
+        
+        #d.NT = 1200
+        #d.JACOBIAN = 'sacobian/jacobian_Test'
+        print("min max vpst :", np.min(vpst), np.max(vpst))
+        print("min max vsst :", np.min(vsst), np.max(vsst))
+        print("min max rhost :", np.min(rhost), np.max(rhost))
+        
+        model_init = api.Model(vpst, vsst, rhost, dx)
+        
+        
+        d.fwi_stages = []
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
+        #for i, freq in enumerate([20]
+        #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
+        #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
+        # if ((epoch1 >= 0) and (epoch1 <=100 )):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
+        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # elif ((epoch1 >= 101) and (epoch1 <=200)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
+        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # elif ((epoch1 >= 201) and (epoch1 <=300)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
+        # elif ((epoch1 >= 301) and (epoch1 <=400)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
+        # elif ((epoch1 >= 401) and (epoch1 <=500)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
+        # elif ((epoch1 >= 501) and (epoch1 <=600)):
+        #     d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
+        # elif ((epoch1 >= 601) and (epoch1 <=700)):
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
+        # else:
+        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+        print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
+            
+        #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
+        os.system('rm -rf loss_curve_grad.out')
+    
+        print(f'Target data: {d.DATA_DIR}')
+        d.grad(model_init, src, rec)
+        
+        loss = np.loadtxt('loss_curve_grad.out')
+        
+        #print("loss :", loss)
+        
+        # grads, fnames = d.get_fwi_gradients(['c','old'],return_filenames=True)
+        
+        # print("shape of grads :", np.shape(grads))
+        # vp_grad = np.array(grads[0])
+        # vs_grad = np.array(grads[2])
+        # rho_grad = np.array(grads[1])
+        grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        vp_grad = np.array(grads[1])
+        vs_grad = np.array(grads[2])
+        rho_grad = np.array(grads[0])
+        
+        print("shape of vp_grad :", np.shape(vp_grad))
+        print("shape of vs_grad :", np.shape(vs_grad))
+        print("shape of rho_grad :", np.shape(rho_grad))
+        
+        vp_grad = np.flipud(vp_grad)
+        vs_grad = np.flipud(vs_grad)
+        rho_grad = np.flipud(rho_grad)
+        
+        vp_grad[0:25,:] = 0.0
+        vs_grad[0:25,:] = 0.0
+        rho_grad[0:25,:] = 0.0
+        
+        print("shape of vp_grad1 :", np.shape(vp_grad))
+        print("shape of vs_grad1 :", np.shape(vs_grad))
+        print("shape of rho_grad1 :", np.shape(rho_grad))
+        
+        # if freq == 2:
+        #     r = 10**5
+        # elif freq == 4:
+        #     r = 10**5
+        # elif freq == 6:
+        #     r = 10**4
+        # elif freq == 8:
+        #     r = 10**4
+        # elif freq == 10:
+        #     r = 10**3
+        # elif freq == 12:
+        #     r = 10**3
+        # elif freq == 14:
+        #     r = 10**2
+        # elif freq == 16:
+        #     r = 10**2
+        # elif freq == 18:
+        #     r = 10**1
+        # else:
+        #     r = 10**1
+        r = 10**5
+            
+     
+        r1 = np.max(vpst)/np.max(vp_grad)
+        vp_grad = torch.from_numpy(vp_grad.copy())
+        vp_grad = vp_grad.float()
+        vp_grad = 1.0*vp_grad*r1
+        #if (freq==1):
+        vp_grad = vp_grad
+        
+        r2 = np.max(vsst)/np.max(vs_grad)
+        vs_grad = torch.from_numpy(vs_grad.copy())
+        vs_grad = vs_grad.float()  
+        vs_grad = 1.0*vs_grad*r2
+        #vs_grad = vs_grad*0
+        
+        r3 = np.max(rhost)/np.max(rho_grad)
+        rho_grad = torch.from_numpy(rho_grad.copy())
+        rho_grad = rho_grad.float()
+        rho_grad = 1.0*rho_grad*r3*0.5
+        
+        filen = './marmousiEl12Apr/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        np.save(filen, vp_grad)  #switch on physics based fwi
+        
+        filen = './marmousiEl12Apr/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        np.save(filen, vs_grad)  #switch on physics based fwi
+        
+        filen = './marmousiEl12Apr/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        np.save(filen, rho_grad)  #switch on physics based fwi
+        
+        print('grads names')
+        print(fnames)
+        #vp_grad = 0
+        #vs_grad = 0
+        #rho_grad = 0
+        return vp_grad, vs_grad, rho_grad, loss  
+               
     
 class AutoElMarmousiMar22_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
