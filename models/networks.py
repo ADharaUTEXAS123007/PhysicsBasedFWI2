@@ -276,6 +276,9 @@ def define_G1(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, i
     if netG == 'AutoEl22N':
         print("gpu ids check check :", gpu_ids)
         net = AutoElMarmousi22N_Net(input_nc, output_nc, gpu_ids, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+    elif netG == 'AutoEl22NMar':
+        print("gpu ids check check :", gpu_ids) # for STH model
+        net = AutoElMarmousiMar22N_Net(input_nc, output_nc, gpu_ids, 6, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
     return net
