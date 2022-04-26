@@ -9,10 +9,8 @@ from torch.optim import Optimizer
 def is_legal(v):
     """
     Checks that tensor is not NaN or Inf.
-
     Inputs:
         v (tensor): tensor to be checked
-
     """
     legal = not torch.isnan(v).any() and not torch.isinf(v)
 
@@ -24,26 +22,20 @@ def polyinterp(points, x_min_bound=None, x_max_bound=None, plot=False):
     Gives the minimizer and minimum of the interpolating polynomial over given points
     based on function and derivative information. Defaults to bisection if no critical
     points are valid.
-
     Based on polyinterp.m Matlab function in minFunc by Mark Schmidt with some slight
     modifications.
-
     Implemented by: Hao-Jun Michael Shi and Dheevatsa Mudigere
     Last edited 12/6/18.
-
     Inputs:
         points (nparray): two-dimensional array with each point of form [x f g]
         x_min_bound (float): minimum value that brackets minimum (default: minimum of points)
         x_max_bound (float): maximum value that brackets minimum (default: maximum of points)
         plot (bool): plot interpolating polynomial
-
     Outputs:
         x_sol (float): minimizer of interpolating polynomial
         F_min (float): minimum of interpolating polynomial
-
     Note:
       . Set f or g to np.nan if they are unknown
-
     """
     no_points = points.shape[0]
     order = np.sum(1 - np.isnan(points[:, 1:3]).astype('int')) - 1
@@ -157,14 +149,11 @@ class LBFGS(Optimizer):
     L-BFGS implementations and (stochastic) Powell damping. Partly based on the 
     original L-BFGS implementation in PyTorch, Mark Schmidt's minFunc MATLAB code, 
     and Michael Overton's weak Wolfe line search MATLAB code.
-
     Implemented by: Hao-Jun Michael Shi and Dheevatsa Mudigere
     Last edited 10/20/20.
-
     Warnings:
       . Does not support per-parameter options and parameter groups.
       . All parameters have to be on a single device.
-
     Inputs:
         lr (float): steplength or learning rate (default: 1)
         history_size (int): update history size (default: 10)
@@ -175,7 +164,6 @@ class LBFGS(Optimizer):
                 'Wolfe': uses Armijo-Wolfe bracketing line search
         dtype: data type (default: torch.float)
         debug (bool): debugging mode
-
     References:
     [1] Berahas, Albert S., Jorge Nocedal, and Martin Takác. "A Multi-Batch L-BFGS 
         Method for Machine Learning." Advances in Neural Information Processing 
@@ -198,7 +186,6 @@ class LBFGS(Optimizer):
         2007.
     [9] Wang, Xiao, et al. "Stochastic Quasi-Newton Methods for Nonconvex Stochastic 
         Optimization." SIAM Journal on Optimization 27.2 (2017): 927-956.
-
     """
 
     def __init__(self, params, lr=1., history_size=10, line_search='Wolfe',
@@ -254,9 +241,7 @@ class LBFGS(Optimizer):
         for p in self._params:
             numel = p.numel()
             # view as to avoid deprecated pointwise semantics
-            #p.data.add_(step_size, update[offset:offset + numel].view_as(p.data))
-            #p.data.add_(update[offset:offset + numel].view_as(p.data),*,step_size)
-            p.data.add_(update[offset:offset + numel].view_as(p.data),alpha = step_size)
+            p.data.add_(step_size, update[offset:offset + numel].view_as(p.data))
             offset += numel
         assert offset == self._numel()
 
@@ -293,13 +278,10 @@ class LBFGS(Optimizer):
     def two_loop_recursion(self, vec):
         """
         Performs two-loop recursion on given vector to obtain Hv.
-
         Inputs:
             vec (tensor): 1-D tensor to apply two-loop recursion to
-
         Output:
             r (tensor): matrix-vector product Hv
-
         """
 
         group = self.param_groups[0]
@@ -339,7 +321,6 @@ class LBFGS(Optimizer):
     def curvature_update(self, flat_grad, eps=1e-2, damping=False):
         """
         Performs curvature update.
-
         Inputs:
             flat_grad (tensor): 1-D tensor of flattened gradient for computing 
                 gradient difference with previously stored gradient
@@ -422,7 +403,6 @@ class LBFGS(Optimizer):
     def _step(self, p_k, g_Ok, g_Sk=None, options=None):
         """
         Performs a single optimization step.
-
         Inputs:
             p_k (tensor): 1-D tensor specifying search direction
             g_Ok (tensor): 1-D tensor of flattened gradient over overlap O_k used
@@ -431,7 +411,6 @@ class LBFGS(Optimizer):
                             used for curvature pair damping or rejection criterion,
                             if None, will use g_Ok (default: None)
             options (dict): contains options for performing line search (default: None)
-
         Options for Armijo backtracking line search:
             'closure' (callable): reevaluates model and returns function value
             'current_loss' (tensor): objective value at current iterate (default: F(x_k))
@@ -442,7 +421,6 @@ class LBFGS(Optimizer):
             'interpolate' (bool): flag for using interpolation (default: True)
             'inplace' (bool): flag for inplace operations (default: True)
             'ls_debug' (bool): debugging mode for line search
-
         Options for Wolfe line search:
             'closure' (callable): reevaluates model and returns function value
             'current_loss' (tensor): objective value at current iterate (default: F(x_k))
@@ -454,7 +432,6 @@ class LBFGS(Optimizer):
             'interpolate' (bool): flag for using interpolation (default: True)
             'inplace' (bool): flag for inplace operations (default: True)
             'ls_debug' (bool): debugging mode for line search
-
         Outputs (depends on line search):
           . No line search:
                 t (float): steplength
@@ -486,11 +463,9 @@ class LBFGS(Optimizer):
                 fail (bool): failure flag
                     True: line search reached maximum number of iterations, failed
                     False: line search succeeded
-
         Notes:
           . If encountering line search failure in the deterministic setting, one
             should try increasing the maximum number of line search steps max_ls.
-
         """
 
         if options is None:
@@ -503,9 +478,6 @@ class LBFGS(Optimizer):
         line_search = group['line_search']
         dtype = group['dtype']
         debug = group['debug']
-        
-        lr = 1.0
-        print("lrlrlrlrl :", lr)
 
         # variables cached in state (for tracing)
         state = self.state['global_state']
@@ -519,8 +491,6 @@ class LBFGS(Optimizer):
 
         # set search direction
         d = p_k
-        
-        print("g_0k shape", np.shape(g_Ok))
 
         # modify previous gradient
         if prev_flat_grad is None:
@@ -530,8 +500,6 @@ class LBFGS(Optimizer):
 
         # set initial step size
         t = lr
-        print("tttttttttttttt :", t)
-        print("llllllllllll")
 
         # closure evaluation counter
         closure_eval = 0
@@ -539,8 +507,189 @@ class LBFGS(Optimizer):
         if g_Sk is None:
             g_Sk = g_Ok.clone()
 
+        # perform Armijo backtracking line search
+        if line_search == 'Armijo':
+
+            # load options
+            if options:
+                if 'closure' not in options.keys():
+                    raise(ValueError('closure option not specified.'))
+                else:
+                    closure = options['closure']
+
+                if 'gtd' not in options.keys():
+                    gtd = g_Sk.dot(d)
+                else:
+                    gtd = options['gtd']
+
+                if 'current_loss' not in options.keys():
+                    F_k = closure()
+                    closure_eval += 1
+                else:
+                    F_k = options['current_loss']
+
+                if 'eta' not in options.keys():
+                    eta = 2
+                elif options['eta'] <= 0:
+                    raise(ValueError('Invalid eta; must be positive.'))
+                else:
+                    eta = options['eta']
+
+                if 'c1' not in options.keys():
+                    c1 = 1e-4
+                elif options['c1'] >= 1 or options['c1'] <= 0:
+                    raise(ValueError('Invalid c1; must be strictly between 0 and 1.'))
+                else:
+                    c1 = options['c1']
+
+                if 'max_ls' not in options.keys():
+                    max_ls = 10
+                elif options['max_ls'] <= 0:
+                    raise(ValueError('Invalid max_ls; must be positive.'))
+                else:
+                    max_ls = options['max_ls']
+
+                if 'interpolate' not in options.keys():
+                    interpolate = True
+                else:
+                    interpolate = options['interpolate']
+
+                if 'inplace' not in options.keys():
+                    inplace = True
+                else:
+                    inplace = options['inplace']
+                    
+                if 'ls_debug' not in options.keys():
+                    ls_debug = False
+                else:
+                    ls_debug = options['ls_debug']
+
+            else:
+                raise(ValueError('Options are not specified; need closure evaluating function.'))
+
+            # initialize values
+            if interpolate:
+                if torch.cuda.is_available():
+                    F_prev = torch.tensor(np.nan, dtype=dtype).cuda()
+                else:
+                    F_prev = torch.tensor(np.nan, dtype=dtype)
+
+            ls_step = 0
+            t_prev = 0 # old steplength
+            fail = False # failure flag
+
+            # begin print for debug mode
+            if ls_debug:
+                print('==================================== Begin Armijo line search ===================================')
+                print('F(x): %.8e  g*d: %.8e' % (F_k, gtd))
+
+            # check if search direction is descent direction
+            if gtd >= 0:
+                desc_dir = False
+                if debug:
+                    print('Not a descent direction!')
+            else:
+                desc_dir = True
+
+            # store values if not in-place
+            if not inplace:
+                current_params = self._copy_params()
+
+            # update and evaluate at new point
+            self._add_update(t, d)
+            F_new = closure()
+            closure_eval += 1
+
+            # print info if debugging
+            if ls_debug:
+                print('LS Step: %d  t: %.8e  F(x+td): %.8e  F-c1*t*g*d: %.8e  F(x): %.8e'
+                      % (ls_step, t, F_new, F_k + c1 * t * gtd, F_k))
+
+            # check Armijo condition
+            while F_new > F_k + c1*t*gtd or not is_legal(F_new):
+
+                # check if maximum number of iterations reached
+                if ls_step >= max_ls:
+                    if inplace:
+                        self._add_update(-t, d)
+                    else:
+                        self._load_params(current_params)
+
+                    t = 0
+                    F_new = closure()
+                    closure_eval += 1
+                    fail = True
+                    break
+
+                else:
+                    # store current steplength
+                    t_new = t
+
+                    # compute new steplength
+
+                    # if first step or not interpolating, then multiply by factor
+                    if ls_step == 0 or not interpolate or not is_legal(F_new):
+                        t = t/eta
+
+                    # if second step, use function value at new point along with 
+                    # gradient and function at current iterate
+                    elif ls_step == 1 or not is_legal(F_prev):
+                        t = polyinterp(np.array([[0, F_k.item(), gtd.item()], [t_new, F_new.item(), np.nan]]))
+
+                    # otherwise, use function values at new point, previous point,
+                    # and gradient and function at current iterate
+                    else:
+                        t = polyinterp(np.array([[0, F_k.item(), gtd.item()], [t_new, F_new.item(), np.nan], 
+                                                [t_prev, F_prev.item(), np.nan]]))
+
+                    # if values are too extreme, adjust t
+                    if interpolate:
+                        if t < 1e-3 * t_new:
+                            t = 1e-3 * t_new
+                        elif t > 0.6 * t_new:
+                            t = 0.6 * t_new
+
+                        # store old point
+                        F_prev = F_new
+                        t_prev = t_new
+
+                    # update iterate and reevaluate
+                    if inplace:
+                        self._add_update(t - t_new, d)
+                    else:
+                        self._load_params(current_params)
+                        self._add_update(t, d)
+
+                    F_new = closure()
+                    closure_eval += 1
+                    ls_step += 1 # iterate
+                    
+                    # print info if debugging
+                    if ls_debug:
+                        print('LS Step: %d  t: %.8e  F(x+td):   %.8e  F-c1*t*g*d: %.8e  F(x): %.8e'
+                              % (ls_step, t, F_new, F_k + c1 * t * gtd, F_k))
+
+            # store Bs
+            if Bs is None:
+                Bs = (g_Sk.mul(-t)).clone()
+            else:
+                Bs.copy_(g_Sk.mul(-t))
+                
+            # print final steplength
+            if ls_debug:
+                print('Final Steplength:', t)
+                print('===================================== End Armijo line search ====================================')
+
+            state['d'] = d
+            state['prev_flat_grad'] = prev_flat_grad
+            state['t'] = t
+            state['Bs'] = Bs
+            state['fail'] = fail
+
+            return F_new, t, ls_step, closure_eval, desc_dir, fail
+
         # perform weak Wolfe line search
-        if line_search == 'Wolfe':
+        elif line_search == 'Wolfe':
 
             # load options
             if options:
@@ -648,11 +797,10 @@ class LBFGS(Optimizer):
                 current_params = self._copy_params()
 
             # update and evaluate at new point
-            self._add_update(0.0005, d)
+            self._add_update(t, d)
             F_new = closure()
             closure_eval += 1
 
-            print("loop start start :")
             # main loop
             while True:
 
@@ -665,9 +813,8 @@ class LBFGS(Optimizer):
 
                     t = 0
                     F_new = closure()
-                    #F_new.backward()
+                    F_new.backward()
                     g_new = self._gather_flat_grad()
-                    print("g_new :", g_new)
                     closure_eval += 1
                     grad_eval += 1
                     fail = True
@@ -680,9 +827,7 @@ class LBFGS(Optimizer):
                     print('Armijo:  F(x+td): %.8e  F-c1*t*g*d: %.8e  F(x): %.8e'
                           % (F_new, F_k + c1 * t * gtd, F_k))
 
-                print("F_new :", F_new)
-                print("F_k :", F_k)
-                # check Wolfe condition
+                # check Armijo condition
                 if F_new > F_k + c1 * t * gtd:
 
                     # set upper bound
@@ -700,7 +845,7 @@ class LBFGS(Optimizer):
                 else:
 
                     # compute gradient
-                    #F_new.backward()
+                    F_new.backward()
                     g_new = self._gather_flat_grad()
                     grad_eval += 1
                     gtd_new = g_new.dot(d)
@@ -814,14 +959,11 @@ class FullBatchLBFGS(LBFGS):
     Powell damping. Can be used when evaluating a deterministic function and
     gradient. Wraps the LBFGS optimizer. Performs the two-loop recursion,
     updating, and curvature updating in a single step.
-
     Implemented by: Hao-Jun Michael Shi and Dheevatsa Mudigere
     Last edited 11/15/18.
-
     Warnings:
       . Does not support per-parameter options and parameter groups.
       . All parameters have to be on a single device.
-
     Inputs:
         lr (float): steplength or learning rate (default: 1)
         history_size (int): update history size (default: 10)
@@ -832,7 +974,6 @@ class FullBatchLBFGS(LBFGS):
                 'Wolfe': uses Armijo-Wolfe bracketing line search
         dtype: data type (default: torch.float)
         debug (bool): debugging mode
-
     """
 
     def __init__(self, params, lr=1, history_size=10, line_search='Wolfe', 
@@ -843,14 +984,12 @@ class FullBatchLBFGS(LBFGS):
     def step(self, options=None):
         """
         Performs a single optimization step.
-
         Inputs:
             options (dict): contains options for performing line search (default: None)
             
         General Options:
             'eps' (float): constant for curvature pair rejection or damping (default: 1e-2)
             'damping' (bool): flag for using Powell damping (default: False)
-
         Options for Armijo backtracking line search:
             'closure' (callable): reevaluates model and returns function value
             'current_loss' (tensor): objective value at current iterate (default: F(x_k))
@@ -861,7 +1000,6 @@ class FullBatchLBFGS(LBFGS):
             'interpolate' (bool): flag for using interpolation (default: True)
             'inplace' (bool): flag for inplace operations (default: True)
             'ls_debug' (bool): debugging mode for line search
-
         Options for Wolfe line search:
             'closure' (callable): reevaluates model and returns function value
             'current_loss' (tensor): objective value at current iterate (default: F(x_k))
@@ -873,7 +1011,6 @@ class FullBatchLBFGS(LBFGS):
             'interpolate' (bool): flag for using interpolation (default: True)
             'inplace' (bool): flag for inplace operations (default: True)
             'ls_debug' (bool): debugging mode for line search
-
         Outputs (depends on line search):
           . No line search:
                 t (float): steplength
@@ -905,11 +1042,9 @@ class FullBatchLBFGS(LBFGS):
                 fail (bool): failure flag
                     True: line search reached maximum number of iterations, failed
                     False: line search succeeded
-
         Notes:
           . If encountering line search failure in the deterministic setting, one
             should try increasing the maximum number of line search steps max_ls.
-
         """
         
         # load options for damping and eps
@@ -925,7 +1060,6 @@ class FullBatchLBFGS(LBFGS):
         
         # gather gradient
         grad = self._gather_flat_grad()
-        grad = grad
         
         # update curvature if after 1st iteration
         state = self.state['global_state']
