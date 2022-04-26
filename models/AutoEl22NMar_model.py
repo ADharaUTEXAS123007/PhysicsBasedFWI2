@@ -123,11 +123,11 @@ class AutoEl22NMarModel(BaseModel):
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
             self.optimizer_G1 = torch.optim.Adam(
-                [self.netG.modelVp], lr=10.0)
+                [self.netG.modelVp], lr=1.0)
             self.optimizer_G2 = torch.optim.Adam(
-                [self.netG.modelVs], lr=10.0)
+                [self.netG.modelVs], lr=1.0)
             self.optimizer_G3 = torch.optim.Adam(
-                [self.netG.modelRho], lr=10.0)
+                [self.netG.modelRho], lr=1.0)
             #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
