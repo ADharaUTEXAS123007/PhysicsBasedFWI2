@@ -7044,9 +7044,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1000.0
-        vs = vs*1000.0
-        rho = rho*1000.0
+        vp = vp
+        vs = vs
+        rho = rho
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -7063,9 +7063,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1000.0
-        vsst = vsst*1000.0
-        rhost = rhost*1000.0
+        vpst = vpst
+        vsst = vsst
+        rhost = rhost
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
