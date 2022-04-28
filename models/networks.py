@@ -7107,7 +7107,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #print("xsrcoriginal :",xsrcoriginal)
         idx = np.random.permutation(len(xsrcoriginal))
         xsrc = xsrcoriginal[idx]
-        tshots = 18
+        tshots = 13
         xsrc = xsrcoriginal[0:tshots]
         idx = idx[0:tshots]
         ysrc = depth_src * xsrc / xsrc
@@ -7130,11 +7130,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
             os.system(fo)
             fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
             os.system(fo)
-        pool = ThreadPool(tshots)
+        #pool = ThreadPool(tshots)
         values = np.arange(0,tshots)
-        print("values :", values)
-        print("idx :", idx)
-        pool.starmap(copyshot, zip(idx,values))
+        #print("values :", values)
+        #print("idx :", idx)
+        #pool.starmap(copyshot, zip(idx,values))
+        for i in range(0,13):
+            copyshot(idx[i],values[i])
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
 
