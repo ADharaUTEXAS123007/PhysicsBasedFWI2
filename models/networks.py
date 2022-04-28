@@ -6948,7 +6948,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
+        rho1   = torch.clip(rho1, min=1719, max=maxrho*1)
         
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
