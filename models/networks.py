@@ -7110,10 +7110,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
         r = random.randint(1,2)
         if (r==1):
             xsrc = xsrcoriginal[0:len(xsrcoriginal):2]
-            idx = [0:len(xsrcoriginal):2]
+            idx = np.arange(0, len(xsrcoriginal), 2)
         else:
             xsrc = xsrcoriginal[1:len(xsrcoriginal):2]
-            idx = [1:len(xsrcoriginal):2]
+            idx = np.arange(1, len(xsrcoriginal), 2)
         #print("xsrcoriginal :",xsrcoriginal)
         #idx = np.random.permutation(len(xsrcoriginal))
         #xsrc = xsrcoriginal[idx]
