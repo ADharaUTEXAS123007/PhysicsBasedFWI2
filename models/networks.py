@@ -7108,7 +7108,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         idx = np.random.permutation(len(xsrcoriginal))
         xsrc = xsrcoriginal[idx]
         tshots = 15
-        xsrc = xsrcoriginal[0:tshots]
+        xsrc = xsrcoriginal[idx[0:tshots]]
         idx = idx[0:tshots]
         ysrc = depth_src * xsrc / xsrc
         # print("xsrc :",xsrc)
