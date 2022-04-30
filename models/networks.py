@@ -7110,7 +7110,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ###tshots = 18
         ###xsrc = xsrcoriginal[0:tshots]
         ###idx = idx[0:tshots]
-        ###ysrc = depth_src * xsrc / xsrc
+        ysrc = depth_src * xsrc / xsrc
         # print("xsrc :",xsrc)
         
 
