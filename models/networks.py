@@ -30,6 +30,7 @@ import pyapi_denise as api
 import os
 import multiprocessing
 from multiprocessing.dummy import Pool as ThreadPool 
+import random
 
 ###############################################################################
 # Helper Functions
@@ -7104,14 +7105,25 @@ class AutoElMarmousiMar22_Net(nn.Module):
         xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        #lens = len(xsrcoriginal)
+        
+        r = random.randint(1,2)
+        if (r==1):
+            xsrc = xsrcoriginal[0:len(xsrcoriginal):2]
+            idx = [0:len(xsrcoriginal):2]
+        else:
+            xsrc = xsrcoriginal[1:len(xsrcoriginal):2]
+            idx = [1:len(xsrcoriginal):2]
         #print("xsrcoriginal :",xsrcoriginal)
-        idx = np.random.permutation(len(xsrcoriginal))
-        xsrc = xsrcoriginal[idx]
-        tshots = 15
-        xsrc = xsrcoriginal[idx[0:tshots]]
-        idx = idx[0:tshots]
+        #idx = np.random.permutation(len(xsrcoriginal))
+        #xsrc = xsrcoriginal[idx]
+        #tshots = 15
+        #xsrc = xsrcoriginal[idx[0:tshots]]
+        #idx = idx[0:tshots]
         ysrc = depth_src * xsrc / xsrc
+        tshots = len(xsrc)
         # print("xsrc :",xsrc)
+        
         
 
         # Wrap into api
