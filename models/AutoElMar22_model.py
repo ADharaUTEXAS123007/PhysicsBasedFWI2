@@ -188,12 +188,12 @@ class AutoElMar22Model(BaseModel):
         self.grad = torch.unsqueeze(self.grad,0)
         return self.loss_D_MSE
 
-    def forward(self,epoch1,lstart,freq):
+    def forward(self,epoch1,lstart,freq,idx,it):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_Vp,self.fake_Vs,self.fake_Rho, self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
+        [self.fake_Vp,self.fake_Vs,self.fake_Rho, self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq,idx,it)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
@@ -277,7 +277,7 @@ class AutoElMar22Model(BaseModel):
         self.loss_G.backward()
         
         
-    def backward_G11(self, epoch1, batch, lstart, initerror, currenterror):
+    def backward_G11(self, epoch1, batch, lstart, initerror, currenterror, idx):
             
         """Calculate GAN and L1 loss for the generator"""
         #lstart = 1
@@ -505,23 +505,27 @@ class AutoElMar22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
-        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
-        # update G
-        ####self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.optimizer_G1.zero_grad()
-        self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart,initerror,currenterror)   
+        num_shots = 35
+        idx = torch.randperm(num_shots)
+        num_batches = 3
+        for it in range(num_batches):
+            self.forward(epoch,lstart,freq,idx,it)                   # compute fake images: G(A)
+            # update G
+            ####self.optimizer_G.zero_grad()        # set G's gradients to zero
+            self.optimizer_G1.zero_grad()
+            self.optimizer_G2.zero_grad()
+            self.backward_G11(epoch,batch,lstart,initerror,currenterror,idx)   
                          # calculate graidents for G
-        # obj = self.loss_D_MSE
-        # obj = obj
-        # obj = np.array(obj)
-        # obj = obj.astype(float)
-        # obj = torch.from_numpy(obj)
-        # obj = obj.float()
-        # lamclosure = lambda : self.closure(epoch, lstart, batch, freq)
-        ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        self.optimizer_G1.step()
-        self.optimizer_G2.step()
+            # obj = self.loss_D_MSE
+            # obj = obj
+            # obj = np.array(obj)
+            # obj = obj.astype(float)
+            # obj = torch.from_numpy(obj)
+            # obj = obj.float()
+            # lamclosure = lambda : self.closure(epoch, lstart, batch, freq)
+            ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
+            self.optimizer_G1.step()
+            self.optimizer_G2.step()
         ######self.optimizer_G.step()
         ####options = {'closure': lamclosure}
         ####obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)

@@ -6797,7 +6797,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
         ########filters = [2, 4, 8, 16, 32]
         #filters = [4,8,16,32]
@@ -7002,7 +7002,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -7031,7 +7031,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -7104,7 +7104,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ######xsrc1 = 100.
         xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
-        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrcoriginal = xsrcoriginal[idx]
         #lens = len(xsrcoriginal)
         
         # r = random.randint(1,2)
@@ -7118,40 +7119,39 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #idx = np.random.permutation(len(xsrcoriginal))
         #xsrc = xsrcoriginal[idx]
         #tshots = 15
-        #xsrc = xsrcoriginal[idx[0:tshots]]
-        #idx = idx[0:tshots]
+        xsrc = xsrcoriginal[it::3]
+        idx = idx[it::3]
         ysrc = depth_src * xsrc / xsrc
-        #tshots = len(xsrc)
+        tshots = len(xsrc)
         # print("xsrc :",xsrc)
-        
-        
+
 
         # Wrap into api
         fsource = 10.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
-        # os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
-        # os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
-        # def copyshot(id1, value):
-        #     fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
-        #     os.system(fo)
-        #     fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
-        #     os.system(fo)
-        #     if (id1+1 != value+1):
-        #         fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
-        #         os.system(fo)
-        #         fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
-        #         os.system(fo)
+        os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
+        os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
+        def copyshot(id1, value):            
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            os.system(fo)
+            fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+            os.system(fo)
+            if (id1+1 != value+1):
+                fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
+                os.system(fo)
+                fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
+                os.system(fo)
         # #pool = ThreadPool(tshots)
-        # values = np.arange(0,tshots)
+        values = np.arange(0,tshots)
         # #print("values :", values)
         # #print("idx :", idx)
         # #pool.starmap(copyshot, zip(idx,values))
-        # for i in range(0,tshots):
-        #     copyshot(idx[i],values[i])
-        # d.SEIS_FILE_VX = 'su1/seis_x.su'
-        # d.SEIS_FILE_VY = 'su1/seis_y.su'
+        for i in range(0,tshots):
+            copyshot(idx[i],values[i])
+        d.SEIS_FILE_VX = 'su1/seis_x.su'
+        d.SEIS_FILE_VY = 'su1/seis_y.su'
 
         #d.help()
         #d.NX = 300
