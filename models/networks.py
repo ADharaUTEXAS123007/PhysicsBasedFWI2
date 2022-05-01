@@ -7105,6 +7105,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         xsrc2 = 5880.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        print("xsrcoriginal :", xsrcoriginal)
         xsrcoriginal = xsrcoriginal[idx]
         #lens = len(xsrcoriginal)
         
@@ -7120,7 +7121,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #xsrc = xsrcoriginal[idx]
         #tshots = 15
         xsrc = xsrcoriginal[it::3]
+        print("xsrc1 :", xsrc)
         xsrc = np.sort(xsrc)
+        print("xsrc2 :", xsrc)
         idx = idx[it::3]
         ysrc = depth_src * xsrc / xsrc
         tshots = len(xsrc)
