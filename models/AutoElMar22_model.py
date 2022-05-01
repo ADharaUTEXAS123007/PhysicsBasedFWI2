@@ -237,7 +237,8 @@ class AutoElMar22Model(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.VpT,self.VsT,self.RhoT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq)  # G(A)
+        idx = torch.randperm(num_shots)
+        [self.VpT,self.VsT,self.RhoT,self.gradT,self.latentT,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D,freq,idx,1)  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         #self.real_VpT = self.real_B[:,0,:,:]
         #self.real_VsT = self.real_B[:,1,:,:]
