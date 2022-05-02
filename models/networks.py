@@ -7107,6 +7107,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         print("xsrcoriginal :", xsrcoriginal)
         xsrcoriginal = xsrcoriginal[idx]
+        print("xsrcoriginal sorted :", xsrcoriginal)
         #lens = len(xsrcoriginal)
         
         # r = random.randint(1,2)
