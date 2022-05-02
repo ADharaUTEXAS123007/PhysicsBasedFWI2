@@ -7121,7 +7121,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #idx = np.random.permutation(len(xsrcoriginal))
         #xsrc = xsrcoriginal[idx]
         #tshots = 15
-        xsrc = xsrcoriginal
+        xsrc = xsrcoriginal[idx]
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
         #print("xsrc2 :", xsrc)
@@ -7129,7 +7129,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #idx = np.sort(idx)
         #print("idx :", idx)
         ysrc = depth_src * xsrc / xsrc
-        #tshots = len(xsrc)
+        tshots = len(xsrc)
         # print("xsrc :",xsrc)
 
 
@@ -7138,27 +7138,27 @@ class AutoElMarmousiMar22_Net(nn.Module):
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
-        # os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
-        # os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
-        # def copyshot(id1, value):            
-        #     fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
-        #     os.system(fo)
-        #     fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
-        #     os.system(fo)
-        #     if (id1+1 != value+1):
-        #         fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
-        #         os.system(fo)
-        #         fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
-        #         os.system(fo)
+        os.system('rm -rf /disk/student/adhara/MARMOUSI/su1')
+        os.system('mkdir /disk/student/adhara/MARMOUSI/su1')
+        def copyshot(id1, value):            
+             fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+             os.system(fo)
+             fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
+             os.system(fo)
+             if (id1+1 != value+1):
+                 fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
+                 os.system(fo)
+                 fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
+                 os.system(fo)
         # # #pool = ThreadPool(tshots)
-        # values = np.arange(0,tshots)
+        values = np.arange(0,tshots)
         # # #print("values :", values)
         # # #print("idx :", idx)
         # # #pool.starmap(copyshot, zip(idx,values))
-        # for i in range(0,tshots):
-        #     copyshot(idx[i],values[i])
-        # d.SEIS_FILE_VX = 'su1/seis_x.su'
-        # d.SEIS_FILE_VY = 'su1/seis_y.su'
+        for i in range(0,tshots):
+            copyshot(idx[i],values[i])
+        d.SEIS_FILE_VX = 'su1/seis_x.su'
+        d.SEIS_FILE_VY = 'su1/seis_y.su'
 
         #d.help()
         #d.NX = 300
