@@ -510,7 +510,7 @@ class AutoElMar22Model(BaseModel):
         num_shots = 35
         idx = np.random.permutation(num_shots)
         #idx = np.arange(0,num_shots)
-        num_batches = 1
+        num_batches = 3
         for it in range(num_batches):
             self.forward(epoch,lstart,freq,idx,it)                   # compute fake images: G(A)
             # update G
