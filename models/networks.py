@@ -7126,6 +7126,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         xsrc = np.sort(xsrc)
         print("xsrc2 :", xsrc)
         idx = idx[it::3]
+        print("idx :", idx)
         ysrc = depth_src * xsrc / xsrc
         tshots = len(xsrc)
         # print("xsrc :",xsrc)
