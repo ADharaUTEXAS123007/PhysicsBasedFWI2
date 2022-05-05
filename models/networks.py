@@ -4762,6 +4762,7 @@ class AutoMarmousi22_Net(nn.Module):
         #print(" shape of up3 :", np.shape(up3))
         up2    = self.up2(up3)
         #up2    = self.dropU2(up2)
+        print("shape of up2 :", np.shape(up2))
         up2    = self.cbmU2(up2)
         up1    = self.up1(up2)
         #up1    = self.dropU1(up1)
