@@ -26,7 +26,7 @@ from timeit import default_timer
 #from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
-import pyapi_denise as api
+#import pyapi_denise as api
 import os
 import multiprocessing
 from multiprocessing.dummy import Pool as ThreadPool 
