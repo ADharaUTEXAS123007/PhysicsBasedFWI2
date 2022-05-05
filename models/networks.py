@@ -4667,7 +4667,7 @@ class AutoMarmousi22_Net(nn.Module):
 
         self.down1   = unetDown(self.in_channels, filters[0], self.is_batchnorm)
         #self.dropD1   = nn.Dropout2d(0.05)
-        self.cbmD1   = CBAM(filters[0],16)
+        #self.cbmD1   = CBAM(filters[0],16)
         self.down2   = unetDown(filters[0], filters[1], self.is_batchnorm)
         #self.dropD2   = nn.Dropout2d(0.05)
         self.cbmD2   = CBAM(filters[1],16)
@@ -4714,7 +4714,7 @@ class AutoMarmousi22_Net(nn.Module):
         stddata = torch.std(inputs2)
         down1  = self.down1((inputs2[:,:,1:4001:4,:]))
         #down1  = self.dropD1(down1)
-        down1  = self.cbmD1(down1)
+        #down1  = self.cbmD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
         down2  = self.cbmD2(down2)
