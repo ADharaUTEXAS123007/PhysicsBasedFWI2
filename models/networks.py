@@ -4661,7 +4661,7 @@ class AutoMarmousi22_Net(nn.Module):
         self.n_classes     = inner_nc
         
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32]
+        filters = [4, 8, 16, 32, 64]
         
         latent_dim = 8
 
@@ -4705,7 +4705,7 @@ class AutoMarmousi22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
         #filters = [16, 32, 64, 128, 512]
-        filters = [2, 4, 8, 16, 32]
+        filters = [4, 8, 16, 32, 64]
         latent_dim = 8
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
