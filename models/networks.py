@@ -4717,7 +4717,7 @@ class AutoMarmousi22_Net(nn.Module):
         #down1  = self.cbmD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
-        down2  = self.cbmD2(down2)
+        #down2  = self.cbmD2(down2)
         down3  = self.down3(down2)
         #down3  = self.dropD3(down3)
         down3  = self.cbmD3(down3)
