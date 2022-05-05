@@ -11,7 +11,7 @@ import deepwave
 from torchvision import models
 
 sys.path.append('./models')
-sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
+#sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 from resunet_modules import (
     ResidualConv,
     ASPP,
