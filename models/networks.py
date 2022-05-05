@@ -4686,6 +4686,7 @@ class AutoMarmousi22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up3     = autoUp5(filters[3], filters[2], self.is_deconv, self.is_batchnorm)
         #self.dropU3  = nn.Dropout2d(0.05)
+        self.cbmU3   = CBAM(filters[2], 16)
         self.up2     = autoUp5(filters[2], filters[1], self.is_deconv, self.is_batchnorm)
         #self.dropU2  = nn.Dropout2d(0.05)
         self.up1     = autoUp5(filters[1], filters[0], self.is_deconv, self.is_batchnorm)
@@ -4747,7 +4748,9 @@ class AutoMarmousi22_Net(nn.Module):
     
         up3    = self.up3(z)
         #up3    = self.dropU3(up3)
-        #print(" shape of up1 :", np.shape(up1))
+        print(" shape of up3 :", np.shape(up3))
+        up3    = self.cbmU3(up3)
+        print(" shape of up3 :", np.shape(up3))
         up2    = self.up2(up3)
         #up2    = self.dropU2(up2)
         up1    = self.up1(up2)
