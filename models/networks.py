@@ -4829,7 +4829,7 @@ class AutoMarmousi22_Net(nn.Module):
         net1out1 = net1out1.detach()
         net1out1 = torch.squeeze(net1out1)
         g1 = torch.arange(net1out1.size(dim=0))
-        g1 = g1**1.0
+        g1 = g1**2.0
         ss = g1.tile((200,1))
         ss = torch.transpose(ss,0,1)
         net1out1 = net1out1.to(devicek)
@@ -4861,7 +4861,7 @@ class AutoMarmousi22_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 1
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
