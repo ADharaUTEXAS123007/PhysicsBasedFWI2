@@ -332,19 +332,19 @@ class Auto22Model(BaseModel):
             #filen = './marmousi22/Grad20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi22/Grad2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi22/Grad2JanCBAMAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
             #filen = './marmousi22/Fake20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi22/Fake2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi22/Fake2JanCBAMAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
             #filen = './marmousi22/Real20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi22/Real2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousi22/Real2JanCBAMAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
