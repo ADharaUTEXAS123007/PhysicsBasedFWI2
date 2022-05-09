@@ -7234,7 +7234,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
-        model_init = api.Model0(vpst, vsst, rhost, vp0, vs0, rho0, dx)
+        #model_init = api.Model0(vpst, vsst, rhost, vp0, vs0, rho0, dx)
+        model_init = api.Model(vpst, vsst, rhhost)
         
         
         d.fwi_stages = []
@@ -7269,7 +7270,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         os.system('rm -rf loss_curve_grad.out')
     
         print(f'Target data: {d.DATA_DIR}')
-        d.grad2(model_init, src, rec)
+        d.grad(model_init, src, rec)
         
         loss = np.loadtxt('loss_curve_grad.out')
         
