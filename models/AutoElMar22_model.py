@@ -128,7 +128,7 @@ class AutoElMar22Model(BaseModel):
             self.optimizer_G1 = torch.optim.Adam(
                 [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=opt.lr, amsgrad=True)
             self.optimizer_G2 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=0.0000001)
+                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=0.00005)
             #for name, param in self.netG.named_parameters():
             #    if 'Rho' not in name:
             #        print("name11 :", name)
