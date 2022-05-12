@@ -7237,7 +7237,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rho0), np.max(rho0))
         
-        model_init = api.Model0(vpst, vsst, rho0, vp0, vs0, rho0, dx)
+        model_init = api.Model0(vpst, vsst, rho, vp0, vs0, rho0, dx)
         #model_init = api.Model(vpst, vsst, rhost, dx)
         
         
@@ -7247,7 +7247,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=5.0, fc_high=freq)
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
