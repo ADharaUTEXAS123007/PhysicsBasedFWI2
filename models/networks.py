@@ -7235,9 +7235,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #d.JACOBIAN = 'sacobian/jacobian_Test'
         print("min max vpst :", np.min(vpst), np.max(vpst))
         print("min max vsst :", np.min(vsst), np.max(vsst))
-        print("min max rhost :", np.min(rhost), np.max(rhost))
+        print("min max rhost :", np.min(rho0), np.max(rho0))
         
-        model_init = api.Model0(vpst, vsst, rhost, vp0, vs0, rho0, dx)
+        model_init = api.Model0(vpst, vsst, rho0, vp0, vs0, rho0, dx)
         #model_init = api.Model(vpst, vsst, rhost, dx)
         
         
