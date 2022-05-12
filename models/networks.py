@@ -6954,7 +6954,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*1 + rho1
-        rho1   = rho1
+        rho1   = torch.unsqueeze(lowf[:,1,:,:],1)
         
        
         #vp1     = self.final1(vp1)
@@ -6971,7 +6971,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
-        rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]*1
+        #rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]*1
         
         
        #vp1     = inputs1[:,0,:,:]
