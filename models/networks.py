@@ -7061,9 +7061,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp0 = vp[-1,-1]*np.ones(np.shape(vp))
-        vs0 = vs[-1,-1]*np.ones(np.shape(vs))
-        rho0 = rho[-1,-1]*np.ones(np.shape(rho))
+        vp0 = vp[-1,-1]*np.ones(np.shape(vp))*1000
+        vs0 = vs[-1,-1]*np.ones(np.shape(vs))*1000
+        rho0 = rho[-1,-1]*np.ones(np.shape(rho))*1000
         
         vp = vp
         vs = vs
