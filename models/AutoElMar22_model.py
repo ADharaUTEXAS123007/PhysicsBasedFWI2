@@ -121,14 +121,14 @@ class AutoElMar22Model(BaseModel):
             # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
-            #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
+            self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, amsgrad=True)
            #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), lr=0.001, line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
-            self.optimizer_G1 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=opt.lr, amsgrad=True)
-            self.optimizer_G2 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=0.005)
+            #self.optimizer_G1 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=opt.lr, amsgrad=True)
+            #self.optimizer_G2 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=0.005)
             #for name, param in self.netG.named_parameters():
             #    if 'Rho' not in name:
             #        print("name11 :", name)
@@ -136,9 +136,9 @@ class AutoElMar22Model(BaseModel):
             ####    self.netG.parameters(), lr=1., history_size=10, line_search='Wolfe', debug=True)
             #print("parameters list :", list(self.netG.named_parameters())[0][0])
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr)
-            #self.optimizers.append(self.optimizer_G)
-            self.optimizers.append(self.optimizer_G1)
-            self.optimizers.append(self.optimizer_G2)
+            self.optimizers.append(self.optimizer_G)
+            #self.optimizers.append(self.optimizer_G1)
+            #self.optimizers.append(self.optimizer_G2)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
             print("----test data----")
@@ -419,24 +419,24 @@ class AutoElMar22Model(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            ########self.grad = self.grad.cuda(self.fake_B.get_device())
+            self.grad = self.grad.cuda(self.fake_B.get_device())
             ###print("gradient device :",self.grad.get_device())
             
             ####print("gradient shape :", np.shape(self.grad))
             
-            #########self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
             
             #################
-            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
-            self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
-            self.fake_Vp.backward(self.vp_grad,retain_graph=True)
+            ##################self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+            ################self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
+            #################self.fake_Vp.backward(self.vp_grad,retain_graph=True)
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
             
-            self.vs_grad = torch.unsqueeze(self.vs_grad,0)
-            self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
-            self.fake_Vs.backward(self.vs_grad,retain_graph=True)
+            #####################self.vs_grad = torch.unsqueeze(self.vs_grad,0)
+            #####################self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
+            ####################self.fake_Vs.backward(self.vs_grad,retain_graph=True)
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
@@ -444,10 +444,10 @@ class AutoElMar22Model(BaseModel):
             #print("initerror :", initerror)
             #if (currenterror < 0.4*initerror):
                 #print("backpropagating density gradient")
-            if (currenterror < 0.1*initerror):
-                self.rho_grad = torch.unsqueeze(self.rho_grad,0)
-                self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
-                self.fake_Rho.backward(self.rho_grad)
+            ###if (currenterror < 0.1*initerror):
+            ###    self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+            ###    self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+            ####    self.fake_Rho.backward(self.rho_grad)
                 
             #self.fake_Rho.retain_grad()
 
@@ -514,9 +514,9 @@ class AutoElMar22Model(BaseModel):
         for it in range(num_batches):
             self.forward(epoch,lstart,freq,idx,it)                   # compute fake images: G(A)
             # update G
-            ####self.optimizer_G.zero_grad()        # set G's gradients to zero
-            self.optimizer_G1.zero_grad()
-            self.optimizer_G2.zero_grad()
+            self.optimizer_G.zero_grad()        # set G's gradients to zero
+            ########self.optimizer_G1.zero_grad()
+            #########self.optimizer_G2.zero_grad()
             self.backward_G11(epoch,batch,lstart,initerror,currenterror,idx)   
                          # calculate graidents for G
             # obj = self.loss_D_MSE
@@ -527,9 +527,9 @@ class AutoElMar22Model(BaseModel):
             # obj = obj.float()
             # lamclosure = lambda : self.closure(epoch, lstart, batch, freq)
             ###self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-            self.optimizer_G1.step()
-            self.optimizer_G2.step()
-        ######self.optimizer_G.step()
+            ###########self.optimizer_G1.step()
+            ###########self.optimizer_G2.step()
+            self.optimizer_G.step()
         ####options = {'closure': lamclosure}
         ####obj, grad, lr, _, _, _, _, _ = self.optimizer_G.step(options)
 

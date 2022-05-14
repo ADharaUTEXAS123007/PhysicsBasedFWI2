@@ -6774,7 +6774,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.drop31   = nn.Dropout2d(0.1)
         self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         #self.drop32   = nn.Dropout2d(0.1)
-        self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
+        ####self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.drop33   = nn.Dropout2d(0.1)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
@@ -6782,7 +6782,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.drop21   = nn.Dropout2d(0.1)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
-        self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
+        ####self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.drop23   = nn.Dropout2d(0.1)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.dropU2  = nn.Dropout2d(0.025)
@@ -6790,7 +6790,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.drop11   = nn.Dropout2d(0.1)
         self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.drop12   = nn.Dropout2d(0.1)
-        self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        ####self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.drop13   = nn.Dropout2d(0.1)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
         #self.dropU1  = nn.Dropout2d(0.025)
@@ -6799,11 +6799,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]/2), 1)
-        self.Rhof13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/8), 1)
+        ####self.Rhof13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/8), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
-        self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
+        #####self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
         
         
         #self.final1     =   nn.Sigmoid()
@@ -6893,7 +6893,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up31    = self.drop31(up31)
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
-        up33    = self.Rhoup33(z)
+        ####up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
         #up3      = self.up3(z)
         
@@ -6903,7 +6903,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up21    = self.drop21(up21)
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
-        up23    = self.Rhoup23(up33)
+        ####up23    = self.Rhoup23(up33)
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
         
@@ -6912,7 +6912,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up11    = self.drop11(up11)
         up12    = self.up12(up22)
         #up12    = self.drop12(up12)
-        up13    = self.Rhoup13(up23)
+        ####up13    = self.Rhoup13(up23)
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
         
@@ -6921,19 +6921,19 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        ####up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
-        f13     = self.Rhof13(up13)
+        #####f13     = self.Rhof13(up13)
         #f1    = self.f1(up1)
         
         
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        rho1    = self.Rhorho(f13)
+        #####rho1    = self.Rhorho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -7054,9 +7054,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
     
-        vp = np.squeeze(vp)*1.0
-        vs = np.squeeze(vs)*1.0
-        rho = np.squeeze(rho)*1.0
+        vp = np.squeeze(vp)*10.0
+        vs = np.squeeze(vs)*10.0
+        rho = np.squeeze(rho)*10.0
         
         vp = np.flipud(vp)
         vs = np.flipud(vs)
@@ -7085,9 +7085,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.000
-        vsst = vsst*1.000
-        rhost = rhost*1.000
+        vpst = vpst*10.000
+        vsst = vsst*10.000
+        rhost = rhost*10.000
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
