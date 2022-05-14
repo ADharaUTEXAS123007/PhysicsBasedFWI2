@@ -207,7 +207,8 @@ class AutoElMar22Model(BaseModel):
         self.fake_Rho = self.fake_Rho/1
         self.fake_Vp = self.fake_Vp
         self.fake_Vs = self.fake_Vs
-        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
