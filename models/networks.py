@@ -7273,7 +7273,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         os.system('rm -rf loss_curve_grad.out')
     
         print(f'Target data: {d.DATA_DIR}')
-        d.grad2(model_init, src, rec)
+        d.grad(model_init, src, rec)
         
         loss = np.loadtxt('loss_curve_grad.out')
         
