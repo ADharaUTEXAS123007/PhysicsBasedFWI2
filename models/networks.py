@@ -6942,8 +6942,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1    = self.final1(vp1)
-        vs1    = self.final2(vs1)
+        #vp1    = self.final1(vp1)
+        #vs1    = self.final2(vs1)
         #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -6951,10 +6951,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
         
-        ######vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #####vs10    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*1 + rho1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*1 
+        #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         
        
         #vp1     = self.final1(vp1)
@@ -6967,8 +6967,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         #########vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
-        vp1 = minvp + vp1*(maxvp-minvp)
-        vs1 = minvs + vs1*(maxvs-minvs)
+        #######vp1 = minvp + vp1*(maxvp-minvp)
+        ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
         
