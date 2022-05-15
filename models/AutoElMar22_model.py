@@ -121,7 +121,7 @@ class AutoElMar22Model(BaseModel):
             # define loss functions
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
-            self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, amsgrad=True)
+            self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr)
            #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), lr=0.001, line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
