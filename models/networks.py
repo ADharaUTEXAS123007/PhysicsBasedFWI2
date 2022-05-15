@@ -6968,7 +6968,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
         vp1 = minvp + vp1*(maxvp-minvp)
-        vs1 = 881.0 + vs1*(maxvs-881.0)
+        vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
         
