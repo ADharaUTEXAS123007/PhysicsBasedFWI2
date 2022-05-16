@@ -7240,8 +7240,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         print("min max vsst :", np.min(vsst), np.max(vsst))
         print("min max rhost :", np.min(rho0), np.max(rho0))
         
-        model_init = api.Model0(vpst, vsst, rhost, vp0, vs0, rho0, dx)
-        #model_init = api.Model(vpst, vsst, rhost, dx)
+        #model_init = api.Model0(vpst, vsst, rhost, vp0, vs0, rho0, dx)
+        model_init = api.Model(vpst, vsst, rhost, dx)
         
         
         d.fwi_stages = []
