@@ -6773,7 +6773,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.drop31   = nn.Dropout2d(0.1)
-        self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
+        #########################self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         #self.drop32   = nn.Dropout2d(0.1)
         ####self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.drop33   = nn.Dropout2d(0.1)
@@ -6781,7 +6781,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.dropU3  = nn.Dropout2d(0.025)
         self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.drop21   = nn.Dropout2d(0.1)
-        self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
+        ##########################self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
         ####self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.drop23   = nn.Dropout2d(0.1)
@@ -6893,7 +6893,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
     
         up31    = self.up31(z)
         #up31    = self.drop31(up31)
-        up32    = self.up32(z)
+        #########################up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ####up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
@@ -6903,7 +6903,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #print(" shape of up1 :", np.shape(up1))
         up21    = self.up21(up31)
         #up21    = self.drop21(up21)
-        up22    = self.up22(up32)
+        ##########################up22    = self.up22(up32)
         #up22    = self.drop22(up22)
         ####up23    = self.Rhoup23(up33)
         #up23    = self.drop23(up23)
@@ -6912,7 +6912,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up2    = self.dropU2(up2)
         up11    = self.up11(up21)
         #up11    = self.drop11(up11)
-        up12    = self.up12(up22)
+        up12    = self.up12(up21)
         #up12    = self.drop12(up12)
         ####up13    = self.Rhoup13(up23)
         #up13    = self.drop13(up13)
@@ -7338,7 +7338,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
         #r1 = 1.0
-        vp_grad = 1.0*vp_grad
+        vp_grad = 1.0*vp_grad*r1
         #if (freq==1):
         vp_grad = vp_grad
         
@@ -7346,7 +7346,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()  
         #r2 = 1.0
-        vs_grad = 1.0*vs_grad
+        vs_grad = 1.0*vs_grad*r2
         #vs_grad = vs_grad*0
         
         r3 = np.max(rhost)/np.max(rho_grad)
