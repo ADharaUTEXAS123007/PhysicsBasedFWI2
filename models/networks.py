@@ -12,13 +12,13 @@ from torchvision import models
 
 ###sys.path.append('./models')
 ###sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
-from resunet_modules import (
-    ResidualConv,
-    ASPP,
-    AttentionBlock,
-    Upsample_,
-    Squeeze_Excite_Block,
-)
+#from resunet_modules import (
+#    ResidualConv,
+#    ASPP,
+#    AttentionBlock,
+#    Upsample_,
+#    Squeeze_Excite_Block,
+#)
 import operator
 from functools import reduce
 from functools import partial
