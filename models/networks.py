@@ -10,8 +10,8 @@ import deepwave
 #import torchgeometry as tgm
 from torchvision import models
 
-sys.path.append('./models')
-sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
+###sys.path.append('./models')
+###sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 from resunet_modules import (
     ResidualConv,
     ASPP,
@@ -26,7 +26,7 @@ from timeit import default_timer
 #from unet_layers import unetConv2
 import torch.distributions.transforms as transform
 import torch.distributions as distrib
-import pyapi_denise as api
+####import pyapi_denise as api
 import os
 import multiprocessing
 from multiprocessing.dummy import Pool as ThreadPool 
