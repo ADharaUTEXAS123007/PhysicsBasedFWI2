@@ -9844,7 +9844,7 @@ class AutoMarmousi23_Net(nn.Module):
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
-        num_batches = 2
+        num_batches = 4
         num_epochs = 1
         if (epoch1 > lstart):
             num_epochs = 1
@@ -9927,7 +9927,7 @@ class AutoMarmousi23_Net(nn.Module):
                 #RB Shuffle direct wave seismograms sources with the same random values
                 receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
         
-                for it in range(num_batches):
+                for it in range(1):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
