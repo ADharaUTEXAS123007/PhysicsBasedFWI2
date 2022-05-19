@@ -7183,6 +7183,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         # # #print("idx :", idx)
         # # #pool.starmap(copyshot, zip(idx,values))
         for i in range(0,tshots):
+            print("idx :", idx[i])
             copyshot(idx[i],values[i])
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
