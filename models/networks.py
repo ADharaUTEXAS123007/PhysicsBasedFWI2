@@ -7173,10 +7173,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
              fo = 'cp /disk/student/adhara/MARMOUSI/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSI/su1/.'
              os.system(fo)
              #if (id1+1 != value+1):
-             fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
-             os.system(fo)
-             fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
-             os.system(fo)
+             #####fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_x.su.shot' + str(value+1)
+             #####os.system(fo)
+             ####fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
+             ####os.system(fo)
         # # #pool = ThreadPool(tshots)
         #values = np.arange(0,tshots)
         #print("values :", values)
