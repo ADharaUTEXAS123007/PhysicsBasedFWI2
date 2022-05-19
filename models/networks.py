@@ -7178,13 +7178,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
              fo = 'mv /disk/student/adhara/MARMOUSI/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSI/su1/seis_y.su.shot' + str(value+1)
              os.system(fo)
         # # #pool = ThreadPool(tshots)
-        values = np.arange(0,tshots)
-        # # #print("values :", values)
+        #values = np.arange(0,tshots)
+        #print("values :", values)
         # # #print("idx :", idx)
         # # #pool.starmap(copyshot, zip(idx,values))
         for i in range(0,tshots):
             print("idx :", idx[i])
-            copyshot(idx[i],values[i])
+            copyshot(idx[i],i)
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
 
