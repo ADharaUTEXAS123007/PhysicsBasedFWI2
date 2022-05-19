@@ -7188,7 +7188,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.SEIS_FILE_VX = 'su1/seisT_x.su'
         d.SEIS_FILE_VY = 'su1/seisT_y.su'
 
-        #d.help()
+        d.help()
         #d.NX = 300
         #d.NY = 150
         #d.DH = 20.0
