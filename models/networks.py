@@ -6736,12 +6736,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        #filters = [16, 32, 64, 128, 256]
+        filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
+        #filters = [8, 16, 32, 64, 128] 
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
         #########filters = [2, 4, 8, 16, 32]
@@ -6815,11 +6815,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
-        #filters = [16, 32, 64, 128, 256]
+        filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
@@ -6967,7 +6967,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #rho1   = minrho + rho1*(maxrho-minrho)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
+        vs1    = torch.clip(vs1, min=88.10, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
