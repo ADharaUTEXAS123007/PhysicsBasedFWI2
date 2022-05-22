@@ -7225,7 +7225,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.RHOUPPERLIM = 2145.7412
         d.RHOLOWERLIM = 2145.7412
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 2.5
+        #d.EXP_TAPER_GRAD_HOR = 2.5
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl9Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
@@ -7254,7 +7254,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=3.0, fc_high=freq)
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
