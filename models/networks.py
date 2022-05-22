@@ -6933,8 +6933,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         
-        vp1     = self.vp(f11)
-        vs1     = self.vs(f12)
+        #vp1     = self.vp(f11)
+        #vs1     = self.vs(f12)
         #####rho1    = self.Rhorho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
