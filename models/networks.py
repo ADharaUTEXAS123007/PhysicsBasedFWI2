@@ -6807,8 +6807,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
         
         
-        self.final1     =   nn.Sigmoid()
-        self.final2     =   nn.Sigmoid()
+        #self.final1     =   nn.Sigmoid()
+        #self.final2     =   nn.Sigmoid()
         #self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -6933,8 +6933,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         
-        #vp1     = self.vp(f11)
-        #vs1     = self.vs(f12)
+        vp1     = self.vp(f11)
+        vs1     = self.vs(f12)
         #####rho1    = self.Rhorho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
@@ -6944,8 +6944,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1    = self.final1(vp1)
-        vs1    = self.final2(vs1)
+        #vp1    = self.final1(vp1)
+        #vs1    = self.final2(vs1)
         #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
