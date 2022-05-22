@@ -6807,8 +6807,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #####self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
         
         
-        ###self.final1     =   nn.Sigmoid()
-        ####self.final2     =   nn.Sigmoid()
+        self.final1     =   nn.Sigmoid()
+        self.final2     =   nn.Sigmoid()
         #self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -6944,8 +6944,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1    = self.final1(vp1)
-        #vs1    = self.final2(vs1)
+        vp1    = self.final1(vp1)
+        vs1    = self.final2(vs1)
         #rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -6953,8 +6953,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
         
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*1 
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         
@@ -6962,12 +6962,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
         #rho1    = self.final3(rho1)
-        #vp1    = minvp + vp1*(maxvp-minvp)
-        #vs1    = minvs + vs1*(maxvs-minvs)
+        vp1    = minvp + vp1*(maxvp-minvp)
+        vs1    = minvs + vs1*(maxvs-88.1)
         #rho1   = minrho + rho1*(maxrho-minrho)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.10, max=maxvs)
+        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #vs1    = torch.clip(vs1, min=88.10, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -7225,7 +7225,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.RHOUPPERLIM = 2145.7412
         d.RHOLOWERLIM = 2145.7412
         d.SWS_TAPER_GRAD_HOR = 1
-        #d.EXP_TAPER_GRAD_HOR = 1.0
+        d.EXP_TAPER_GRAD_HOR = 2.5
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiEl9Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
