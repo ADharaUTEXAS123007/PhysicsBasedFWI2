@@ -6747,7 +6747,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 8
+        latent_dim = 128
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -6823,7 +6823,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        latent_dim = 8
+        latent_dim = 128
         label_dsp_dim = (100,300)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
@@ -6953,8 +6953,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
         
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)*1 
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         
@@ -6962,12 +6962,12 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
         #rho1    = self.final3(rho1)
-        vp1    = minvp + vp1*(maxvp-minvp)
-        vs1    = minvs + vs1*(maxvs-8.81)
+        #vp1    = minvp + vp1*(maxvp-minvp)
+        #vs1    = minvs + vs1*(maxvs-8.81)
         #rho1   = minrho + rho1*(maxrho-minrho)
         
-        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        #vs1    = torch.clip(vs1, min=88.10, max=maxvs)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.719, max=maxrho*1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -7063,9 +7063,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*100.0
-        vs = np.flipud(vs)*100.0
-        rho = np.flipud(rho)*100.0
+        vp = np.flipud(vp)*1.0
+        vs = np.flipud(vs)*1.0
+        rho = np.flipud(rho)*1.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -7090,9 +7090,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
-        rhost = rhost*100.0
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
