@@ -6889,6 +6889,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
+        print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 14, 38)
         #zrho = zrho.view(-1, 1, 100, 300)
     
