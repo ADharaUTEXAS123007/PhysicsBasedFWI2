@@ -6748,7 +6748,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 32
+        latent_dim = 8
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -6824,7 +6824,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        latent_dim = 32
+        latent_dim = 8
         label_dsp_dim = (100,300)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
@@ -6874,7 +6874,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
+        print("shape of p :", np.shape(p))
         latent1 = p
+        
         #if (epoch1 <= lstart):
         #    latent1 = p
         #else:
@@ -6889,7 +6891,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        print("shape of z :", np.shape(z))
+        #print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 14, 38)
         #zrho = zrho.view(-1, 1, 100, 300)
     
