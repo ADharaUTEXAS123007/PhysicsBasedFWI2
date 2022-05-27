@@ -5554,6 +5554,7 @@ class AutoElMarmousi22_Net(nn.Module):
         z = self.decoder_input(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
+        print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 20, 38)
         
         #z1 = self.z1(z)
