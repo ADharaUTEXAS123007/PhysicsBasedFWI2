@@ -6957,8 +6957,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
-        vp1     = self.final1(vp1)
-        vs1     = self.final2(vs1)
+        #vp1     = self.final1(vp1)
+        #vs1     = self.final2(vs1)
         
         
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
