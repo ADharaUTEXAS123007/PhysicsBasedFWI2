@@ -175,15 +175,15 @@ class AutoElMar22Model(BaseModel):
         #self.fake_Vp = torch.unsqueeze(self.fake_B[:,0,:,:],1)
         #self.fake_Vs = torch.unsqueeze(self.fake_B[:,1,:,:],1)
         #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
-        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
+        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
-        #self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
-        self.grad = torch.cat((self.vp_grad,self.vs_grad))
+        self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        #self.grad = torch.cat((self.vp_grad,self.vs_grad))
         #self.grad = self.vp_grad
         self.grad = torch.unsqueeze(self.grad,0)
         return self.loss_D_MSE
@@ -207,16 +207,16 @@ class AutoElMar22Model(BaseModel):
         self.fake_Rho = self.fake_Rho/1
         self.fake_Vp = self.fake_Vp
         self.fake_Vs = self.fake_Vs
-        #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
-        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
+        self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs,self.fake_Rho),axis=1)
+        #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
         self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
-        ########self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
-        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        #self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
         #self.grad = self.vp_grad
         self.grad = torch.unsqueeze(self.grad,0)
         
@@ -447,9 +447,9 @@ class AutoElMar22Model(BaseModel):
             #if (currenterror < 0.4*initerror):
                 #print("backpropagating density gradient")
             ###if (currenterror < 0.1*initerror):
-            ###    self.rho_grad = torch.unsqueeze(self.rho_grad,0)
-            ###    self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
-            ####    self.fake_Rho.backward(self.rho_grad)
+            self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+            self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+            self.fake_Rho.backward(self.rho_grad)
                 
             #self.fake_Rho.retain_grad()
 
