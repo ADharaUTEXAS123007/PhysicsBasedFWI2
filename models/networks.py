@@ -6809,9 +6809,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        #self.final1     =   nn.Tanh()
-        #self.final2     =   nn.Tanh()
-        #self.final3     =   nn.Tanh()
+        self.final1     =   nn.Tanh()
+        self.final2     =   nn.Tanh()
+        self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
@@ -6950,9 +6950,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1    = self.final1(vp1)
-        #vs1    = self.final2(vs1)
-        #rho1   = self.final3(rho1)
+        vp1    = self.final1(vp1)
+        vs1    = self.final2(vs1)
+        rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
