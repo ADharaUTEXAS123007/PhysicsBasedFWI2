@@ -6955,7 +6955,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         vp1f    = self.final1(vp1f)
         vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
-        print("shape of vp1 :", np.shape(vp1))
+        #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
