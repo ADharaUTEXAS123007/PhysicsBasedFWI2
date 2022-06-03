@@ -6952,8 +6952,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
+        #vp1f    = self.final1(vp1f)
+        #vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -6964,8 +6964,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = self.final2(vs1)
         
         
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -6973,11 +6973,11 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
-        vp1  = minvp + vp1f*(maxvp-minvp)
-        vs1  = minvs + vs1f*(maxvs-minvs)
+        #vp1  = minvp + vp1f*(maxvp-minvp)
+        #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        #######vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        #######vs1    = torch.clip(vs1, min=88.10, max=maxvs)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=88.10, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.7199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -7268,7 +7268,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=freq, lnorm=1)
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq, lnorm=5)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
