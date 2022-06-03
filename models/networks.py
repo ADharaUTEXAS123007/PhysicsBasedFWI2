@@ -6811,8 +6811,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        #self.final1     =   nn.Tanh()
-        #self.final2     =   nn.Tanh()
+        self.final1     =   nn.Sigmoid()
+        self.final2     =   nn.Sigmoid()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -6941,8 +6941,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         
         
         
-        vp1     = self.vp(f11)
-        vs1     = self.vs(f12)
+        vp1f     = self.vp(f11)
+        vs1f     = self.vs(f12)
         ########rho1    = self.Rhorho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
@@ -6952,8 +6952,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1    = self.final1(vp1)
-        #vs1    = self.final2(vs1)
+        vp1f    = self.final1(vp1f)
+        vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -6964,18 +6964,20 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = self.final2(vs1)
         
         
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
+        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
+        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
+        vp1  = minvp + vp1f*(maxvp-minvp)
+        vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.10, max=maxvs)
+        #######vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #######vs1    = torch.clip(vs1, min=88.10, max=maxvs)
         #rho1   = torch.clip(rho1, min=1.7199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
