@@ -4108,8 +4108,34 @@ class VaeMarmousi_Net(nn.Module):
         x_r[0, :, 1] = torch.arange(
             num_receivers_per_shot).float() * receiver_spacing
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
+        
+        x = deepwave.wavelets.ricker(15, nt, dt, 1/15).cpu().numpy()
+        n = len(x)
+        k = arange(n)
+        Fs = 1/dt
+        T = n/Fs
+        frq = k/T
+        frq = frq[range(int(n/2))]
+        #Y = fft(x)/n
+        #Y = Y[range(int(n/2))]
+        #power_spectrum = np.square(abs_ft)
+        #frequency = np.linspace(0, 1/2*dt, len(power_spectrum))
+        #plt.plot(frq[0:200],abs(Y[0:200]),'r')
 
-        source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
+        xlf = x
+        nyq = 0.5*Fs
+        normalCutoff = 5 / nyq
+        b, a = butter(5, normalCutoff, btype='high')
+        lowt = lfilter(b,a,x)
+        #Ylow = fft(lowt)/n
+        #Ylow = Ylow[range(int(n/2))]
+        #plt.plot(frq[0:200],abs(Ylow[0:200]))
+        lowt = torch.Tensor(lowt)
+        
+
+        #source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
+        #                          .reshape(-1, 1, 1))
+        source_amplitudes_true = (lowt
                                   .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
