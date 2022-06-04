@@ -6952,8 +6952,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1f    = self.final1(vp1f)
-        #vs1f    = self.final2(vs1f)
+        vp1f    = self.final1(vp1f)
+        vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -7159,7 +7159,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:10]]
+        xsrc = xsrcoriginal[idx[0:15]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -7268,7 +7268,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=freq, lnorm=5)
+        d.add_fwi_stage(fc_low=0.0, fc_high=15, lnorm=5)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
