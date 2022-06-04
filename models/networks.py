@@ -4539,7 +4539,7 @@ class AutoMarmousi21_Net(nn.Module):
 
         xlf = x
         nyq = 0.5*Fs
-        normalCutoff = 2 / nyq
+        normalCutoff = 5 / nyq
         b, a = butter(5, normalCutoff, btype='high')
         lowt = lfilter(b,a,x)
         #Ylow = fft(lowt)/n
