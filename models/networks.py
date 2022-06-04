@@ -4375,7 +4375,7 @@ class AutoMarmousi21_Net(nn.Module):
         print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1510.0)] = 1510.0
+        f1[(inputs1==1.5100)] = 1.5100
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4442,7 +4442,7 @@ class AutoMarmousi21_Net(nn.Module):
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(250)
         wb = 0*true[0,0,:,:]
-        wb[(true[0,0,:,:]==1510.0)] = 1
+        wb[(true[0,0,:,:]==1.5100)] = 1
         #print("nnz :", nnz)
         #print("nnzi :", nnz[100])
         #print(" np shape of wb :", np.shape(wb))
