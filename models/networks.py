@@ -4578,8 +4578,9 @@ class AutoMarmousi21_Net(nn.Module):
                 rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
                 #RB Shuffle direct wave seismograms sources with the same random values
                 receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
-        
-                for it in range(num_batches):
+                it1 = 1
+                num_batches1 = 2
+                for it in range(1):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
@@ -4591,14 +4592,14 @@ class AutoMarmousi21_Net(nn.Module):
                     #print("shape of batch src amps")
                     #print(np.shape(batch_src_amps))
                     ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
-                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
-                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_x_s = x_s[it::num_batches].to(devicek)
+                    batch_rcv_amps_true = rcv_amps_true_norm[:,it1::num_batches1]
+                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it1::num_batches1]
+                    batch_x_s = x_s[it1::num_batches1].to(devicek)
                     ##################batch_x_s = x_s[it::num_batches]
                     #print("shape of batch src amps")
                     # print(np.shape(batch_x_s))
                     #####################batch_x_r = x_r[it::num_batches]
-                    batch_x_r = x_r[it::num_batches].to(devicek)
+                    batch_x_r = x_r[it1::num_batches1].to(devicek)
                     #print("shape of batch receiver amps")
                     # print(np.shape(batch_x_r))
                     batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
