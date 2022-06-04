@@ -4375,7 +4375,7 @@ class AutoMarmousi21_Net(nn.Module):
         print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1.5100)] = 1.5100
+        f1[(inputs1==1510.0)] = 1510.0
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4442,7 +4442,7 @@ class AutoMarmousi21_Net(nn.Module):
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(250)
         wb = 0*true[0,0,:,:]
-        wb[(true[0,0,:,:]==1.5100)] = 1
+        wb[(true[0,0,:,:]==1510.0)] = 1
         #print("nnz :", nnz)
         #print("nnzi :", nnz[100])
         #print(" np shape of wb :", np.shape(wb))
@@ -7159,7 +7159,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:15]]
+        xsrc = xsrcoriginal[idx[0:20]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -7268,7 +7268,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=15.0, lnorm=5)
+        d.add_fwi_stage(fc_low=0.0, fc_high=freq, lnorm=5)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
