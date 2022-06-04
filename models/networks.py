@@ -4429,7 +4429,7 @@ class AutoMarmousi21_Net(nn.Module):
         #devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
-        net1out1 = vel
+        net1out1 = vel*1000
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
