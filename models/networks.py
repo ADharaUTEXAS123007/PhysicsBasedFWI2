@@ -4375,7 +4375,7 @@ class AutoMarmousi21_Net(nn.Module):
         print("shape of f1 :", np.shape(f1))
         
         f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1510.0)] = 1510.0
+        f1[(inputs1==1.5100)] = 1.5100
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
         #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
@@ -4442,7 +4442,7 @@ class AutoMarmousi21_Net(nn.Module):
         ss = torch.transpose(ss,0,1)
         nnz = torch.zeros(250)
         wb = 0*true[0,0,:,:]
-        wb[(true[0,0,:,:]==1510.0)] = 1
+        wb[(true[0,0,:,:]==1.5100)] = 1
         #print("nnz :", nnz)
         #print("nnzi :", nnz[100])
         #print(" np shape of wb :", np.shape(wb))
@@ -4583,7 +4583,7 @@ class AutoMarmousi21_Net(nn.Module):
                     #if (epoch1 > lstart):
                     optimizer2.zero_grad()
                     model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
+                    model2 = torch.clamp(net1out1,min=mintrue*1000,max=maxtrue*1000)
                     #np.save('before108.npy',net1out1.cpu().detach().numpy())
                     #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
                     prop = deepwave.scalar.Propagator({'vp': model2}, dx)
@@ -4634,7 +4634,7 @@ class AutoMarmousi21_Net(nn.Module):
                     #########if (epoch1 > lstart):
                     lossinner.backward()
                     net1out1.grad = net1out1.grad*ss
-                    net1out1.grad[(true[0,0,:,:]==1510.0)] = 0
+                    net1out1.grad[(true[0,0,:,:]==1.5100)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
