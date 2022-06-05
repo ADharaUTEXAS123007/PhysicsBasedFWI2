@@ -7018,13 +7018,13 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
-        vp1f     = self.final1(vp1f)
-        vs1f     = self.final2(vs1f)
+        #vp1f     = self.final1(vp1f)
+        #vs1f     = self.final2(vs1f)
         
-        vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-8.810)
-        ########vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        #########vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        #vp1    = minvp + vp1f*(maxvp-minvp)
+        #vs1    = minvs + vs1f*(maxvs-8.810)
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -7327,7 +7327,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=freq, lnorm=5)
+        d.add_fwi_stage(fc_low=5.0, fc_high=freq, lnorm=5)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
