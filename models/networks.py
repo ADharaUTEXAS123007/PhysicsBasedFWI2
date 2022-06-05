@@ -7021,9 +7021,10 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
         
-        
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = minvp + vp1f(maxvp-minvp)
+        vs1    = minvs + vs1f(maxvs-8.810)
+        ########vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        #########vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -7034,8 +7035,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=8.810, max=maxvs)
+        #########vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        ########vs1    = torch.clip(vs1, min=8.810, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
