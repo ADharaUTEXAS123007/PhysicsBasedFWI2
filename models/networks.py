@@ -7284,6 +7284,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 3.0
+        d.FC_SPIKE_2 = 20.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
@@ -7299,8 +7300,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
-        d.RHOUPPERLIM = 2145.7412
-        d.RHOLOWERLIM = 2145.7412
+        d.RHOUPPERLIM = 1009.99
+        d.RHOLOWERLIM = 1009.99
         d.SWS_TAPER_GRAD_HOR = 1
         #d.EXP_TAPER_GRAD_HOR = 2.5
         #d.forward(model, src, rec)
@@ -7331,7 +7332,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=3.0, fc_high=freq, lnorm=5.0)
+        d.add_fwi_stage(fc_low=3.0, fc_high=freq)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
