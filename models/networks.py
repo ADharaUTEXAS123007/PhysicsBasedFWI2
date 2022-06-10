@@ -6797,8 +6797,8 @@ class AutoElMarmousiMar22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        filters = [16, 32, 64, 128, 256]
-        #filters = [32, 64, 128, 256, 512]
+        #filters = [16, 32, 64, 128, 256]
+        filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
@@ -6878,9 +6878,9 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
-        #filters = [32, 64, 128, 256, 512]
+        filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
         #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
