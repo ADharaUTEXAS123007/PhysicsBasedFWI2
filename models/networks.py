@@ -7025,7 +7025,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         #vs1f     = self.final2(vs1f)
         
         vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-88.10)
+        vs1    = minvs + vs1f*(maxvs-minvs)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
@@ -7286,7 +7286,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 3.0
-        d.FC_SPIKE_2 = 10.0
+        #d.FC_SPIKE_2 = 10.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
