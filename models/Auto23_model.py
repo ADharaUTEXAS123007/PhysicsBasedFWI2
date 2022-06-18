@@ -328,15 +328,21 @@ class Auto23Model(BaseModel):
         
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
-        if (epoch1 % 1 == 0): 
-            filen = './marmousi23/Grad3AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
-        
-            filen = './marmousi23/Fake3AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
-            
-            filen = './marmousi23/Real3AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        #if (epoch1 % 1 == 0): 
+            # switch on for physics based fwi
+            filen = './marmousi23/Grad3AD' + str(batch)+'ep'+str(epoch1)+'.npy'
+            # switch on physics based fwi
+            np.save(filen, self.grad.cpu().detach().numpy())
+
+            # switch on for physics based fwi
+            filen = './marmousi23/Fake3AD' + str(batch)+'ep'+str(epoch1)+'.npy'
+            # switch on physics based fwi
+            np.save(filen, self.fake_B.cpu().detach().numpy())
+
+            # switch on for physics based fwi
+            filen = './marmousi23/Real3AD' + str(batch)+'ep'+str(epoch1)+'.npy'
+            # switch on physics based fwi
+            np.save(filen, self.real_B.cpu().detach().numpy())
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
