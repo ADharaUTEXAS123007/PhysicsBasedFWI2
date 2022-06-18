@@ -7695,7 +7695,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         vs1f     = self.final2(vs1f)
         
         vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-88.1)
+        vs1    = minvs + vs1f*(maxvs-27.8)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         ###########vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
