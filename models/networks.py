@@ -7691,15 +7691,15 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
-        #vp1f     = self.final1(vp1f)
-        #vs1f     = self.final2(vs1f)
+        vp1f     = self.final1(vp1f)
+        vs1f     = self.final2(vs1f)
         
-        #vp1    = minvp + vp1f*(maxvp-minvp)
-        #vs1    = minvs + vs1f*(maxvs-minvs)
+        vp1    = minvp + vp1f*(maxvp-minvp)
+        vs1    = minvs + vs1f*(maxvs-88.1)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        ###########vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        ###########vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -7710,16 +7710,16 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        ######vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        ######vs1    = torch.clip(vs1, min=88.1, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
         
-        vp1[:,:,0:26,:] = inputs1[:,0,0:26,:]
-        vs1[:,:,0:26,:] = inputs1[:,1,0:26,:]
+        vp1[:,:,0:13,:] = inputs1[:,0,0:13,:]
+        vs1[:,:,0:13,:] = inputs1[:,1,0:13,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
@@ -7856,23 +7856,23 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         
         # Receivers
         drec = 20.   #simple_model
-        depth_rec = 460.  # receiver depth [m]
+        depth_rec = 240.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
         xrec1 = 380.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 5880.     # last receiver position [m]
+        xrec2 = 5860.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 80. # source spacing [m]
+        dsrc = 120. # source spacing [m]
         #######dsrc = 120.
         depth_src = 40.  # source depth [m]
         #######depth_src = 40.
         xsrc1 = 380.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 5880.  # last source position [m]
+        xsrc2 = 5860.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -7956,7 +7956,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 3.0
-        d.FC_SPIKE_2 = 10.0
+        d.FC_SPIKE_2 = 12.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
@@ -7966,9 +7966,9 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4509.0
+        d.VPUPPERLIM = 4767.0
         d.VPLOWERLIM = 1500.0
-        d.VSUPPERLIM = 2603.0
+        d.VSUPPERLIM = 2752.0
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
@@ -8004,7 +8004,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=10, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=12, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -8055,9 +8055,9 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:25,:] = 0.0
-        vs_grad[0:25,:] = 0.0
-        rho_grad[0:25,:] = 0.0
+        vp_grad[0:13,:] = 0.0
+        vs_grad[0:13,:] = 0.0
+        rho_grad[0:13,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
@@ -8107,13 +8107,13 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #r3 = 1.0
         rho_grad = 1.0*rho_grad*r3*0.1
         
-        filen = './marmousiEl9Mar/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl18June/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl9Mar/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl18June/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl9Mar/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl18June/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')

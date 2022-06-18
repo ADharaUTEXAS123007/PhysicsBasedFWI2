@@ -459,19 +459,19 @@ class AutoElFullMar22Model(BaseModel):
             #filen = './marmousi22/Grad20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousiEl/Grad2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousiEl18June/Grad2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
             #filen = './marmousi22/Fake20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousiEl/Fake2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousiEl18June/Fake2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
             #filen = './marmousi22/Real20Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             #np.save(filen, self.real_B.cpu().det2ach().numpy())  #switch on physics based fwi
             
-            filen = './marmousiEl/Real2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+            filen = './marmousiEl18June/Real2JanAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
             np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
@@ -509,7 +509,7 @@ class AutoElFullMar22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
-        num_shots = 35
+        num_shots = 46
         idx = np.random.permutation(num_shots)
         #idx = np.arange(0,num_shots)
         num_batches = 1
