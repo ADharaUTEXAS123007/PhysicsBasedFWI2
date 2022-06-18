@@ -7286,7 +7286,7 @@ class AutoElMarmousiMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 3.0
-        #d.FC_SPIKE_2 = 10.0
+        d.FC_SPIKE_2 = 10.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
