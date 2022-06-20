@@ -7907,7 +7907,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 10.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -7955,8 +7955,8 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 3.0
-        d.FC_SPIKE_2 = 12.0
+        #d.FC_SPIKE_1 = 3.0
+        d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
