@@ -7567,8 +7567,8 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         minrho = torch.min(inputs1[:,2,:,:])
         maxrho = torch.max(inputs1[:,2,:,:])
         
-        print("minrho :", minrho)
-        print("maxrho :", maxrho)
+        #print("minrho :", minrho)
+        #print("maxrho :", maxrho)
         
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
@@ -7590,7 +7590,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         down4  = self.down4(down3)
         #down4  = self.dropD4(down4)
         
-        print("shape of down4 :", np.shape(down4))
+        #print("shape of down4 :", np.shape(down4))
         
         ####print("shape of down4 :", np.shape(down4))
         result = torch.flatten(down4, start_dim=1)
@@ -7608,7 +7608,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #up2    = self.up2(up3)
         #print("shape of down 4:", np.shape(down2))
         #print("shape of result:", np.shape(result))
-        print("shape of p :", np.shape(p))
+        #print("shape of p :", np.shape(p))
         latent1 = p
         
         #if (epoch1 <= lstart):
@@ -7658,8 +7658,8 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         
         
         #up1    = self.dropU1(up1)
-        print("shape of up11 :", np.shape(up11))
-        print("shape of up12 :", np.shape(up12))
+        #print("shape of up11 :", np.shape(up11))
+        #print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         ####up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
