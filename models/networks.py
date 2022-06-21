@@ -7573,8 +7573,8 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:2500:2,:]))
-        combine2 = self.combine2((inputs3[:,:,1:2500:2,:]))
+        combine1 = self.combine1((inputs2[:,:,1:3000:2,:]))
+        combine2 = self.combine2((inputs3[:,:,1:3000:2,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
