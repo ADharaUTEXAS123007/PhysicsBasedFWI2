@@ -7683,8 +7683,8 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
+        #vp1f    = self.final1(vp1f)
+        #vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -7907,7 +7907,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 10.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -7957,7 +7957,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.PHYSICS = 1
         #d.FC_SPIKE_1 = 5.0
         d.QUELLART = 1
-        d.FC_SPIKE_2 = 18.0
+        #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
         #d.VPUPPERLIM = 3000.0
