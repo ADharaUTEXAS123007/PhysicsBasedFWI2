@@ -7478,7 +7478,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 64
+        latent_dim = 8
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -7555,7 +7555,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        latent_dim = 64
+        latent_dim = 8
         label_dsp_dim = (170,396)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
@@ -7955,7 +7955,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 5.0
+        d.FC_SPIKE_1 = 4.0
         #d.QUELLART = 1
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
@@ -8005,7 +8005,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0,fc_high=12, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_low=4.0,fc_high=12, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
