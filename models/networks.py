@@ -7956,7 +7956,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 4.0
-        #d.QUELLART = 1
+        d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
