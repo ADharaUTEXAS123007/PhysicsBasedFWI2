@@ -2238,7 +2238,7 @@ class unetDown(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
         super(unetDown, self).__init__()
         self.conv = unetConv2(in_size, out_size, is_batchnorm)
-        self.down = nn.MaxPool2d(2, 2, ceil_mode=True)
+        self.down = nn.AvgPool2d(2, 2, ceil_mode=True)
         #self.dropout = nn.Dropout2d(0.1)
         
 
@@ -2423,7 +2423,7 @@ class unetConv5(nn.Module):
         super(unetConv5, self).__init__()
         # Kernel size: 3*3, Stride: 1, Padding: 1
         if is_batchnorm:
-            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 4, 1, 2),
                                        nn.BatchNorm2d(out_size),
                                        nn.LeakyReLU(0.1))
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
