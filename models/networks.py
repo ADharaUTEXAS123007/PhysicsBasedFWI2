@@ -8387,8 +8387,8 @@ class AutoSEAMMar22_Net(nn.Module):
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
         
-        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
-        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        vp1[:,:,0:22,:] = inputs1[:,0,0:22,:]
+        vs1[:,:,0:22,:] = inputs1[:,1,0:22,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
@@ -8525,7 +8525,7 @@ class AutoSEAMMar22_Net(nn.Module):
         
         # Receivers
         drec = 20.   #simple_model
-        depth_rec = 460.  # receiver depth [m]
+        depth_rec = 400.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
@@ -8674,7 +8674,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=6.0,fc_high=12, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=14, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -8725,9 +8725,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:24,:] = 0.0
-        vs_grad[0:24,:] = 0.0
-        rho_grad[0:24,:] = 0.0
+        vp_grad[0:22,:] = 0.0
+        vs_grad[0:22,:] = 0.0
+        rho_grad[0:22,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
