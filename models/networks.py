@@ -8624,8 +8624,8 @@ class AutoSEAMMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 6.0
-        d.QUELLART = 6
+        #d.FC_SPIKE_1 = 6.0
+        #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
@@ -8636,9 +8636,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4767.0
-        d.VPLOWERLIM = 1500.0
-        d.VSUPPERLIM = 2752.0
+        d.VPUPPERLIM = 4800.0
+        d.VPLOWERLIM = 1490.0
+        d.VSUPPERLIM = 2966.0
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
