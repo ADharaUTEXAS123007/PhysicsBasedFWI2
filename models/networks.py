@@ -8396,7 +8396,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #plt.imshow(wb1)
         nnz = np.zeros(396)
         for i in range(396):
-            nnz[i] = np.max(np.nonzero(wb[:,i]))
+            nnz[i] = int(np.max(np.nonzero(wb[:,i])))
             vp1[:,:,0:nnz[i],i] = inputs1[:,0,0:nnz[i],i]
             vs1[:,:,0:nnz[i],i] = inputs1[:,1,0:nnz[i],i]
         #nnz  = int(nnz)
