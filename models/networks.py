@@ -8543,7 +8543,14 @@ class AutoSEAMMar22_Net(nn.Module):
         xrec2 = 7780.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
-        yrec = depth_rec * (xrec / xrec)
+                
+        xrecind = xrec/dx
+        xrecind
+        np.shape(xrec)
+        yrec1 = np.zeros(np.shape(xrec))
+        for i in range(len(yrec1)):
+            yrec1[i] = nnz[int(xrecind[i])]
+        yrec = dx * yrec1
 
         # Sources
         dsrc = 160. # source spacing [m]
