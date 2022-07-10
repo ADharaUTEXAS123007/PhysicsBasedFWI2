@@ -8395,6 +8395,7 @@ class AutoSEAMMar22_Net(nn.Module):
         wb1 = 1-wb
         #plt.imshow(wb1)
         nnz = np.zeros(396)
+        print("shape of vp1 :", np.shape(vp1))
         for i in range(396):
             nnz[i] = int(np.max(np.nonzero(wb[:,i])))
             vp1[:,:,0:nnz[i],i] = inputs1[:,0,0:nnz[i],i]
