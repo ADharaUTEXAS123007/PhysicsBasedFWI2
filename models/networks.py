@@ -8386,9 +8386,9 @@ class AutoSEAMMar22_Net(nn.Module):
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
-        vpsmall = inputs1[:,1,:,:]
-        vpsmall = np.squeeze(vpsmall)
-        wb = 0*vpsmall
+        vssmall = inputs1[:,1,:,:]
+        vssmall = np.squeeze(vssmall)
+        wb = 0*vssmall
         wb[(vssmall==0.0)]=1
         #wb = np.flipud(wb)
         wb1 = np.ones(np.shape(wb))
