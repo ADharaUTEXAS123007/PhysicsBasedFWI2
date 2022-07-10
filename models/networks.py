@@ -8386,6 +8386,17 @@ class AutoSEAMMar22_Net(nn.Module):
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
+        vpsmall = inputs1[:,1,:,:]
+        vpsmall = np.squeeze(vpsmall)
+        wb = 0*vpsmall
+        wb[(vssmall==0.0)]=1
+        #wb = np.flipud(wb)
+        wb1 = np.ones(np.shape(wb))
+        wb1 = 1-wb
+        plt.imshow(wb1)
+        nnz = np.zeros(396)
+        for i in range(396):
+            nnz[i] = np.max(np.nonzero(wb[:,i]))
         
         vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
         vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
@@ -8437,7 +8448,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -8466,7 +8477,7 @@ class AutoSEAMMar22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -8525,7 +8536,7 @@ class AutoSEAMMar22_Net(nn.Module):
         
         # Receivers
         drec = 20.   #simple_model
-        depth_rec = 400.  # receiver depth [m]
+        depth_rec = nnz*dx.  # receiver depth [m]
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
