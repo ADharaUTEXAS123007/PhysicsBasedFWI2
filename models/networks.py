@@ -8399,8 +8399,8 @@ class AutoSEAMMar22_Net(nn.Module):
         for i in range(396):
             nnz[i] = int(np.max(np.nonzero(wb[:,i])))
             print("nnz :", nnz[i])
-            vp1[:,:,0:nnz[i],i] = inputs1[:,0,0:nnz[i],i]
-            vs1[:,:,0:nnz[i],i] = inputs1[:,1,0:nnz[i],i]
+            vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
+            vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
         
         #vp1[:,:,nnz,:] = inputs1[:,0,nnz,:]
