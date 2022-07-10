@@ -8395,10 +8395,10 @@ class AutoSEAMMar22_Net(nn.Module):
         wb1 = 1-wb
         #plt.imshow(wb1)
         nnz = np.zeros(396)
-        print("shape of vp1 :", np.shape(vp1))
+        #print("shape of vp1 :", np.shape(vp1))
         for i in range(396):
             nnz[i] = int(np.max(np.nonzero(wb[:,i])))
-            print("nnz :", nnz[i])
+            #print("nnz :", nnz[i])
             vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
             vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
@@ -8748,9 +8748,13 @@ class AutoSEAMMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:25,:] = 0.0
-        vs_grad[0:25,:] = 0.0
-        rho_grad[0:25,:] = 0.0
+        for i in range(len(nnz)):
+            vp_grad[0:int(nnz[i]),:] = 0.0
+            vs_grad[0:int(nnz[i]),:] = 0.0
+            rho_grad[0:int(nnz[i]),:] = 0.0
+        #vp_grad[0:25,:] = 0.0
+        #vs_grad[0:25,:] = 0.0
+        #rho_grad[0:25,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
