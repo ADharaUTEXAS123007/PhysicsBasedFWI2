@@ -8536,7 +8536,7 @@ class AutoSEAMMar22_Net(nn.Module):
         
         # Receivers
         drec = 20.   #simple_model
-        depth_rec = nnz*dx.  # receiver depth [m]
+        depth_rec = nnz*dx  # receiver depth [m]
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
