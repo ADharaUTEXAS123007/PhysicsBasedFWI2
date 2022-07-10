@@ -8393,7 +8393,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #wb = np.flipud(wb)
         wb1 = np.ones(np.shape(wb))
         wb1 = 1-wb
-        plt.imshow(wb1)
+        #plt.imshow(wb1)
         nnz = np.zeros(396)
         for i in range(396):
             nnz[i] = np.max(np.nonzero(wb[:,i]))
