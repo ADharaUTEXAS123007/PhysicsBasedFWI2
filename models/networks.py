@@ -8397,9 +8397,12 @@ class AutoSEAMMar22_Net(nn.Module):
         nnz = np.zeros(396)
         for i in range(396):
             nnz[i] = np.max(np.nonzero(wb[:,i]))
+            vp1[:,:,0:nnz[i],i] = inputs1[:,0,0:nnz[i],i]
+            vs1[:,:,0:nnz[i],i] = inputs1[:,1,0:nnz[i],i]
+        #nnz  = int(nnz)
         
-        vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
-        vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
+        #vp1[:,:,nnz,:] = inputs1[:,0,nnz,:]
+        #vs1[:,:,nnz,:] = inputs1[:,1,nnz,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
