@@ -8749,9 +8749,9 @@ class AutoSEAMMar22_Net(nn.Module):
         rho_grad = np.flipud(rho_grad)
         
         for i in range(len(nnz)):
-            vp_grad[0:int(nnz[i]),:] = 0.0
-            vs_grad[0:int(nnz[i]),:] = 0.0
-            rho_grad[0:int(nnz[i]),:] = 0.0
+            vp_grad[0:int(nnz[i]),i] = 0.0
+            vs_grad[0:int(nnz[i]),i] = 0.0
+            rho_grad[0:int(nnz[i]),i] = 0.0
         #vp_grad[0:25,:] = 0.0
         #vs_grad[0:25,:] = 0.0
         #rho_grad[0:25,:] = 0.0
