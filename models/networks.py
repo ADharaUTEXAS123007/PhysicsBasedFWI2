@@ -8208,8 +8208,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        self.final1     =   nn.Tanh()
-        self.final2     =   nn.Tanh()
+        self.final1     =   nn.Sigmoid()
+        self.final2     =   nn.Sigmoid()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -8352,8 +8352,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1f    = self.final1(vp1f)
-        #vs1f    = self.final2(vs1f)
+        vp1f    = self.final1(vp1f)
+        vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8363,13 +8363,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1f     = self.final1(vp1f)
         #vs1f     = self.final2(vs1f)
         
-        #vp1    = minvp + vp1f*(maxvp-minvp)
-        #vs1    = minvs + vs1f*(maxvs-88.1)
+        vp1    = minvp + vp1f*(maxvp-minvp)
+        vs1    = minvs + vs1f*(maxvs-minvs)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        ##############vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        ##############vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        ###############rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
@@ -8379,8 +8379,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        ##################vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        ##################vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
