@@ -8454,7 +8454,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -8483,7 +8483,7 @@ class AutoSEAMMar22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
