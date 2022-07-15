@@ -8404,8 +8404,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #     vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
         
-        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
-        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        vp1[:,:,0:30,:] = inputs1[:,0,0:30,:]
+        vs1[:,:,0:30,:] = inputs1[:,1,0:30,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
@@ -8701,7 +8701,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=14, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=8, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -8756,9 +8756,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #    vp_grad[0:int(nnz[i]),i] = 0.0
         #    vs_grad[0:int(nnz[i]),i] = 0.0
         #    rho_grad[0:int(nnz[i]),i] = 0.0
-        vp_grad[0:24,:] = 0.0
-        vs_grad[0:24,:] = 0.0
-        rho_grad[0:24,:] = 0.0
+        vp_grad[0:30,:] = 0.0
+        vs_grad[0:30,:] = 0.0
+        rho_grad[0:30,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
