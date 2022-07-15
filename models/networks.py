@@ -8493,9 +8493,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*100.0
-        vs = np.flipud(vs)*100.0
-        rho = np.flipud(rho)*100.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -8520,9 +8520,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
-        rhost = rhost*100.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -8542,21 +8542,23 @@ class AutoSEAMMar22_Net(nn.Module):
         
         # Receivers
         drec = 20.   #simple_model
-        depth_rec = nnz*dx  # receiver depth [m]
+        #depth_rec = nnz*dx  # receiver depth [m]
+        depth_rec = 460
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
         xrec2 = 7780.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
+        yrec = depth_rec * (xrec/xrec)
                 
-        xrecind = xrec/dx
-        xrecind
-        np.shape(xrec)
-        yrec1 = np.zeros(np.shape(xrec))
-        for i in range(len(yrec1)):
-            yrec1[i] = nnz[int(xrecind[i])]
-        yrec = dx * yrec1
+        # xrecind = xrec/dx
+        # xrecind
+        # np.shape(xrec)
+        # yrec1 = np.zeros(np.shape(xrec))
+        # for i in range(len(yrec1)):
+        #     yrec1[i] = nnz[int(xrecind[i])]
+        # yrec = dx * yrec1
 
         # Sources
         dsrc = 160. # source spacing [m]
@@ -8637,6 +8639,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 0
         d.TIME = 6.0
+        d.FREE_SURF = 0
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
