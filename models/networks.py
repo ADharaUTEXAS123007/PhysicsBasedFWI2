@@ -8135,12 +8135,12 @@ class AutoSEAMMar22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [4,8,16,32,64]
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
@@ -8208,19 +8208,19 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        self.final1     =   nn.Sigmoid()
-        self.final2     =   nn.Sigmoid()
+        #self.final1     =   nn.Sigmoid()
+        #self.final2     =   nn.Sigmoid()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
@@ -8352,8 +8352,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
+        #vp1f    = self.final1(vp1f)
+        #vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8363,12 +8363,12 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1f     = self.final1(vp1f)
         #vs1f     = self.final2(vs1f)
         
-        vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-minvs)
+        ########vp1    = minvp + vp1f*(maxvp-minvp)
+        ########vs1    = minvs + vs1f*(maxvs-minvs)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        ##############vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        ##############vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -8379,33 +8379,33 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        ##################vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        ##################vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
-        vssmall = inputs1[:,1,:,:].cpu().numpy()
-        vssmall = np.squeeze(vssmall)
-        wb = 0*vssmall
-        wb[(vssmall==0.0)]=1
-        #wb = np.flipud(wb)
-        wb1 = np.ones(np.shape(wb))
-        wb1 = 1-wb
-        #plt.imshow(wb1)
-        nnz = np.zeros(396)
-        #print("shape of vp1 :", np.shape(vp1))
-        for i in range(396):
+        # vssmall = inputs1[:,1,:,:].cpu().numpy()
+        # vssmall = np.squeeze(vssmall)
+        # wb = 0*vssmall
+        # wb[(vssmall==0.0)]=1
+        # #wb = np.flipud(wb)
+        # wb1 = np.ones(np.shape(wb))
+        # wb1 = 1-wb
+        # #plt.imshow(wb1)
+        # nnz = np.zeros(396)
+        # #print("shape of vp1 :", np.shape(vp1))
+        # for i in range(396):
             
-            nnz[i] = int(np.max(np.nonzero(wb[:,i])))
-            #print("nnz :", nnz[i])
-            vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
-            vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
+        #     nnz[i] = int(np.max(np.nonzero(wb[:,i])))
+        #     #print("nnz :", nnz[i])
+        #     vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
+        #     vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
         
-        ######vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
-        ########vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
+        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
+        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
@@ -8672,7 +8672,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.RHOUPPERLIM = 1000.00
         d.RHOLOWERLIM = 1000.00
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 1.0
+        #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
@@ -8752,13 +8752,13 @@ class AutoSEAMMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        for i in range(len(nnz)):
-            vp_grad[0:int(nnz[i]),i] = 0.0
-            vs_grad[0:int(nnz[i]),i] = 0.0
-            rho_grad[0:int(nnz[i]),i] = 0.0
-        #vp_grad[0:25,:] = 0.0
-        #vs_grad[0:25,:] = 0.0
-        #rho_grad[0:25,:] = 0.0
+        #for i in range(len(nnz)):
+        #    vp_grad[0:int(nnz[i]),i] = 0.0
+        #    vs_grad[0:int(nnz[i]),i] = 0.0
+        #    rho_grad[0:int(nnz[i]),i] = 0.0
+        vp_grad[0:24,:] = 0.0
+        vs_grad[0:24,:] = 0.0
+        rho_grad[0:24,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
