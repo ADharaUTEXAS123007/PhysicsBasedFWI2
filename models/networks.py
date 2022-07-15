@@ -8404,8 +8404,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #     vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
         
-        ###############vp1[:,:,0:30,:] = inputs1[:,0,0:30,:]
-        ###############vs1[:,:,0:30,:] = inputs1[:,1,0:30,:]
+        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
+        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
@@ -8758,9 +8758,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #    vp_grad[0:int(nnz[i]),i] = 0.0
         #    vs_grad[0:int(nnz[i]),i] = 0.0
         #    rho_grad[0:int(nnz[i]),i] = 0.0
-        vp_grad[0:30,:] = 0.0
-        vs_grad[0:30,:] = 0.0
-        rho_grad[0:30,:] = 0.0
+        vp_grad[0:24,:] = 0.0
+        vs_grad[0:24,:] = 0.0
+        rho_grad[0:24,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
