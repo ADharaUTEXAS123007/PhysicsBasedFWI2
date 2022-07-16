@@ -8545,7 +8545,7 @@ class AutoSEAMMar22_Net(nn.Module):
         # Receivers
         drec = 20.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 460
+        depth_rec = 440
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
@@ -8604,7 +8604,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -8641,7 +8641,10 @@ class AutoSEAMMar22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 0
         d.TIME = 6.0
-        #d.FREE_SURF = 0
+        d.FREE_SURF = 0
+        d.FPML = 5.0
+        d.DAMPING = 3000
+        d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
@@ -8703,7 +8706,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=16, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=8, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
