@@ -8363,6 +8363,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1f     = self.final1(vp1f)
         #vs1f     = self.final2(vs1f)
         
+        print("maxvp :", np.max(maxvp))
+        print("minvp :", np.max(minvp))
+        print("maxvs :", np.max(maxvs))
+        print("minvs :", np.max(minvs))
         vp1    = minvp + vp1f*(maxvp-minvp)
         vs1    = minvs + vs1f*(maxvs-minvs)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
