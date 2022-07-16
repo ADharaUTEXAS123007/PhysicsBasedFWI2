@@ -8135,19 +8135,19 @@ class AutoSEAMMar22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        #filters = [16, 32, 64, 128, 256]
+        filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
+        #filters = [8, 16, 32, 64, 128] 
         #filters = [4,8,16,32,64]
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 8
+        latent_dim = 16
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -8216,15 +8216,15 @@ class AutoSEAMMar22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
-        #filters = [16, 32, 64, 128, 256]
+        filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        latent_dim = 8
+        latent_dim = 16
         label_dsp_dim = (170,396)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
