@@ -8208,8 +8208,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        #self.final1     =   nn.Tanh()
-        #self.final2     =   nn.Tanh()
+        self.final1     =   nn.Tanh()
+        self.final2     =   nn.Tanh()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -8352,9 +8352,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1f    = self.final1(vp1f)
+        vp1f    = self.final1(vp1f)
         
-        #vs1f    = self.final2(vs1f)
+        vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8500,9 +8500,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*100.0
+        vs = np.flipud(vs)*100.0
+        rho = np.flipud(rho)*100.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -8527,9 +8527,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*100.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -8595,7 +8595,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:10]]
+        xsrc = xsrcoriginal[idx[0:6]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
