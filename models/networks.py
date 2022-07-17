@@ -8491,7 +8491,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
-        dx = 20.0
+        dx = 5.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
