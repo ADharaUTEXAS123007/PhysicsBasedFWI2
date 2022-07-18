@@ -438,7 +438,7 @@ class AutoSEAMMar22Model(BaseModel):
             
             self.vs_grad = torch.unsqueeze(self.vs_grad,0)
             self.vs_grad = self.vs_grad.cuda(self.fake_Vs.get_device())
-            self.fake_Vs.backward(self.vs_grad,retain_graph=True)
+            self.fake_Vs.backward(self.vs_grad)
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
@@ -509,7 +509,7 @@ class AutoSEAMMar22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
-        num_shots = 45
+        num_shots = 47
         idx = np.random.permutation(num_shots)
         #idx = np.arange(0,num_shots)
         num_batches = 1

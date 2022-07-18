@@ -8352,9 +8352,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
+        #vp1f    = self.final1(vp1f)
         
-        vs1f    = self.final2(vs1f)
+        #vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8384,8 +8384,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
+        vp1    = torch.clip(vp1, min=1500, max=maxvp)
+        vs1    = torch.clip(vs1, min=300, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8491,7 +8491,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
-        dx = 5.0
+        dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -8548,13 +8548,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 5.   #simple_model
+        drec = 20.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 22*5.
+        depth_rec = 22*20.
         ######depth_rec = 80. #simple_model
-        xrec1 = 100.      # 1st receiver position [m]
+        xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 1945.     # last receiver position [m]
+        xrec2 = 7780.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec/xrec)
@@ -8568,13 +8568,13 @@ class AutoSEAMMar22_Net(nn.Module):
         # yrec = dx * yrec1
 
         # Sources
-        dsrc = 40. # source spacing [m]
+        dsrc = 20.*8. # source spacing [m]
         #######dsrc = 120.
-        depth_src = 10.  # source depth [m]
+        depth_src = 40.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 155.  # 1st source position [m]
+        xsrc1 = 400.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 1925.  # last source position [m]
+        xsrc2 = 7780.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -8609,7 +8609,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 10.0
+        fsource = 3.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -8647,9 +8647,9 @@ class AutoSEAMMar22_Net(nn.Module):
         d.verbose = 0
         d.TIME = 6.0
         d.FREE_SURF = 0
-        d.FPML = 10.0
+        d.FPML = 3.0
         d.DAMPING = 1500
-        d.FW = 20
+        #d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
@@ -8674,7 +8674,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOLOWERLIM = 1929.0
         
         d.VPUPPERLIM = 4800.0
-        d.VPLOWERLIM = 1490.0
+        d.VPLOWERLIM = 1300.0
         d.VSUPPERLIM = 2966.0
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
@@ -8682,7 +8682,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.RHOUPPERLIM = 1000.00
         d.RHOLOWERLIM = 1000.00
         d.SWS_TAPER_GRAD_HOR = 1
-        #d.EXP_TAPER_GRAD_HOR = 1.0
+        d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
@@ -8711,7 +8711,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=16, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=10, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
