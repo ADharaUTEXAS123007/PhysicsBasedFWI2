@@ -8208,8 +8208,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        self.final1     =   nn.Sigmoid()
-        self.final2     =   nn.Sigmoid()
+        self.final1     =   nn.Tanh()
+        self.final2     =   nn.Tanh()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
@@ -8360,8 +8360,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
-        #vp1f     = self.final1(vp1f)
-        #vs1f     = self.final2(vs1f)
+        vp1f     = self.final1(vp1f)
+        vs1f     = self.final2(vs1f)
         
         print("maxvp :", maxvp)
         print("minvp :", minvp)
