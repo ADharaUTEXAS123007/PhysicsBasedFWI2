@@ -8208,8 +8208,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        self.final1     =   nn.Tanh()
-        self.final2     =   nn.Tanh()
+        self.final1     =   nn.Sigmoid()
+        self.final2     =   nn.Sigmoid()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
