@@ -8367,8 +8367,8 @@ class AutoSEAMMar22_Net(nn.Module):
         print("minvp :", minvp)
         print("maxvs :", maxvs)
         print("minvs :", minvs)
-        vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-minvs)
+        vp1    = 15.0 + vp1f*(maxvp-15.0)
+        vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         ###################################vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
