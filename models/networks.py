@@ -8644,8 +8644,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 6.0
-        d.FREE_SURF = 1
+        d.TIME = 8.0
+        d.FREE_SURF = 0
         d.FPML = 1.5
         d.DAMPING = 1500
         #d.FW = 20
