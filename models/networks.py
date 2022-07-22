@@ -8409,6 +8409,7 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
         #vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        print("shhape of vp1 :", np.shape(vp1))
         
         vp1[inputs1[:,1,:,:]==0] = minvp
         vs1[inputs1[:,1,:,:]==0] = minvs
