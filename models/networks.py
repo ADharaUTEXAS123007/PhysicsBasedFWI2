@@ -8383,8 +8383,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=15.0, max=maxvp)
-        vs1    = torch.clip(vs1, min=1.0, max=maxvs)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=minvs, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8392,24 +8392,26 @@ class AutoSEAMMar22_Net(nn.Module):
         
         # vssmall = inputs1[:,1,:,:].cpu().numpy()
         # vssmall = np.squeeze(vssmall)
-        # wb = 0*vssmall
-        # wb[(vssmall==0.0)]=1
+        wb = 0*vssmall
+        wb[(vssmall==0.0)]=1
         # #wb = np.flipud(wb)
-        # wb1 = np.ones(np.shape(wb))
-        # wb1 = 1-wb
+        wb1 = np.ones(np.shape(wb))
+        wb1 = 1-wb
         # #plt.imshow(wb1)
-        # nnz = np.zeros(396)
+        nnz = np.zeros(396)
         # #print("shape of vp1 :", np.shape(vp1))
-        # for i in range(396):
-            
-        #     nnz[i] = int(np.max(np.nonzero(wb[:,i])))
+        for i in range(396):
+            nnz[i] = int(np.max(np.nonzero(wb[:,i])))
         #     #print("nnz :", nnz[i])
         #     vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
         #     vs1[:,:,0:int(nnz[i]),i] = inputs1[:,1,0:int(nnz[i]),i]
         #nnz  = int(nnz)
         
-        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
-        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        #vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
+        #vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        
+        vp1[inputs1[:,1,:,:]==0] = minvp
+        vs1[inputs1[:,1,:,:]==0] = minvs
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
@@ -8460,7 +8462,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -8489,7 +8491,7 @@ class AutoSEAMMar22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
         dx = 20.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -8556,15 +8558,15 @@ class AutoSEAMMar22_Net(nn.Module):
         xrec2 = 7780.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
-        yrec = depth_rec * (xrec/xrec)
+        ################yrec = depth_rec * (xrec/xrec)
                 
-        # xrecind = xrec/dx
+        xrecind = xrec/dx
         # xrecind
         # np.shape(xrec)
-        # yrec1 = np.zeros(np.shape(xrec))
-        # for i in range(len(yrec1)):
-        #     yrec1[i] = nnz[int(xrecind[i])]
-        # yrec = dx * yrec1
+        yrec1 = np.zeros(np.shape(xrec))
+        for i in range(len(yrec1)):
+            yrec1[i] = nnz[int(xrecind[i])]
+        yrec = dx * yrec1
 
         # Sources
         dsrc = 20.*8. # source spacing [m]
@@ -8672,14 +8674,14 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4800.0
-        d.VPLOWERLIM = 1300.0
-        d.VSUPPERLIM = 2966.0
+        d.VPUPPERLIM = 4790.0
+        d.VPLOWERLIM = 1486.0
+
+        d.VSUPPERLIM = 2965.0
         d.VSLOWERLIM = 0.0
-        #d.RHOUPPERLIM = 2589.0
-        #d.RHOLOWERLIM = 1009.0
-        d.RHOUPPERLIM = 1000.00
-        d.RHOLOWERLIM = 1000.00
+
+        d.RHOUPPERLIM = 1000.0
+        d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
@@ -8757,6 +8759,11 @@ class AutoSEAMMar22_Net(nn.Module):
         print("shape of vs_grad :", np.shape(vs_grad))
         print("shape of rho_grad :", np.shape(rho_grad))
         
+        vp_grad[vs==0] = 0
+        vs_grad[vs==0] = 0
+        rho_grad[vs==0] = 0
+        
+        
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
@@ -8765,9 +8772,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #    vp_grad[0:int(nnz[i]),i] = 0.0
         #    vs_grad[0:int(nnz[i]),i] = 0.0
         #    rho_grad[0:int(nnz[i]),i] = 0.0
-        vp_grad[0:24,:] = 0.0
-        vs_grad[0:24,:] = 0.0
-        rho_grad[0:24,:] = 0.0
+        #vp_grad[0:24,:] = 0.0
+        #vs_grad[0:24,:] = 0.0
+        #rho_grad[0:24,:] = 0.0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
