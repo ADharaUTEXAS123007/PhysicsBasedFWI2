@@ -8612,7 +8612,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -8650,7 +8650,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.verbose = 0
         d.TIME = 6.0
         d.FREE_SURF = 0
-        d.FPML = 8.0
+        d.FPML = 5.0
         d.DAMPING = 1500
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
