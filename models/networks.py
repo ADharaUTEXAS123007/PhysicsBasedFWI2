@@ -8247,8 +8247,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
-        #############################print("shape of inputs2 :", np.shape(inputs2))
-        #############################print("shape of inputs1 :", np.shape(inputs1))
+        print("shape of inputs2 :", np.shape(inputs2))
+        print("shape of inputs1 :", np.shape(inputs1))
         #down1  = self.down1((inputs2[:,:,1:1200:4,:]))
         down1  = self.down1(c1c2)
         #down1  = self.dropD1(down1)
@@ -8686,7 +8686,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 2.0
+        d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
