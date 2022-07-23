@@ -2219,10 +2219,10 @@ class unetConv2(nn.Module):
         super(unetConv2, self).__init__()
         # Kernel size: 3*3, Stride: 1, Padding: 1
         if is_batchnorm:
-            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 5, 1, 2),
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
                                        nn.LeakyReLU(0.1))
-            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 5, 1, 2),
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
                                        nn.LeakyReLU(0.1))
         else:
@@ -2425,10 +2425,10 @@ class unetConv5(nn.Module):
         super(unetConv5, self).__init__()
         # Kernel size: 3*3, Stride: 1, Padding: 1
         if is_batchnorm:
-            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 5, 1, 2),
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
                                        nn.LeakyReLU(0.1))
-            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 5, 1, 2),
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
                                        nn.LeakyReLU(0.1))
         else:
@@ -8135,12 +8135,12 @@ class AutoSEAMMar22_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = 1
         
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [4,8,16,32,64]
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
@@ -8216,11 +8216,11 @@ class AutoSEAMMar22_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
-        filters = [16, 32, 64, 128, 256]
+        #filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
@@ -8664,6 +8664,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
+        d.QUELLART = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
