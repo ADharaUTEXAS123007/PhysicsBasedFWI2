@@ -8371,8 +8371,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) - vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) - vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         ###############################rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -8715,7 +8715,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=9, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=9, inv_rho_iter=10000, lnorm=1)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
