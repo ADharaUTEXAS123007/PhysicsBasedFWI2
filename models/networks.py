@@ -8389,7 +8389,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=88.1, max=maxvs)
-        rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
+        rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
@@ -8584,7 +8584,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 10.0
+        fsource = 8.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -8632,7 +8632,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 6.0
+        d.FC_SPIKE_1 = 2.0
         d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
