@@ -77,8 +77,12 @@ class UnalignedVelABCDElDataset(BaseDataset):
         A_img = A_img
         B_img = B_img
         A_img = A_img
-        B_img = B_img/10.0
-        C_img = C_img/10.0
+        
+        print("shape of B_img :", np.shape(B_img))
+        print("shape of C_img :", np.shape(C_img))
+        
+        B_img = B_img/1.0
+        C_img = C_img/1.0
         D_img = D_img
         r = random.randint(0,1)
         
