@@ -8177,7 +8177,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop31   = nn.Dropout2d(0.1)
         self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         #self.drop32   = nn.Dropout2d(0.1)
-        self.up33     = autoUp5(int(filters[3]), int(filters[2]/4), self.is_deconv)
+        self.up33     = autoUp5(int(filters[3]), int(filters[2]/32), self.is_deconv)
         #self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.drop33   = nn.Dropout2d(0.1)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -8186,7 +8186,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop21   = nn.Dropout2d(0.1)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
-        self.up23     = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]/32), int(filters[1]/16), self.is_deconv)
         #self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.drop23   = nn.Dropout2d(0.1)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
@@ -8195,7 +8195,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop11   = nn.Dropout2d(0.1)
         self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.drop12   = nn.Dropout2d(0.1)
-        self.up13     = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]/16), int(filters[0]/8), self.is_deconv)
         #self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.drop13   = nn.Dropout2d(0.1)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -8205,7 +8205,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]/2), 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/4),int(filters[0]/8), 1)
+        self.f13      =  nn.Conv2d(int(filters[0]/8),int(filters[0]/8), 1)
         #self.Rhof13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/8), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
@@ -8339,7 +8339,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
@@ -8388,8 +8388,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=254.6, max=maxvs)
-        rho1   = torch.clip(rho1, min=293.3, max=maxrho)
+        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        rho1   = torch.clip(rho1, min=171.99, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
@@ -8488,8 +8488,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.flipud(vs)*10.0
         rho = np.flipud(rho)*10.0
         
-        vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
-        rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
+        #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
+        #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -8521,8 +8521,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
         
-        vsst = (2752 - 0) * (vsst - 1500)/(4766 - 1500) + 0
-        rhost = (2627 - 1009) * (rhost - 1500)/(4766 - 1500) + 1009
+        #vsst = (2752 - 0) * (vsst - 1500)/(4766 - 1500) + 0
+        #rhost = (2627 - 1009) * (rhost - 1500)/(4766 - 1500) + 1009
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
