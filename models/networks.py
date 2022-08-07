@@ -8388,8 +8388,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
-        rho1   = torch.clip(rho1, min=171.99, max=maxrho)
+        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
+        rho1   = torch.clip(rho1, min=1719.9, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
@@ -8484,9 +8484,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*1.0
+        vs = np.flipud(vs)*1.0
+        rho = np.flipud(rho)*1.0
         
         #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
         #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
@@ -8514,9 +8514,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
