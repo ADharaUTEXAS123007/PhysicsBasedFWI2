@@ -8169,7 +8169,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*52*23) #for marmousi 101x101
-        self.decoder_input2 = nn.Linear(latent_dim, 4*92*208)
+        #############self.decoder_input2 = nn.Linear(latent_dim, 4*92*208)
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         
@@ -8178,7 +8178,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop31   = nn.Dropout2d(0.1)
         self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         #self.drop32   = nn.Dropout2d(0.1)
-        #############self.up33     = autoUp5(int(filters[3]), int(filters[2]/32), True)
+        self.up33     = autoUp5(int(filters[3]), int(filters[2]/32), True)
         #self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.drop33   = nn.Dropout2d(0.1)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -8187,7 +8187,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop21   = nn.Dropout2d(0.1)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
-        ################self.up23     = autoUp5(int(filters[2]/32), int(filters[1]/16), True)
+        self.up23     = autoUp5(int(filters[2]/32), int(filters[1]/16), True)
         #self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.drop23   = nn.Dropout2d(0.1)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
@@ -8196,7 +8196,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop11   = nn.Dropout2d(0.1)
         self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.drop12   = nn.Dropout2d(0.1)
-        self.up13     = autoUp5(4, int(filters[0]/8), self.is_deconv)
+        self.up13     = autoUp5(filters[1]/16, int(filters[0]/8), True)
         #self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.drop13   = nn.Dropout2d(0.1)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -8300,20 +8300,20 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
-        z2 = self.decoder_input2(p)
+        ##############z2 = self.decoder_input2(p)
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 23, 52)
-        z2 = z2.view(-1, 4, 92, 208)
+        #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
     
         up31    = self.up31(z)
         #up31    = self.drop31(up31)
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
-        ####up33    = self.Rhoup33(z)
+        up33    = self.Rhoup33(z)
         ###############up33    = self.up33(z)
         ##################print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
@@ -8324,7 +8324,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up21    = self.drop21(up21)
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
-        #####################up23    = self.up23(up33)
+        up23    = self.up23(up33)
         ###################print("shape of up23 :", np.shape(up23))
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
@@ -8334,7 +8334,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up11    = self.drop11(up11)
         up12    = self.up12(up21)
         #up12    = self.drop12(up12)
-        up13    = self.up13(z2)
+        up13    = self.up13(up23)
         print("shape of up13 :", np.shape(up13))
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
