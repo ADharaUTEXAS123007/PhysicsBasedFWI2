@@ -8312,6 +8312,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up32    = self.drop32(up32)
         ####up33    = self.Rhoup33(z)
         up33    = self.up33(z)
+        print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
@@ -8321,6 +8322,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
         up23    = self.up23(up33)
+        print("shape of up23 :", np.shape(up23))
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
         
@@ -8330,6 +8332,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up12    = self.up12(up21)
         #up12    = self.drop12(up12)
         up13    = self.up13(up23)
+        print("shape of up13 :", np.shape(up13))
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
         
@@ -8340,6 +8343,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
+        
+        print("shape of up13 :", np.shape(up13))
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
