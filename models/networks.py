@@ -8196,7 +8196,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop11   = nn.Dropout2d(0.1)
         self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.drop12   = nn.Dropout2d(0.1)
-        self.up13     = autoUp5(filters[1]/16, int(filters[0]/8), True)
+        self.up13     = autoUp5(int(ilters[1]/16), int(filters[0]/8), True)
         #self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.drop13   = nn.Dropout2d(0.1)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
