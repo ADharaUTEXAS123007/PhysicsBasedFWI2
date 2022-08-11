@@ -9009,7 +9009,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #up2    = self.dropU2(up2)
         up11    = self.up11(up21)
         #up11    = self.drop11(up11)
-        up12    = self.up12(up21)
+        up12    = self.up12(up22)
         #up12    = self.drop12(up12)
         ####up13    = self.Rhoup13(up23)
         #up13    = self.drop13(up13)
