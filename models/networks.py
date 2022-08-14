@@ -8314,7 +8314,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ###########up33    = self.Rhoup33(z)
-        up33    = self.up33(z)
+        ############################################################up33    = self.up33(z)
         ##################print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
@@ -8324,7 +8324,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up21    = self.drop21(up21)
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
-        up23    = self.up23(up33)
+        ##########################################################up23    = self.up23(up33)
         ###################print("shape of up23 :", np.shape(up23))
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
@@ -8335,8 +8335,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #print("shape of up21 :", np.shape(up21))
         up12    = self.up12(up22)
         #up12    = self.drop12(up12)
-        up13    = self.up13(up23)
-        print("shape of up13 :", np.shape(up13))
+        ###########################################################up13    = self.up13(up23)
+        ##print("shape of up13 :", np.shape(up13))
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
         
@@ -8346,21 +8346,21 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
+        ###########################################################up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         
-        print("shape of up13 :", np.shape(up13))
+        ##print("shape of up13 :", np.shape(up13))
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
-        f13     = self.f13(up13)
+        ###############################################################f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
         
         
         vp1f     = self.vp(f11)
         vs1f     = self.vs(f12)
-        rho1f    = self.rho(f13)
+        ##################################################################rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -8386,7 +8386,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
@@ -8398,7 +8398,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=881.0, max=maxvs)
-        rho1   = torch.clip(rho1, min=1719.9, max=maxrho)
+        #######################################################rho1   = torch.clip(rho1, min=1719.9, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
@@ -8406,7 +8406,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
         vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
-        rho1[:,:,0:24,:] = inputs1[:,2,0:24,:]
+        ############################################rho1[:,:,0:24,:] = inputs1[:,2,0:24,:]
         
         
        #vp1     = inputs1[:,0,:,:]
