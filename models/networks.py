@@ -9109,7 +9109,7 @@ class AutoSEAMMar22_Net(nn.Module):
         vswater = torch.unsqueeze(inputs1[:,1,:,:],0)
         print("shhape of vp1 :", np.shape(vp1))
         
-        vp1[vswater==0] = 14.860
+        vp1[vswater==0] = 148.60
         vs1[vswater==0] = 0.0
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
