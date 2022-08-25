@@ -8856,11 +8856,11 @@ class AutoSEAMMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*25, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[4]*26*12) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*52*24) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
-        self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
-        self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
+        #self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
+        #self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -8987,15 +8987,15 @@ class AutoSEAMMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[4], 12, 26)
+        z = z.view(-1, filters[3], 24, 52)
         #zrho = zrho.view(-1, 1, 100, 300)
         
-        up41    = self.up41(z)
-        up42    = self.up42(z)
+        #up41    = self.up41(z)
+        #up42    = self.up42(z)
     
-        up31    = self.up31(up41)
+        up31    = self.up31(z)
         #up31    = self.drop31(up31)
-        up32    = self.up32(up42)
+        up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ####up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
@@ -9079,7 +9079,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=1.330, max=maxvs)
+        vs1    = torch.clip(vs1, min=1.140, max=maxvs)
         ####vp1 = minvp + vp1f*(maxvp-minvp)
         ####vs1  = 1.330 + vs1f*(maxvs-1.330)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
@@ -9200,9 +9200,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*100.0
-        vs = np.flipud(vs)*100.0
-        rho = np.flipud(rho)*100.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9227,9 +9227,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
-        rhost = rhost*100.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -9377,7 +9377,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.VPUPPERLIM = 4790.0
         d.VPLOWERLIM = 1486.0
 
-        d.VSUPPERLIM = 2965.0
+        d.VSUPPERLIM = 2765.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
