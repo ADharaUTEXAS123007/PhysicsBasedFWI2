@@ -8935,8 +8935,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:3000:3,:]))
-        combine2 = self.combine2((inputs3[:,:,1:3000:3,:]))
+        combine1 = self.combine1((inputs2[:,:,1:8000:8,:]))
+        combine2 = self.combine2((inputs3[:,:,1:8000:8,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9310,7 +9310,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 14.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9346,9 +9346,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 5.0
+        d.TIME = 4.0
         d.FREE_SURF = 1
-        d.FPML = 8.0
+        d.FPML = 14.0
         d.DAMPING = 2000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
@@ -9364,7 +9364,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.QUELLART = 6
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 14.0
+        d.FC_SPIKE_2  = 28.0
         d.DT = 0.0005
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
@@ -9417,7 +9417,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=14, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_high=16, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
