@@ -9381,7 +9381,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.VPUPPERLIM = 4790.0
         d.VPLOWERLIM = 1486.0
 
-        d.VSUPPERLIM = 2765.0
+        d.VSUPPERLIM = 2766.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
