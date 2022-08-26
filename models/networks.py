@@ -8837,7 +8837,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 32
+        latent_dim = 8
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
