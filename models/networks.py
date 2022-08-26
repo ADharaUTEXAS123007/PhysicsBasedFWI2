@@ -9320,7 +9320,7 @@ class AutoSEAMMar22_Net(nn.Module):
         def copyshot(id1, value):             
             fo = 'cp /disk/student/adhara/SEAMN/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/SEAMN/su1/.'
             os.system(fo)
-            fo = 'cp /disk/student/adhara/SEAMT/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/SEAMN/su1/.'
+            fo = 'cp /disk/student/adhara/SEAMN/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/SEAMN/su1/.'
             os.system(fo)
         #      #if (id1+1 != value+1):
             fo = 'mv /disk/student/adhara/SEAMN/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/SEAMN/su1/seisT_x.su.shot' + str(value+1)
