@@ -8856,7 +8856,7 @@ class AutoSEAMMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*42, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*62*90) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*31*45) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         #self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
@@ -8988,7 +8988,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 62, 90)
+        z = z.view(-1, filters[3], 31, 45)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         #up41    = self.up41(z)
@@ -9080,7 +9080,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=11.02, max=maxvs)
+        vs1    = torch.clip(vs1, min=11.46, max=maxvs)
         ####vp1 = minvp + vp1f*(maxvp-minvp)
         ####vs1  = 1.330 + vs1f*(maxvs-1.330)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
@@ -9096,9 +9096,9 @@ class AutoSEAMMar22_Net(nn.Module):
         wb1 = np.ones(np.shape(wb))
         wb1 = 1-wb
         # #plt.imshow(wb1)
-        nnz = np.zeros(696)
+        nnz = np.zeros(348)
         # #print("shape of vp1 :", np.shape(vp1))
-        for i in range(696):
+        for i in range(348):
             nnz[i] = int(np.max(np.nonzero(wb[:,i])))
         #     #print("nnz :", nnz[i])
         #     vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
@@ -9192,7 +9192,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
-        dx = 5.0
+        dx = 10.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -9249,9 +9249,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 1.   #simple_model
+        drec = 10.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 22*5.
+        depth_rec = 22*10.
         ######depth_rec = 80. #simple_model
         xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
@@ -9269,9 +9269,9 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = dx * yrec1
 
         # Sources
-        dsrc = 5.*12. # source spacing [m]
+        dsrc = 10.*8. # source spacing [m]
         #######dsrc = 120.
-        depth_src = 30.  # source depth [m]
+        depth_src = 60.  # source depth [m]
         #######depth_src = 40.
         xsrc1 = 150.  # 1st source position [m]
         ######xsrc1 = 100.
@@ -9310,7 +9310,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 14.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9348,7 +9348,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.verbose = 0
         d.TIME = 4.0
         d.FREE_SURF = 1
-        d.FPML = 14.0
+        d.FPML = 5.0
         d.DAMPING = 2000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
@@ -9364,8 +9364,8 @@ class AutoSEAMMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.QUELLART = 6
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 28.0
-        d.DT = 0.0005
+        d.FC_SPIKE_2  = 12.0
+        d.DT = 0.001
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
