@@ -8853,7 +8853,7 @@ class AutoSEAMMar22_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*63*42, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*63*20, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*31*45) #for marmousi 101x101
@@ -8917,8 +8917,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
-        latent_dim = 32
-        label_dsp_dim = (435,696)
+        latent_dim = 8
+        label_dsp_dim = (190,348)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
