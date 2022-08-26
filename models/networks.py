@@ -8918,7 +8918,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
         latent_dim = 32
-        label_dsp_dim = (170,396)
+        label_dsp_dim = (435,696)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -9192,7 +9192,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
-        dx = 20.0
+        dx = 5.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -9249,13 +9249,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 5.   #simple_model
+        drec = 1.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 22*20.
+        depth_rec = 22*5.
         ######depth_rec = 80. #simple_model
-        xrec1 = 400.      # 1st receiver position [m]
+        xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 7780.     # last receiver position [m]
+        xrec2 = 3250.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9269,13 +9269,13 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = dx * yrec1
 
         # Sources
-        dsrc = 20.*8. # source spacing [m]
+        dsrc = 5.*12. # source spacing [m]
         #######dsrc = 120.
-        depth_src = 40.  # source depth [m]
+        depth_src = 30.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 400.  # 1st source position [m]
+        xsrc1 = 150.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 7780.  # last source position [m]
+        xsrc2 = 3250.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9310,7 +9310,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 8.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9346,9 +9346,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 7.0
+        d.TIME = 5.0
         d.FREE_SURF = 1
-        d.FPML = 5.0
+        d.FPML = 8.0
         d.DAMPING = 2000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
@@ -9362,9 +9362,10 @@ class AutoSEAMMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.QUELLART = 1
+        d.QUELLART = 6
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  =  12.0
+        d.FC_SPIKE_2  = 14.0
+        d.DT = 0.0005
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
