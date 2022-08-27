@@ -38,7 +38,7 @@ class autoUp5(nn.Module):
         return outputs3
 
 class ADJOINTNET(nn.Module):
-    def __init__(self,outer_nc, inner_nc=39, input_nc=None,
+    def __init__(self,outer_nc=39, inner_nc=39, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(ADJOINTNET, self).__init__()
         self.is_deconv     = False
