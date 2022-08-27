@@ -251,25 +251,25 @@ if __name__ == '__main__':
     # #--------------------------------------------------------------------------
     # # Setup the direction file and the surface file
     # #--------------------------------------------------------------------------
-    # dir_file = net_plotter.name_direction_file(args) # name the direction file
-    # print("dir_file_name :", dir_file)
-    # if rank == 0:
-    #     net_plotter.setup_direction(args, dir_file, net)
+    dir_file = net_plotter.name_direction_file(args) # name the direction file
+    print("dir_file_name :", dir_file)
+    if rank == 0:
+        net_plotter.setup_direction(args, dir_file, net)
 
-    # surf_file = name_surface_file(args, dir_file)
+    surf_file = name_surface_file(args, dir_file)
     
-    # if rank == 0:
-    #     setup_surface_file(args, surf_file, dir_file)
+    if rank == 0:
+        setup_surface_file(args, surf_file, dir_file)
 
-    # # wait until master has setup the direction file and surface file
-    # mpi.barrier(comm)
+    # wait until master has setup the direction file and surface file
+    mpi.barrier(comm)
 
-    # # load directions
-    # d = net_plotter.load_directions(dir_file)
-    # # calculate the consine similarity of the two directions
-    # if len(d) == 2 and rank == 0:
-    #     similarity = proj.cal_angle(proj.nplist_to_tensor(d[0]), proj.nplist_to_tensor(d[1]))
-    #     print('cosine similarity between x-axis and y-axis: %f' % similarity)
+    # load directions
+    d = net_plotter.load_directions(dir_file)
+    # calculate the consine similarity of the two directions
+    if len(d) == 2 and rank == 0:
+        similarity = proj.cal_angle(proj.nplist_to_tensor(d[0]), proj.nplist_to_tensor(d[1]))
+        print('cosine similarity between x-axis and y-axis: %f' % similarity)
 
     #--------------------------------------------------------------------------
     # Setup dataloader
