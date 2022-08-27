@@ -249,19 +249,24 @@ def setup_direction(args, dir_file, net):
     if not args.dir_file:
         print("Setting up the plotting directions...")
         if args.model_file2:
+            print("args model file2")
             net2 = model_loader.load(args.dataset, args.model, args.model_file2)
             xdirection = create_target_direction(net, net2, args.dir_type)
         else:
+            print("else")
             xdirection = create_random_direction(net, args.dir_type, args.xignore, args.xnorm)
         h5_util.write_list(f, 'xdirection', xdirection)
 
         if args.y:
             if args.same_dir:
+                print("args.same_dir")
                 ydirection = xdirection
             elif args.model_file3:
+                print("args.model_file3")
                 net3 = model_loader.load(args.dataset, args.model, args.model_file3)
                 ydirection = create_target_direction(net, net3, args.dir_type)
             else:
+                print("else 2")
                 ydirection = create_random_direction(net, args.dir_type, args.yignore, args.ynorm)
             h5_util.write_list(f, 'ydirection', ydirection)
 
