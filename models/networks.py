@@ -9080,7 +9080,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=11.46, max=maxvs)
+        vs1    = torch.clip(vs1, min=51.97, max=maxvs)
         ####vp1 = minvp + vp1f*(maxvp-minvp)
         ####vs1  = 1.330 + vs1f*(maxvs-1.330)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
@@ -9110,7 +9110,7 @@ class AutoSEAMMar22_Net(nn.Module):
         vswater = torch.unsqueeze(inputs1[:,1,:,:],0)
         print("shhape of vp1 :", np.shape(vp1))
         
-        vp1[vswater==0] = 148.60
+        vp1[vswater==0] = 150.0
         vs1[vswater==0] = 0.0
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
@@ -9251,7 +9251,7 @@ class AutoSEAMMar22_Net(nn.Module):
         # Receivers
         drec = 10.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 22*10.
+        depth_rec = 23*10.
         ######depth_rec = 80. #simple_model
         xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
@@ -9263,10 +9263,10 @@ class AutoSEAMMar22_Net(nn.Module):
         xrecind = xrec/dx
         # xrecind
         # np.shape(xrec)
-        yrec1 = np.zeros(np.shape(xrec))
-        for i in range(len(yrec1)):
-            yrec1[i] = nnz[int(xrecind[i])]
-        yrec = dx * yrec1
+        #yrec1 = np.zeros(np.shape(xrec))
+        #for i in range(len(yrec1)):
+        #    yrec1[i] = nnz[int(xrecind[i])]
+        yrec = depth_rec * (xrec/xrec)
 
         # Sources
         dsrc = 10.*8. # source spacing [m]
@@ -9417,7 +9417,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=25, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_high=12, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
