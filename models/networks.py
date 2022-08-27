@@ -9364,7 +9364,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.QUELLART = 6
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 12.0
+        d.FC_SPIKE_2  = 8.0
         d.DT = 0.001
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
