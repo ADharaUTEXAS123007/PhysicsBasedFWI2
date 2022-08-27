@@ -83,7 +83,7 @@ class autoUp5(nn.Module):
         return outputs3
 
 class ADJOINTNET(nn.Module):
-    def __init__(self,outer_nc=39, inner_nc=39, input_nc=None,
+    def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(ADJOINTNET, self).__init__()
         self.is_deconv     = False
@@ -122,11 +122,11 @@ class ADJOINTNET(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*20, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*45) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*13*25) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
-        #self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
-        #self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
+        self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
+        self.up42 = autoUp5(filters[3], filters[3], self.is_deconv)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -201,8 +201,8 @@ class ADJOINTNET(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:4000:4,:]))
-        combine2 = self.combine2((inputs3[:,:,1:4000:4,:]))
+        combine1 = self.combine1((inputs2[:,:,1:5000:5,:]))
+        combine2 = self.combine2((inputs3[:,:,1:5000:5,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -254,15 +254,15 @@ class ADJOINTNET(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 25, 45)
+        z = z.view(-1, filters[3], 13, 25)
         #zrho = zrho.view(-1, 1, 100, 300)
         
-        #up41    = self.up41(z)
-        #up42    = self.up42(z)
+        up41    = self.up41(z)
+        up42    = self.up42(z)
     
-        up31    = self.up31(z)
+        up31    = self.up31(up41)
         #up31    = self.drop31(up31)
-        up32    = self.up32(z)
+        up32    = self.up32(up42)
         #up32    = self.drop32(up32)
         ####up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
@@ -346,7 +346,7 @@ class ADJOINTNET(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=11.46, max=maxvs)
+        vs1    = torch.clip(vs1, min=49.81, max=maxvs)
         ####vp1 = minvp + vp1f*(maxvp-minvp)
         ####vs1  = 1.330 + vs1f*(maxvs-1.330)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
@@ -376,7 +376,7 @@ class ADJOINTNET(nn.Module):
         vswater = torch.unsqueeze(inputs1[:,1,:,:],0)
         print("shhape of vp1 :", np.shape(vp1))
         
-        vp1[vswater==0] = 148.60
+        vp1[vswater==0] = 150.0
         vs1[vswater==0] = 0.0
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
