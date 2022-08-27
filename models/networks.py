@@ -8856,11 +8856,11 @@ class AutoSEAMMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*20, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[4]*13*25) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*13*25) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
-        #self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
-        #self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
+        self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
+        self.up42 = autoUp5(filters[3], filters[3], self.is_deconv)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
