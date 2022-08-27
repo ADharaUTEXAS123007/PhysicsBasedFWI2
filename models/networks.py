@@ -8856,11 +8856,11 @@ class AutoSEAMMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*20, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*25*45) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*12*44) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
-        #self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
-        #self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
+        self.up41 = autoUp5(filters[4], filters[3], self.is_deconv)
+        self.up42 = autoUp5(filters[4], filters[3], self.is_deconv)
         
         #self.up4     = autoUp(filters[4], filters[3], self.is_deconv)
         self.up31     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -8935,8 +8935,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:4000:4,:]))
-        combine2 = self.combine2((inputs3[:,:,1:4000:4,:]))
+        combine1 = self.combine1((inputs2[:,:,1:5000:5,:]))
+        combine2 = self.combine2((inputs3[:,:,1:5000:5,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -8988,15 +8988,15 @@ class AutoSEAMMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 25, 45)
+        z = z.view(-1, filters[3], 12, 44)
         #zrho = zrho.view(-1, 1, 100, 300)
         
-        #up41    = self.up41(z)
-        #up42    = self.up42(z)
+        up41    = self.up41(z)
+        up42    = self.up42(z)
     
-        up31    = self.up31(z)
+        up31    = self.up31(up41)
         #up31    = self.drop31(up31)
-        up32    = self.up32(z)
+        up32    = self.up32(up42)
         #up32    = self.drop32(up32)
         ####up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
@@ -9346,7 +9346,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 4.0
+        d.TIME = 5.0
         d.FREE_SURF = 1
         d.FPML = 5.0
         d.DAMPING = 2000
