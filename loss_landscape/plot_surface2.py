@@ -152,6 +152,22 @@ def crunch(surf_file, net, w, s, d, dataloader, loss_key, acc_key, comm, rank, a
     print('Rank %d done!  Total time: %.2f Sync: %.2f' % (rank, total_time, total_sync))
 
     f.close()
+    
+def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
+    """
+        Calculate the loss values and accuracies of modified models in parallel
+        using MPI reduce.
+    """
+    print("surface file :", surf_file)
+    f = h5py.File(surf_file, 'r+' if rank == 0 else 'r')
+    losses, accuracies = [], []
+    xcoordinates = f['xcoordinates'][:]
+    ycoordinates = f['ycoordinates'][:] if 'ycoordinates' in f.keys() else None
+    
+    print("xcoordinates :", xcoordinates)
+    print("ycoordinates :", ycoordinates)
+
+    f.close()
 
 ###############################################################
 #                          MAIN
@@ -289,7 +305,7 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------
     # Start the computation
     #--------------------------------------------------------------------------
-    #crunch(surf_file, net, w, s, d, trainloader, 'train_loss', 'train_acc', comm, rank, args)
+    crunch2(surf_file, net, w, s, d, 'train_loss', 'train_acc', comm, rank, args)
     # crunch(surf_file, net, w, s, d, testloader, 'test_loss', 'test_acc', comm, rank, args)
 
     #--------------------------------------------------------------------------
