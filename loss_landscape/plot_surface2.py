@@ -242,11 +242,11 @@ if __name__ == '__main__':
     # Load models and extract parameters
     #--------------------------------------------------------------------------
     net = model_loader.load(args.dataset, args.model, args.model_file)
-    # w = net_plotter.get_weights(net) # initial parameters
-    # s = copy.deepcopy(net.state_dict()) # deepcopy since state_dict are references
-    # if args.ngpu > 1:
-    #     # data parallel with multiple GPUs on a single node
-    #     net = nn.DataParallel(net, device_ids=range(torch.cuda.device_count()))
+    w = net_plotter.get_weights(net) # initial parameters
+    s = copy.deepcopy(net.state_dict()) # deepcopy since state_dict are references
+    if args.ngpu > 1:
+        # data parallel with multiple GPUs on a single node
+        net = nn.DataParallel(net, device_ids=range(torch.cuda.device_count()))
 
     # #--------------------------------------------------------------------------
     # # Setup the direction file and the surface file
