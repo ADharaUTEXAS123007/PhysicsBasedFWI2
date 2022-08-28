@@ -9379,7 +9379,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOLOWERLIM = 1929.0
         
         d.VPUPPERLIM = 4790.0
-        d.VPLOWERLIM = 1486.0
+        d.VPLOWERLIM = 1500.0
 
         d.VSUPPERLIM = 2765.0
         d.VSLOWERLIM = 0.0
