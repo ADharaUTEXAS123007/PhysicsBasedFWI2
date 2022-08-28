@@ -9364,7 +9364,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.QUELLART = 1
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 8.0
+        d.FC_SPIKE_2  = 10.0
         d.DT = 0.001
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
@@ -9417,7 +9417,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=10, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_high=8, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
