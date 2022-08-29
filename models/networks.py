@@ -9530,13 +9530,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #####rho_grad = 1.0*rho_grad*r3*0.1
         rho_grad = 0*vs_grad
         
-        filen = './marmousiSEAM9July/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vppSEG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vssSEG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/rhooSEG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
