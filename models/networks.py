@@ -9067,8 +9067,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -9079,10 +9079,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        ###vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        ####vs1    = torch.clip(vs1, min=800.0, max=maxvs)
-        vp1 = minvp + vp1f*(maxvp-minvp)
-        vs1  = 800.0 + vs1f*(maxvs-800.0)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=800.0, max=maxvs)
+        #vp1 = minvp + vp1f*(maxvp-minvp)
+        #vs1  = 800.0 + vs1f*(maxvs-800.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -9201,9 +9201,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1.0
-        vs = np.flipud(vs)*1.0
-        rho = np.flipud(rho)*1.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9228,9 +9228,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -9310,7 +9310,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 3.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9348,7 +9348,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.verbose = 0
         d.TIME = 6.0
         d.FREE_SURF = 1
-        d.FPML = 3.0
+        d.FPML = 5.0
         d.DAMPING = 2000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
