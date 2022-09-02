@@ -9067,9 +9067,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
@@ -9079,10 +9079,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=80.0, max=maxvs)
-        #vp1 = minvp + vp1f*(maxvp-minvp)
-        #vs1  = 800.0 + vs1f*(maxvs-800.0)
+        #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #vs1    = torch.clip(vs1, min=80.0, max=maxvs)
+        vp1 = minvp + vp1f*(maxvp-minvp)
+        vs1  = 800.0 + vs1f*(maxvs-800.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
