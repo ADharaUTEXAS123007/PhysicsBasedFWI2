@@ -9076,8 +9076,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
-        vp1  = 1600 + vp1f*(maxvp-1600)
-        vs1  = 800 + vs1f*(maxvs-800)
+        vp1  = 160.0 + vp1f*(maxvp-160.0)
+        vs1  = 80.0 + vs1f*(maxvs-80.0)
         
         #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         #vs1    = torch.clip(vs1, min=80.0, max=maxvs)
