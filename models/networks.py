@@ -8839,7 +8839,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #########filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
         
-        latent_dim = 8
+        latent_dim = 16
         self.combine1 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         self.combine2 = nn.Conv2d(self.in_channels, 1, 3, 1, 1)
         
@@ -8919,7 +8919,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
-        latent_dim = 8
+        latent_dim = 16
         label_dsp_dim = (190,348)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
