@@ -8829,10 +8829,10 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
-        filters = [4, 8, 16, 32, 64]
+        #filters = [4, 8, 16, 32, 64]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 2, 4, 8, 16]
         #filters = [16, 32, 64, 128, 256]
@@ -8911,15 +8911,16 @@ class AutoSEAMMar22_Net(nn.Module):
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
-        filters = [4, 8, 16, 32, 64]
+        #filters = [4, 8, 16, 32, 64]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
-        latent_dim = 16
+        #filters = [8, 16, 32, 6]
+        latent_dim = 8
         label_dsp_dim = (190,348)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
@@ -9058,8 +9059,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
         #rho1 = self.final3(rho1)
-        vp1f     = self.final1(vp1f)
-        vs1f     = self.final2(vs1f)
+        #vp1f     = self.final1(vp1f)
+        #vs1f     = self.final2(vs1f)
         
         print("maxvp :", maxvp)
         print("minvp :", minvp)
@@ -9069,8 +9070,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -9078,8 +9079,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
-        vp1  = minvp + vp1f*(maxvp-minvp)
-        vs1  = minvs + vs1f*(maxvs-minvs)
+        #vp1  = minvp + vp1f*(maxvp-minvp)
+        #vs1  = minvs + vs1f*(maxvs-minvs)
         
         #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         #vs1    = torch.clip(vs1, min=80.0, max=maxvs)
