@@ -9051,8 +9051,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1f    = self.final1(vp1f)
-        #vs1f    = self.final2(vs1f)
+        vp1f    = self.final1(vp1f)
+        vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -9070,8 +9070,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -9079,15 +9079,15 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
-        #vp1  = minvp + vp1f*(maxvp-minvp)
-        #vs1  = minvs + vs1f*(maxvs-minvs)
+        vp1  = minvp + vp1f*(maxvp-minvp)
+        vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=16.0, max=maxvp)
-        vs1    = torch.clip(vs1, min=8.0, max=maxvs)
+        #vp1    = torch.clip(vp1, min=16.0, max=maxvp)
+        #vs1    = torch.clip(vs1, min=8.0, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 80.0 + vs1f*(maxvs-80.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
-        #######vp1 = minvp + vp1*(maxvp-minvp)
+        ####vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
@@ -9254,7 +9254,7 @@ class AutoSEAMMar22_Net(nn.Module):
         # Receivers
         drec = 10.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 25*10.
+        depth_rec = 23*10.
         ######depth_rec = 80. #simple_model
         xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
