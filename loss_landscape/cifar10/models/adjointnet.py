@@ -458,7 +458,7 @@ class ADJOINTNET(nn.Module):
                     
                     
 class SIMPLENET(nn.Module):
-    def __init__(self,outer_nc, inner_nc, input_nc=None,
+    def __init__(self,outer_nc=30, inner_nc=1, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
         super(SIMPLENET, self).__init__()
         self.is_deconv     = False
