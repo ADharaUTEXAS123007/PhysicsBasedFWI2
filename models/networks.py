@@ -11808,9 +11808,9 @@ class SimpleMarmousi24_Net(nn.Module):
         self.is_batchnorm  = True
         self.n_classes     = inner_nc
         
-        filters = [16, 32, 64, 128, 512]
+        #filters = [16, 32, 64, 128, 512]
         #filters = [2, 4, 8, 16, 32]
-        #filters = [8, 16, 32, 64, 128]
+        filters = [8, 16, 32, 64, 128]
         
         latent_dim = 8
 
@@ -11843,7 +11843,8 @@ class SimpleMarmousi24_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
-        filters = [16, 32, 64, 128, 512]
+        #filters = [16, 32, 64, 128, 512]
+        filters = [8, 16, 32, 64, 128]
         latent_dim = 8
         label_dsp_dim = (151,200)
         mintrue = torch.min(inputs1)
