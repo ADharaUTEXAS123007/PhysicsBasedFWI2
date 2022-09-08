@@ -178,8 +178,8 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
         losses = f[loss_key][:]
         accuracies = f[acc_key][:]
         
-    print("losses :", losses)
-    print("accuracies :", accuracies)
+    print("losses shape:", np.shape(losses))
+    print("accuracies shape:", np.shape(accuracies))
 
     f.close()
 
