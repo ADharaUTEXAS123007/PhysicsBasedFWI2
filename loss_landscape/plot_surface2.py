@@ -185,6 +185,7 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
     # The coordinates of each unfilled index (with respect to the direction vectors
     # stored in 'd') are stored in 'coords'.
     inds, coords, inds_nums = scheduler.get_job_indices(losses, xcoordinates, ycoordinates, comm)
+    print("inds :", inds)
 
     f.close()
 
