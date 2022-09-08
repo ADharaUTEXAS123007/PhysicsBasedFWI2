@@ -190,7 +190,7 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
     # Loop over all uncalculated loss values
     for count, ind in enumerate(inds):
         # Get the coordinates of the loss value being calculated
-        ####coord = coords[count]
+        coord = coords[count]
         print("ind :", ind)
         # Load the weights corresponding to those coordinates into the net
         if args.dir_type == 'weights':
