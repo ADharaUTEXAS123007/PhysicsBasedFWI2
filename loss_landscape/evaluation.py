@@ -9,6 +9,7 @@ import torch.nn.functional as F
 import time
 from torch.autograd.variable import Variable
 import deepwave
+import numpy as np
 
 def eval_loss(net, criterion, loader, use_cuda=False):
     """
