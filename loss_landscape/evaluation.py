@@ -84,5 +84,6 @@ def eval_loss2(net, use_cuda=False):
     total = 1
     A_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainA/1.npy')
     A = torch.from_numpy(A_img)
+    print("shape of A :", np.shape(A))
     
     return total_loss/total
