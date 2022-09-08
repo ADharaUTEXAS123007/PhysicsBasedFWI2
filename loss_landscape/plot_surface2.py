@@ -180,6 +180,11 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
         
     print("losses shape:", np.shape(losses))
     print("accuracies shape:", np.shape(accuracies))
+    
+    # Generate a list of indices of 'losses' that need to be filled in.
+    # The coordinates of each unfilled index (with respect to the direction vectors
+    # stored in 'd') are stored in 'coords'.
+    inds, coords, inds_nums = scheduler.get_job_indices(losses, xcoordinates, ycoordinates, comm)
 
     f.close()
 
