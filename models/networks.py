@@ -9272,7 +9272,7 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = depth_rec * (xrec/xrec)
 
         # Sources
-        dsrc = 10.*8. # source spacing [m]
+        dsrc = 10.*6. # source spacing [m]
         #######dsrc = 120.
         depth_src = 60.  # source depth [m]
         #######depth_src = 40.
@@ -9369,6 +9369,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.FC_SPIKE_1 = -5.0
         d.FC_SPIKE_2  = 10.0
         d.DT = 0.001
+        d.FREE_SURF = 0
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
