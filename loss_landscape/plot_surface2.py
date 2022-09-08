@@ -190,19 +190,19 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
     # Loop over all uncalculated loss values
     for count, ind in enumerate(inds):
         # Get the coordinates of the loss value being calculated
-        coord = coords[count]
-
+        ####coord = coords[count]
+        print("ind :", ind)
         # Load the weights corresponding to those coordinates into the net
-        if args.dir_type == 'weights':
-            net_plotter.set_weights(net.module if args.ngpu > 1 else net, w, d, coord)
-        elif args.dir_type == 'states':
-            net_plotter.set_states(net.module if args.ngpu > 1 else net, s, d, coord)
+        ####if args.dir_type == 'weights':
+        ####    net_plotter.set_weights(net.module if args.ngpu > 1 else net, w, d, coord)
+        ####elif args.dir_type == 'states':
+        ####    net_plotter.set_states(net.module if args.ngpu > 1 else net, s, d, coord)
 
         # Record the time to compute the loss value
-        loss_start = time.time()
+        ####loss_start = time.time()
         #loss, acc = evaluation.eval_loss(net, criterion, dataloader, args.cuda)
-        loss = 10
-        acc = 10
+        #####loss = 10
+        #####acc = 10
         #####loss_compute_time = time.time() - loss_start
 
         # Record the result in the local array
