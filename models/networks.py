@@ -8921,7 +8921,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (175,300)
+        label_dsp_dim = (175,348)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -8938,8 +8938,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:5000:5,:]))
-        combine2 = self.combine2((inputs3[:,:,1:5000:5,:]))
+        combine1 = self.combine1((inputs2[:,:,1:6000:6,:]))
+        combine2 = self.combine2((inputs3[:,:,1:6000:6,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9099,9 +9099,9 @@ class AutoSEAMMar22_Net(nn.Module):
         wb1 = np.ones(np.shape(wb))
         wb1 = 1-wb
         # #plt.imshow(wb1)
-        nnz = np.zeros(300)
+        nnz = np.zeros(348)
         # #print("shape of vp1 :", np.shape(vp1))
-        for i in range(300):
+        for i in range(348):
             nnz[i] = int(np.max(np.nonzero(wb[:,i])))
         #     #print("nnz :", nnz[i])
         #     vp1[:,:,0:int(nnz[i]),i] = inputs1[:,0,0:int(nnz[i]),i]
@@ -9258,7 +9258,7 @@ class AutoSEAMMar22_Net(nn.Module):
         ######depth_rec = 80. #simple_model
         xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 2900.     # last receiver position [m]
+        xrec2 = 3330.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9278,7 +9278,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #######depth_src = 40.
         xsrc1 = 150.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 2900.  # last source position [m]
+        xsrc2 = 3330.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
