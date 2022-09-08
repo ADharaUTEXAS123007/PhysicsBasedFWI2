@@ -82,6 +82,7 @@ def eval_loss2(net, use_cuda=False):
     """
     total_loss = 0
     total = 1
-    SeisD = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainA/1.npy')
+    A_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainA/1.npy')
+    A = torch.from_numpy(A_img)
     
     return total_loss/total
