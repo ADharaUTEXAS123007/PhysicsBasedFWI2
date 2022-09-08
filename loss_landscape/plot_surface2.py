@@ -166,6 +166,20 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
     
     print("xcoordinates :", xcoordinates)
     print("ycoordinates :", ycoordinates)
+    
+    if loss_key not in f.keys():
+        shape = xcoordinates.shape if ycoordinates is None else (len(xcoordinates),len(ycoordinates))
+        losses = -np.ones(shape=shape)
+        accuracies = -np.ones(shape=shape)
+        if rank == 0:
+            f[loss_key] = losses
+            f[acc_key] = accuracies
+    else:
+        losses = f[loss_key][:]
+        accuracies = f[acc_key][:]
+        
+    print("losses :", losses)
+    print("accuracies :", accuracies)
 
     f.close()
 
