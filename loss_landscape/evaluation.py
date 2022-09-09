@@ -84,6 +84,23 @@ def eval_loss2(net, use_cuda=False):
     total = 1
     A_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainA/1.npy')
     A = torch.from_numpy(A_img)
+    A = A.float()
+    
+    B_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainB/1.npy')
+    B_img = np.expand_dims(B_img,0)
+    B = torch.from_numpy(B_img)
+    B = B.float()
+    
+    C_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/Simple/trainC/1.npy')
+    C_img = np.expand_dims(C_img,0)
+    C = torch.from_numpy(C_img)
+    C = C.float()
+    
+    
     print("shape of A :", np.shape(A))
+    latent = torch.ones(1,1,1,1)
+    lstart = 1
+    epoch1 = 1
+    [fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
     
     return total_loss/total
