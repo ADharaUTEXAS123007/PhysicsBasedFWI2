@@ -142,6 +142,7 @@ class Simple24Model(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.real_C = input['C'].to(self.device1)
         #self.real_D = input['D'].to(self.device1)  
+        print("shhape of real_A :", np.shape(self.real_A))
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
