@@ -349,7 +349,6 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------
     crunch2(surf_file, net, w, s, d, 'train_loss', 'train_acc', comm, rank, args)
     # crunch(surf_file, net, w, s, d, testloader, 'test_loss', 'test_acc', comm, rank, args)
-
     #--------------------------------------------------------------------------
     # Plot figures
     #--------------------------------------------------------------------------

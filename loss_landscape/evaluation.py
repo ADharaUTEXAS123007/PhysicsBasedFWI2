@@ -99,7 +99,6 @@ def eval_loss2(net, use_cuda=False):
     C = torch.from_numpy(C_img)
     C = C.float()
     
-    
     print("shape of A :", np.shape(A))
     latent = torch.ones(1,1,1,1)
     lstart = 1
