@@ -105,4 +105,6 @@ def eval_loss2(net, use_cuda=False):
     epoch1 = 1
     [fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
     
+    print("loss D MSE :", loss_D_MSE)
+    
     return total_loss/total
