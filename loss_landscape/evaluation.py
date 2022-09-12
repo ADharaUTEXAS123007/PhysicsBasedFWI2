@@ -107,4 +107,4 @@ def eval_loss2(net, use_cuda=False):
     
     print("loss D MSE :", loss_D_MSE)
     
-    return total_loss/total
+    return loss_D_MSE

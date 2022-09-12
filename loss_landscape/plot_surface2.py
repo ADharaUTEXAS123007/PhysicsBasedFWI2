@@ -206,7 +206,7 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
         loss_compute_time = time.time() - loss_start
 
         # Record the result in the local array
-        #####losses.ravel()[ind] = loss
+        losses.ravel()[ind] = loss
         #####accuracies.ravel()[ind] = acc
 
     f.close()
