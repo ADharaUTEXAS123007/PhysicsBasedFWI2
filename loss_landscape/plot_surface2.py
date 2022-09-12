@@ -202,12 +202,23 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
         loss_start = time.time()
         loss = evaluation.eval_loss2(net, args.cuda)
         #####loss = 10
-        #####acc = 10
+        acc = 10
         loss_compute_time = time.time() - loss_start
 
         # Record the result in the local array
         losses.ravel()[ind] = loss
         #####accuracies.ravel()[ind] = acc
+        syc_time = 0.0
+
+        # Only the master node writes to the file - this avoids write conflicts
+        if rank == 0:
+            f[loss_key][:] = losses
+            f[acc_key][:] = accuracies
+            f.flush()
+
+        print('Evaluating rank %d  %d/%d  (%.1f%%)  coord=%s \t%s= %.3f \t%s=%.2f \ttime=%.2f \tsync=%.2f' % (
+                rank, count, len(inds), 100.0 * count/len(inds), str(coord), loss_key, loss,
+                acc_key, acc, loss_compute_time, syc_time))
 
     f.close()
 
