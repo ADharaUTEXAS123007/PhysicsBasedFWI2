@@ -707,10 +707,10 @@ class SIMPLENET(nn.Module):
         # np.save('ftout1',net1out1.cpu().numpy())
         #net1out1 = net1out1.to(self.devicek)
         #mat2 = mat2.to(self.devicek)
-        src_amps = source_amplitudes_true.repeat(
-                        1, num_shots, 1)
+        #src_amps = source_amplitudes_true.repeat(
+        #                1, num_shots, 1)
         prop2 = deepwave.scalar.Propagator({'vp': mat2}, dx)
-        receiver_amplitudes_cte = prop2(src_amps,
+        receiver_amplitudes_cte = prop2(source_amplitudes_true.to(devicek),
                                 x_s.to(devicek),
                                 x_r.to(devicek), dt)
         
