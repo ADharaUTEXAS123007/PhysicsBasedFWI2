@@ -729,9 +729,9 @@ class SIMPLENET(nn.Module):
         #print("shape of mat2 :", np.shape(mat2))
         
 
-        if (epoch1 > lstart):
-            net1out1.requires_grad = True
-            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+        #if (epoch1 > lstart):
+        #    net1out1.requires_grad = True
+        #    optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
             
         model2 = net1out1.clone()
         model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
