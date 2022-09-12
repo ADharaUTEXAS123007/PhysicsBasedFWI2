@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
+import deepwave
 
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -586,10 +587,10 @@ class SIMPLENET(nn.Module):
         grad = 0*f1
         lossT = 0.0
         if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
-            grad = grad.to(inputs2.get_device())
-            grad = torch.unsqueeze(grad,0)
-            grad = torch.unsqueeze(grad,0)
+            [lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            #grad = grad.to(inputs2.get_device())
+            #grad = torch.unsqueeze(grad,0)
+            #grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
@@ -728,64 +729,75 @@ class SIMPLENET(nn.Module):
         if (epoch1 > lstart):
             net1out1.requires_grad = True
             optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
-
-        for epoch in range(num_epochs):
-                #Shuffle shot coordinates
-                idx = torch.randperm(num_shots)
-                #idx = idx.type(torch.LongTensor)
-                x_s = x_s.view(-1,2)[idx].view(x_s.size())
-                #RB Shuffle true's seismograms sources with same random values
-                rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
-                #RB Shuffle direct wave seismograms sources with the same random values
-                receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
+            
+        model2 = net1out1.clone()
+        model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
         
-                for it in range(num_batches):
-                    #if (epoch1 > lstart):
-                    optimizer2.zero_grad()
-                    model2 = net1out1.clone()
-                    model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
-                    #np.save('before108.npy',net1out1.cpu().detach().numpy())
-                    #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
-                    prop = deepwave.scalar.Propagator({'vp': model2}, dx)
-                    batch_src_amps = source_amplitudes_true.repeat(1, num_shots_per_batch, 1)
-                    #print("shape of batch src amps")
-                    #print(np.shape(batch_src_amps))
-                    ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
-                    batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
-                    batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
-                    batch_x_s = x_s[it::num_batches].to(devicek)
-                    ##################batch_x_s = x_s[it::num_batches]
-                    #print("shape of batch src amps")
-                    # print(np.shape(batch_x_s))
-                    #####################batch_x_r = x_r[it::num_batches]
-                    batch_x_r = x_r[it::num_batches].to(devicek)
-                    #print("shape of batch receiver amps")
-                    # print(np.shape(batch_x_r))
-                    batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
-                    #print("batch_rcv_amps_pred")
-                    #print(np.shape(batch_rcv_amps_pred))
-                    batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
-                    batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
-                    # Normalize amplitudes by dividing by the maximum amplitude of each receiver
-                    #batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
-                    batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
-                    ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
+        prop = deepwave.scalar.Propagator({'vp':model2}, dx)
+        receiver_amplitudes_pred = prop(source_amplitudes_true,
+                                x_s,
+                                x_r, dt)
+        receiver_amplitudes_pred = receiver_amplitudes_pred - receiver_amplitudes_cte
+        
+        lossinner = criterion1(receiver_amplitudes_true, receiver_amplitudes_pred)
+
+        # for epoch in range(num_epochs):
+        #         #Shuffle shot coordinates
+        #         idx = torch.randperm(num_shots)
+        #         #idx = idx.type(torch.LongTensor)
+        #         x_s = x_s.view(-1,2)[idx].view(x_s.size())
+        #         #RB Shuffle true's seismograms sources with same random values
+        #         rcv_amps_true_norm = rcv_amps_true_norm[:,idx,:]
+        #         #RB Shuffle direct wave seismograms sources with the same random values
+        #         receiver_amplitudes_cte = receiver_amplitudes_cte[:,idx,:]
+        
+        #         for it in range(num_batches):
+        #             #if (epoch1 > lstart):
+        #             optimizer2.zero_grad()
+        #             model2 = net1out1.clone()
+        #             model2 = torch.clamp(net1out1,min=mintrue,max=maxtrue)
+        #             #np.save('before108.npy',net1out1.cpu().detach().numpy())
+        #             #net1out1 = torch.clamp(net1out1,min=2000,max=4500)
+        #             prop = deepwave.scalar.Propagator({'vp': model2}, dx)
+        #             batch_src_amps = source_amplitudes_true.repeat(1, num_shots_per_batch, 1)
+        #             #print("shape of batch src amps")
+        #             #print(np.shape(batch_src_amps))
+        #             ############batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches].to(self.devicek)
+        #             batch_rcv_amps_true = rcv_amps_true_norm[:,it::num_batches]
+        #             batch_rcv_amps_cte = receiver_amplitudes_cte[:,it::num_batches]
+        #             batch_x_s = x_s[it::num_batches].to(devicek)
+        #             ##################batch_x_s = x_s[it::num_batches]
+        #             #print("shape of batch src amps")
+        #             # print(np.shape(batch_x_s))
+        #             #####################batch_x_r = x_r[it::num_batches]
+        #             batch_x_r = x_r[it::num_batches].to(devicek)
+        #             #print("shape of batch receiver amps")
+        #             # print(np.shape(batch_x_r))
+        #             batch_rcv_amps_pred = prop(batch_src_amps, batch_x_s, batch_x_r, dt)
+        #             #print("batch_rcv_amps_pred")
+        #             #print(np.shape(batch_rcv_amps_pred))
+        #             batch_rcv_amps_pred = batch_rcv_amps_pred - batch_rcv_amps_cte
+        #             batch_rcv_amps_pred_max, _ = torch.abs(batch_rcv_amps_pred).max(dim=0, keepdim=True)
+        #             # Normalize amplitudes by dividing by the maximum amplitude of each receiver
+        #             #batch_rcv_amps_pred_norm = batch_rcv_amps_pred / (batch_rcv_amps_pred_max.abs() + 1e-10)
+        #             batch_rcv_amps_pred_norm = batch_rcv_amps_pred 
+        #             ##############batch_rcv_amps_pred_norm = batch_rcv_amps_pred
                     
-                    #print("shape of receiver amplitudes predicted")
-                    # print(np.shape(batch_rcv_amps_pred))
-                    lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    lossinner = lossinner1
-                    #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
-                    #########model2.grad[0:26,:] = 0
-                    #filen = './deepwave/epoch1'+str(epoch)+'.npy'
-                    #np.save(filen,net1out1.cpu().detach().numpy())
-                    ##############if (epoch == num_epochs-1):
-                    ##########    sumlossinner += lossinner.item()
-                    #########if (epoch1 > lstart):
-                    lossinner.backward()
-                    net1out1.grad = net1out1.grad * ss
-                    net1out1.grad[(true[0,0,:,:]==1500)] = 0
+        #             #print("shape of receiver amplitudes predicted")
+        #             # print(np.shape(batch_rcv_amps_pred))
+        #             lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+        #             #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+        #             lossinner = lossinner1
+        #             #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
+        #             #########model2.grad[0:26,:] = 0
+        #             #filen = './deepwave/epoch1'+str(epoch)+'.npy'
+        #             #np.save(filen,net1out1.cpu().detach().numpy())
+        #             ##############if (epoch == num_epochs-1):
+        #             ##########    sumlossinner += lossinner.item()
+        #             #########if (epoch1 > lstart):
+        #             lossinner.backward()
+        #             net1out1.grad = net1out1.grad * ss
+        #             net1out1.grad[(true[0,0,:,:]==1500)] = 0
                     #net1out1.grad[0:26,:] = 0
                     ##########optimizer2.step()
                     #epoch_loss += loss.item()
@@ -802,4 +814,4 @@ class SIMPLENET(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad, lossinner.item()
+        return lossinner.item()
