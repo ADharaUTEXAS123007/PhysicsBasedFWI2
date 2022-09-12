@@ -102,7 +102,7 @@ def eval_loss2(net, use_cuda=False):
     print("shape of A :", np.shape(A))
     latent = torch.ones(1,1,1,1)
     lstart = 1
-    epoch1 = 1
+    epoch1 = 2
     [fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
     
     print("loss D MSE :", loss_D_MSE)
