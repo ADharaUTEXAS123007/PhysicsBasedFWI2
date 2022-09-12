@@ -744,6 +744,8 @@ class SIMPLENET(nn.Module):
         
         lossinner = criterion1(receiver_amplitudes_true, receiver_amplitudes_pred)
 
+        print("lossinner :", lossinner)
+
         # for epoch in range(num_epochs):
         #         #Shuffle shot coordinates
         #         idx = torch.randperm(num_shots)
@@ -817,4 +819,4 @@ class SIMPLENET(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return lossinner.item()
+        return lossinner
