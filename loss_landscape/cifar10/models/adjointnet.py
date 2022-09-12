@@ -735,8 +735,8 @@ class SIMPLENET(nn.Module):
         
         prop = deepwave.scalar.Propagator({'vp':model2}, dx)
         receiver_amplitudes_pred = prop(source_amplitudes_true,
-                                x_s.to(device),
-                                x_r.to(device), dt)
+                                x_s.to(devicek),
+                                x_r.to(devicek), dt)
         receiver_amplitudes_pred = receiver_amplitudes_pred - receiver_amplitudes_cte
         
         lossinner = criterion1(receiver_amplitudes_true, receiver_amplitudes_pred)
