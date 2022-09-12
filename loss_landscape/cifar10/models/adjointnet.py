@@ -649,14 +649,17 @@ class SIMPLENET(nn.Module):
         ny = 200
         source_spacing = 200 * dx / num_shots
         receiver_spacing = 200 * dx / num_receivers_per_shot
+
         x_s = torch.zeros(num_shots, num_sources_per_shot, num_dims)
         x_s[:, 0, 1] = torch.linspace(0,(ny-1)*dx,num_shots)
+
         x_r = torch.zeros(num_shots, num_receivers_per_shot, num_dims)
         x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
 
         source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
-                                  .reshape(-1, 1, 1))
+                                  .reshape(-1, 1, 1)
+                                  .repeat(1, num_shots, num_sources_per_shot))
         #print("device ordinal :", self.devicek)
         source_amplitudes_true = source_amplitudes_true.to(devicek)
         #lstart = -1
