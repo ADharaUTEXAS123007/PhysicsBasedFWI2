@@ -587,7 +587,8 @@ class SIMPLENET(nn.Module):
         grad = 0*f1
         lossT = 0.0
         if (epoch1 > lstart):
-            [lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            lossT = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            print("lossT :", lossT)
             #grad = grad.to(inputs2.get_device())
             #grad = torch.unsqueeze(grad,0)
             #grad = torch.unsqueeze(grad,0)
@@ -744,7 +745,7 @@ class SIMPLENET(nn.Module):
         
         lossinner = criterion1(receiver_amplitudes_true, receiver_amplitudes_pred)
 
-        print("lossinner :", lossinner)
+        print("lossinner :", lossinner.item())
 
         # for epoch in range(num_epochs):
         #         #Shuffle shot coordinates
@@ -819,4 +820,4 @@ class SIMPLENET(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return lossinner
+        return lossinner.item()
