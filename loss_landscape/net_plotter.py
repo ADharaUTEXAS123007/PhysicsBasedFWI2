@@ -29,7 +29,7 @@ def set_weights(net, weights, directions=None, step=None):
             p.data.copy_(w.type(type(p.data)))
     else:
         assert step is not None, 'If a direction is specified then step must be specified as well'
-
+        print("directions :", directions)
         if len(directions) == 2:
             dx = directions[0]
             dy = directions[1]
