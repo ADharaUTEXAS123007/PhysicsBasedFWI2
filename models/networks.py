@@ -9113,8 +9113,8 @@ class AutoSEAMMar22_Net(nn.Module):
         vswater = torch.unsqueeze(inputs1[:,1,:,:],0)
         print("shhape of vp1 :", np.shape(vp1))
         
-        vp1[vswater==0] = 150.0
-        vs1[vswater==0] = 0.0
+        ##vp1[vswater==0] = 150.0
+        ##vs1[vswater==0] = 0.0
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
@@ -9256,9 +9256,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #depth_rec = nnz*dx  # receiver depth [m]
         depth_rec = 23*10.
         ######depth_rec = 80. #simple_model
-        xrec1 = 200.      # 1st receiver position [m]
+        xrec1 = 150.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 2275.     # last receiver position [m]
+        xrec2 = 3150.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9274,11 +9274,11 @@ class AutoSEAMMar22_Net(nn.Module):
         # Sources
         dsrc = 10.*8. # source spacing [m]
         #######dsrc = 120.
-        depth_src = 20.  # source depth [m]
+        depth_src = 60.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 200.  # 1st source position [m]
+        xsrc1 = 150.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 2275.  # last source position [m]
+        xsrc2 = 3150.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9352,7 +9352,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.TIME = 5.0
         d.FREE_SURF = 0
         d.FPML = 5.0
-        d.DAMPING = 3000
+        d.DAMPING = 2000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
@@ -9367,7 +9367,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.QUELLART = 1
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 18.0
+        d.FC_SPIKE_2  = 10.0
         d.DT = 0.001
         d.FREE_SURF = 0
         #d.FC_SPIKE_1 = 6.0
