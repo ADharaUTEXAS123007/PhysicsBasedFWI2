@@ -9051,8 +9051,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
+        #vp1f    = self.final1(vp1f)
+        #vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -9070,8 +9070,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -9079,11 +9079,11 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-881.0)
         #rho1   = minrho + rho1*(maxrho-minrho)
-        vp1  = minvp + vp1f*(maxvp-minvp)
-        vs1  = minvs + vs1f*(maxvs-minvs)
+        #vp1  = minvp + vp1f*(maxvp-minvp)
+        #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        #vp1    = torch.clip(vp1, min=16.0, max=maxvp)
-        #vs1    = torch.clip(vs1, min=8.0, max=maxvs)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=90.0, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 80.0 + vs1f*(maxvs-80.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
@@ -9115,8 +9115,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
-        vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
-        vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
+        vp1[:,:,0:26,:] = inputs1[:,0,0:26,:]
+        vs1[:,:,0:26,:] = inputs1[:,1,0:26,:]
 
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
@@ -9316,7 +9316,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 8.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9352,10 +9352,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 5.0
+        d.TIME = 6.0
         d.FREE_SURF = 0
-        d.FPML = 5.0
-        d.DAMPING = 2000
+        d.FPML = 10.0
+        d.DAMPING = 1500
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
@@ -9368,11 +9368,11 @@ class AutoSEAMMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.QUELLART = 1
+        #d.QUELLART = 1
         d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 10.0
+        d.FC_SPIKE_2  = 15.0
         d.DT = 0.001
-        d.FREE_SURF = 0
+        d.FREE_SURF = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9424,7 +9424,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=10, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_low=0.0, fc_high=18, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
