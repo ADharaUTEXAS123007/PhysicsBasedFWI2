@@ -29,10 +29,11 @@ def set_weights(net, weights, directions=None, step=None):
             p.data.copy_(w.type(type(p.data)))
     else:
         assert step is not None, 'If a direction is specified then step must be specified as well'
-        print("directions :", directions)
         if len(directions) == 2:
             dx = directions[0]
             dy = directions[1]
+            #print("directions dx:", dx)
+            #print("directions dy:", dy)
             changes = [d0*step[0] + d1*step[1] for (d0, d1) in zip(dx, dy)]
         else:
             changes = [d*step for d in directions[0]]
