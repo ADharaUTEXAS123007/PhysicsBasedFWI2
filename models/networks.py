@@ -9099,7 +9099,7 @@ class AutoSEAMMar22_Net(nn.Module):
         wb1 = np.ones(np.shape(wb))
         wb1 = 1-wb
         # #plt.imshow(wb1)
-        nnz = np.zeros(240)
+        nnz = np.zeros(324)
         # #print("shape of vp1 :", np.shape(vp1))
         #for i in range(240):
         #    nnz[i] = int(np.max(np.nonzero(wb[:,i])))
@@ -9115,6 +9115,9 @@ class AutoSEAMMar22_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
+        vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
+        vs1[:,:,0:25,:] = inputs1[:,0,0:25,:]
+
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
