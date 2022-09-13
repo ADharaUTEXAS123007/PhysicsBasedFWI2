@@ -34,6 +34,8 @@ def set_weights(net, weights, directions=None, step=None):
             dy = directions[1]
             #print("directions dx:", dx)
             #print("directions dy:", dy)
+            print("step0 :", step[0])
+            print("step1 :", step[1])
             changes = [d0*step[0] + d1*step[1] for (d0, d1) in zip(dx, dy)]
         else:
             changes = [d*step for d in directions[0]]
