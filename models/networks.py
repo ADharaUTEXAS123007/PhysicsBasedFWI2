@@ -8829,10 +8829,10 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
-        filters = [4, 8, 16, 32, 64]
+        #filters = [4, 8, 16, 32, 64]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 2, 4, 8, 16]
         #filters = [16, 32, 64, 128, 256]
@@ -8913,15 +8913,15 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [32, 64, 128, 256, 512]
-        filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [4,8,16,32,64]
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (200,240)
+        label_dsp_dim = (190,324)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -8938,8 +8938,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:7000:7,:]))
-        combine2 = self.combine2((inputs3[:,:,1:7000:7,:]))
+        combine1 = self.combine1((inputs2[:,:,1:5000:4,:]))
+        combine2 = self.combine2((inputs3[:,:,1:5000:4,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9313,7 +9313,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9349,9 +9349,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 7.0
+        d.TIME = 5.0
         d.FREE_SURF = 0
-        d.FPML = 8.0
+        d.FPML = 5.0
         d.DAMPING = 3000
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
@@ -9382,11 +9382,11 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4800.0
-        d.VPLOWERLIM = 1500.0
+        d.VPUPPERLIM = 4510.0
+        d.VPLOWERLIM = 1575.0
 
-        d.VSUPPERLIM = 2965.0
-        d.VSLOWERLIM = 0.0
+        d.VSUPPERLIM = 2592.0
+        d.VSLOWERLIM = 905.0
 
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
