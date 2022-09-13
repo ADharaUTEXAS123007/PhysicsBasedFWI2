@@ -192,6 +192,7 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
         # Get the coordinates of the loss value being calculated
         coord = coords[count]
         print("ind :", ind)
+        print("coord :", coord)
         # Load the weights corresponding to those coordinates into the net
         if args.dir_type == 'weights':
             net_plotter.set_weights(net.module if args.ngpu > 1 else net, w, d, coord)
