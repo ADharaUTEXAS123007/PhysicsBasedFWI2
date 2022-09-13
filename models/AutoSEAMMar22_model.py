@@ -509,7 +509,7 @@ class AutoSEAMMar22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart, freq, initerror, currenterror):
-        num_shots = 27
+        num_shots = 38
         idx = np.random.permutation(num_shots)
         #idx = np.arange(0,num_shots)
         num_batches = 1
