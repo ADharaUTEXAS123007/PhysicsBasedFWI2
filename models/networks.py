@@ -5799,9 +5799,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1.0
-        vs = vs*1.0
-        rho = rho*1.0
+        vp = vp*10.0
+        vs = vs*10.0
+        rho = rho*10.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -5818,9 +5818,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
