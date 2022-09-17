@@ -37,7 +37,8 @@ models = {
     'wrn110_2_noshort'      : resnet.WRN110_2_noshort,
     'wrn110_4_noshort'      : resnet.WRN110_4_noshort,
     'adjointnet'            : adjointnet.ADJOINTNET,
-    'simplenet'             : adjointnet.SIMPLENET
+    'simplenet'             : adjointnet.SIMPLENET,
+    'elasticnet'            : adjointnet.ELASTICNET
 }
 
 def load(model_name, model_file=None, data_parallel=False):
