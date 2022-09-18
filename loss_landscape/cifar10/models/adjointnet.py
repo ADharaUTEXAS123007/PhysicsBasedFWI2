@@ -1310,7 +1310,7 @@ class ELASTICNET(nn.Module):
         #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
         d.forward(model_init, src, rec)
 
-        print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
+        #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
         #os.system('rm -rf loss_curve_grad.out')
