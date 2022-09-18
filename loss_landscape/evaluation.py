@@ -150,8 +150,9 @@ def eval_loss3(net, use_cuda=False):
     latent = torch.ones(1,1,1,1)
     lstart = 1
     epoch1 = 2
+    freq = 20
     #[fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
-    [fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = self.netG(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
+    [fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = net(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
     
     print("loss D MSE :", loss_D_MSE)
     
