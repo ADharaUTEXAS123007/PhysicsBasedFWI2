@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import deepwave
+import sys
 sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 import pyapi_denise as api
 
