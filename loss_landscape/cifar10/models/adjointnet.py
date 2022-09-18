@@ -1239,7 +1239,7 @@ class ELASTICNET(nn.Module):
         #d.NY = 150
         #d.DH = 20.0
         d.ITERMAX = 1
-        d.verbose = 0
+        d.verbose = 1
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
@@ -1266,18 +1266,7 @@ class ELASTICNET(nn.Module):
         d.VSLOWERLIM = 866.0
         d.RHOUPPERLIM = 2294.0
         d.RHOLOWERLIM = 1929.0
-        d.SWS_TAPER_GRAD_HOR = 0
-        #d.EXP_TAPER_GRAD_HOR = 3.0
-        #d.forward(model, src, rec)
-        #os.system('mpirun -np 4 hello')
-        # filen = './marmousiEl8Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
-        # np.save(filen, vpst)  #switch on physics based fwi
-        
-        # filen = './marmousiEl8Mar/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        # np.save(filen, vsst)  #switch on physics based fwi
-        
-        # filen = './marmousiEl8Mar/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        # np.save(filen, rhost)  #switch on physics based fwi
+        #d.SWS_TAPER_GRAD_HOR = 0
         
         
         #d.NT = 1200
@@ -1287,34 +1276,6 @@ class ELASTICNET(nn.Module):
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
         model_init = api.Model(vpst, vsst, rhost, dx)
-        
-        
-        #d.fwi_stages = []
-        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
-        #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
-        #for i, freq in enumerate([20]
-        #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
-        #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        #d.add_fwi_stage(fc_high=20,inv_rho_iter=10000)
-        # if ((epoch1 >= 0) and (epoch1 <=100 )):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 101) and (epoch1 <=200)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 201) and (epoch1 <=300)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
-        # elif ((epoch1 >= 301) and (epoch1 <=400)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
-        # elif ((epoch1 >= 401) and (epoch1 <=500)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        # elif ((epoch1 >= 501) and (epoch1 <=600)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
-        # elif ((epoch1 >= 601) and (epoch1 <=700)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
         d.forward(model_init, src, rec)
 
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
