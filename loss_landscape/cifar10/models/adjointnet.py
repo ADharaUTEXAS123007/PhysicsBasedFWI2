@@ -1182,9 +1182,12 @@ class ELASTICNET(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
 
-        np.save('vpst.npy','vpst')
-        np.save('vsst.npy','vsst')
-        np.save('rhost.npy','rhost')
+        print("vpst :", vpst)
+        print("vsst :", vsst)
+
+        #np.save('vpst.npy','vpst')
+        #np.save('vsst.npy','vsst')
+        #np.save('rhost.npy','rhost')
         
         vpst = vpst*1.0
         vsst = vsst*1.0
