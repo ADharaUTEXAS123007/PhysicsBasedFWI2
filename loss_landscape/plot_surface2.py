@@ -201,7 +201,7 @@ def crunch2(surf_file, net, w, s, d, loss_key, acc_key, comm, rank, args):
 
         # Record the time to compute the loss value
         loss_start = time.time()
-        loss = evaluation.eval_loss2(net, args.cuda)
+        loss = evaluation.eval_loss3(net, args.cuda)
         #####loss = 10
         acc = 10
         loss_compute_time = time.time() - loss_start
