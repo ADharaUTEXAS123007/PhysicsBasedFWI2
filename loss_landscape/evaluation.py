@@ -158,8 +158,8 @@ def eval_loss3(net, use_cuda=False):
     print("shape of D :", np.shape(D))
 
 
-    [fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = net(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
-    
+    #[fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = net(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
+    loss_D_MSE = 0
     print("loss D MSE :", loss_D_MSE)
     
     return loss_D_MSE
