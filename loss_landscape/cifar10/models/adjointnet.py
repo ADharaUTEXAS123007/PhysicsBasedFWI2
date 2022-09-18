@@ -3,6 +3,7 @@ import torch.nn as nn
 import numpy as np
 import deepwave
 import sys
+sys.path.append('./models')
 sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 import pyapi_denise as api
 import os
@@ -1278,7 +1279,7 @@ class ELASTICNET(nn.Module):
         print("min max rhost :", np.min(rhost), np.max(rhost))
         
         model_init = api.Model(vpst, vsst, rhost, dx)
-        d.forward(model_init, src, rec)
+        d.grad(model_init, src, rec)
         os.system('mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp')
 
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
