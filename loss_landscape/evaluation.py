@@ -152,6 +152,12 @@ def eval_loss3(net, use_cuda=False):
     epoch1 = 2
     freq = 20
     #[fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
+    print("shape of A :", np.shape(A))
+    print("shape of B :", np.shape(B))
+    print("shape of C :", np.shspe(C))
+    print("shape of D :", np.shape(D))
+
+
     [fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = net(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
     
     print("loss D MSE :", loss_D_MSE)
