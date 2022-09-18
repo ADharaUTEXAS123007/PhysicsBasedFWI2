@@ -154,7 +154,7 @@ def eval_loss3(net, use_cuda=False):
     #[fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
     print("shape of A :", np.shape(A))
     print("shape of B :", np.shape(B))
-    print("shape of C :", np.shspe(C))
+    print("shape of C :", np.shape(C))
     print("shape of D :", np.shape(D))
 
 
