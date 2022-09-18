@@ -5,6 +5,7 @@ import deepwave
 import sys
 sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 import pyapi_denise as api
+import os
 
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -1200,6 +1201,7 @@ class ELASTICNET(nn.Module):
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
+        os.system('rm -rf ./LOSS_CURVE_DATA/')
         d.save_folder = './LOSS_CURVE_DATA/'
         d.set_paths()
         
