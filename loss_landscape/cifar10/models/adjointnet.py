@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import numpy as np
 import deepwave
+sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
+import pyapi_denise as api
 
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -1190,7 +1192,7 @@ class ELASTICNET(nn.Module):
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root, verbose=1)
-        d.save_folder = '/disk/student/adhara/DOUTPUTS/'
+        d.save_folder = './LOSS_CURVE_DATA/'
         d.set_paths()
         
         #model = api.Model(vp, vs, rho, dx)
@@ -1260,14 +1262,14 @@ class ELASTICNET(nn.Module):
         #d.EXP_TAPER_GRAD_HOR = 3.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiEl8Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
-        np.save(filen, vpst)  #switch on physics based fwi
+        # filen = './marmousiEl8Mar/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        # np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiEl8Mar/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, vsst)  #switch on physics based fwi
+        # filen = './marmousiEl8Mar/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        # np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiEl8Mar/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
-        np.save(filen, rhost)  #switch on physics based fwi
+        # filen = './marmousiEl8Mar/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        # np.save(filen, rhost)  #switch on physics based fwi
         
         
         #d.NT = 1200
@@ -1279,13 +1281,13 @@ class ELASTICNET(nn.Module):
         model_init = api.Model(vpst, vsst, rhost, dx)
         
         
-        d.fwi_stages = []
+        #d.fwi_stages = []
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=20.0)
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=20,inv_rho_iter=10000)
+        #d.add_fwi_stage(fc_high=20,inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -1305,15 +1307,17 @@ class ELASTICNET(nn.Module):
         #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
         # else:
         #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+        d.forward(model_init, src, rec)
+
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
-        os.system('rm -rf loss_curve_grad.out')
+        #os.system('rm -rf loss_curve_grad.out')
     
         print(f'Target data: {d.DATA_DIR}')
-        d.grad(model_init, src, rec)
+        #d.grad(model_init, src, rec)
         
-        loss = np.loadtxt('loss_curve_grad.out')
+        #loss = np.loadtxt('loss_curve_grad.out')
         
         #print("loss :", loss)
         
@@ -1323,26 +1327,26 @@ class ELASTICNET(nn.Module):
         # vp_grad = np.array(grads[0])
         # vs_grad = np.array(grads[2])
         # rho_grad = np.array(grads[1])
-        grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
-        vp_grad = np.array(grads[1])
-        vs_grad = np.array(grads[2])
-        rho_grad = np.array(grads[0])
+        # grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
+        # vp_grad = np.array(grads[1])
+        # vs_grad = np.array(grads[2])
+        # rho_grad = np.array(grads[0])
         
-        print("shape of vp_grad :", np.shape(vp_grad))
-        print("shape of vs_grad :", np.shape(vs_grad))
-        print("shape of rho_grad :", np.shape(rho_grad))
+        # print("shape of vp_grad :", np.shape(vp_grad))
+        # print("shape of vs_grad :", np.shape(vs_grad))
+        # print("shape of rho_grad :", np.shape(rho_grad))
         
-        vp_grad = np.flipud(vp_grad)
-        vs_grad = np.flipud(vs_grad)
-        rho_grad = np.flipud(rho_grad)
+        # vp_grad = np.flipud(vp_grad)
+        # vs_grad = np.flipud(vs_grad)
+        # rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:15,:] = 0.0
-        vs_grad[0:15,:] = 0.0
-        rho_grad[0:15,:] = 0.0
+        # vp_grad[0:15,:] = 0.0
+        # vs_grad[0:15,:] = 0.0
+        # rho_grad[0:15,:] = 0.0
         
-        print("shape of vp_grad1 :", np.shape(vp_grad))
-        print("shape of vs_grad1 :", np.shape(vs_grad))
-        print("shape of rho_grad1 :", np.shape(rho_grad))
+        # print("shape of vp_grad1 :", np.shape(vp_grad))
+        # print("shape of vs_grad1 :", np.shape(vs_grad))
+        # print("shape of rho_grad1 :", np.shape(rho_grad))
         
         # if freq == 2:
         #     r = 10**5
@@ -1364,39 +1368,43 @@ class ELASTICNET(nn.Module):
         #     r = 10**1
         # else:
         #     r = 10**1
-        r = 10**5
+        #r = 10**5
             
      
-        r1 = np.max(vpst)/np.max(vp_grad)
-        vp_grad = torch.from_numpy(vp_grad.copy())
-        vp_grad = vp_grad.float()
-        vp_grad = 1.0*vp_grad*r1
-        #if (freq==1):
-        vp_grad = vp_grad
+        # r1 = np.max(vpst)/np.max(vp_grad)
+        # vp_grad = torch.from_numpy(vp_grad.copy())
+        # vp_grad = vp_grad.float()
+        # vp_grad = 1.0*vp_grad*r1
+        # #if (freq==1):
+        # vp_grad = vp_grad
         
-        r2 = np.max(vsst)/np.max(vs_grad)
-        vs_grad = torch.from_numpy(vs_grad.copy())
-        vs_grad = vs_grad.float()  
-        vs_grad = 1.0*vs_grad*r2
-        #vs_grad = vs_grad*0
+        # r2 = np.max(vsst)/np.max(vs_grad)
+        # vs_grad = torch.from_numpy(vs_grad.copy())
+        # vs_grad = vs_grad.float()  
+        # vs_grad = 1.0*vs_grad*r2
+        # #vs_grad = vs_grad*0
         
-        r3 = np.max(rhost)/np.max(rho_grad)
-        rho_grad = torch.from_numpy(rho_grad.copy())
-        rho_grad = rho_grad.float()
-        rho_grad = 1.0*rho_grad*r3*0.1
+        # r3 = np.max(rhost)/np.max(rho_grad)
+        # rho_grad = torch.from_numpy(rho_grad.copy())
+        # rho_grad = rho_grad.float()
+        # rho_grad = 1.0*rho_grad*r3*0.1
         
-        filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
-        np.save(filen, vp_grad)  #switch on physics based fwi
+        # filen = './marmousiEl/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        # np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
-        np.save(filen, vs_grad)  #switch on physics based fwi
+        # filen = './marmousiEl/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        # np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
-        np.save(filen, rho_grad)  #switch on physics based fwi
+        # filen = './marmousiEl/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        # np.save(filen, rho_grad)  #switch on physics based fwi
         
-        print('grads names')
-        print(fnames)
+        # print('grads names')
+        # print(fnames)
         #vp_grad = 0
         #vs_grad = 0
         #rho_grad = 0
+        vp_grad = 0
+        vs_grad = 0
+        rho_grad = 0
+        loss = 0
         return vp_grad, vs_grad, rho_grad, loss                 

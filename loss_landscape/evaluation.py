@@ -108,3 +108,51 @@ def eval_loss2(net, use_cuda=False):
     print("loss D MSE :", loss_D_MSE)
     
     return loss_D_MSE
+
+def eval_loss3(net, use_cuda=False):
+    """
+    Evaluate the loss value for a given 'net' on the dataset provided by the loader.
+
+    Args:
+        net: the neural net model
+        criterion: loss function
+        loader: dataloader
+        use_cuda: use cuda or not
+    Returns:
+        loss value and accuracy
+    """
+    total_loss = 0
+    total = 1
+    A_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainA/1.npy')
+    A_img = np.expand_dims(A_img,0)
+    A = torch.from_numpy(A_img)
+    A = A.float()
+    
+    B_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainB/1.npy')
+    B_img = np.expand_dims(B_img,0)
+    B_img = np.expand_dims(B_img,0)
+    B = torch.from_numpy(B_img)
+    B = B.float()
+    
+    C_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainC/1.npy')
+    C_img = np.expand_dims(C_img,0)
+    C_img = np.expand_dims(C_img,0)
+    C = torch.from_numpy(C_img)
+    C = C.float()
+
+    D_img = np.load('/disk/student/adhara/Fall2021/FCNVMB-Deep-learning-based-seismic-velocity-model-building/MarmousiEl/trainD/1.npy')
+    D_img = np.expand_dims(D_img,0)
+    D_img = np.expand_dims(D_img,0)
+    D = torch.from_numpy(D_img)
+    D = D.float()
+    
+    print("shape of A :", np.shape(A))
+    latent = torch.ones(1,1,1,1)
+    lstart = 1
+    epoch1 = 2
+    #[fake_B,grad,latent,loss_D_MSE,down3,up2,up1] = net(B,A,lstart,epoch1,latent,C)
+    [fake_Vp,fake_Vs,fake_Rho, grad,latent,vp_grad,vs_grad,rho_grad,loss_D_MSE] = self.netG(B,A,lstart,epoch1,latent,C,D,freq)  # G(A)
+    
+    print("loss D MSE :", loss_D_MSE)
+    
+    return loss_D_MSE
