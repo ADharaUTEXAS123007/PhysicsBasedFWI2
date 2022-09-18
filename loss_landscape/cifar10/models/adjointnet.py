@@ -1320,6 +1320,9 @@ class ELASTICNET(nn.Module):
 
         shots_x = d.get_shots(keys=['_x'])
 
+        print("shape of shots_y :", np.shape(shots_y))
+        print("shape of shots_x :", np.shape(shots_x))
+
         #d.grad(model_init, src, rec)
         
         #loss = np.loadtxt('loss_curve_grad.out')
