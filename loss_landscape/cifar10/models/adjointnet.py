@@ -1280,7 +1280,7 @@ class ELASTICNET(nn.Module):
         
         model_init = api.Model(vpst, vsst, rhost, dx)
         #d.grad(model_init, src, rec)
-        os.system('mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp')
+    os.system('mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp')
 
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
