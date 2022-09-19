@@ -1,2 +1,2 @@
 #mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp
-python plot_surface2.py --cuda --model elasticnet --x=-1:1:51 --y=-1:1:51 --model_file /disk/student/adhara/Fall2021/PhysicsBasedFWI/checkpoints/MarmousiEl22/50_net_G.pth --dir_type weights --xnorm filter --xignore biasbn --ynorm filter --yignore biasbn  --surf_file elastic4215.h5 --plot
+python plot_surface2.py --cuda --model elasticnet --x=-1:1:10 --y=-1:1:10 --model_file /disk/student/adhara/Fall2021/PhysicsBasedFWI/checkpoints/MarmousiEl22/500_net_G.pth --dir_type weights --xnorm filter --xignore biasbn --ynorm filter --yignore biasbn  --surf_file elastic4215.h5 --plot
