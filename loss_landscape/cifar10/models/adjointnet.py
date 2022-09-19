@@ -1397,4 +1397,6 @@ class ELASTICNET(nn.Module):
         vs_grad = 0
         rho_grad = 0
         loss = torch.norm(diff)
+
+        print("loss loss :", loss)
         return vp_grad, vs_grad, rho_grad, loss                 
