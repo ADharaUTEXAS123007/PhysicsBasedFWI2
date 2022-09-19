@@ -1394,5 +1394,5 @@ class ELASTICNET(nn.Module):
         vp_grad = 0
         vs_grad = 0
         rho_grad = 0
-        loss = scipy.linalg.norm(diff,'fro')
+        loss = torch.norm(diff)
         return vp_grad, vs_grad, rho_grad, loss                 
