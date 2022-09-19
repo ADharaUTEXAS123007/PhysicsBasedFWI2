@@ -274,7 +274,7 @@ if __name__ == '__main__':
     parser.add_argument('--log', action='store_true', default=False, help='use log scale for loss values')
     parser.add_argument('--plot', action='store_true', default=False, help='plot figures after computation')
 
-    os.system('mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp')
+   
     args = parser.parse_args()
 
     torch.manual_seed(123)
