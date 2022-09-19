@@ -1303,6 +1303,7 @@ class ELASTICNET(nn.Module):
 
         diff = obs_shots - org_shots
         print("shape of diff :", diff.shape)
+        diff = torch.from_numpy(diff)
 
         #d.grad(model_init, src, rec)
         
