@@ -1290,10 +1290,10 @@ class ELASTICNET(nn.Module):
     
         print(f'Target data: {d.DATA_DIR}')
         shots_y = d.get_shots(keys=['_y'])
-        shots_y = shots_y[0:28:2]
+        #shots_y = shots_y[0:28:2]
 
         shots_x = d.get_shots(keys=['_x'])
-        shots_x = shots_x[0:28:2]
+        #shots_x = shots_x[0:28:2]
 
         print("shape of shots_y :", np.shape(shots_y))
         print("shape of shots_x :", np.shape(shots_x))
@@ -1301,7 +1301,7 @@ class ELASTICNET(nn.Module):
         org_shots = np.concatenate((shots_y,shots_x),axis=0)
         org_shots = np.swapaxes(org_shots,1,2)
 
-        obs_shots = np.concatenate((inputs2[0,:,:,:],inputs3[0,:,:,:]),axis=0)
+        obs_shots = np.concatenate((inputs2[0,0:28:2,:,:],inputs3[0,0:28:2,:,:]),axis=0)
 
         diff = obs_shots - org_shots
         print("shape of diff :", diff.shape)
