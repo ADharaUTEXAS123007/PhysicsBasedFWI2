@@ -286,6 +286,8 @@ if __name__ == '__main__':
     else:
         comm, rank, nproc = None, 0, 1
 
+    os.system('mpirun -np 36  /disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/bin/denise  ./LOSS_CURVE_DATA/seis.inp ./LOSS_CURVE_DATA/seis_fwi.inp')
+
     # in case of multiple GPUs per node, set the GPU to use for each rank
     if args.cuda:
         if not torch.cuda.is_available():
