@@ -1297,7 +1297,7 @@ class ELASTICNET(nn.Module):
         print("shape of shots_x :", np.shape(shots_x))
 
         org_shots = np.concatenate((shots_y,shots_x),axis=0)
-        obs_shots = np.concatenate((inputs2,inputs3),axis=0)
+        obs_shots = np.concatenate((inputs2[0,:,:,:],inputs3[0,:,:,:]),axis=0)
 
         diff = obs_shots - org_shots
 
