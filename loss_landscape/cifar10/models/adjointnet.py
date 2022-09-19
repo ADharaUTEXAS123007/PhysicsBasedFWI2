@@ -7,6 +7,7 @@ sys.path.append('./models')
 sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
 import pyapi_denise as api
 import os
+import scipy
 
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -1122,7 +1123,7 @@ class ELASTICNET(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, inputs2, inputs3)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -1151,7 +1152,7 @@ class ELASTICNET(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, inputs2, inputs3):
         dx = 10.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -1295,6 +1296,11 @@ class ELASTICNET(nn.Module):
         print("shape of shots_y :", np.shape(shots_y))
         print("shape of shots_x :", np.shape(shots_x))
 
+        org_shots = np.concatenate((shots_y,shots_x),axis=0)
+        obs_shots = np.concatenate((inputs2,inputs3),axis=0)
+
+        diff = obs_shots - org_shots
+
         #d.grad(model_init, src, rec)
         
         #loss = np.loadtxt('loss_curve_grad.out')
@@ -1386,5 +1392,5 @@ class ELASTICNET(nn.Module):
         vp_grad = 0
         vs_grad = 0
         rho_grad = 0
-        loss = 0
+        loss = scipy.linalg.norm(diff,'fro')
         return vp_grad, vs_grad, rho_grad, loss                 
