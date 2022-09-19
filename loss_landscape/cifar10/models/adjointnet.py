@@ -1302,6 +1302,7 @@ class ELASTICNET(nn.Module):
         obs_shots = np.concatenate((inputs2[0,:,:,:],inputs3[0,:,:,:]),axis=0)
 
         diff = obs_shots - org_shots
+        print("shape of diff :", diff.shape)
 
         #d.grad(model_init, src, rec)
         
