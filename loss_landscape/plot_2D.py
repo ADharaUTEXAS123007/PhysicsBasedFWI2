@@ -20,7 +20,6 @@ def plot_2d_contour(surf_file, surf_name='train_loss', vmin=0.01, vmax=0.1, vlev
     y = np.array(f['ycoordinates'][:])
     X, Y = np.meshgrid(x, y)
 
-    Z = 1000
     if surf_name in f.keys():
         Z = np.array(f[surf_name][:])
     elif surf_name == 'train_err' or surf_name == 'test_err' :
@@ -35,6 +34,8 @@ def plot_2d_contour(surf_file, surf_name='train_loss', vmin=0.01, vmax=0.1, vlev
     print('len(xcoordinates): %d   len(ycoordinates): %d' % (len(x), len(y)))
     print('max(%s) = %f \t min(%s) = %f' % (surf_name, np.max(Z), surf_name, np.min(Z)))
     print(Z)
+
+    Z[Z > 50] = 10
 
     if (len(x) <= 1 or len(y) <= 1):
         print('The length of coordinates is not enough for plotting contours')
