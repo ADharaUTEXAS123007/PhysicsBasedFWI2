@@ -6680,25 +6680,7 @@ class AutoElMarmousiMar22N_Net(nn.Module):
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
         d.add_fwi_stage(fc_low=0.0, fc_high=freq)
-        # if ((epoch1 >= 0) and (epoch1 <=100 )):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 101) and (epoch1 <=200)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 201) and (epoch1 <=300)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
-        # elif ((epoch1 >= 301) and (epoch1 <=400)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
-        # elif ((epoch1 >= 401) and (epoch1 <=500)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        # elif ((epoch1 >= 501) and (epoch1 <=600)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
-        # elif ((epoch1 >= 601) and (epoch1 <=700)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
+
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
