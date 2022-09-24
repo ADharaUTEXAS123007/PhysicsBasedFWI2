@@ -9033,8 +9033,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
+        ##########vp1f    = self.final1(vp1f)
+        ##########vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -9052,8 +9052,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #vs1    = 1.0 + vs1f*(maxvs-1.0)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        #vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        #vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
@@ -9066,8 +9066,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         #vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         #vs1    = torch.clip(vs1, min=90.0, max=maxvs)
-        vp1 = minvp + vp1f*(maxvp-minvp)
-        vs1  = 9.0 + vs1f*(maxvs-9.0)
+        #vp1 = minvp + vp1f*(maxvp-minvp)
+        #vs1  = 9.0 + vs1f*(maxvs-9.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         ####vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -9189,9 +9189,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*100.0
-        vs = np.flipud(vs)*100.0
-        rho = np.flipud(rho)*100.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9216,9 +9216,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
-        rhost = rhost*100.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -9371,12 +9371,12 @@ class AutoSEAMMar22_Net(nn.Module):
         d.VPLOWERLIM = 1575.0
 
         d.VSUPPERLIM = 2592.0
-        d.VSLOWERLIM = 905.0
+        d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 2.0
+        d.EXP_TAPER_GRAD_HOR = 2.5
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmodSEG' + str(epoch1) + '.npy' #switch on for physics based fwi         
@@ -9406,7 +9406,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=18, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_low=2.0, fc_high=18, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
