@@ -9336,7 +9336,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 0
         d.TIME = 6.0
-        d.FPML = 10.0
+        d.FPML = 5.0
         d.DAMPING = 1500
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
@@ -9453,10 +9453,6 @@ class AutoSEAMMar22_Net(nn.Module):
         print("shape of vs_grad :", np.shape(vs_grad))
         print("shape of rho_grad :", np.shape(rho_grad))
         
-        vp_grad[vs==0] = 0
-        vs_grad[vs==0] = 0
-        rho_grad[vs==0] = 0
-        
         
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
@@ -9469,6 +9465,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #vp_grad[0:24,:] = 0.0
         #vs_grad[0:24,:] = 0.0
         #rho_grad[0:24,:] = 0.0
+        vp_grad[0:26,:] = 0
+        vs_grad[0:26,:] = 0
+        rho_grad[0:26,:] = 0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
