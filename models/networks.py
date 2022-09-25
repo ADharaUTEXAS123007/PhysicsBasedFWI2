@@ -8631,8 +8631,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 2.0
-        d.QUELLART = 6
+        d.FC_SPIKE_1 = -5.0
+        d.FC_SPIKE_2 = 15.0
+        #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
@@ -8649,7 +8650,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
-        d.RHOUPPERLIM = 2627
+        d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
         #d.EXP_TAPER_GRAD_HOR = 1.0
@@ -8681,7 +8682,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=2.0,fc_high=15)
+        d.add_fwi_stage(fc_low=0.0,fc_high=14)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -9298,7 +9299,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9335,7 +9336,6 @@ class AutoSEAMMar22_Net(nn.Module):
         d.ITERMAX = 1
         d.verbose = 0
         d.TIME = 6.0
-        d.FREE_SURF = 0
         d.FPML = 10.0
         d.DAMPING = 1500
         #d.FW = 20
@@ -9406,7 +9406,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=2.0, fc_high=14, inv_rho_iter=10000, lnorm=2)
+        d.add_fwi_stage(fc_low=0.0, fc_high=14, inv_rho_iter=10000, lnorm=2)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
