@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:5000:4,:]))
-        combine2 = self.combine2((inputs3[:,:,1:5000:4,:]))
+        combine1 = self.combine1((inputs2[:,:,1:6000:3,:]))
+        combine2 = self.combine2((inputs3[:,:,1:6000:3,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9285,7 +9285,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:3]]
+        xsrc = xsrcoriginal[idx[0:5]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -9351,10 +9351,10 @@ class AutoSEAMMar22_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 1
         d.QUELLART = 1
-        d.FC_SPIKE_1 = -5.0
-        d.FC_SPIKE_2  = 15.0
+        #d.FC_SPIKE_1 = -5.0
+        #d.FC_SPIKE_2  = 15.0
         d.DT = 0.001
-        d.FREE_SURF = 0
+        d.FREE_SURF = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9407,25 +9407,6 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
         d.add_fwi_stage(fc_low=0.0, fc_high=14, inv_rho_iter=10000, lnorm=2)
-        # if ((epoch1 >= 0) and (epoch1 <=100 )):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 101) and (epoch1 <=200)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=5.0)
-        # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # elif ((epoch1 >= 201) and (epoch1 <=300)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=8.0)
-        # elif ((epoch1 >= 301) and (epoch1 <=400)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=12.0)
-        # elif ((epoch1 >= 401) and (epoch1 <=500)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=15.0)
-        # elif ((epoch1 >= 501) and (epoch1 <=600)):
-        #     d.add_fwi_stage(fc_low=0.0, fc_high=18.0)
-        # elif ((epoch1 >= 601) and (epoch1 <=700)):
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
-        #    #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
-        # else:
-        #    d.add_fwi_stage(fc_low=0.0, fc_high=21.0)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
@@ -9436,14 +9417,6 @@ class AutoSEAMMar22_Net(nn.Module):
         
         loss = np.loadtxt('loss_curve_grad.out')
         
-        #print("loss :", loss)
-        
-        # grads, fnames = d.get_fwi_gradients(['c','old'],return_filenames=True)
-        
-        # print("shape of grads :", np.shape(grads))
-        # vp_grad = np.array(grads[0])
-        # vs_grad = np.array(grads[2])
-        # rho_grad = np.array(grads[1])
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         vp_grad = np.array(grads[1])
         vs_grad = np.array(grads[2])
@@ -9458,13 +9431,6 @@ class AutoSEAMMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        #for i in range(len(nnz)):
-        #    vp_grad[0:int(nnz[i]),i] = 0.0
-        #    vs_grad[0:int(nnz[i]),i] = 0.0
-        #    rho_grad[0:int(nnz[i]),i] = 0.0
-        #vp_grad[0:24,:] = 0.0
-        #vs_grad[0:24,:] = 0.0
-        #rho_grad[0:24,:] = 0.0
         vp_grad[0:26,:] = 0
         vs_grad[0:26,:] = 0
         rho_grad[0:26,:] = 0
@@ -9473,26 +9439,6 @@ class AutoSEAMMar22_Net(nn.Module):
         print("shape of vs_grad1 :", np.shape(vs_grad))
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
-        # if freq == 2:
-        #     r = 10**5
-        # elif freq == 4:
-        #     r = 10**5
-        # elif freq == 6:
-        #     r = 10**4
-        # elif freq == 8:
-        #     r = 10**4
-        # elif freq == 10:
-        #     r = 10**3
-        # elif freq == 12:
-        #     r = 10**3
-        # elif freq == 14:
-        #     r = 10**2
-        # elif freq == 16:
-        #     r = 10**2
-        # elif freq == 18:
-        #     r = 10**1
-        # else:
-        #     r = 10**1
         r = 10**5
             
      
