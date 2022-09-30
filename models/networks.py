@@ -8126,8 +8126,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
-        #filters = [4,8,16,32,64]
+        #filters = [8, 16, 32, 64, 128] 
+        filters = [4,8,16,32,64]
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
         #########filters = [2, 4, 8, 16, 32]
@@ -8212,8 +8212,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
         #filters = [32, 64, 128, 256, 512]
-        #filters = [4,8,16,32,64]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [4,8,16,32,64]
+        #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
