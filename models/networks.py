@@ -9285,7 +9285,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:8]]
+        xsrc = xsrcoriginal[idx[0:4]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -9376,7 +9376,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 2.0
+        d.EXP_TAPER_GRAD_HOR = 3.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmodSEG' + str(epoch1) + '.npy' #switch on for physics based fwi         
