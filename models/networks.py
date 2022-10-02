@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:6000:3,:]))
-        combine2 = self.combine2((inputs3[:,:,1:6000:3,:]))
+        combine1 = self.combine1((inputs2[:,:,1:3600:2,:]))
+        combine2 = self.combine2((inputs3[:,:,1:3600:2,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9181,7 +9181,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
-        dx = 10.0
+        dx = 30.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -9190,9 +9190,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1.0
-        vs = np.flipud(vs)*1.0
-        rho = np.flipud(rho)*1.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9217,9 +9217,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -9238,13 +9238,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 10.   #simple_model
+        drec = 10.*3   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 23*10.
+        depth_rec = 23*10.*3
         ######depth_rec = 80. #simple_model
-        xrec1 = 150.      # 1st receiver position [m]
+        xrec1 = 150.*3      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 3150.     # last receiver position [m]
+        xrec2 = 3150.*3     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9258,13 +9258,13 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = depth_rec * (xrec/xrec)
 
         # Sources
-        dsrc = 10.*8. # source spacing [m]
+        dsrc = 10.*8.*3 # source spacing [m]
         #######dsrc = 120.
-        depth_src = 60.  # source depth [m]
+        depth_src = 60.*3  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 150.  # 1st source position [m]
+        xsrc1 = 150.*3  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 3150.  # last source position [m]
+        xsrc2 = 3150.*3  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9353,7 +9353,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.QUELLART = 1
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
-        d.DT = 0.001
+        d.DT = 0.0025
         d.FREE_SURF = 0
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
@@ -9376,7 +9376,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 3.0
+        d.EXP_TAPER_GRAD_HOR = 2.5
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmodSEG' + str(epoch1) + '.npy' #switch on for physics based fwi         
