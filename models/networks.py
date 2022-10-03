@@ -8811,11 +8811,11 @@ class AutoSEAMMar22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 256]
-        #filters = [32, 64, 128, 256, 512]
+        filters = [32, 64, 128, 256, 512]
         #filters = [4, 8, 16, 32, 64]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
+        #filters = [8, 16, 32, 64, 128] 
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 2, 4, 8, 16]
         #filters = [16, 32, 64, 128, 256]
@@ -8895,9 +8895,9 @@ class AutoSEAMMar22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        #filters = [32, 64, 128, 256, 512]
+        filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
