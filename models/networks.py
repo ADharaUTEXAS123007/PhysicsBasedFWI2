@@ -9285,7 +9285,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:17]]
+        xsrc = xsrcoriginal[idx[0:5]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -9354,7 +9354,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0025
-        d.FREE_SURF = 0
+        d.FREE_SURF = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9367,10 +9367,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4510.0
-        d.VPLOWERLIM = 1575.0
+        d.VPUPPERLIM = 6000.0
+        d.VPLOWERLIM = 1500.0
 
-        d.VSUPPERLIM = 2592.0
+        d.VSUPPERLIM = 3449.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
