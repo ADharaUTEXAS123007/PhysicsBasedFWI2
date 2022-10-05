@@ -8811,11 +8811,11 @@ class AutoSEAMMar22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 256]
-        filters = [32, 64, 128, 256, 512]
+        #filters = [32, 64, 128, 256, 512]
         #filters = [4, 8, 16, 32, 64]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        #filters = [8, 16, 32, 64, 128] 
+        filters = [8, 16, 32, 64, 128] 
         #filters = [2, 4, 8, 16, 32]
         #filters = [1, 2, 4, 8, 16]
         #filters = [16, 32, 64, 128, 256]
@@ -8895,16 +8895,16 @@ class AutoSEAMMar22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
-        filters = [32, 64, 128, 256, 512]
+        #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
+        filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (190,324)
+        label_dsp_dim = (380,648)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:3600:2,:]))
-        combine2 = self.combine2((inputs3[:,:,1:3600:2,:]))
+        combine1 = self.combine1((inputs2[:,:,1:6000:3,:]))
+        combine2 = self.combine2((inputs3[:,:,1:6000:3,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9181,7 +9181,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
-        dx = 30.0
+        dx = 10.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -9238,13 +9238,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #print(model)
         
         # Receivers
-        drec = 10.*3   #simple_model
+        drec = 15.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 23*10.*3
+        depth_rec = 46*10.
         ######depth_rec = 80. #simple_model
-        xrec1 = 150.*3      # 1st receiver position [m]
+        xrec1 = 150.*2      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 3150.*3     # last receiver position [m]
+        xrec2 = 3150.*2     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9258,13 +9258,13 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = depth_rec * (xrec/xrec)
 
         # Sources
-        dsrc = 10.*8.*3 # source spacing [m]
+        dsrc = 15.*8 # source spacing [m]
         #######dsrc = 120.
-        depth_src = 60.*3  # source depth [m]
+        depth_src = 120.*(3/2)  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 150.*3  # 1st source position [m]
+        xsrc1 = 200.*2  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 3150.*3  # last source position [m]
+        xsrc2 = 3100.*2  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9285,7 +9285,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:5]]
+        xsrc = xsrcoriginal[idx[0:4]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -9335,7 +9335,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 9.0
+        d.TIME = 6.0
         d.FPML = 5.0
         d.DAMPING = 1500
         #d.FW = 20
@@ -9353,8 +9353,8 @@ class AutoSEAMMar22_Net(nn.Module):
         d.QUELLART = 1
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
-        d.DT = 0.0025
-        d.FREE_SURF = 1
+        d.DT = 0.001
+        d.FREE_SURF = 0
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9367,16 +9367,16 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 6000.0
+        d.VPUPPERLIM = 4510.0
         d.VPLOWERLIM = 1500.0
 
-        d.VSUPPERLIM = 3449.0
+        d.VSUPPERLIM = 2592.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
         d.RHOLOWERLIM = 1000.0
         d.SWS_TAPER_GRAD_HOR = 1
-        d.EXP_TAPER_GRAD_HOR = 3.0
+        d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
         filen = './marmousiSEAM9July/vpmodSEG' + str(epoch1) + '.npy' #switch on for physics based fwi         
