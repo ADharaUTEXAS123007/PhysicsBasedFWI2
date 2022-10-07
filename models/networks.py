@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:6000:3,:]))
-        combine2 = self.combine2((inputs3[:,:,1:6000:3,:]))
+        combine1 = self.combine1((inputs2[:,:,1:8000:4,:]))
+        combine2 = self.combine2((inputs3[:,:,1:8000:4,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9299,7 +9299,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 5.0
+        fsource = 3.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9335,8 +9335,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 6.0
-        d.FPML = 5.0
+        d.TIME = 8.0
+        d.FPML = 3.0
         d.DAMPING = 1500
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
