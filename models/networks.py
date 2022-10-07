@@ -9242,9 +9242,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #depth_rec = nnz*dx  # receiver depth [m]
         depth_rec = 46*10.
         ######depth_rec = 80. #simple_model
-        xrec1 = 150.*2      # 1st receiver position [m]
+        xrec1 = 100.*2      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 3150.*2     # last receiver position [m]
+        xrec2 = 3200.*2     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9262,9 +9262,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #######dsrc = 120.
         depth_src = 120.*(3/2)  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 200.*2  # 1st source position [m]
+        xsrc1 = 100.*2  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 3100.*2  # last source position [m]
+        xsrc2 = 3200.*2  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
