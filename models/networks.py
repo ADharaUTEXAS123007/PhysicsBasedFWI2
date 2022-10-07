@@ -8838,7 +8838,7 @@ class AutoSEAMMar22_Net(nn.Module):
         ##self.decoder_input1 = nn.Linear(filters[1]*250*51, latent_dim) #for marmousi 151x200
         #self.decoder_input1 = nn.Linear(filters[2]*125*26, latent_dim) #for marmousi 151x200
         #self.decoder_input = nn.Linear(latent_dim, filters[2]*500*102) #for marmousi 151x200
-        self.decoder_input1 = nn.Linear(filters[3]*125*26, latent_dim) #for marmousi 101x101
+        self.decoder_input1 = nn.Linear(filters[3]*110*39, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
         self.decoder_input = nn.Linear(latent_dim, filters[3]*26*44) #for marmousi 101x101
@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:8000:4,:]))
-        combine2 = self.combine2((inputs3[:,:,1:8000:4,:]))
+        combine1 = self.combine1((inputs2[:,:,1:7000:7,:]))
+        combine2 = self.combine2((inputs3[:,:,1:7000:7,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9335,10 +9335,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 8.0
-        d.FPML = 3.0
-        d.DAMPING = 1500
-        #d.FW = 20
+        d.TIME = 7.0
+        d.FPML = 6.0
+        d.DAMPING = 3000
+        d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
         print("shape of rho :", np.shape(rho))
