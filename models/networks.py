@@ -8841,7 +8841,7 @@ class AutoSEAMMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*219*13, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*15*32) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*15*24) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -8904,7 +8904,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (190,348)
+        label_dsp_dim = (190,324)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -8974,7 +8974,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 15, 32)
+        z = z.view(-1, filters[3], 15, 24)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         up41    = self.up41(z)
