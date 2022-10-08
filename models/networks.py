@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:3500:4,:]))
-        combine2 = self.combine2((inputs3[:,:,1:3500:4,:]))
+        combine1 = self.combine1((inputs2[:,:,1:3500,:]))
+        combine2 = self.combine2((inputs3[:,:,1:3500,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
