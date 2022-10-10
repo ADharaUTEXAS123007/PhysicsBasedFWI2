@@ -9379,13 +9379,13 @@ class AutoSEAMMar22_Net(nn.Module):
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiSEAM9July/vpmodSEG7Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiSEAM9July/vpmodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vsmodSEG7Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/vsmodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhomodSEG7Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/rhomodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
