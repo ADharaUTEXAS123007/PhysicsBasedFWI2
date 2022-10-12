@@ -9379,13 +9379,13 @@ class AutoSEAMMar22_Net(nn.Module):
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiSEAM9July/vpmodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiSEAM9July/vpmodOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vsmodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/vsmodOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhomodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/rhomodOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
@@ -9464,13 +9464,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #####rho_grad = 1.0*rho_grad*r3*0.1
         rho_grad = 0*vs_grad
         
-        filen = './marmousiSEAM9July/vppOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vppOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vssOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vssOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhooOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/rhooOVERT12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
