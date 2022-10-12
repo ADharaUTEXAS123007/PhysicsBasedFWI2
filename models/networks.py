@@ -9098,8 +9098,8 @@ class AutoSEAMMar22_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
-        vp1[:,:,0:26,:] = inputs1[:,0,0:26,:]
-        vs1[:,:,0:26,:] = inputs1[:,1,0:26,:]
+        vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
+        vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
 
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
         #####################vs1[:,:,0:170,:] = inputs1[:,1,0:170,:]
@@ -9431,9 +9431,9 @@ class AutoSEAMMar22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
         
-        vp_grad[0:26,:] = 0
-        vs_grad[0:26,:] = 0
-        rho_grad[0:26,:] = 0
+        vp_grad[0:25,:] = 0
+        vs_grad[0:25,:] = 0
+        rho_grad[0:25,:] = 0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         print("shape of vs_grad1 :", np.shape(vs_grad))
