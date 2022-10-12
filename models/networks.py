@@ -8921,8 +8921,8 @@ class AutoSEAMMar22_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:3500,:]))
-        combine2 = self.combine2((inputs3[:,:,1:3500,:]))
+        combine1 = self.combine1((inputs2[:,:,1:3600,:]))
+        combine2 = self.combine2((inputs3[:,:,1:3600,:]))
         
         c1c2 = torch.cat((combine1,combine2),axis=1)
         
@@ -9181,7 +9181,7 @@ class AutoSEAMMar22_Net(nn.Module):
     
     # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
-        dx = 20.0
+        dx = 30.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
         rho = true[:,2,:,:].cpu().detach().numpy()
@@ -9242,9 +9242,9 @@ class AutoSEAMMar22_Net(nn.Module):
         #depth_rec = nnz*dx  # receiver depth [m]
         depth_rec = 23*20.
         ######depth_rec = 80. #simple_model
-        xrec1 = 150.*2      # 1st receiver position [m]
+        xrec1 = 150.*3      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 3150.*2     # last receiver position [m]
+        xrec2 = 3150.*3     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         ################yrec = depth_rec * (xrec/xrec)
@@ -9258,13 +9258,13 @@ class AutoSEAMMar22_Net(nn.Module):
         yrec = depth_rec * (xrec/xrec)
 
         # Sources
-        dsrc = 30.*4 # source spacing [m]
+        dsrc = 30.*8 # source spacing [m]
         #######dsrc = 120.
-        depth_src = 60.*2  # source depth [m]
+        depth_src = 60.*3  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 150.*2  # 1st source position [m]
+        xsrc1 = 150.*3  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 3150.*2  # last source position [m]
+        xsrc2 = 3150.*3  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9299,7 +9299,7 @@ class AutoSEAMMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 3.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9335,7 +9335,7 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 7.0
+        d.TIME = 9.0
         d.FPML = 5.0
         d.DAMPING = 1500
         #d.FW = 20
@@ -9353,8 +9353,8 @@ class AutoSEAMMar22_Net(nn.Module):
         d.QUELLART = 1
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
-        d.DT = 0.002
-        d.FREE_SURF = 0
+        d.DT = 0.0025
+        d.FREE_SURF = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9367,10 +9367,10 @@ class AutoSEAMMar22_Net(nn.Module):
         #d.RHOUPPERLIM = 2294.0
         #d.RHOLOWERLIM = 1929.0
         
-        d.VPUPPERLIM = 4510.0
+        d.VPUPPERLIM = 6000.0
         d.VPLOWERLIM = 1500.0
 
-        d.VSUPPERLIM = 2592.0
+        d.VSUPPERLIM = 3448.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
@@ -9379,13 +9379,13 @@ class AutoSEAMMar22_Net(nn.Module):
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiSEAM9July/vpmodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiSEAM9July/vpmodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vsmodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/vsmodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhomodSEG8Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiSEAM9July/rhomodOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
@@ -9464,13 +9464,13 @@ class AutoSEAMMar22_Net(nn.Module):
         #####rho_grad = 1.0*rho_grad*r3*0.1
         rho_grad = 0*vs_grad
         
-        filen = './marmousiSEAM9July/vppS2EG5Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vppOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/vssS2EG5Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/vssOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiSEAM9July/rhooS2EG5Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiSEAM9July/rhooOVERT11Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
