@@ -9240,7 +9240,7 @@ class AutoSEAMMar22_Net(nn.Module):
         # Receivers
         drec = 30.   #simple_model
         #depth_rec = nnz*dx  # receiver depth [m]
-        depth_rec = 23*20.
+        depth_rec = 23*30.
         ######depth_rec = 80. #simple_model
         xrec1 = 150.*3      # 1st receiver position [m]
         ######xrec1 = 100.
@@ -9370,7 +9370,7 @@ class AutoSEAMMar22_Net(nn.Module):
         d.VPUPPERLIM = 6000.0
         d.VPLOWERLIM = 1500.0
 
-        d.VSUPPERLIM = 3448.0
+        d.VSUPPERLIM = 3449.0
         d.VSLOWERLIM = 0.0
 
         d.RHOUPPERLIM = 1000.0
