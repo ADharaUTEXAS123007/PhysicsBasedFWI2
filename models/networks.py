@@ -10116,7 +10116,7 @@ class AutoRealData_Net(nn.Module):
         print(f'Target data: {d.DATA_DIR}')
         d.grad(model_init, src, rec)
         
-        #loss = np.loadtxt('loss_curve_grad.out')
+        loss = np.loadtxt('loss_curve_grad.out')
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
         print("shape of grad :", np.shape(grads))
