@@ -10125,21 +10125,21 @@ class AutoRealData_Net(nn.Module):
         #rho_grad = np.array(grads[0])
         
         print("shape of vp_grad :", np.shape(vp_grad))
-        print("shape of vs_grad :", np.shape(vs_grad))
-        print("shape of rho_grad :", np.shape(rho_grad))
+        #print("shape of vs_grad :", np.shape(vs_grad))
+        #print("shape of rho_grad :", np.shape(rho_grad))
         
         
         vp_grad = np.flipud(vp_grad)
-        vs_grad = np.flipud(vs_grad)
-        rho_grad = np.flipud(rho_grad)
+        vs_grad = vp_grad
+        rho_grad = vp_grad
         
-        vp_grad[0:25,:] = 0
-        vs_grad[0:25,:] = 0
-        rho_grad[0:25,:] = 0
+        vp_grad[0:5,:] = 0
+        vs_grad[0:5,:] = 0
+        rho_grad[0:5,:] = 0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
-        print("shape of vs_grad1 :", np.shape(vs_grad))
-        print("shape of rho_grad1 :", np.shape(rho_grad))
+        #print("shape of vs_grad1 :", np.shape(vs_grad))
+        #print("shape of rho_grad1 :", np.shape(rho_grad))
         
         r = 10**5
 
