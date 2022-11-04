@@ -9829,6 +9829,7 @@ class AutoRealData_Net(nn.Module):
         vp_grad = vp1*0
         vs_grad = vp1*0
         rho_grad = vp1*0
+        nnz = 1
         
         #vs1 = vp1*0
         #rho1 = vp1*0
