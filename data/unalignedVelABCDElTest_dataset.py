@@ -105,8 +105,6 @@ class UnalignedVelABCDElTestDataset(BaseDataset):
         
         D = torch.from_numpy(D_img)
         D = D.float()
-        
-
 
         #print("AB size")
         #print(A.size())
