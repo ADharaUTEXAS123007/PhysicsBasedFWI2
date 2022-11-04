@@ -10082,13 +10082,13 @@ class AutoRealData_Net(nn.Module):
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiRealData/RD12OctVp' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiRealData/RD12OctVs' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiRealData/RD12OctRho' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
@@ -10165,13 +10165,13 @@ class AutoRealData_Net(nn.Module):
         #####rho_grad = 1.0*rho_grad*r3*0.1
         rho_grad = 0*vs_grad
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctVpG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctVsG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctRhoG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
