@@ -10028,9 +10028,9 @@ class AutoRealData_Net(nn.Module):
         # for i in range(0,tshots):
         #     print("idx :", idx[i])
         #     copyshot(idx[i],i)
-        # d.DATA_DIR = '/disk/student/adhara/SEAMN/su1/seisT'
-        # d.SEIS_FILE_VX = 'su1/seisT_x.su'
-        # d.SEIS_FILE_VY = 'su1/seisT_y.su'
+        d.DATA_DIR = '/disk/student/adhara/SEAMN/su1/seis'
+        d.SEIS_FILE_VX = 'su1/seis_x.su'
+        d.SEIS_FILE_VY = 'su1/seis_y.su'
 
         d.help()
         #d.NX = 300
