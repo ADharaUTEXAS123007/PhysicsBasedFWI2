@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*225*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*13*22) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*52*104) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9655,7 +9655,7 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 13, 22)
+        z = z.view(-1, filters[3], 52, 104)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         up41    = self.up41(z)
@@ -9705,6 +9705,7 @@ class AutoRealData_Net(nn.Module):
         
         
         vp1f     = self.vp(f11)
+        print("shape of vp1f :", np.shape(vp1f))
         ##vs1f     = self.vs(f12)
         #####rho1f    = self.Rhorho(f13)
         #rho1    = self.rho2(rho1)
