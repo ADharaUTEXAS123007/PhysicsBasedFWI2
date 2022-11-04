@@ -10119,9 +10119,10 @@ class AutoRealData_Net(nn.Module):
         #loss = np.loadtxt('loss_curve_grad.out')
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
-        vp_grad = np.array(grads[1])
-        vs_grad = np.array(grads[2])
-        rho_grad = np.array(grads[0])
+        print("shape of grad :", np.shape(grads))
+        vp_grad = np.array(grads[0])
+        #vs_grad = np.array(grads[2])
+        #rho_grad = np.array(grads[0])
         
         print("shape of vp_grad :", np.shape(vp_grad))
         print("shape of vs_grad :", np.shape(vs_grad))
