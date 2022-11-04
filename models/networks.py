@@ -9691,7 +9691,7 @@ class AutoRealData_Net(nn.Module):
         
         #up1    = self.dropU1(up1)
         print("shape of up11 :", np.shape(up11))
-        print("shape of up12 :", np.shape(up12))
+        #print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         ##up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         ####up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
