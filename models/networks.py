@@ -10058,6 +10058,7 @@ class AutoRealData_Net(nn.Module):
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
         d.FREE_SURF = 0
+        d.QUELLTYPB = 2
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
