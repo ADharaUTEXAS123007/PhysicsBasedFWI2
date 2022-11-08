@@ -9747,7 +9747,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=22.000, max=70.000)
+        vp1    = torch.clip(vp1, min=220.00, max=700.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9873,8 +9873,8 @@ class AutoRealData_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*100.0
-        vs = np.flipud(vs)*100.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
         rho = np.flipud(rho)*1.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
@@ -9900,8 +9900,8 @@ class AutoRealData_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*100.0
-        vsst = vsst*100.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
         rhost = rhost*1.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
@@ -9952,7 +9952,7 @@ class AutoRealData_Net(nn.Module):
 
         # Receivers
         drec = 50.
-        depth_rec = 100 + dep  # receiver depth [m]
+        depth_rec = 100 + 50  # receiver depth [m]
         xrec = 20000 + off
         #xrec = np.delete(xrec,[263, 509, 479, 668, 727, 57, 641, 310, 185, 820, 314, 241, 183, 279, 364, 322, 832, 316, 400, 728, 397, 381, 402, 339, 387, 238, 320, 547, 239, 394, 219, 324, 326, 334, 373, 305, 386, 405, 303, 388, 716, 831, 230, 344, 377, 398, 378, 89, 189, 194, 209, 328, 331, 393, 266, 333, 211, 272, 362, 367, 419, 354, 379, 28, 36, 232, 348, 359, 417, 752, 772, 198, 205, 261, 288, 299, 307, 327, 353, 361, 411, 284, 287, 351, 407, 636, 197, 207, 243, 301, 319, 385, 413, 416, 421, 214, 245, 248, 296, 186, 187, 216, 275, 306, 425, 756])
         #res = np.append(res,191)
@@ -9962,7 +9962,7 @@ class AutoRealData_Net(nn.Module):
 
         # Sources
         dsrc = 160. # source spacing [m]
-        depth_src = 100 + 54 # source depth [m]
+        depth_src = 100 + 50 # source depth [m]
         xsrc1 = 380.  # 1st source position [m]
         xsrc2 = 5880.  # last source position [m]
         #xsrc = [107502.0]
@@ -10059,7 +10059,7 @@ class AutoRealData_Net(nn.Module):
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
         d.FREE_SURF = 0
-        d.QUELLTYPB = 2
+        d.QUELLTYPB = 4
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
