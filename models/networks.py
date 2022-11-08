@@ -9875,7 +9875,7 @@ class AutoRealData_Net(nn.Module):
         
         vp = np.flipud(vp)*10.0
         vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*1.0
+        rho = np.flipud(rho)*10.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9902,7 +9902,7 @@ class AutoRealData_Net(nn.Module):
         
         vpst = vpst*10.0
         vsst = vsst*10.0
-        rhost = rhost*1.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
