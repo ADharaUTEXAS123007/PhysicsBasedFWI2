@@ -9969,7 +9969,7 @@ class AutoRealData_Net(nn.Module):
         xsrc = 20000.0 + dxsrc
         ysrc = [depth_src]*(xsrc/xsrc)
         #######xsrc2 = 1700.
-        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        #xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
         #xsrcoriginal = xsrcoriginal[idx]
         #print("xsrcoriginal sorted :", xsrcoriginal)
