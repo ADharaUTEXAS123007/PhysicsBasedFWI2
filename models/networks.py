@@ -10006,10 +10006,10 @@ class AutoRealData_Net(nn.Module):
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
+
         d.DATA_DIR = '/disk/student/adhara/RealData/su1/seis'
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
-        d.SEIS_FILE_P = 'su1/seis_p.su'
 
         d.help()
         #d.NX = 300
@@ -10029,8 +10029,8 @@ class AutoRealData_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 1
-        d.NPROCY = 1
+        d.NPROCX = 6
+        d.NPROCY = 5
         d.PHYSICS = 2
         d.QUELLART = 3
         #d.FC_SPIKE_1 = -5.0
