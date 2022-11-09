@@ -9862,7 +9862,7 @@ class AutoRealData_Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
 
-  # forward modeling to compute gradients  
+        # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
         dx = 50.0
         vp = true[:,0,:,:].cpu().detach().numpy()
@@ -9919,57 +9919,31 @@ class AutoRealData_Net(nn.Module):
         
         #model = api.Model(vp, vs, rho, dx)
         #print(model)
-        offset = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/OffsetNew12.txt')
-        depth = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/DepthNew12.txt')
-
-        off = offset[:]
-        dep = depth[:]
-
-        # Receivers
-        drec = 20.
-        depth_rec = dep  # receiver depth [m]
-        xrec1 = 380.      # 1st receiver position [m]
-        xrec2 = 5880.     # last receiver position [m]
-        xrec = 20000 + off
-
-        xrecdx = np.round_(xrec/dx)
-        depth_recdx = np.round_(depth_rec/dx)
-
-        so2 = []
-        for i in range(0,877):
-            for j in range(i+1,878):
-                if ((xrecdx[i]==xrecdx[j]) and (depth_recdx[i]==depth_recdx[j])):
-                    so2 = np.append(so2,int(j))
-
-        so2 = so2.astype(int)
-        so3 = np.arange(15)
-        so2 = np.append(so2,so3)
-
-        res = so2
-        dep = np.delete(dep,res)
-
-        dxsrc = np.array([0,8000,13000,21000,35000,39000,45000,50000,56000,67000,72000,76000])
+        xrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xrec12.txt')
+        yrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/yrec12.txt')
+        xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
+        ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
 
         # Receivers
-        drec = 50.
-        depth_rec = 100 + dep  # receiver depth [m]
-        xrec = 20000 + off
+        #drec = 50.
+        #depth_rec = 100 + 50  # receiver depth [m]
+        #xrec = 20000 + off
         #xrec = np.delete(xrec,[263, 509, 479, 668, 727, 57, 641, 310, 185, 820, 314, 241, 183, 279, 364, 322, 832, 316, 400, 728, 397, 381, 402, 339, 387, 238, 320, 547, 239, 394, 219, 324, 326, 334, 373, 305, 386, 405, 303, 388, 716, 831, 230, 344, 377, 398, 378, 89, 189, 194, 209, 328, 331, 393, 266, 333, 211, 272, 362, 367, 419, 354, 379, 28, 36, 232, 348, 359, 417, 752, 772, 198, 205, 261, 288, 299, 307, 327, 353, 361, 411, 284, 287, 351, 407, 636, 197, 207, 243, 301, 319, 385, 413, 416, 421, 214, 245, 248, 296, 186, 187, 216, 275, 306, 425, 756])
         #res = np.append(res,191)
-        xrec = np.delete(xrec, res)
+        #xrec = np.delete(xrec, res)
         #xrec = xrec[22]
-        yrec = depth_rec * (xrec / xrec)
+        #yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 160. # source spacing [m]
-        depth_src = 100 + 54 # source depth [m]
-        xsrc1 = 380.  # 1st source position [m]
-        xsrc2 = 5880.  # last source position [m]
+        #dsrc = 160. # source spacing [m]
+        #depth_src = 100 + 50 # source depth [m]
+        #xsrc1 = 380.  # 1st source position [m]
+        #xsrc2 = 5880.  # last source position [m]
         #xsrc = [107502.0]
-        xsrc = 20000.0 + dxsrc
-        ysrc = [depth_src]*(xsrc/xsrc)
+        #xsrc = 20000.0 + dxsrc
+        #ysrc = [depth_src]*(xsrc/xsrc)
         #######xsrc2 = 1700.
-        #####xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        #xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
         #xsrcoriginal = xsrcoriginal[idx]
         #print("xsrcoriginal sorted :", xsrcoriginal)
@@ -9988,7 +9962,7 @@ class AutoRealData_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        #########xsrc = xsrcoriginal[idx[0:4]]
+        #xsrc = xsrcoriginal[idx[0:4]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
@@ -9996,7 +9970,7 @@ class AutoRealData_Net(nn.Module):
         #idx = idx[it::3]
         ###idx = np.sort(idx[it::1])
         #print("idx :", idx)
-        ysrc = depth_src * xsrc / xsrc
+        #ysrc = depth_src * xsrc / xsrc
         tshots = len(xsrc)
         # print("xsrc :",xsrc)
 
@@ -10028,9 +10002,9 @@ class AutoRealData_Net(nn.Module):
         # for i in range(0,tshots):
         #     print("idx :", idx[i])
         #     copyshot(idx[i],i)
-        # d.DATA_DIR = '/disk/student/adhara/SEAMN/su1/seisT'
-        # d.SEIS_FILE_VX = 'su1/seisT_x.su'
-        # d.SEIS_FILE_VY = 'su1/seisT_y.su'
+        d.DATA_DIR = '/disk/student/adhara/RealData/su1/seis'
+        d.SEIS_FILE_VX = 'su1/seis_x.su'
+        d.SEIS_FILE_VY = 'su1/seis_y.su'
 
         d.help()
         #d.NX = 300
@@ -10050,14 +10024,16 @@ class AutoRealData_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 6
-        d.NPROCY = 5
+        d.NPROCX = 1
+        d.NPROCY = 1
         d.PHYSICS = 2
         d.QUELLART = 3
+        d.FD_ORDER = 4
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
         d.FREE_SURF = 0
+        d.QUELLTYPB = 4
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -10082,13 +10058,13 @@ class AutoRealData_Net(nn.Module):
         d.EXP_TAPER_GRAD_HOR = 2.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiRealData/RD12OctVp' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiRealData/RD12OctVs' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiRealData/RD12OctRho' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
@@ -10107,7 +10083,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=50, inv_rho_iter=10000, lnorm=1)
+        d.add_fwi_stage(fc_low=0.0, fc_high=20, inv_vs_iter=100000, inv_rho_iter=10000)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
@@ -10119,26 +10095,27 @@ class AutoRealData_Net(nn.Module):
         loss = np.loadtxt('loss_curve_grad.out')
         
         grads, fnames = d.get_fwi_gradients(['seis'],return_filenames=True)
-        vp_grad = np.array(grads[1])
-        vs_grad = np.array(grads[2])
-        rho_grad = np.array(grads[0])
+        print("shape of grad :", np.shape(grads))
+        vp_grad = np.array(grads[0])
+        #vs_grad = np.array(grads[2])
+        #rho_grad = np.array(grads[0])
         
         print("shape of vp_grad :", np.shape(vp_grad))
-        print("shape of vs_grad :", np.shape(vs_grad))
-        print("shape of rho_grad :", np.shape(rho_grad))
+        #print("shape of vs_grad :", np.shape(vs_grad))
+        #print("shape of rho_grad :", np.shape(rho_grad))
         
         
         vp_grad = np.flipud(vp_grad)
-        vs_grad = np.flipud(vs_grad)
-        rho_grad = np.flipud(rho_grad)
+        vs_grad = vp_grad
+        rho_grad = vp_grad
         
-        vp_grad[0:25,:] = 0
-        vs_grad[0:25,:] = 0
-        rho_grad[0:25,:] = 0
+        vp_grad[0:5,:] = 0
+        vs_grad[0:5,:] = 0
+        rho_grad[0:5,:] = 0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
-        print("shape of vs_grad1 :", np.shape(vs_grad))
-        print("shape of rho_grad1 :", np.shape(rho_grad))
+        #print("shape of vs_grad1 :", np.shape(vs_grad))
+        #print("shape of rho_grad1 :", np.shape(rho_grad))
         
         r = 10**5
 
@@ -10164,13 +10141,13 @@ class AutoRealData_Net(nn.Module):
         #####rho_grad = 1.0*rho_grad*r3*0.1
         rho_grad = 0*vs_grad
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctVpG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctVsG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiRealData/RD12Oct' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiRealData/RD12OctRhoG' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
@@ -10181,8 +10158,6 @@ class AutoRealData_Net(nn.Module):
         return vp_grad, vs_grad, rho_grad, loss
         
 
-       
-    
 class AutoElMarmousiMarZp22_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
                  submodule=None, outermost=False, innermost=False, norm_layer=nn.BatchNorm2d, use_dropout=False):
