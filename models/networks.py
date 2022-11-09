@@ -10029,7 +10029,7 @@ class AutoRealData_Net(nn.Module):
         d.NPROCY = 1
         d.PHYSICS = 2
         d.QUELLART = 3
-        d.FD_ORDER = 4
+        d.FD_ORDER = 8
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
