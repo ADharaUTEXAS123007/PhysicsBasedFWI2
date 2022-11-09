@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*225*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*52*150) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*26*150) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9585,7 +9585,7 @@ class AutoRealData_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (810,1974)
+        label_dsp_dim = (560,1974)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -9602,7 +9602,7 @@ class AutoRealData_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:3600,:]))
+        combine1 = self.combine1((inputs2[:,:,1:5714,:]))
         #combine2 = self.combine2((inputs3[:,:,1:3600,:]))
         
         #c1c2 = torch.cat((combine1,combine2),axis=1)
@@ -9655,7 +9655,7 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 52, 150)
+        z = z.view(-1, filters[3], 26, 150)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         up41    = self.up41(z)
