@@ -9873,9 +9873,9 @@ class AutoRealData_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1.0
-        vs = np.flipud(vs)*1.0
-        rho = np.flipud(rho)*1.0
+        vp = np.flipud(vp)*100.0
+        vs = np.flipud(vs)*100.0
+        rho = np.flipud(rho)*100.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9900,9 +9900,9 @@ class AutoRealData_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*100.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -9919,62 +9919,59 @@ class AutoRealData_Net(nn.Module):
         
         #model = api.Model(vp, vs, rho, dx)
         #print(model)
-        xrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xrec12.txt')
-        yrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/yrec12.txt')
-        xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
-        ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
-        
+        #xrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xrec12.txt')
+        #yrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/yrec12.txt')
+        #xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
+        #ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
+        offset = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/OffsetNew12.txt')
+        depth = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/DepthNew12.txt')
+        off = offset[:]
+        dep = depth[:]
+         
+        # Receivers
+        drec = 20.
+        depth_rec = dep  # receiver depth [m]
+        xrec1 = 380.      # 1st receiver position [m]
+        xrec2 = 5880.     # last receiver position [m]
+        xrec = 20000 + off
+
+        xrecdx = np.round_(xrec/dx)
+        depth_recdx = np.round_(depth_rec/dx)
+
+        so2 = []
+        for i in range(0,877):
+            for j in range(i+1,878):
+                if ((xrecdx[i]==xrecdx[j]) and (depth_recdx[i]==depth_recdx[j])):
+                    so2 = np.append(so2,int(j))
+
+        so2 = so2.astype(int)
+        so3 = np.arange(15)
+        so2 = np.append(so2,so3)
+
+        res = so2
+        dep = np.delete(dep,res)
+
+        dxsrc = np.array([0,8000,13000,21000,35000,39000,45000,50000,56000,67000,72000,76000])
 
         # Receivers
-        #drec = 50.
-        #depth_rec = 100 + 50  # receiver depth [m]
-        #xrec = 20000 + off
+        drec = 50.
+        depth_rec = 100 + dep  # receiver depth [m]
+        xrec = 20000 + off
         #xrec = np.delete(xrec,[263, 509, 479, 668, 727, 57, 641, 310, 185, 820, 314, 241, 183, 279, 364, 322, 832, 316, 400, 728, 397, 381, 402, 339, 387, 238, 320, 547, 239, 394, 219, 324, 326, 334, 373, 305, 386, 405, 303, 388, 716, 831, 230, 344, 377, 398, 378, 89, 189, 194, 209, 328, 331, 393, 266, 333, 211, 272, 362, 367, 419, 354, 379, 28, 36, 232, 348, 359, 417, 752, 772, 198, 205, 261, 288, 299, 307, 327, 353, 361, 411, 284, 287, 351, 407, 636, 197, 207, 243, 301, 319, 385, 413, 416, 421, 214, 245, 248, 296, 186, 187, 216, 275, 306, 425, 756])
         #res = np.append(res,191)
-        #xrec = np.delete(xrec, res)
+        xrec = np.delete(xrec, res)
         #xrec = xrec[22]
-        #yrec = depth_rec * (xrec / xrec)
+        yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        #dsrc = 160. # source spacing [m]
-        #depth_src = 100 + 50 # source depth [m]
-        #xsrc1 = 380.  # 1st source position [m]
-        #xsrc2 = 5880.  # last source position [m]
+        dsrc = 160. # source spacing [m]
+        depth_src = 100 + 54 # source depth [m]
+        xsrc1 = 380.  # 1st source position [m]
+        xsrc2 = 5880.  # last source position [m]
         #xsrc = [107502.0]
-        #xsrc = 20000.0 + dxsrc
-        #ysrc = [depth_src]*(xsrc/xsrc)
-        #######xsrc2 = 1700.
-        #xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
-        #print("xsrcoriginal :", xsrcoriginal)
-        #xsrcoriginal = xsrcoriginal[idx]
-        #print("xsrcoriginal sorted :", xsrcoriginal)
-        #lens = len(xsrcoriginal)
-        
-        # r = random.randint(1,2)
-        # if (r==1):
-        #     xsrc = xsrcoriginal[0:len(xsrcoriginal):2]
-        #     idx = np.arange(0, len(xsrcoriginal), 2)
-        # else:
-        #     xsrc = xsrcoriginal[1:len(xsrcoriginal):2]
-        #     idx = np.arange(1, len(xsrcoriginal), 2)
-        #print("xsrcoriginal :",xsrcoriginal)
-        #idx = np.random.permutation(len(xsrcoriginal))
-        #xsrc = xsrcoriginal[idx]
-        #tshots = 8
-        ###xsrc = xsrcoriginal[idx[it::1]]
-        ############################xsrc = xsrcoriginal[idx[0:14]]
-        #xsrc = xsrcoriginal[idx[0:4]]
-        #xsrc = xsrcoriginal
-        #print("xsrc1 :", xsrc)
-        #xsrc = np.sort(xsrc)
-        #print("xsrc2 :", xsrc)
-        #idx = idx[it::3]
-        ###idx = np.sort(idx[it::1])
-        #print("idx :", idx)
-        #ysrc = depth_src * xsrc / xsrc
+        xsrc = 20000.0 + dxsrc
+        ysrc = [depth_src]*(xsrc/xsrc)
         tshots = len(xsrc)
-        # print("xsrc :",xsrc)
-
 
         # Wrap into api
         fsource = 5.0
