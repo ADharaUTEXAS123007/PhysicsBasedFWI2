@@ -9747,7 +9747,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=2200.0, max=7000.0)
+        vp1    = torch.clip(vp1, min=22.000, max=70.000)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
