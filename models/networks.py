@@ -9919,55 +9919,30 @@ class AutoRealData_Net(nn.Module):
         
         #model = api.Model(vp, vs, rho, dx)
         #print(model)
-        offset = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/OffsetNew12.txt')
-        depth = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/DepthNew12.txt')
-
-        off = offset[:]
-        dep = depth[:]
-
-        # Receivers
-        drec = 20.
-        depth_rec = dep  # receiver depth [m]
-        xrec1 = 380.      # 1st receiver position [m]
-        xrec2 = 5880.     # last receiver position [m]
-        xrec = 20000 + off
-
-        xrecdx = np.round_(xrec/dx)
-        depth_recdx = np.round_(depth_rec/dx)
-
-        so2 = []
-        for i in range(0,877):
-            for j in range(i+1,878):
-                if ((xrecdx[i]==xrecdx[j]) and (depth_recdx[i]==depth_recdx[j])):
-                    so2 = np.append(so2,int(j))
-
-        so2 = so2.astype(int)
-        so3 = np.arange(15)
-        so2 = np.append(so2,so3)
-
-        res = so2
-        dep = np.delete(dep,res)
-
-        dxsrc = np.array([0,8000,13000,21000,35000,39000,45000,50000,56000,67000,72000,76000])
+        xrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xrec12.txt')
+        yrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/yrec12.txt')
+        xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
+        ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
+        
 
         # Receivers
-        drec = 50.
-        depth_rec = 100 + 50  # receiver depth [m]
-        xrec = 20000 + off
+        #drec = 50.
+        #depth_rec = 100 + 50  # receiver depth [m]
+        #xrec = 20000 + off
         #xrec = np.delete(xrec,[263, 509, 479, 668, 727, 57, 641, 310, 185, 820, 314, 241, 183, 279, 364, 322, 832, 316, 400, 728, 397, 381, 402, 339, 387, 238, 320, 547, 239, 394, 219, 324, 326, 334, 373, 305, 386, 405, 303, 388, 716, 831, 230, 344, 377, 398, 378, 89, 189, 194, 209, 328, 331, 393, 266, 333, 211, 272, 362, 367, 419, 354, 379, 28, 36, 232, 348, 359, 417, 752, 772, 198, 205, 261, 288, 299, 307, 327, 353, 361, 411, 284, 287, 351, 407, 636, 197, 207, 243, 301, 319, 385, 413, 416, 421, 214, 245, 248, 296, 186, 187, 216, 275, 306, 425, 756])
         #res = np.append(res,191)
-        xrec = np.delete(xrec, res)
+        #xrec = np.delete(xrec, res)
         #xrec = xrec[22]
-        yrec = depth_rec * (xrec / xrec)
+        #yrec = depth_rec * (xrec / xrec)
 
         # Sources
-        dsrc = 160. # source spacing [m]
-        depth_src = 100 + 50 # source depth [m]
-        xsrc1 = 380.  # 1st source position [m]
-        xsrc2 = 5880.  # last source position [m]
+        #dsrc = 160. # source spacing [m]
+        #depth_src = 100 + 50 # source depth [m]
+        #xsrc1 = 380.  # 1st source position [m]
+        #xsrc2 = 5880.  # last source position [m]
         #xsrc = [107502.0]
-        xsrc = 20000.0 + dxsrc
-        ysrc = [depth_src]*(xsrc/xsrc)
+        #xsrc = 20000.0 + dxsrc
+        #ysrc = [depth_src]*(xsrc/xsrc)
         #######xsrc2 = 1700.
         #xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -9996,7 +9971,7 @@ class AutoRealData_Net(nn.Module):
         #idx = idx[it::3]
         ###idx = np.sort(idx[it::1])
         #print("idx :", idx)
-        ysrc = depth_src * xsrc / xsrc
+        #ysrc = depth_src * xsrc / xsrc
         tshots = len(xsrc)
         # print("xsrc :",xsrc)
 
