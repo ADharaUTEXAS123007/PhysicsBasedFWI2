@@ -9862,7 +9862,7 @@ class AutoRealData_Net(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
     
-    # forward modeling to compute gradients  
+       # forward modeling to compute gradients  
     def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it, nnz):
         dx = 50.0
         vp = true[:,0,:,:].cpu().detach().numpy()
@@ -9919,15 +9919,12 @@ class AutoRealData_Net(nn.Module):
         
         #model = api.Model(vp, vs, rho, dx)
         #print(model)
-        #xrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xrec12.txt')
-        #yrec = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/yrec12.txt')
-        #xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
-        #ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
         offset = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/OffsetNew12.txt')
         depth = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/DepthNew12.txt')
+
         off = offset[:]
         dep = depth[:]
-         
+
         # Receivers
         drec = 20.
         depth_rec = dep  # receiver depth [m]
@@ -9971,7 +9968,38 @@ class AutoRealData_Net(nn.Module):
         #xsrc = [107502.0]
         xsrc = 20000.0 + dxsrc
         ysrc = [depth_src]*(xsrc/xsrc)
+        #######xsrc2 = 1700.
+        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        #print("xsrcoriginal :", xsrcoriginal)
+        #xsrcoriginal = xsrcoriginal[idx]
+        #print("xsrcoriginal sorted :", xsrcoriginal)
+        #lens = len(xsrcoriginal)
+        
+        # r = random.randint(1,2)
+        # if (r==1):
+        #     xsrc = xsrcoriginal[0:len(xsrcoriginal):2]
+        #     idx = np.arange(0, len(xsrcoriginal), 2)
+        # else:
+        #     xsrc = xsrcoriginal[1:len(xsrcoriginal):2]
+        #     idx = np.arange(1, len(xsrcoriginal), 2)
+        #print("xsrcoriginal :",xsrcoriginal)
+        #idx = np.random.permutation(len(xsrcoriginal))
+        #xsrc = xsrcoriginal[idx]
+        #tshots = 8
+        ###xsrc = xsrcoriginal[idx[it::1]]
+        ############################xsrc = xsrcoriginal[idx[0:14]]
+        #xsrc = xsrcoriginal[idx[0:4]]
+        #xsrc = xsrcoriginal
+        #print("xsrc1 :", xsrc)
+        #xsrc = np.sort(xsrc)
+        #print("xsrc2 :", xsrc)
+        #idx = idx[it::3]
+        ###idx = np.sort(idx[it::1])
+        #print("idx :", idx)
+        ysrc = depth_src * xsrc / xsrc
         tshots = len(xsrc)
+        # print("xsrc :",xsrc)
+
 
         # Wrap into api
         fsource = 5.0
@@ -10022,11 +10050,10 @@ class AutoRealData_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 1
-        d.NPROCY = 1
+        d.NPROCX = 6
+        d.NPROCY = 5
         d.PHYSICS = 2
         d.QUELLART = 3
-        d.FD_ORDER = 8
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
@@ -10081,7 +10108,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=20, inv_vs_iter=100000, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_low=0.0, fc_high=50, inv_vs_iter=100000, inv_rho_iter=10000)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
@@ -10154,6 +10181,7 @@ class AutoRealData_Net(nn.Module):
         #vs_grad = 0
         #rho_grad = 0
         return vp_grad, vs_grad, rho_grad, loss
+       
     
 class AutoElMarmousiMarZp22_Net(nn.Module):
     def __init__(self,outer_nc, inner_nc, input_nc=None,
