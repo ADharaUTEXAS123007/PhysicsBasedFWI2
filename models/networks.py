@@ -9914,7 +9914,7 @@ class AutoRealData_Net(nn.Module):
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root,verbose=1)
-        d.save_folder = '/disk/student/adhara/SEAMN/'
+        d.save_folder = '/disk/student/adhara/RealData/'
         d.set_paths()
         
         #model = api.Model(vp, vs, rho, dx)
@@ -9969,7 +9969,7 @@ class AutoRealData_Net(nn.Module):
         xsrc = 20000.0 + dxsrc
         ysrc = [depth_src]*(xsrc/xsrc)
         #######xsrc2 = 1700.
-        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        #####xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
         #xsrcoriginal = xsrcoriginal[idx]
         #print("xsrcoriginal sorted :", xsrcoriginal)
@@ -9988,7 +9988,7 @@ class AutoRealData_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:4]]
+        #########xsrc = xsrcoriginal[idx[0:4]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
