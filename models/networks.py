@@ -10006,31 +10006,10 @@ class AutoRealData_Net(nn.Module):
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
-        
-        # os.system('rm -rf /disk/student/adhara/SEAMN/su1')
-        # os.system('mkdir /disk/student/adhara/SEAMN/su1')
-        # def copyshot(id1, value):             
-        #     fo = 'cp /disk/student/adhara/SEAMN/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/SEAMN/su1/.'
-        #     os.system(fo)
-        #     fo = 'cp /disk/student/adhara/SEAMN/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/SEAMN/su1/.'
-        #     os.system(fo)
-        # #      #if (id1+1 != value+1):
-        #     fo = 'mv /disk/student/adhara/SEAMN/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/SEAMN/su1/seisT_x.su.shot' + str(value+1)
-        #     os.system(fo)
-        #     fo = 'mv /disk/student/adhara/SEAMN/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/SEAMN/su1/seisT_y.su.shot' + str(value+1)
-        #     os.system(fo)
-        # # # #pool = ThreadPool(tshots)
-        # #values = np.arange(0,tshots)
-        # #print("values :", values)
-        # # # #print("idx :", idx)
-        # # # #pool.starmap(copyshot, zip(idx,values))
-        # #######################################################
-        # for i in range(0,tshots):
-        #     print("idx :", idx[i])
-        #     copyshot(idx[i],i)
         d.DATA_DIR = '/disk/student/adhara/RealData/su1/seis'
         d.SEIS_FILE_VX = 'su1/seis_x.su'
         d.SEIS_FILE_VY = 'su1/seis_y.su'
+        d.SEIS_FILE_P = 'su1/seis_p.su'
 
         d.help()
         #d.NX = 300
@@ -10050,8 +10029,8 @@ class AutoRealData_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 6
-        d.NPROCY = 5
+        d.NPROCX = 1
+        d.NPROCY = 1
         d.PHYSICS = 2
         d.QUELLART = 3
         #d.FC_SPIKE_1 = -5.0
