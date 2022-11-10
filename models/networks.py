@@ -10003,8 +10003,9 @@ class AutoRealData_Net(nn.Module):
         #     print("idx :", idx[i])
         #     copyshot(idx[i],i)
         d.DATA_DIR = '/disk/student/adhara/RealData/su1/seis'
-        d.SEIS_FILE_VX = 'su1/seis_x.su'
-        d.SEIS_FILE_VY = 'su1/seis_y.su'
+        #d.SEIS_FILE_VX = 'su1/seis_x.su'
+        #d.SEIS_FILE_VY = 'su1/seis_y.su'
+        #d.SEIS_FILE_P = 'su1/seis_p.su'
 
         d.help()
         #d.NX = 300
@@ -10033,7 +10034,8 @@ class AutoRealData_Net(nn.Module):
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
         d.FREE_SURF = 0
-        d.QUELLTYPB = 2
+        d.QUELLTYPB = 4
+        d.SEISMO = 2
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -10083,7 +10085,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=20, inv_vs_iter=100000, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_low=0.0, fc_high=40, inv_vs_iter=100000, inv_rho_iter=10000)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
