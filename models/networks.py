@@ -10025,8 +10025,8 @@ class AutoRealData_Net(nn.Module):
 
         print(f'NSRC:\t{len(src)}')
         print(f'NREC:\t{len(rec)}')
-        d.NPROCX = 1
-        d.NPROCY = 1
+        d.NPROCX = 7
+        d.NPROCY = 5
         d.PHYSICS = 2
         d.QUELLART = 3
         d.FD_ORDER = 4
