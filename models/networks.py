@@ -10087,7 +10087,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=40, inv_vs_iter=100000, inv_rho_iter=10000, normalize=1.0)
+        d.add_fwi_stage(fc_low=0.0, fc_high=40, inv_vs_iter=100000, inv_rho_iter=10000)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
