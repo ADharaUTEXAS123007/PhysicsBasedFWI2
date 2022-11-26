@@ -9974,6 +9974,7 @@ class AutoRealData_Net(nn.Module):
         xrec = xrec - 5000
         xsrc = xsrc - 5000
         xsrc = xsrc[0]
+        print("xsrc :",xsrc)
         tshots = len(xsrc)
         # print("xsrc :",xsrc)
 
