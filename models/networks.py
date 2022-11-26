@@ -9973,7 +9973,8 @@ class AutoRealData_Net(nn.Module):
         #ysrc = depth_src * xsrc / xsrc
         xrec = xrec - 5000
         xsrc = xsrc - 5000
-        xsrc = xsrc[0:2]
+        xsrc = xsrc[0:1]
+        ysrc = ysrc[0:1]
         print("xsrc :",xsrc)
         tshots = len(xsrc)
         # print("xsrc :",xsrc)
