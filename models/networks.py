@@ -9973,11 +9973,11 @@ class AutoRealData_Net(nn.Module):
         #ysrc = depth_src * xsrc / xsrc
         xrec = xrec - 5000
         xsrc = xsrc - 5000
-        xsrc = xsrc[0]
+        xsrc = [xsrc[0]]
         print("xsrc :",xsrc)
-        #tshots = len(xsrc)
+        tshots = len(xsrc)
         # print("xsrc :",xsrc)
-        tshots = 1
+        #tshots = 1
 
 
         # Wrap into api
