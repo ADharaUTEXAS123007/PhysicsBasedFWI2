@@ -9973,7 +9973,7 @@ class AutoRealData_Net(nn.Module):
         #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
-        d.TIME = 20.0
+        d.TIME = 7.0035
         d.FPML = 10.0
         d.DAMPING = 6000
         #d.FW = 20
