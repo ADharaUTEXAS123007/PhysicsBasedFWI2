@@ -9585,7 +9585,7 @@ class AutoRealData_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (560,1974)
+        label_dsp_dim = (200,1974)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -9602,7 +9602,7 @@ class AutoRealData_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:5714,:]))
+        combine1 = self.combine1((inputs2[:,:,1:2001,:]))
         #combine2 = self.combine2((inputs3[:,:,1:3600,:]))
         
         #c1c2 = torch.cat((combine1,combine2),axis=1)
@@ -9747,7 +9747,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=220.00, max=700.00)
+        vp1    = torch.clip(vp1, min=300.00, max=600.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9924,53 +9924,7 @@ class AutoRealData_Net(nn.Module):
         xsrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/xsrc12.txt')
         ysrc = np.loadtxt('/disk/student/adhara/Spring2022/nature/BALANCED2/ysrc12.txt')
 
-        # Receivers
-        #drec = 50.
-        #depth_rec = 100 + 50  # receiver depth [m]
-        #xrec = 20000 + off
-        #xrec = np.delete(xrec,[263, 509, 479, 668, 727, 57, 641, 310, 185, 820, 314, 241, 183, 279, 364, 322, 832, 316, 400, 728, 397, 381, 402, 339, 387, 238, 320, 547, 239, 394, 219, 324, 326, 334, 373, 305, 386, 405, 303, 388, 716, 831, 230, 344, 377, 398, 378, 89, 189, 194, 209, 328, 331, 393, 266, 333, 211, 272, 362, 367, 419, 354, 379, 28, 36, 232, 348, 359, 417, 752, 772, 198, 205, 261, 288, 299, 307, 327, 353, 361, 411, 284, 287, 351, 407, 636, 197, 207, 243, 301, 319, 385, 413, 416, 421, 214, 245, 248, 296, 186, 187, 216, 275, 306, 425, 756])
-        #res = np.append(res,191)
-        #xrec = np.delete(xrec, res)
-        #xrec = xrec[22]
-        #yrec = depth_rec * (xrec / xrec)
 
-        # Sources
-        #dsrc = 160. # source spacing [m]
-        #depth_src = 100 + 50 # source depth [m]
-        #xsrc1 = 380.  # 1st source position [m]
-        #xsrc2 = 5880.  # last source position [m]
-        #xsrc = [107502.0]
-        #xsrc = 20000.0 + dxsrc
-        #ysrc = [depth_src]*(xsrc/xsrc)
-        #######xsrc2 = 1700.
-        #xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
-        #print("xsrcoriginal :", xsrcoriginal)
-        #xsrcoriginal = xsrcoriginal[idx]
-        #print("xsrcoriginal sorted :", xsrcoriginal)
-        #lens = len(xsrcoriginal)
-        
-        # r = random.randint(1,2)
-        # if (r==1):
-        #     xsrc = xsrcoriginal[0:len(xsrcoriginal):2]
-        #     idx = np.arange(0, len(xsrcoriginal), 2)
-        # else:
-        #     xsrc = xsrcoriginal[1:len(xsrcoriginal):2]
-        #     idx = np.arange(1, len(xsrcoriginal), 2)
-        #print("xsrcoriginal :",xsrcoriginal)
-        #idx = np.random.permutation(len(xsrcoriginal))
-        #xsrc = xsrcoriginal[idx]
-        #tshots = 8
-        ###xsrc = xsrcoriginal[idx[it::1]]
-        ############################xsrc = xsrcoriginal[idx[0:14]]
-        #xsrc = xsrcoriginal[idx[0:4]]
-        #xsrc = xsrcoriginal
-        #print("xsrc1 :", xsrc)
-        #xsrc = np.sort(xsrc)
-        #print("xsrc2 :", xsrc)
-        #idx = idx[it::3]
-        ###idx = np.sort(idx[it::1])
-        #print("idx :", idx)
-        #ysrc = depth_src * xsrc / xsrc
         xrec = xrec - 5000
         xsrc = xsrc - 5000
         xsrc = xsrc[0:1]
@@ -10040,8 +9994,8 @@ class AutoRealData_Net(nn.Module):
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
         d.FREE_SURF = 0
-        d.QUELLTYPB = 4
-        d.SEISMO = 2
+        d.QUELLTYPB = 2
+        d.SEISMO = 1
         #d.FC_SPIKE_1 = 6.0
         #d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -10055,7 +10009,7 @@ class AutoRealData_Net(nn.Module):
         #d.RHOLOWERLIM = 1929.0
         
         d.VPUPPERLIM = 7000.0
-        d.VPLOWERLIM = 2200.0
+        d.VPLOWERLIM = 3000.0
 
         d.VSUPPERLIM = 881.0
         d.VSLOWERLIM = 881.0
