@@ -309,7 +309,7 @@ class AutoRealDataModel(BaseModel):
         self.loss_VS = self.criterionMSE(self.real_Vs, self.fake_Vs)
         self.loss_RHO = self.criterionMSE(self.real_Rho, self.fake_Rho)
         
-        self.loss_L_MSE = self.criterionMSE(self.low_Vp, self.fake_Vp) + self.criterionMSE(self.low_Vs, self.fake_Vs) + self.criterionMSE(self.low_Rho, self.fake_Rho)
+        self.loss_L_MSE = self.criterionMSE(self.low_Vp, self.fake_Vp)
         
         self.loss_VPLOW = self.criterionMSE(self.real_Vp, self.low_Vp)
         self.loss_VSLOW = self.criterionMSE(self.low_Vs, self.fake_Vs)
@@ -429,9 +429,10 @@ class AutoRealDataModel(BaseModel):
             ############self.fake_B.backward(self.grad) #switch on for physics based fwi
             
             #################
-            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
-            self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
-            self.fake_Vp.backward(self.vp_grad)
+            ######self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+            #####self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
+            #####self.fake_Vp.backward(self.vp_grad)
+            self.loss_L_MSE.backward()
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
