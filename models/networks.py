@@ -9884,7 +9884,6 @@ class AutoRealData_Net(nn.Module):
         vs = vs
         rho = rho
         
-        
         #model = api.Model(vp, vs, rho, dx)
         
         vpst = vp1.cpu().detach().numpy()
