@@ -9988,7 +9988,7 @@ class AutoRealData_Net(nn.Module):
         d.NPROCY = 5
         d.PHYSICS = 2
         d.QUELLART = 3
-        d.FD_ORDER = 4
+        #d.FD_ORDER = 4
         #d.FC_SPIKE_1 = -5.0
         #d.FC_SPIKE_2  = 15.0
         d.DT = 0.0035
@@ -10044,7 +10044,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0, fc_high=20, inv_vs_iter=100000, inv_rho_iter=10000, lnorm=1)
+        d.add_fwi_stage(fc_low=3.0, fc_high=13, inv_vs_iter=1000000, inv_rho_iter=100000, lnorm=2)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
