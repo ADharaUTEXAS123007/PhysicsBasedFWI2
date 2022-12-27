@@ -9585,7 +9585,7 @@ class AutoRealData_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         #filters = [8, 16, 32, 6]
         latent_dim = 8
-        label_dsp_dim = (200,1974)
+        label_dsp_dim = (400,1974)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
