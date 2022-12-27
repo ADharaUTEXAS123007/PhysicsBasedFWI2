@@ -432,7 +432,7 @@ class AutoRealDataModel(BaseModel):
             ######self.vp_grad = torch.unsqueeze(self.vp_grad,0)
             #####self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
             #####self.fake_Vp.backward(self.vp_grad)
-            self.loss_L_MSE.backward()
+            self.loss_G.backward()
             #self.fake_Vs.retain_grad()
             #self.fake_Vp.retain_grad()
             #self.fake_Rho.retain_grad()
