@@ -316,6 +316,7 @@ class AutoRealDataModel(BaseModel):
         self.loss_RHOLOW = self.criterionMSE(self.low_Rho, self.fake_Rho)
         print("loss M MSE :", self.loss_M_MSE)
         print("loss D MSE :", self.loss_D_MSE)
+        print("loss L MSE :", self.loss_L_MSE)
         
         
         
