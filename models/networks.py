@@ -10069,9 +10069,9 @@ class AutoRealData_Net(nn.Module):
         vs_grad = vp_grad
         rho_grad = vp_grad
         
-        vp_grad[0:5,:] = 0
-        vs_grad[0:5,:] = 0
-        rho_grad[0:5,:] = 0
+        #vp_grad[0:5,:] = 0
+        #vs_grad[0:5,:] = 0
+        #rho_grad[0:5,:] = 0
         
         print("shape of vp_grad1 :", np.shape(vp_grad))
         #print("shape of vs_grad1 :", np.shape(vs_grad))
