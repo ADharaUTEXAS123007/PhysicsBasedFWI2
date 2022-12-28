@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*125*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*16) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*4) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9537,7 +9537,7 @@ class AutoRealData_Net(nn.Module):
         #self.drop33   = nn.Dropout2d(0.1)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
         #self.dropU3  = nn.Dropout2d(0.025)
-        self.up21     = autoUp5(filters[3], filters[1], self.is_deconv)
+        self.up21     = autoUp5(filters[2], filters[1], self.is_deconv)
         #self.drop21   = nn.Dropout2d(0.1)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
@@ -9654,13 +9654,13 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 28*4, 130*4)
+        z = z.view(-1, filters[3], 28*2, 130*2)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         ######up41    = self.up41(z)
         ##up42    = self.up42(z)
     
-        ######up31    = self.up31(up41)
+        up31    = self.up31(z)
         #up31    = self.drop31(up31)
         ##up32    = self.up32(up42)
         #up32    = self.drop32(up32)
@@ -9670,7 +9670,7 @@ class AutoRealData_Net(nn.Module):
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
-        up21    = self.up21(z)
+        up21    = self.up21(up31)
         print("shape of up21 :", np.shape(up21))
         #up21    = self.drop21(up21)
         ##up22    = self.up22(up32)
@@ -9748,7 +9748,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=3.00, max=6.00)
+        ######vp1    = torch.clip(vp1, min=300.00, max=600.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9874,9 +9874,9 @@ class AutoRealData_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1000.0
-        vs = np.flipud(vs)*10000.0
-        rho = np.flipud(rho)*10000.0
+        vp = np.flipud(vp)*100.0
+        vs = np.flipud(vs)*100.0
+        rho = np.flipud(rho)*100.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9900,9 +9900,9 @@ class AutoRealData_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1000.0
-        vsst = vsst*1000.0
-        rhost = rhost*1000.0
+        vpst = vpst*100.0
+        vsst = vsst*100.0
+        rhost = rhost*100.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
