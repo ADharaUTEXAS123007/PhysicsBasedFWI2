@@ -9579,7 +9579,7 @@ class AutoRealData_Net(nn.Module):
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
         #filters = [8, 16, 32, 64, 128]  ###this works very well
-        filters = [2, 4, 4, 8, 16]
+        filters = [2, 2, 4, 8, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
@@ -9715,6 +9715,7 @@ class AutoRealData_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
+        vp1f = self.vp(vp1f)
         ##########vp1f    = self.final1(vp1f)
         ##########vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
