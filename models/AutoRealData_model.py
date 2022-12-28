@@ -216,9 +216,9 @@ class AutoRealDataModel(BaseModel):
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
         #self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
-        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        ##self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
         #self.grad = self.vp_grad
-        self.grad = torch.unsqueeze(self.grad,0)
+        ##self.grad = torch.unsqueeze(self.grad,0)
         
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
