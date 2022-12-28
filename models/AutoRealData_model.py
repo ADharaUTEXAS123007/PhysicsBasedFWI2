@@ -211,7 +211,7 @@ class AutoRealDataModel(BaseModel):
         #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
-        self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+        #self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
