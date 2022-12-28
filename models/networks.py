@@ -10065,7 +10065,7 @@ class AutoRealData_Net(nn.Module):
         #print("shape of rho_grad :", np.shape(rho_grad))
         
         
-        #vp_grad = np.flipud(vp_grad)
+        vp_grad = np.flipud(vp_grad)
         vs_grad = vp_grad
         rho_grad = vp_grad
         
