@@ -9654,7 +9654,7 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 28*4, 130*4)
+        z = z.view(-1, filters[2], 28*4, 130*4)
         #zrho = zrho.view(-1, 1, 100, 300)
         
         ######up41    = self.up41(z)
