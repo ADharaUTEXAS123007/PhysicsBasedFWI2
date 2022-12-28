@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*125*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*4) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*16) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
