@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*125*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*4) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*16) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9748,7 +9748,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-       ## vp1    = torch.clip(vp1, min=300.00, max=600.00)
+        vp1    = torch.clip(vp1, min=3.00, max=6.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9874,9 +9874,9 @@ class AutoRealData_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*1000.0
+        vs = np.flipud(vs)*10000.0
+        rho = np.flipud(rho)*10000.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9900,9 +9900,9 @@ class AutoRealData_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*1000.0
+        vsst = vsst*1000.0
+        rhost = rhost*1000.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
