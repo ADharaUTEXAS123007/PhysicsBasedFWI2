@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*125*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*16) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*4) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9834,8 +9834,8 @@ class AutoRealData_Net(nn.Module):
         
         #vs1 = vp1*0
         #rho1 = vp1*0
-        ##if (epoch1 > lstart):
-        ##    [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
+        if (epoch1 > lstart):
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         ##if (epoch1 > lstart):
         ##    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
