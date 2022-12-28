@@ -10065,7 +10065,7 @@ class AutoRealData_Net(nn.Module):
         #print("shape of rho_grad :", np.shape(rho_grad))
         
         
-        vp_grad = np.flipud(vp_grad)
+        #vp_grad = np.flipud(vp_grad)
         vs_grad = vp_grad
         rho_grad = vp_grad
         
@@ -10083,7 +10083,7 @@ class AutoRealData_Net(nn.Module):
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
         #r1 = 1.0
-        vp_grad = 1.0*vp_grad*r1
+        vp_grad = 1.0*vp_grad
         #if (freq==1):
         vp_grad = vp_grad
         
