@@ -211,12 +211,12 @@ class AutoRealDataModel(BaseModel):
         #self.fake_B = torch.cat((self.fake_Vp,self.fake_Vs),axis=1)
         #self.fake_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
         
-        #self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+        self.vp_grad = torch.unsqueeze(self.vp_grad,0)
         self.vs_grad = torch.unsqueeze(self.vs_grad,0)
         self.rho_grad = torch.unsqueeze(self.rho_grad,0)
         
-        #self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
-        ##self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
+        self.grad = torch.cat((self.vp_grad,self.vs_grad,self.rho_grad),dim=0)
+        self.grad = torch.cat((self.vp_grad,self.vs_grad),dim=0)
         #self.grad = self.vp_grad
         ##self.grad = torch.unsqueeze(self.grad,0)
         
@@ -430,7 +430,7 @@ class AutoRealDataModel(BaseModel):
             ############self.fake_B.backward(self.grad) #switch on for physics based fwi
             
             #################GGGG############
-            ###self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
             self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
             self.fake_Vp.backward(self.vp_grad)
             ########GGGGGG################
