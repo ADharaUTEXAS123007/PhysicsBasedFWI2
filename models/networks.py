@@ -9654,13 +9654,13 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 28, 130)
+        z = z.view(-1, filters[3], 28*4, 130*4)
         #zrho = zrho.view(-1, 1, 100, 300)
         
-        up41    = self.up41(z)
+        ######up41    = self.up41(z)
         ##up42    = self.up42(z)
     
-        up31    = self.up31(up41)
+        ######up31    = self.up31(up41)
         #up31    = self.drop31(up31)
         ##up32    = self.up32(up42)
         #up32    = self.drop32(up32)
@@ -9670,7 +9670,8 @@ class AutoRealData_Net(nn.Module):
         
         #up3    = self.dropU3(up3)
         #print(" shape of up1 :", np.shape(up1))
-        up21    = self.up21(up31)
+        up21    = self.up21(z)
+        print("shape of up21 :", np.shape(up21))
         #up21    = self.drop21(up21)
         ##up22    = self.up22(up32)
         #up22    = self.drop22(up22)
