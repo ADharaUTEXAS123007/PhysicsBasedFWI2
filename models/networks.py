@@ -9522,7 +9522,7 @@ class AutoRealData_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*125*52, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130*4) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*28*130) #for marmousi 101x101
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
         self.up41 = autoUp5(filters[3], filters[3], self.is_deconv)
@@ -9654,13 +9654,13 @@ class AutoRealData_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 28*2, 130*2)
+        z = z.view(-1, filters[3], 28, 130)
         #zrho = zrho.view(-1, 1, 100, 300)
         
-        ######up41    = self.up41(z)
+        up41    = self.up41(z)
         ##up42    = self.up42(z)
     
-        up31    = self.up31(z)
+        up31    = self.up31(up41)
         #up31    = self.drop31(up31)
         ##up32    = self.up32(up42)
         #up32    = self.drop32(up32)
@@ -9736,7 +9736,7 @@ class AutoRealData_Net(nn.Module):
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
 
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vp1    = vp1f
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1)
         rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
@@ -9874,9 +9874,9 @@ class AutoRealData_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*1.0
+        vs = np.flipud(vs)*1.0
+        rho = np.flipud(rho)*1.0
         
         vp0 = vp[-1,-1]*np.ones(np.shape(vp))
         vs0 = vs[-1,-1]*np.ones(np.shape(vs))
@@ -9900,9 +9900,9 @@ class AutoRealData_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
