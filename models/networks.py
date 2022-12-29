@@ -9782,7 +9782,7 @@ class AutoRealData_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
-        vp1[:,:,0:7,:] = 45.00
+        vp1[:,:,0:7,:] = torch.clip(vp1[:,:,0:7,:],min=45.00,max=55.00)
         ##vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
 
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
