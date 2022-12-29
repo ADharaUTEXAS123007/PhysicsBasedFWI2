@@ -9782,7 +9782,7 @@ class AutoRealData_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
-        vp1[:,:,0:25,:] = 45.00
+        vp1[:,:,0:7,:] = 45.00
         ##vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
 
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
@@ -10072,7 +10072,7 @@ class AutoRealData_Net(nn.Module):
         vs_grad = vp_grad
         rho_grad = vp_grad
         
-        vp_grad[0:25,:] = 0
+        vp_grad[0:7,:] = 0
         #vs_grad[0:5,:] = 0
         #rho_grad[0:5,:] = 0
         
