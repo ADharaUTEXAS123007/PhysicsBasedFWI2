@@ -9749,7 +9749,7 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        #vp1    = torch.clip(vp1, min=30.00, max=60.00)
+        vp1    = torch.clip(vp1, min=30.00, max=60.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #vp1 = minvp + vp1f*(maxvp-minvp)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9782,7 +9782,7 @@ class AutoRealData_Net(nn.Module):
         
         ##vp1[vswater==0] = 150.0
         ##vs1[vswater==0] = 0.0
-        ##vp1[:,:,0:25,:] = inputs1[:,0,0:25,:]
+        vp1[:,:,0:25,:] = 4500
         ##vs1[:,:,0:25,:] = inputs1[:,1,0:25,:]
 
         ################vp1[:,:,0:170,:] = inputs1[:,0,0:170,:]
@@ -9835,8 +9835,8 @@ class AutoRealData_Net(nn.Module):
         
         #vs1 = vp1*0
         #rho1 = vp1*0
-        #if (epoch1 > lstart):
-        #    [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
+        if (epoch1 > lstart):
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         ##if (epoch1 > lstart):
         ##    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
