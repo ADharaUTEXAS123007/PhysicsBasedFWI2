@@ -9,6 +9,7 @@ import torch.nn.functional as F
 import deepwave
 #import torchgeometry as tgm
 from torchvision import models
+from scipy.ndimage import gaussian_filter
 
 sys.path.append('./models')
 sys.path.append('/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/')
@@ -10069,6 +10070,7 @@ class AutoRealData_Net(nn.Module):
         
         
         vp_grad = np.flipud(vp_grad)
+        vp_grad = gaussian_filter(vp_grad,sigma=5)
         vs_grad = vp_grad
         rho_grad = vp_grad
         
