@@ -9718,7 +9718,7 @@ class AutoRealData_Net(nn.Module):
         #rho1    = f13
         
         vp1f = self.vp(vp1f)
-        vp1f = self.final1(vp1f)
+        #vp1f = self.final1(vp1f)
         ##########vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
