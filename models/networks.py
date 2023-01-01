@@ -9495,8 +9495,8 @@ class AutoRealData_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4, 8, 16, 32, 64]
-        filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
-        #filters = [8, 16, 32, 64, 128]
+        #filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
+        filters = [8, 16, 32, 64, 128]
         #filters = [2, 4, 4, 8, 16]
         #filters = [8, 16, 32, 64, 128] 
         #filters = [2, 4, 8, 16, 32]
@@ -9580,8 +9580,8 @@ class AutoRealData_Net(nn.Module):
         #filters = [4, 8, 16, 32, 64]
         #filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        #filters = [8, 16, 32, 64, 128]  ###this works very well
-        filters = [2, 4, 8, 16, 32]
+        filters = [8, 16, 32, 64, 128]  ###this works very well
+        #filters = [2, 4, 8, 16, 32]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         #filters = [2, 4, 8, 16, 32]
@@ -9752,7 +9752,7 @@ class AutoRealData_Net(nn.Module):
         
         #vp1    = torch.clip(vp1, min=30.00, max=60.00)
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
-        vp1 = 30.00 + vp1f*(60.00-30.00)
+        #####vp1 = 30.00 + vp1f*(60.00-30.00)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         ####vp1 = minvp + vp1*(maxvp-minvp)
@@ -9836,8 +9836,8 @@ class AutoRealData_Net(nn.Module):
         
         #vs1 = vp1*0
         #rho1 = vp1*0
-        if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
+        #if (epoch1 > lstart):
+        #    [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         ##if (epoch1 > lstart):
         ##    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())

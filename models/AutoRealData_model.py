@@ -429,11 +429,11 @@ class AutoRealDataModel(BaseModel):
             
             ############self.fake_B.backward(self.grad) #switch on for physics based fwi
             
-            #################################self.loss_G.backward()
+            self.loss_G.backward()
             #################GGGG############
-            self.vp_grad = torch.unsqueeze(self.vp_grad,0)
-            self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
-            self.fake_Vp.backward(self.vp_grad)
+            ###self.vp_grad = torch.unsqueeze(self.vp_grad,0)
+            ###self.vp_grad = self.vp_grad.cuda(self.fake_Vp.get_device())
+            ####self.fake_Vp.backward(self.vp_grad)
             ########GGGGGG################
 
             ##self.loss_G.backward()
