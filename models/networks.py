@@ -9604,14 +9604,14 @@ class AutoRealData_Net(nn.Module):
         #meandata = torch.mean(inputs2)
         #stddata = torch.std(inputs2)
         ############################################################
-        combine1 = self.combine1((inputs2[:,:,1:2001,:]))
+        ####combine1 = self.combine1((inputs2[:,:,1:2001,:]))
         #combine2 = self.combine2((inputs3[:,:,1:3600,:]))
         #c1c2 = torch.cat((combine1,combine2),axis=1)
         
         print("shape of inputs2 :", np.shape(inputs2))
         print("shape of inputs1 :", np.shape(inputs1))
         #down1  = self.down1((inputs2[:,:,1:1200:4,:]))
-        down1  = self.down1(combine1)
+        down1  = self.down1(inputs2[:,:,1:2001,:])
         #down1  = self.dropD1(down1)
         down2  = self.down2(down1)
         #down2  = self.dropD2(down2)
@@ -9717,7 +9717,7 @@ class AutoRealData_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f = self.vp(vp1f)
+        ####vp1f = self.vp(vp1f)
         #vp1f = self.final1(vp1f)
         ##########vs1f    = self.final2(vs1f)
         ############rho1   = self.final3(rho1)
