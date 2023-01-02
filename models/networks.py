@@ -10076,7 +10076,7 @@ class AutoRealData_Net(nn.Module):
         vs_grad = vp_grad
         rho_grad = vp_grad
         
-        vp_grad[0:11,:] = 0
+        vp_grad[0:5,:] = 0
         #vs_grad[0:5,:] = 0
         #rho_grad[0:5,:] = 0
         
