@@ -9750,7 +9750,8 @@ class AutoRealData_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        #vp1    = torch.clip(vp1, min=30.00, max=60.00)
+        vp1    = torch.clip(vp1, min=30.00, max=60.00)
+        vp1[:,:,0:11,:] = inputs1[:,0,0:11,:]
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #####vp1 = 30.00 + vp1f*(60.00-30.00)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -9836,8 +9837,8 @@ class AutoRealData_Net(nn.Module):
         
         #vs1 = vp1*0
         #rho1 = vp1*0
-        #if (epoch1 > lstart):
-        #    [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
+        if (epoch1 > lstart):
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it, nnz)
         ##if (epoch1 > lstart):
         ##    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -9978,6 +9979,7 @@ class AutoRealData_Net(nn.Module):
         d.TIME = 7.0035
         d.FPML = 10.0
         d.DAMPING = 6000
+        d.npower = 3.0
         #d.FW = 20
         print("shape of vp :", np.shape(vp))
         print("shape of vs :", np.shape(vs))
@@ -10047,7 +10049,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=3.0, fc_high=10.0, inv_vs_iter=1000000, inv_rho_iter=100000, lnorm=2)
+        d.add_fwi_stage(fc_low=3.0, fc_high=5.0, inv_vs_iter=1000000, inv_rho_iter=100000, lnorm=2)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
@@ -10070,11 +10072,11 @@ class AutoRealData_Net(nn.Module):
         
         
         vp_grad = np.flipud(vp_grad)
-        vp_grad = gaussian_filter(vp_grad,sigma=5)
+        vp_grad = gaussian_filter(vp_grad,sigma=3)
         vs_grad = vp_grad
         rho_grad = vp_grad
         
-        vp_grad[0:7,:] = 0
+        vp_grad[0:11,:] = 0
         #vs_grad[0:5,:] = 0
         #rho_grad[0:5,:] = 0
         
