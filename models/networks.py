@@ -9751,7 +9751,7 @@ class AutoRealData_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=30.00, max=60.00)
-        vp1[:,:,0:11,:] = inputs1[:,0,0:11,:]
+        vp1[:,:,0:5,:] = inputs1[:,0,0:5,:]
         ##vs1    = torch.clip(vs1, min=90.00, max=maxvs)
         #####vp1 = 30.00 + vp1f*(60.00-30.00)
         #vs1  = 9.0 + vs1f*(maxvs-9.0)
@@ -10049,7 +10049,7 @@ class AutoRealData_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=3.0, fc_high=5.0, inv_vs_iter=1000000, inv_rho_iter=100000, lnorm=2)
+        d.add_fwi_stage(fc_low=3.0, fc_high=10.0, inv_vs_iter=1000000, inv_rho_iter=100000, lnorm=2)
         print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
             
         #print(f'Stage {0}:\n\t{d.fwi_stages[0]}\n')
