@@ -12185,8 +12185,8 @@ class AutoMarmousi24_Net(nn.Module):
     # forward modeling to compute gradients
     def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
         
-        torch.cuda.set_device(2)  #RB Necessary if device <> 0
-        GPU_string='cuda:'+str(2)
+        torch.cuda.set_device(1)  #RB Necessary if device <> 0
+        GPU_string='cuda:'+str(1)
         devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-mintrue)
