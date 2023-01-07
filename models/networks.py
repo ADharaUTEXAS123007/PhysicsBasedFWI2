@@ -7692,7 +7692,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         ###vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         ###vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
         ####rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
-        #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         vp1 = vp1f
         vs1 = vs1f
 
@@ -7759,7 +7759,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         rho_grad = vp1*0
         
         #vs1 = vp1*0
-        rho1 = vp1*0
+        #rho1 = vp1*0
         if (epoch1 > lstart):
             [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
         #if (epoch1 > lstart):
