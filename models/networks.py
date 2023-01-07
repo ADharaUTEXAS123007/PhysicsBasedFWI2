@@ -7689,10 +7689,12 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #vs1    = minvs + vs1f*(maxvs-88.1)
         #vp1 =  minvp + vp1f*(maxvp - minvp)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        ###vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        ###vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        ####rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        vp1 = vp1f
+        vs1 = vs1f
 
         #rho1    = self.final3(rho1)
         #vp1    = minvp + vp1*(maxvp-minvp)
@@ -7701,16 +7703,16 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #vp1  = minvp + vp1f*(maxvp-minvp)
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        #####vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        #####vs1    = torch.clip(vs1, min=88.1, max=maxvs)
         ####rho1   = torch.clip(rho1, min=17.199993, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
         
         
-        vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
-        vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
+        ###vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
+        ####vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
         ####rho1[:,:,0:25,:] = inputs1[:,2,0:25,:]
         
         
@@ -7757,9 +7759,9 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         rho_grad = vp1*0
         
         #vs1 = vp1*0
-        #rho1 = vp1*0
-        if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
+        rho1 = vp1*0
+        ###2###if (epoch1 > lstart):
+        ###2###    [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
