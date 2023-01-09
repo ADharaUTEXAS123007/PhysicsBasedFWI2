@@ -12424,7 +12424,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         nodes.append(OutputNode(nodes[-1], name='output'))
 
-        model = ReversibleGraphNet(nodes, verbose=False)
+        self.model = ReversibleGraphNet(nodes, verbose=False)
 
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
