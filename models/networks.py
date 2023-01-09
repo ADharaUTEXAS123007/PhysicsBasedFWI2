@@ -12408,7 +12408,7 @@ class AutoMarmousiNF_Net(nn.Module):
         latent_dim = 8
         ndim_tot = 150*200
 
-        nodes = [InputNode(150,200, name='input')]
+        nodes = [InputNode(151,200, name='input')]
 
         for k in range(1):
             nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150*200]}))
@@ -12438,7 +12438,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         print("device :",next(self.model.parameters()).device)
         #print("device :", self.model.parameters().device)
-        z = torch.randn(1,150,200)
+        z = torch.randn(1,151,200)
         z = z.to(next(self.model.parameters()).device)
         f = self.model(z)
         f1 = f[0]
