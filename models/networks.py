@@ -12408,7 +12408,7 @@ class AutoMarmousiNF_Net(nn.Module):
         latent_dim = 8
         ndim_tot = 150*200
 
-        nodes = [InputNode(ndim_tot, name='input')]
+        nodes = [InputNode(150,200, name='input')]
 
         for k in range(4):
             nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150*200]}))
