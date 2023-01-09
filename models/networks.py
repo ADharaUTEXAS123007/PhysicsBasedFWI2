@@ -12406,6 +12406,7 @@ class AutoMarmousiNF_Net(nn.Module):
         #filters = [2, 4, 8, 16, 32]
         
         latent_dim = 8
+        ndim_tot = 150*200
 
         nodes = [InputNode(ndim_tot, name='input')]
 
