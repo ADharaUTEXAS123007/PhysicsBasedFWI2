@@ -409,7 +409,7 @@ class AutoNFModel(BaseModel):
         lossMSE = self.criterionMSE(
             self.fake_BT, self.real_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         self.loss_V_MSE = lossMSE
-        print("Loss RMSE : "+str(lossMSE.cpu().float().numpy()))
+        print("Loss RMSE : "+str(lossMSE.detach().cpu().float().numpy()))
         #lossSSIM = metrics.structural_similarity(np.squeeze(self.fake_B.cpu().float().numpy()),np.squeeze(self.real_B.cpu().float().numpy()) )
         #print("Loss SSIM :"+str(lossSSIM))
         #loss_RMSE = torch.nn.MSELoss(self.fake_B,self.real_B)
