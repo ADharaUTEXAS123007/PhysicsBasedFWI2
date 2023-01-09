@@ -111,8 +111,8 @@ class BaseModel(ABC):
         This function wraps <forward> function in no_grad() so we don't save intermediate steps for backprop
         It also calls <compute_visuals> to produce additional visualization results
         """
-        with torch.no_grad():
-            self.forwardT()
+        #with torch.no_grad():
+        self.forwardT()
             #self.compute_visuals()
 
     def compute_visuals(self):
