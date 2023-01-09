@@ -12440,7 +12440,8 @@ class AutoMarmousiNF_Net(nn.Module):
         #print("device :", self.model.parameters().device)
         z = torch.randn(1,150,200)
         z = z.to(next(self.model.parameters()).device)
-        f1 = self.model(z)
+        f = self.model(z)
+        f1 = f[0]
 
         print("shape of f1 :", np.shape(f1))
 
