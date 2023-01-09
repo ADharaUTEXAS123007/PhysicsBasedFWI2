@@ -12411,12 +12411,12 @@ class AutoMarmousiNF_Net(nn.Module):
         nodes = [InputNode(151,200, name='input')]
 
         for k in range(1):
-            nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150*200]}))
+            nodes.append(Node(nodes[-1],Reshape,{'output_dims':[151*200]}))
             nodes.append(Node(nodes[-1],
                          GLOWCouplingBlock,
                          {'subnet_constructor':self.subnet_fc, 'clamp':2.0},
                          name=F'coupling_{k}'))
-        nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150,200]}))
+        nodes.append(Node(nodes[-1],Reshape,{'output_dims':[151,200]}))
     #nodes.append(Node(nodes[-1],
     #                  PermuteRandom,
     #                  {'seed':k},
