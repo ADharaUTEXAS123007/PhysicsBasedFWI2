@@ -12386,11 +12386,11 @@ class AutoMarmousi24_Net(nn.Module):
 
 class AutoMarmousiNF_Net(nn.Module):
 
-    def subnet_fc(c_in, c_out):
+    def subnet_fc(self, c_in, c_out):
         return nn.Sequential(nn.Linear(c_in, 512), nn.ReLU(),
                             nn.Linear(512,  c_out))
 
-    def subnet_cc(c_in, c_out):
+    def subnet_cc(self, c_in, c_out):
         return nn.Sequential(nn.Conv2d(8, 8, 3, stride=1), nn.ReLU(),
                             nn.Conv2d(8,  8, 3, stride=1))
 
