@@ -12416,7 +12416,7 @@ class AutoMarmousiNF_Net(nn.Module):
                          GLOWCouplingBlock,
                          {'subnet_constructor':self.subnet_fc, 'clamp':2.0},
                          name=F'coupling_{k}'))
-        nodes.append(Node(nodes[-1],Reshape,{'output_dims':[151,200]}))
+        nodes.append(Node(nodes[-1],Reshape,{'output_dims':[1,151,200]}))
     #nodes.append(Node(nodes[-1],
     #                  PermuteRandom,
     #                  {'seed':k},
@@ -12438,7 +12438,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         print("device :",next(self.model.parameters()).device)
         #print("device :", self.model.parameters().device)
-        z = torch.randn(1,151,200)
+        z = torch.randn(1,1,151,200)
         z = z.to(next(self.model.parameters()).device)
         f = self.model(z)
         f1 = f[0]
