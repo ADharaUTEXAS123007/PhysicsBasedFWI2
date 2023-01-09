@@ -12410,7 +12410,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         nodes = [InputNode(150,200, name='input')]
 
-        for k in range(4):
+        for k in range(1):
             nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150*200]}))
             nodes.append(Node(nodes[-1],
                          GLOWCouplingBlock,
