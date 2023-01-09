@@ -12414,7 +12414,7 @@ class AutoMarmousiNF_Net(nn.Module):
             nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150*200]}))
             nodes.append(Node(nodes[-1],
                          GLOWCouplingBlock,
-                         {'subnet_constructor':subnet_fc, 'clamp':2.0},
+                         {'subnet_constructor':self.subnet_fc, 'clamp':2.0},
                          name=F'coupling_{k}'))
         nodes.append(Node(nodes[-1],Reshape,{'output_dims':[150,200]}))
     #nodes.append(Node(nodes[-1],
