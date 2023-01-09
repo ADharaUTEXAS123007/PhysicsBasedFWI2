@@ -12435,82 +12435,17 @@ class AutoMarmousiNF_Net(nn.Module):
         maxtrue = torch.max(inputs1)
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
-        down1  = self.down1((inputs2[:,:,1:4001:4,:]))
-        #down1  = self.drop1(down1)
-        down2  = self.down2(down1)
-        #down2  = self.drop2(down2)
-        down3  = self.down3(down2)
-        #down3  = self.drop3(down3)
-        down4  = self.down4(down3)
-        
-        #print("shape of down3 :", np.shape(down))
-        
-        #print("shape of down2 :", np.shape(down2))
-        result = torch.flatten(down4, start_dim=1)
-        
-        #print("result shape :", np.shape(result))
-        
-        p = self.decoder_input1(result)
-        #down3  = self.down3(down2)
-        #down4  = self.down4(down3)s
-        #center = self.center(down4)
-        #up4    = self.up4(center)
-        #up3    = self.up3(up4)
-        #up2    = self.up2(up3)
-        #print("shape of down 4:", np.shape(down2))
-        #print("shape of result:", np.shape(result))
-        latent1 = p
-        #if (epoch1 <= lstart):
-        #    latent1 = p
-        #else:
-        #    latent1 = latentI
-        #    p = latent1
-        #    latent1 = p
-            
 
-        #p = torch.randn([1,1,1,8])
-        #z = 0.5*torch.ones([1,1,1,64])
-        z = self.decoder_input(p)
-        #z = z.view(-1, filters[3], 250, 51) #for marmousi model
-        z = z.view(-1, filters[3], 19, 25)
-    
-        up3    = self.up3(z)
-        #print(" shape of up1 :", np.shape(up1))
-        up2    = self.up2(up3)
-        up1    = self.up1(up2)
-        print("shape of up1 :", np.shape(up1))
-        up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
-        f1     = self.f1(up1)
-        f1     = self.final(f1)
-        #f1     = self.final1(f1)
-        #f1     = self.final(f1)
-        #f1     = f1/torch.max(f1)
-        #print("shape of f1 :", np.shape(f1))
-        print("mintrue :", mintrue)
-        print("maxtrue :", maxtrue)
-        
-        f1    = mintrue + f1*(maxtrue-mintrue)
-        f1[(inputs1==1500)] = 1500
-        #f1     = lowf + f1
-        #f1[(inputs1 == 1.510)] = 1.510
-        #f1     = torch.clamp(f1,min=mintrue,max=maxtrue)
-        #f1[(inputs1 == 1.510)] = 1.510
-        
-        #f1     = torch.add(f1,1600.0)
-        #f1     = torch.add(f1,lowf)
-        #f1     = 3.0 + f1*(6.0-3.0)
-        #f1     = torch.clamp(f1, min=mintrue, max=maxtrue)
-        #print("shape of f1 :", np.shape(f1))
-        #f1[(inputs1==2000)] = 2000
-        #f1     = f1*100
-        #f1     = torch.clip(f1, min=1500, max=3550) ##clamping for marmousi
-        #with torch.no_grad():
-        #    f4 = torch.clamp(f1,15.0, 35.5)  # You must use v[:]=xxx instead of v=xxx
-        #f1[:,:,0:26,:] = 1500.0
-        #f1     = torch.clamp(f1,min=20,max=45)
-        
-        grad = 0*f1
-        lossT = 0.0
+        z = torch.randn(1,150,200)
+        f1 = self.model(z)
+
+        print("shape of f1 :", np.shape(f1))
+
+        latent1 = 0
+        down3 = 0
+        up2 = 0
+        up1 = 0
+
         if (epoch1 > lstart):
             [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
             grad = grad.to(inputs2.get_device())
