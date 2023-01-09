@@ -12436,6 +12436,7 @@ class AutoMarmousiNF_Net(nn.Module):
         meandata = torch.mean(inputs2)
         stddata = torch.std(inputs2)
 
+        print("device :", self.model.device())
         z = torch.randn(1,150,200)
         f1 = self.model(z)
 
