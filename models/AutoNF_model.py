@@ -335,7 +335,7 @@ class AutoNFModel(BaseModel):
             #self.fake_B.grad = None
             #self.fake_B.grad = None
             #if (epoch1>lstart and epoch1<=lstart1):
-            self.grad = self.grad*(10**5)  #####(10**5) works for marmousi model
+            ###2###self.grad = self.grad*(10**5)  #####(10**5) works for marmousi model
             #self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
                 
             #if (epoch1>lstart1 and epoch1<=lstart2):
@@ -361,7 +361,7 @@ class AutoNFModel(BaseModel):
         #print("shape of self grad :", np.shape(self.grad))
         
         #self.grad = self.grad/torch.max(self.grad.abs())
-            self.fake_B.backward(self.grad) #switch on for physics based fwi
+            ###2###self.fake_B.backward(self.grad) #switch on for physics based fwi
         
         print("shape of down3 :", np.shape(self.down3))
         print("shape of up2 :", np.shape(self.up2))
