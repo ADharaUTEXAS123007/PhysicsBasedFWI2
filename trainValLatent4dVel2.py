@@ -57,7 +57,7 @@ if __name__ == '__main__':
          Validationloss = 0.0
          for k, data2 in enumerate(dataset2):
              model.set_input(data2)
-             model.test()
+             #model.test()
              model.compute_loss_only()
              Validationloss = Validationloss + model.loss_V_MSE.item()
 
