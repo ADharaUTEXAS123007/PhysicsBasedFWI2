@@ -7955,7 +7955,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 5.0
+        #d.FC_SPIKE_1 = 5.0
         d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
@@ -8005,7 +8005,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0,fc_high=10, inv_rho_iter=10000)
+        d.add_fwi_stage(fc_low=0.0,fc_high=12, inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -8120,6 +8120,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         print('grads names')
         print(fnames)
         #vp_grad = 0
+        
         #vs_grad = 0
         #rho_grad = 0
         return vp_grad, vs_grad, rho_grad, loss
