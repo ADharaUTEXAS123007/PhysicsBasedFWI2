@@ -5993,29 +5993,8 @@ class AutoElMarmousi22_Net(nn.Module):
         print("shape of vs_grad1 :", np.shape(vs_grad))
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
-        # if freq == 2:
-        #     r = 10**5
-        # elif freq == 4:
-        #     r = 10**5
-        # elif freq == 6:
-        #     r = 10**4
-        # elif freq == 8:
-        #     r = 10**4
-        # elif freq == 10:
-        #     r = 10**3
-        # elif freq == 12:
-        #     r = 10**3
-        # elif freq == 14:
-        #     r = 10**2
-        # elif freq == 16:
-        #     r = 10**2
-        # elif freq == 18:
-        #     r = 10**1
-        # else:
-        #     r = 10**1
         r = 10**5
-            
-     
+
         r1 = np.max(vpst)/np.max(vp_grad)
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
@@ -7955,7 +7934,7 @@ class AutoElFullMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        #d.FC_SPIKE_1 = 5.0
+        d.FC_SPIKE_1 = 5.0
         d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
