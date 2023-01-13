@@ -12432,8 +12432,8 @@ class AutoMarmousiNF_Net(nn.Module):
 
         grad = 0
         lossT = 0
-        #if (epoch1 > lstart):
-        #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+        if (epoch1 > lstart):
+            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
         #    grad = torch.unsqueeze(grad,0)
         #    grad = torch.unsqueeze(grad,0)
