@@ -8373,8 +8373,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1  = minvs + vs1f*(maxvs-minvs)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
-        rho1   = torch.clip(rho1, min=1719.9, max=maxrho)
+        vs1    = torch.clip(vs1, min=88.10, max=maxvs)
+        rho1   = torch.clip(rho1, min=171.99, max=maxrho)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
         ##########vs1 = 8.810*torch.ones((vs10.size())).cuda(vs10.get_device())
