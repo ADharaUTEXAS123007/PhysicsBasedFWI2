@@ -12423,6 +12423,8 @@ class AutoMarmousiNF_Net(nn.Module):
         f = self.model(z)
         f1 = f[0]
 
+
+        f1[(inputs1==1500)] = 1500
         print("shape of f1 :", np.shape(f1))
 
         latent1 = 0
