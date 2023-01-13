@@ -8583,14 +8583,14 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         os.system('rm -rf /disk/student/adhara/MARMOUSILinConst/su1')
         os.system('mkdir /disk/student/adhara/MARMOUSILinConst/su1')
         def copyshot(id1, value):             
-            fo = 'cp /disk/student/adhara/MARMOUSILinConst/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSILinRho/su1/.'
+            fo = 'cp /disk/student/adhara/MARMOUSILinConst/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSILinConst/su1/.'
             os.system(fo)
-            fo = 'cp /disk/student/adhara/MARMOUSILinConst/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSILinRho/su1/.'
+            fo = 'cp /disk/student/adhara/MARMOUSILinConst/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/MARMOUSILinConst/su1/.'
             os.system(fo)
         #      #if (id1+1 != value+1):
-            fo = 'mv /disk/student/adhara/MARMOUSILinConst/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSILinRho/su1/seisT_x.su.shot' + str(value+1)
+            fo = 'mv /disk/student/adhara/MARMOUSILinConst/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSILinConst/su1/seisT_x.su.shot' + str(value+1)
             os.system(fo)
-            fo = 'mv /disk/student/adhara/MARMOUSILinConst/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSILinRho/su1/seisT_y.su.shot' + str(value+1)
+            fo = 'mv /disk/student/adhara/MARMOUSILinConst/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/MARMOUSILinConst/su1/seisT_y.su.shot' + str(value+1)
             os.system(fo)
         # # #pool = ThreadPool(tshots)
         #values = np.arange(0,tshots)
