@@ -12426,6 +12426,7 @@ class AutoMarmousiNF_Net(nn.Module):
         z = z.to(next(self.model.parameters()).device)
         f = self.model(z)
         f1 = f[0]
+        jac = f[1]
 
 
         f2 = lowf + f1
@@ -12433,6 +12434,7 @@ class AutoMarmousiNF_Net(nn.Module):
         f2[(inputs1==1500)] = 1500
 
         print("shape of f1 :", np.shape(f1))
+        print("shape of jac :", np.shape(jac))
 
         latent1 = 0
         down3 = 0
