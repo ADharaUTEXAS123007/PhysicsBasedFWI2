@@ -12425,7 +12425,9 @@ class AutoMarmousiNF_Net(nn.Module):
 
 
         f2 = lowf + f1
+        f2 = torch.clip(f2,min=1500.0,max=4766.6)
         f2[(inputs1==1500)] = 1500
+
         print("shape of f1 :", np.shape(f1))
 
         latent1 = 0
