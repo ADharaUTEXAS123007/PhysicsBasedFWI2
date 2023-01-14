@@ -12434,7 +12434,7 @@ class AutoMarmousiNF_Net(nn.Module):
         f2[(inputs1==1500)] = 1500
 
         print("shape of f1 :", np.shape(f1))
-        print("shape of jac :", np.shape(jac))
+        print("shape of jac :", np.shape(log_jac))
 
         latent1 = 0
         down3 = 0
