@@ -12443,7 +12443,7 @@ class AutoMarmousiNF_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f1, grad, latent1, lossT, down3, up2, up1
+        return f2, grad, latent1, lossT, down3, up2, up1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
