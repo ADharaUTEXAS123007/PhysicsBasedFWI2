@@ -12426,7 +12426,7 @@ class AutoMarmousiNF_Net(nn.Module):
         z = z.to(next(self.model.parameters()).device)
         f = self.model(z)
         f1 = f[0]
-        jac = f[1]
+        log_jac = f[1]
 
 
         f2 = lowf + f1
@@ -12451,7 +12451,7 @@ class AutoMarmousiNF_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         #print(" shape of grad :", np.shape(grad))
 
-        return f2, grad, latent1, lossT, down3, up2, up1
+        return f2, grad, log_jac, lossT, down3, up2, up1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
