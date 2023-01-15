@@ -12446,14 +12446,16 @@ class AutoMarmousiNF_Net(nn.Module):
         grad = 0
         lossT = 0
         if (epoch1 > lstart):
+            Grad = []
             for i in range(10):
                 print("shape of i :", i)
                 [grad, lossT] = self.prop(inputs2, torch.unsqueeze(f2[i,:,:,:],0), lstart, epoch1, mintrue, maxtrue, inputs1)
                 grad = grad.to(inputs2.get_device())
                 grad = torch.unsqueeze(grad,0)
                 grad = torch.unsqueeze(grad,0)
+                Grad.append(grad)
         #result = torch.flatten(f1, start_dim=1)
-        #print(" shape of grad :", np.shape(grad))
+        print(" shape of Grad :", np.shape(Grad))
 
         return f2, grad, log_jac, lossT, down3, up2, up1
     

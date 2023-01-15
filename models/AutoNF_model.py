@@ -365,7 +365,7 @@ class AutoNFModel(BaseModel):
         
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad, retain_graph=True) #switch on for physics based fwi
-            self.jac.backward()
+            #self.jac.backward()
 
         
         print("shape of down3 :", np.shape(self.down3))
