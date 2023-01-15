@@ -12432,10 +12432,10 @@ class AutoMarmousiNF_Net(nn.Module):
 
         f2 = lowf + f1
         f2 = torch.clip(f2,min=1500.0,max=4766.6)
-        inputs1.repeat(100,1,1,1)
-        print("shape of inputs1 :", np.shape(inputs1))
+        port = inputs1.repeat(100,1,1,1)
+        print("shape of port :", np.shape(port))
 
-        f2[(inputs1==1500)] = 1500
+        f2[(port==1500)] = 1500
 
         print("shape of f1 :", np.shape(f1))
         print("shape of jac :", np.shape(log_jac))
