@@ -99,12 +99,12 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         C = torch.from_numpy(C_img)
         C = C.float()
         
-        print("shape of D :", np.shape(D_img))
+        #print("shape of D :", np.shape(D_img))
 
         D = torch.from_numpy(D_img)
         D = D.float()
 
-        print("shape of D:", np.shape(D))
+        #print("shape of D:", np.shape(D))
         
 
 
