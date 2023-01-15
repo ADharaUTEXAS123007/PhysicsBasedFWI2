@@ -12440,6 +12440,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         print("shape of f2 :", np.shape(f2))
         print("shape of jac :", np.shape(log_jac))
+        print("shape of f2 :", np.shape(f2[0]))
 
         latent1 = 0
         down3 = 0
@@ -12449,7 +12450,7 @@ class AutoMarmousiNF_Net(nn.Module):
         grad = 0
         lossT = 0
         if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, torch.unsqueeze(f2[0],0), lstart, epoch1, mintrue, maxtrue, inputs1)
+            [grad, lossT] = self.prop(inputs2, torch.unsqueeze(f2[0,:,:,:],0), lstart, epoch1, mintrue, maxtrue, inputs1)
             grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
