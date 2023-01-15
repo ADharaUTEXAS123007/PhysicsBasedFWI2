@@ -8775,7 +8775,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         #r3 = 1.0
-        rho_grad = 1.0*rho_grad*r3
+        rho_grad = 0.5*rho_grad*r3
         
         filen = './marmousiEl4Jan/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
