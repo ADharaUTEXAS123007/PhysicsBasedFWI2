@@ -28,17 +28,17 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         self.dir_A = os.path.join(opt.dataroot, 'testA')  # create a path '/path/to/data/trainA'
         self.dir_B = os.path.join(opt.dataroot, 'testB')  # create a path '/path/to/data/trainB'
         self.dir_C = os.path.join(opt.dataroot, 'testC')  # create a path '/path/to/data/trainB'
-        #self.dir_D = os.path.join(opt.dataroot, 'testD')  # create a path '/path/to/data/trainB'
+        self.dir_D = os.path.join(opt.dataroot, 'testD')  # create a path '/path/to/data/trainB'
 
         self.A_paths = sorted(make_dataset(self.dir_A, opt.max_dataset_size))   # load images from '/path/to/data/trainA'
         self.B_paths = sorted(make_dataset(self.dir_B, opt.max_dataset_size))    # load images from '/path/to/data/trainB'
         self.C_paths = sorted(make_dataset(self.dir_C, opt.max_dataset_size)) 
-        #self.D_paths = sorted(make_dataset(self.dir_D, opt.max_dataset_size)) 
+        self.D_paths = sorted(make_dataset(self.dir_D, opt.max_dataset_size)) 
         
         self.A_size = len(self.A_paths)  # get the size of dataset A
         self.B_size = len(self.B_paths)  # get the size of dataset B
         self.C_size = len(self.C_paths)  # get the size of dataset C
-        #self.D_size = len(self.D_paths)
+        self.D_size = len(self.D_paths)
         btoA = self.opt.direction == 'BtoA'
         input_nc = self.opt.output_nc if btoA else self.opt.input_nc       # get the number of channels of input image
         output_nc = self.opt.input_nc if btoA else self.opt.output_nc      # get the number of channels of output image
@@ -65,12 +65,12 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         A_path = self.A_paths[index]
         B_path = self.B_paths[index]
         C_path = self.C_paths[index]
-        #D_path = self.D_paths[index]
+        D_path = self.D_paths[index]
         
         A_img = np.load(A_path)
         B_img = np.load(B_path)
         C_img = np.load(C_path)
-        #D_img = np.load(D_path)
+        D_img = np.load(D_path)
         #B_img = (B_img - 2000)/(4500 - 2000)
         #B_img = (B_img - 1600)/(2300 - 1600)
         #C_img = (C_img - 1600)/(2300 - 1600)
@@ -99,8 +99,8 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         C = torch.from_numpy(C_img)
         C = C.float()
         
-        #D = torch.from_numpy(D_img)
-        #D = D.float()
+        D = torch.from_numpy(D_img)
+        D = D.float()
         
 
 
@@ -129,7 +129,7 @@ class UnalignedVelABCD2TestDataset(BaseDataset):
         #print(A.size())
         #print(B.size())
 
-        return {'A':A, 'B': B, 'C':C, 'A_paths': A_path, 'B_paths': B_path}
+        return {'A':A, 'B': B, 'C':C, 'D':D,'A_paths': A_path, 'B_paths': B_path}
 
     def __len__(self):
         """Return the total number of images in the dataset.
