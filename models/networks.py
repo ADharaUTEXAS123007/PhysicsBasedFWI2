@@ -12411,7 +12411,7 @@ class AutoMarmousiNF_Net(nn.Module):
         self.model = ReversibleGraphNet(nodes, verbose=False)
 
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, z):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (151,200)
@@ -12421,9 +12421,11 @@ class AutoMarmousiNF_Net(nn.Module):
         stddata = torch.std(inputs2)
 
         print("device :",next(self.model.parameters()).device)
+
+        print("shape of z :", np.shape(z))
         #print("device :", self.model.parameters().device)
-        z = torch.randn(1,1,151,200)
-        z = z.to(next(self.model.parameters()).device)
+        ##z = torch.randn(1,1,151,200)
+        ##z = z.to(next(self.model.parameters()).device)
         f = self.model(z)
         f1 = f[0]
         log_jac = f[1]
