@@ -12441,7 +12441,7 @@ class AutoMarmousiNF_Net(nn.Module):
         print("shape of f2 :", np.shape(f2))
         print("shape of jac :", np.shape(log_jac))
         print("shape of f2 :", np.shape(f2[0]))
-        print("shape of f2 :", np.shape(f2[0,:,:,:],0))
+        print("shape of f2 :", torch.unsqueeze(f2[0,:,:,:],0))
 
         latent1 = 0
         down3 = 0
