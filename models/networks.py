@@ -12458,7 +12458,7 @@ class AutoMarmousiNF_Net(nn.Module):
                 print(" shape of Grad :", np.shape(Grad))
             Grad = np.array(Grad)
 
-        return f2, grad, log_jac, lossT, down3, up2, up1
+        return f2, Grad, log_jac, lossT, down3, up2, up1
     
     # Initialization of Parameters
     def  _initialize_weights(self):
