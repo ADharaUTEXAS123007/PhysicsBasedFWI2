@@ -12434,14 +12434,14 @@ class AutoMarmousiNF_Net(nn.Module):
         f2 = torch.clip(f2,min=1500.0,max=4766.6)
         port = inputs1.repeat(10,1,1,1)
         #port = inputs1
-        print("shape of port :", np.shape(port))
+        #print("shape of port :", np.shape(port))
 
         f2[(port==1500)] = 1500
 
-        print("shape of f2 :", np.shape(f2))
-        print("shape of jac :", np.shape(log_jac))
-        print("shape of f2 :", np.shape(f2[0]))
-        print("shape of f2 :", torch.unsqueeze(f2[0,:,:,:],0))
+        #print("shape of f2 :", np.shape(f2))
+        #print("shape of jac :", np.shape(log_jac))
+        #print("shape of f2 :", np.shape(f2[0]))
+        #print("shape of f2 :", torch.unsqueeze(f2[0,:,:,:],0))
 
         latent1 = 0
         down3 = 0
