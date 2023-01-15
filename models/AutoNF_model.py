@@ -142,7 +142,8 @@ class AutoNFModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.real_C = input['C'].to(self.device1)
         self.real_D = input['D'].to(self.device1)  
-        print("shape of real _D : ", np.shape(self.real_D))
+        self.real_D = torch.unsqueeze(self.real_D,0)
+        #print("shape of real _D : ", np.shape(self.real_D))
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
