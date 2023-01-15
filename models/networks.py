@@ -12446,7 +12446,7 @@ class AutoMarmousiNF_Net(nn.Module):
         Grad = 0
         lossT = 0
         if (epoch1 > lstart):
-            Grad = np.empty_like(f2)
+            Grad = torch.empty_like(f2)
             for i in range(10):
                 print("shape of i :", i)
                 [grad, lossT] = self.prop(inputs2, torch.unsqueeze(f2[i,:,:,:],0), lstart, epoch1, mintrue, maxtrue, inputs1)
