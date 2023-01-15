@@ -367,6 +367,7 @@ class AutoNFModel(BaseModel):
             print("priorG :", priorG)
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad, retain_graph=True) #switch on for physics based fwi
+            priorG.backward()
             #self.jac.backward()
 
         
