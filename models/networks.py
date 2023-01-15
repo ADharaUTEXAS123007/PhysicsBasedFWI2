@@ -12457,7 +12457,7 @@ class AutoMarmousiNF_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
                 print(" shape of Grad :", np.shape(Grad))
             Grad = np.array(Grad)
-
+        print("shape of Grad :", np.shape(Grad))
         return f2, Grad, log_jac, lossT, down3, up2, up1
     
     # Initialization of Parameters
