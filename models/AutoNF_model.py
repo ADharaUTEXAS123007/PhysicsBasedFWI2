@@ -362,11 +362,11 @@ class AutoNFModel(BaseModel):
         #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
         #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
         #print("shape of self grad :", np.shape(self.grad))
-            priorG = torch.norm(self.fake_B-self.real_C)**2/0.0000000000001
-            print("priorG :", priorG)
+            #priorG = torch.norm(self.fake_B-self.real_C)**2/0.0000000000001
+            #print("priorG :", priorG)
         #self.grad = self.grad/torch.max(self.grad.abs())
-            self.fake_B.backward(self.grad, retain_graph=True) #switch on for physics based fwi
-            priorG.backward()
+            self.fake_B.backward(self.grad) #switch on for physics based fwi
+            #priorG.backward()
             #self.jac.backward()
 
         

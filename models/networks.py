@@ -12433,8 +12433,8 @@ class AutoMarmousiNF_Net(nn.Module):
 
         f2 = lowf + f1
         f2 = torch.clip(f2,min=1500.0,max=4766.6)
-        port = inputs1.repeat(10,1,1,1)
-        #port = inputs1
+        #port = inputs1.repeat(10,1,1,1)
+        port = inputs1
         #print("shape of port :", np.shape(port))
 
         f2[(port==1500)] = 1500
@@ -12448,7 +12448,7 @@ class AutoMarmousiNF_Net(nn.Module):
         lossT = 0
         if (epoch1 > lstart):
             Grad = torch.empty_like(f2)
-            for i in range(10):
+            for i in range(1):
                 print("shape of i :", i)
                 [grad, lossT] = self.prop(inputs2, torch.unsqueeze(f2[i,:,:,:],0), lstart, epoch1, mintrue, maxtrue, inputs1)
                 grad = grad.to(inputs2.get_device())
