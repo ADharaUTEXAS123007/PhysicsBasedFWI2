@@ -12394,7 +12394,7 @@ class AutoMarmousiNF_Net(nn.Module):
         for k in range(4):
             nodes.append(Node(nodes[-1],
                          GLOWCouplingBlock,
-                         {'subnet_constructor':self.subnet_fc, 'clamp':2.0},
+                         {'subnet_constructor':self.subnet_fc, 'clamp':2.0,clamp_activation:"tanh"},
                          name=F'coupling_{k}'))
             nodes.append(Node(nodes[-1],
                          PermuteRandom,
@@ -12431,7 +12431,7 @@ class AutoMarmousiNF_Net(nn.Module):
         f1 = f[0]
         log_jac = f[1]
 
-        f2 = lowf + f1
+        f2 = lowf + 0.001*f1
         f2 = torch.clip(f2,min=1500.0,max=4766.6)
 
         #port = inputs1.repeat(10,1,1,1)
