@@ -12426,14 +12426,14 @@ class AutoMarmousiNF_Net(nn.Module):
         #print("device :", self.model.parameters().device)
         ##z = torch.randn(1,1,151,200)
         ##z = z.to(next(self.model.parameters()).device)
-        z = z + 1e-2*torch.randn(10,1,151,200).to(z.get_device())
+        z = z
         f = self.model(z)
         f1 = f[0]
         log_jac = f[1]
 
         f2 = lowf + f1
         f2 = torch.clip(f2,min=1500.0,max=4766.6)
-        
+
         #port = inputs1.repeat(10,1,1,1)
         port = inputs1
         #print("shape of port :", np.shape(port))
