@@ -12394,7 +12394,7 @@ class AutoMarmousiNF_Net(nn.Module):
         for k in range(4):
             nodes.append(Node(nodes[-1],
                          GLOWCouplingBlock,
-                         {'subnet_constructor':self.subnet_fc, 'clamp':2.0,clamp_activation:"tanh"},
+                         {'subnet_constructor':self.subnet_fc, 'clamp':2.0,'clamp_activation':"tanh"},
                          name=F'coupling_{k}'))
             nodes.append(Node(nodes[-1],
                          PermuteRandom,
