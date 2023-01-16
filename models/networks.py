@@ -12426,7 +12426,7 @@ class AutoMarmousiNF_Net(nn.Module):
         #print("device :", self.model.parameters().device)
         ##z = torch.randn(1,1,151,200)
         ##z = z.to(next(self.model.parameters()).device)
-        z = z + 1e-2*torch.randn(10,1,151,200).to(z.device())
+        z = z + 1e-2*torch.randn(10,1,151,200).to(z.get_device())
         f = self.model(z)
         f1 = f[0]
         log_jac = f[1]
