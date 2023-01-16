@@ -374,28 +374,28 @@ class AutoNFModel(BaseModel):
         print("shape of up2 :", np.shape(self.up2))
         #print("shape of fake_B :", np.shape(self.fake_B))
         #print("shape of grad :", np.shape(self.grad))   
-        if (epoch1 % 30 == 0): 
-            filen = './marmousi24/GradInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
+        # if (epoch1 % 30 == 0): 
+        #     filen = './marmousi24/GradInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
         
-            filen = './marmousi24/FakeInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
+        #     filen = './marmousi24/FakeInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi24/RealInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        #     filen = './marmousi24/RealInt23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi24/Down3Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.down3.cpu().detach().numpy())  #switch on physics based fwi
+        #     filen = './marmousi24/Down3Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.down3.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi24/Up2Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.up2.cpu().detach().numpy())  #switch on physics based fwi
+        #     filen = './marmousi24/Up2Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.up2.cpu().detach().numpy())  #switch on physics based fwi
             
-            filen = './marmousi24/Up1Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-            np.save(filen, self.up1.cpu().detach().numpy())  #switch on physics based fwi
+        #     filen = './marmousi24/Up1Int23Dec2AD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        #     np.save(filen, self.up1.cpu().detach().numpy())  #switch on physics based fwi
             
         
-        #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-        #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        filen = './marmousi24/FakeAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
