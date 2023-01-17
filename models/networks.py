@@ -8182,12 +8182,12 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]/2), 1)
-        self.f13      =  nn.Conv2d(int(filters[0]/2),int(filters[0]/4), 1)
+        self.f13      =  nn.Conv2d(int(filters[0]/2),int(filters[0]/2), 1)
         #self.Rhof13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/8), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
-        self.rho     =   nn.Conv2d(int(filters[0]/4),1,1)
+        self.rho     =   nn.Conv2d(int(filters[0]/2),1,1)
         #self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
         
         #self.final1   = nn.LeakyReLU(0.1)
@@ -8362,7 +8362,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.01*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.005*rho1f
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
