@@ -12507,7 +12507,7 @@ class AutoMarmousiNF_Net(nn.Module):
 
         
         freq = 8
-        dx = 3.75
+        dx = 10
         nt = 4001
         dt = 0.001
         num_shots = 30
