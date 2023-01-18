@@ -8144,7 +8144,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*29, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*60*23) #for marmousi 101x101
+        self.decoder_input = nn.Linear(latent_dim, filters[3]*65*23) #for marmousi 101x101
         #############self.decoder_input2 = nn.Linear(latent_dim, 4*92*208)
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
@@ -8281,7 +8281,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        z = z.view(-1, filters[3], 23, 60)
+        z = z.view(-1, filters[3], 23, 65)
         #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
     
