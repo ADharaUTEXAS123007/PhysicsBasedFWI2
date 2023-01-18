@@ -8338,9 +8338,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
-        vp1f     = 2.671641*vp1f + 394.23
-        vs1f     = 1.5424676*vs1f + 227.60947
-        rho1f    = 1.8268222*rho1f + 92.41437
+        vp1f     = 39.423115*vp1f + 0.2671641
+        vs1f     = 22.760948*vs1f + 0.15424669
+        rho1f    = 9.241436*rho1f + 0.18268232
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
