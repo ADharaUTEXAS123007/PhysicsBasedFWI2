@@ -8338,6 +8338,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
+        vp1f     = 2.671641*vp1f + 394.23
+        vs1f     = 1.5424676*vs1f + 227.60947
+        rho1f    = 1.8268222*rho1f + 92.41437
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8362,7 +8365,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.005*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
 
         #rho1    = self.final3(rho1)
@@ -8528,7 +8531,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 9600.     # last receiver position [m]
+        xrec2 = 7780.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
@@ -8540,7 +8543,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #######depth_src = 40.
         xsrc1 = 400.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 9600.  # last source position [m]
+        xsrc2 = 7700.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -8561,7 +8564,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:8]]
+        xsrc = xsrcoriginal[idx[0:6]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
