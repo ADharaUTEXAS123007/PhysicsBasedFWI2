@@ -8528,7 +8528,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ######depth_rec = 80. #simple_model
         xrec1 = 400.      # 1st receiver position [m]
         ######xrec1 = 100.
-        xrec2 = 7780.     # last receiver position [m]
+        xrec2 = 9600.     # last receiver position [m]
         #####xrec2 = 1700.
         xrec = np.arange(xrec1, xrec2 + dx, drec)
         yrec = depth_rec * (xrec / xrec)
@@ -8538,9 +8538,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #######dsrc = 120.
         depth_src = 40.  # source depth [m]
         #######depth_src = 40.
-        xsrc1 = 620.  # 1st source position [m]
+        xsrc1 = 400.  # 1st source position [m]
         ######xsrc1 = 100.
-        xsrc2 = 7700.  # last source position [m]
+        xsrc2 = 9600.  # last source position [m]
         #######xsrc2 = 1700.
         xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
         #print("xsrcoriginal :", xsrcoriginal)
@@ -8561,7 +8561,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #tshots = 8
         ###xsrc = xsrcoriginal[idx[it::1]]
         ############################xsrc = xsrcoriginal[idx[0:14]]
-        xsrc = xsrcoriginal[idx[0:6]]
+        xsrc = xsrcoriginal[idx[0:8]]
         #xsrc = xsrcoriginal
         #print("xsrc1 :", xsrc)
         #xsrc = np.sort(xsrc)
