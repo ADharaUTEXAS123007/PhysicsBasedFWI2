@@ -8154,7 +8154,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop31   = nn.Dropout2d(0.1)
         self.up32     = autoUp5(int(filters[3]), int(filters[2]), self.is_deconv)
         #self.drop32   = nn.Dropout2d(0.1)
-        self.up33     = autoUp5(int(filters[3]), int(filters[2]*2), True)
+        self.up33     = autoUp5(int(filters[3]), int(filters[2]), True)
         #self.Rhoup33  = autoUp5(filters[3], int(filters[2]/4), self.is_deconv)
         #self.drop33   = nn.Dropout2d(0.1)
         #self.up3     = autoUp5(filters[3], filters[2], self.is_deconv)
@@ -8163,7 +8163,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop21   = nn.Dropout2d(0.1)
         self.up22     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.drop22   = nn.Dropout2d(0.1)
-        self.up23     = autoUp5(int(filters[2]*2), int(filters[1]*2), self.is_deconv)
+        self.up23     = autoUp5(int(filters[2]), int(filters[1]), self.is_deconv)
         #self.Rhoup23  = autoUp5(int(filters[2]/4), int(filters[1]/4), self.is_deconv)
         #self.drop23   = nn.Dropout2d(0.1)
         #self.up2     = autoUp5(filters[2], filters[1], self.is_deconv)
@@ -8172,7 +8172,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.drop11   = nn.Dropout2d(0.1)
         self.up12     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.drop12   = nn.Dropout2d(0.1)
-        self.up13     = autoUp5(int(filters[1]*2), int(filters[0]*2), self.is_deconv)
+        self.up13     = autoUp5(int(filters[1]), int(filters[0]), self.is_deconv)
         #self.Rhoup13  = autoUp5(int(filters[1]/4), int(filters[0]/4), self.is_deconv)
         #self.drop13   = nn.Dropout2d(0.1)
         #self.up1     = autoUp5(filters[1], filters[0], self.is_deconv)
@@ -8182,12 +8182,12 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #######self.f1      =  nn.Conv2d(filters[0],self.n_classes, 1)
         self.f11      =  nn.Conv2d(filters[0],int(filters[0]/2), 1)
         self.f12      =  nn.Conv2d(int(filters[0]),int(filters[0]/2), 1)
-        self.f13      =  nn.Conv2d(int(filters[0]*2),int(filters[0]), 1)
+        self.f13      =  nn.Conv2d(int(filters[0]),int(filters[0]/2), 1)
         #self.Rhof13      =  nn.Conv2d(int(filters[0]/4), int(filters[0]/8), 1)
         
         self.vp     =   nn.Conv2d(int(filters[0]/2),1,1)
         self.vs     =   nn.Conv2d(int(filters[0]/2),1,1)
-        self.rho     =   nn.Conv2d(int(filters[0]),1,1)
+        self.rho     =   nn.Conv2d(int(filters[0]/2),1,1)
         #self.Rhorho    =   nn.Conv2d(int(filters[0]/8), 1, 1)
         
         #self.final1   = nn.LeakyReLU(0.1)
@@ -8210,7 +8210,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
         latent_dim = 8
-        label_dsp_dim = (170,396)
+        label_dsp_dim = (170,500)
         #label_dsp_dim = (40,90)
         minvp = torch.min(inputs1[:,0,:,:])
         maxvp = torch.max(inputs1[:,0,:,:])
@@ -8318,8 +8318,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         
         #up1    = self.dropU1(up1)
-        #print("shape of up11 :", np.shape(up11))
-        #print("shape of up12 :", np.shape(up12))
+        print("shape of up11 :", np.shape(up11))
+        print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
