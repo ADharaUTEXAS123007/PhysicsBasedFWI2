@@ -8734,7 +8734,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ss = rho_grad*0
         for i in range(np.shape(rho_grad)[1]):
             ss[:,i] = g1
-        rho_grad = rho_grad*g1
+        rho_grad = rho_grad*ss
         #g1 = np.transpose(g1)
         #ss = np.matlib.repmat(g1,np.arange(np.shape(rho_grad)[0]),np.shape(rho_grad)[1])
         #ss = g1.tile((np.shape(rho_grad)[1],1))
