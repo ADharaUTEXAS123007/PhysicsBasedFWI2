@@ -8732,7 +8732,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         g1 = g1**2
         ss = np.repmat(g1,1,np.shape(rho_grad)[1])
         #ss = g1.tile((np.shape(rho_grad)[1],1))
-        print("shape of ss :", np.shape(g1))
+        print("shape of ss :", np.shape(ss))
         
         vp_grad[0:24,:] = 0.0
         vs_grad[0:24,:] = 0.0
