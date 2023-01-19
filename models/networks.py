@@ -8338,9 +8338,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
-        vp1f     = 39.423115*vp1f + 0.2671641
-        vs1f     = 22.760948*vs1f + 0.15424669
-        rho1f    = 11.615449*rho1f + 14.368018
+        vp1f     = 394.23115*vp1f + 2.671641
+        vs1f     = 227.60948*vs1f + 1.5424669
+        rho1f    = 116.15449*rho1f + 143.68018
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8472,9 +8472,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*1.0
+        vs = np.flipud(vs)*1.0
+        rho = np.flipud(rho)*1.0
         
         #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
         #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
@@ -8502,9 +8502,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -8778,7 +8778,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         #r3 = 1.0
-        rho_grad = rho_grad*r3
+        rho_grad = 0.5*rho_grad*r3
         
         filen = './marmousiEl4Jan/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
