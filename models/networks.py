@@ -8727,6 +8727,11 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vp_grad = np.flipud(vp_grad)
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
+
+        g1 = np.arange(np.shape(rho_grad)[0])
+        g1 = g1**2
+        ss = g1.tile((np.shape(rho_grad)[1],1))
+        print("shape of ss :", np.shape(ss))
         
         vp_grad[0:24,:] = 0.0
         vs_grad[0:24,:] = 0.0
