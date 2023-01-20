@@ -8228,8 +8228,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #meandata2 = torch.mean(inputs2)
         #stddata2 = torch.std(inputs2)
         #inputs2 = (inputs2-meandata2)/stddata2
-        inputs2 = torch.flip(inputs2,axis=2)
-        inputs3 = torch.flip(inputs3,axis=2)
+        inputs2 = torch.flip(inputs2,dims=2)
+        inputs3 = torch.flip(inputs3,dims=2)
 
         #meandata3 = torch.mean(inputs3)
         #stddata3 = torch.std(inputs3)
