@@ -8225,8 +8225,13 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #print("minrho :", minrho)
         #print("maxrho :", maxrho)
         
-        #meandata = torch.mean(inputs2)
-        #stddata = torch.std(inputs2)
+        meandata2 = torch.mean(inputs2)
+        stddata2 = torch.std(inputs2)
+        inputs2 = (inputs2-meandata2)/stddata2
+
+        meandata3 = torch.mean(inputs3)
+        stddata3 = torch.std(inputs3)
+        inputs3 = (inputs3-meandata3)/stddata3
         ############################################################
         combine1 = self.combine1((inputs2[:,:,1:3000:3,:]))
         combine2 = self.combine2((inputs3[:,:,1:3000:3,:]))
