@@ -8771,7 +8771,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         r = 10**5
             
      
-        r1 = np.max(vpst)/np.max(vp_grad)
+        r1 = np.max(np.abs(vpst))/np.max(np.abs(vp_grad))
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
         #r1 = 1.0
@@ -8779,14 +8779,14 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #if (freq==1):
         vp_grad = vp_grad
         
-        r2 = np.max(vsst)/np.max(vs_grad)
+        r2 = np.max(np.abs(vsst))/np.max(np.abs(vs_grad))
         vs_grad = torch.from_numpy(vs_grad.copy())
         vs_grad = vs_grad.float()  
         #r2 = 1.0
         vs_grad = 1.0*vs_grad*r2
         #vs_grad = vs_grad*0
         
-        r3 = np.max(rhost)/np.max(rho_grad)
+        r3 = np.max(np.abs(rhost))/np.max(np.abs(rho_grad))
         rho_grad = torch.from_numpy(rho_grad.copy())
         rho_grad = rho_grad.float()
         #r3 = 1.0
