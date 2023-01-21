@@ -8284,12 +8284,14 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
+        z1 = self.decoder_input(p)
         ##############z2 = self.decoder_input2(p)
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 23, 52)
+        z1 = z1.view(-1,filters[3],23,52)
         #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
     
@@ -8298,7 +8300,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ###########up33    = self.Rhoup33(z)
-        up33    = self.up33(z)
+        up33    = self.up33(z1)
         ##################print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
