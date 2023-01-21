@@ -8301,7 +8301,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up32    = self.drop32(up32)
         ###########up33    = self.Rhoup33(z)
         up33    = self.up33(z1)
-        ##################print("shape off up33 :", np.shape(up33))
+        print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
         #up3    = self.dropU3(up3)
