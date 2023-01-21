@@ -8294,6 +8294,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #####################################z1 = z1.view(-1,filters[3],23,52)
         #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
+        down4 = torch.swapaxes(down4,2,3)
     
         up31    = self.up31(down4)
         #up31    = self.drop31(up31)
