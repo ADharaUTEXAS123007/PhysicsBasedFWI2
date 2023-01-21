@@ -8145,7 +8145,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         self.decoder_input1 = nn.Linear(filters[3]*63*24, latent_dim) #for marmousi 101x101
         #self.decoder_input = nn.Linear(latent_dim, filters[3]*100*26) #for marmousi 101x101
         #self.decoder_input1 = nn.Linear(filters[1]*100*18, latent_dim) #for marmousi 101x101
-        self.decoder_input = nn.Linear(latent_dim, filters[3]*52*23) #for marmousi 101x101
+        self.decoder_input = nn.Linear(1024, filters[3]*52*23) #for marmousi 101x101
         #############self.decoder_input2 = nn.Linear(latent_dim, 4*92*208)
         #self.decoder_inputRho = nn.Linear(latent_dim, 1*300*100)
         
@@ -8283,25 +8283,25 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ########latent1 = p
         #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
-        ####################################z = self.decoder_input(p)
-        ######################################z1 = self.decoder_input(p)
+        z = self.decoder_input(p)
+        z1 = self.decoder_input(p)
         ##############z2 = self.decoder_input2(p)
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
-        ######################################z = z.view(-1, filters[3], 23, 52)
-        #####################################z1 = z1.view(-1,filters[3],23,52)
+        z = z.view(-1, filters[3], 23, 52)
+        z1 = z1.view(-1,filters[3],23,52)
         #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
-        down4 = torch.swapaxes(down4,2,3)
+        #down4 = torch.swapaxes(down4,2,3)
     
-        up31    = self.up31(down4)
+        up31    = self.up31(z)
         #up31    = self.drop31(up31)
-        up32    = self.up32(down4)
+        up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ###########up33    = self.Rhoup33(z)
-        up33    = self.up33(down4)
+        up33    = self.up33(z1)
         print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
