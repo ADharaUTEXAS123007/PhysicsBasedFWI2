@@ -39,6 +39,7 @@ from scipy import fftpack
 from scipy import arange
 from scipy import fft
 from scipy.signal import butter, lfilter
+import scipy
 
 from FrEIA.framework import *
 from FrEIA.modules import *
@@ -8748,6 +8749,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ss = rho_grad*0
         for i in range(np.shape(rho_grad)[1]):
             ss[:,i] = g1
+        rho_grad = scipy.ndimage.gaussian_filter(rho_grad,4)
         rho_grad = rho_grad*ss
         #g1 = np.transpose(g1)
         #ss = np.matlib.repmat(g1,np.arange(np.shape(rho_grad)[0]),np.shape(rho_grad)[1])
