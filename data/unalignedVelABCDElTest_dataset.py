@@ -77,10 +77,10 @@ class UnalignedVelABCDElTestDataset(BaseDataset):
         A_img = A_img
         B_img = B_img
         A_img = A_img
-        B_img = B_img/1000.0
+        B_img = B_img/10.0
         #B_img[2,:,:] = B_img[2,:,:]*10
         
-        C_img = C_img/1000.0
+        C_img = C_img/10.0
         #C_img[2,:,:] = C_img[2,:,:]*10
         D_img = D_img
         #r = random.randint(0,1)

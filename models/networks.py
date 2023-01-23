@@ -8352,7 +8352,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #rho1    = self.rho2(rho1)
         vp1f     = 0.39423115*vp1f + 0.002671641
         vs1f     = 0.22760948*vs1f + 0.0015424669
-        #rho1f    = 69.21016*rho1f + 49.7667
+        rho1f    = 10.381522*rho1f + 7.465008
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8362,7 +8362,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         #vp1f    = self.final1(vp1f)
         #vs1f    = self.final2(vs1f)
-        rho1f    = self.final3(rho1f)
+        #rho1f    = self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8397,8 +8397,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=0.881, max=maxvs)
-        rho1   = torch.clip(rho1, min=1.719, max=maxrho)
+        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8494,9 +8494,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1000.0
-        vs = np.flipud(vs)*1000.0
-        rho = np.flipud(rho)*1000.0
+        vp = np.flipud(vp)*10.0
+        vs = np.flipud(vs)*10.0
+        rho = np.flipud(rho)*10.0
         
         #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
         #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
@@ -8524,9 +8524,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1000.0
-        vsst = vsst*1000.0
-        rhost = rhost*1000.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
