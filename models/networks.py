@@ -8662,7 +8662,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
-        d.RHOUPPERLIM = 1751.3331
+        d.RHOUPPERLIM = 2626.9998
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
         #d.EXP_TAPER_GRAD_HOR = 1.0
@@ -8749,8 +8749,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         g1 = g1**2.0
         ss = rho_grad*0
         for i in range(np.shape(rho_grad)[1]):
-            ss[:,i] = g1
-        rho_grad = scipy.ndimage.gaussian_filter(rho_grad,4)
+             ss[:,i] = g1
+        # rho_grad = scipy.ndimage.gaussian_filter(rho_grad,4)
         rho_grad = rho_grad*ss
         #g1 = np.transpose(g1)
         #ss = np.matlib.repmat(g1,np.arange(np.shape(rho_grad)[0]),np.shape(rho_grad)[1])
