@@ -8350,9 +8350,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
-        vp1f     = 394.23115*vp1f + 2.671641
-        vs1f     = 227.60948*vs1f + 1.5424669
-        rho1f    = 69.21016*rho1f + 49.7667
+        vp1f     = 0.39423115*vp1f + 0.002671641
+        vs1f     = 0.22760948*vs1f + 0.0015424669
+        #rho1f    = 69.21016*rho1f + 49.7667
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8362,6 +8362,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         #vp1f    = self.final1(vp1f)
         #vs1f    = self.final2(vs1f)
+        rho1f    = self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8391,8 +8392,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
-        rho1   = torch.clip(rho1, min=1146.661, max=maxrho)
+        vs1    = torch.clip(vs1, min=0.881, max=maxvs)
+        rho1   = torch.clip(rho1, min=1.719, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8488,9 +8489,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*1.0
-        vs = np.flipud(vs)*1.0
-        rho = np.flipud(rho)*1.0
+        vp = np.flipud(vp)*1000.0
+        vs = np.flipud(vs)*1000.0
+        rho = np.flipud(rho)*1000.0
         
         #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
         #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
@@ -8518,9 +8519,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*1000.0
+        vsst = vsst*1000.0
+        rhost = rhost*1000.0
         #vpst = 1500+(4509-1500)*vpst
         #vsst = 0 + 2603*vsst
         #rhost = 1009 + (2589-1009)*rhost
@@ -8661,7 +8662,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.VSLOWERLIM = 0.0
         #d.RHOUPPERLIM = 2589.0
         #d.RHOLOWERLIM = 1009.0
-        d.RHOUPPERLIM = 2627.00
+        d.RHOUPPERLIM = 1751.3331
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
         #d.EXP_TAPER_GRAD_HOR = 1.0
