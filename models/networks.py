@@ -12448,15 +12448,13 @@ class AutoMarmousiWav_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
 
         ###wavelet
-        self.convWav1 = nn.Sequential(nn.Conv2d(500, 250, 3, 1, 1),
-                                   nn.BatchNorm2d(250),
-                                   nn.LeakyReLU(0.1))
+        self.convWav1 = nn.Sequential(nn.Conv1d(10, 15, 3, 1, 1))
         self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
         self.upWav1 = nn.Upsample()
 
 
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, wavelet):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (151,200)
@@ -12540,6 +12538,14 @@ class AutoMarmousiWav_Net(nn.Module):
         
         grad = 0*f1
         lossT = 0.0
+
+        inputwav = torch.randn(20,10,50)
+        p1 = self.convWav1(inputwav)
+        p2 = self.maxWav1(p1)
+        p3 = self.upWav1(p2)
+
+        print("shape of p3 :", np.shape(p3))
+
         if (epoch1 > lstart):
             [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
             grad = grad.to(inputs2.get_device())
