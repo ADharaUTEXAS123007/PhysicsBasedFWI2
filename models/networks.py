@@ -12555,7 +12555,7 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of p3 :", np.shape(p3))
         print("shape of initial wav :", np.shape(initial_wav))
         wav_inp = 0*initial_wav
-        wav_inp[:,:,0:500] = initial_wav[:,:,0:500] + p4[:,:,0:500]
+        wav_inp[:,:,0:500] = p4[:,:,0:500]
         print("shape of wav_inp :", np.shape(wav_inp))
 
         if (epoch1 > lstart):
