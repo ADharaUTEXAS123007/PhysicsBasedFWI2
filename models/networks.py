@@ -12552,7 +12552,7 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of p3 :", np.shape(p3))
 
         if (epoch1 > lstart):
-            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1, initial_wav)
+            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
             grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
