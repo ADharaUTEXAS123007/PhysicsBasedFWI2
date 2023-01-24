@@ -12551,12 +12551,12 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of p3 :", np.shape(p3))
 
         if (epoch1 > lstart):
-            [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1, initial_wav)
             grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
         #result = torch.flatten(f1, start_dim=1)
-        #print(" shape of grad :", np.shape(grad))
+        print(" shape of wavgrad :", np.shape(wavgrad))
 
         return f1, grad, latent1, lossT, down3, up2, up1
     
@@ -12692,7 +12692,9 @@ class AutoMarmousiWav_Net(nn.Module):
 
         if (epoch1 > lstart):
             net1out1.requires_grad = True
-            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10}])
+            source_amplitudes_true.requires_grad = True
+            optimizer2 = torch.optim.Adam([{'params': [net1out1], 'lr':10},
+                                           {'params': [source_amplitudes_true],'lr':1e-3}])
 
         for epoch in range(num_epochs):
                 #Shuffle shot coordinates
@@ -12767,7 +12769,7 @@ class AutoMarmousiWav_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad, lossinner.item()
+        return net1out1.grad, lossinner.item(), source_amplitudes_true.grad
 
 
 class AutoMarmousiNF_Net(nn.Module):
