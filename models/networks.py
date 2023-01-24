@@ -12451,7 +12451,7 @@ class AutoMarmousiWav_Net(nn.Module):
         self.convWav1 = nn.Sequential(nn.Conv2d(500, 250, 3, 1, 1),
                                    nn.BatchNorm2d(250),
                                    nn.LeakyReLU(0.1))
-        self.maxWav1 = nn.MaxPool1D(2,2,ceil_mode=True)
+        self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
         self.upWav1 = nn.Upsample()
 
 
