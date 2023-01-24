@@ -12478,6 +12478,10 @@ class AutoMarmousiWav_Net(nn.Module):
         self.convWav72 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
         self.upWav71 = nn.Upsample(scale_factor=2)
 
+        self.convWav81 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav82 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.upWav81 = nn.Upsample(scale_factor=2)
+
         self.TanhWav1 = nn.Tanh()
 
 
@@ -12596,6 +12600,10 @@ class AutoMarmousiWav_Net(nn.Module):
         p1 = self.convWav71(p1)
         p1 = self.convWav72(p1)
         p1 = self.upWav71(p1)
+
+        p1 = self.convWav81(p1)
+        p1 = self.convWav82(p1)
+        p1 = self.upWav81(p1)
 
         print("shape of p1 :", np.shape(p1))
 
