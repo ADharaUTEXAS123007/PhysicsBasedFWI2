@@ -12630,7 +12630,7 @@ class AutoMarmousiWav_Net(nn.Module):
         ####3####source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
         ####3######                          .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
-        source_amplitudes_true = torch.swapaxes(wav,0,2)
+        source_amplitudes_true = torch.swapaxes(wav,0,2).to(self.devicek)
         #lstart = -1
         num_batches = 3
         num_epochs = 1
