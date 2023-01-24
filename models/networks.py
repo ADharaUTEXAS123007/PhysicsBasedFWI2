@@ -12564,6 +12564,7 @@ class AutoMarmousiWav_Net(nn.Module):
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
             wavgrad = torch.swapaxes(wavgrad,0,2)
+            wavgrad = wavgrad.to(inputs2.get_device())
         #result = torch.flatten(f1, start_dim=1)
         print(" shape of wavgrad :", np.shape(wavgrad))
 
