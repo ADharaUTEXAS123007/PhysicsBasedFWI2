@@ -12539,7 +12539,7 @@ class AutoMarmousiWav_Net(nn.Module):
         grad = 0*f1
         lossT = 0.0
 
-        inputwav = torch.randn(20,10,50)
+        inputwav = torch.randn(20,10,50).to(inputs1.get_device())
         p1 = self.convWav1(inputwav)
         p2 = self.maxWav1(p1)
         p3 = self.upWav1(p2)
