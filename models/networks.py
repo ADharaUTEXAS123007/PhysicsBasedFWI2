@@ -12448,7 +12448,7 @@ class AutoMarmousiWav_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
 
         ###wavelet
-        self.convWav1 = nn.Sequential(nn.Conv1d(10, 15, 3, 1, 1))
+        self.convWav1 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1))
         self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
         self.upWav1 = nn.Upsample(scale_factor=2)
 
@@ -12539,8 +12539,8 @@ class AutoMarmousiWav_Net(nn.Module):
         grad = 0*f1
         lossT = 0.0
 
-        inputwav = torch.randn(20,10,50).to(inputs1.get_device())
-        p1 = self.convWav1(inputwav)
+        #inputwav = torch.randn(20,10,50).to(inputs1.get_device())
+        p1 = self.convWav1(wavelet)
 
         print("shape of p1 :", np.shape(p1))
         p2 = self.maxWav1(p1)
