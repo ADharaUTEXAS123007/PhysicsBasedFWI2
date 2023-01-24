@@ -12454,7 +12454,7 @@ class AutoMarmousiWav_Net(nn.Module):
 
 
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, wavelet):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, initial_wav, true_wav, rand_wav):
         filters = [16, 32, 64, 128, 512]
         latent_dim = 8
         label_dsp_dim = (151,200)
@@ -12540,7 +12540,7 @@ class AutoMarmousiWav_Net(nn.Module):
         lossT = 0.0
 
         #inputwav = torch.randn(20,10,50).to(inputs1.get_device())
-        p1 = self.convWav1(wavelet[0,:,:,:])
+        p1 = self.convWav1(rand_wav[0,:,:,:])
 
         print("shape of p1 :", np.shape(p1))
         p2 = self.maxWav1(p1)
