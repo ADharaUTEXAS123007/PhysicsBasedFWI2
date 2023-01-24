@@ -12541,7 +12541,11 @@ class AutoMarmousiWav_Net(nn.Module):
 
         inputwav = torch.randn(20,10,50).to(inputs1.get_device())
         p1 = self.convWav1(inputwav)
+
+        print("shape of p1 :", np.shape(p1))
         p2 = self.maxWav1(p1)
+
+        print("shape of p2 :", np.shape(p2))
         p3 = self.upWav1(p2)
 
         print("shape of p3 :", np.shape(p3))
