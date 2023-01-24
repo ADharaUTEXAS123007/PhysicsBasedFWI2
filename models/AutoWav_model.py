@@ -142,7 +142,11 @@ class AutoWavModel(BaseModel):
         self.real_B = input['B' if AtoB else 'A'].to(self.device1)
         self.real_C = input['C'].to(self.device1)
         self.real_D = input['D'].to(self.device1)  
+        self.real_E = input['E'].to(self.device1)
+        self.real_F = input['F'].to(self.device1)
         print("shape of real D :", np.shape(self.real_D))
+        print("shape of real E :", np.shape(self.real_E))
+        print("shape of real F :", np.shape(self.real_F))
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
     def forward(self,epoch1,lstart):
