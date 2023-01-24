@@ -396,8 +396,11 @@ class AutoWavModel(BaseModel):
             np.save(filen, self.up1.cpu().detach().numpy())  #switch on physics based fwi
             
         
-        #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-        #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+        filen = './marmousi24/FakeVel' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        np.save(filen, self.fake_B.cpu().detach().numpy())  #switch on physics based fwi
+
+        filen = './marmousi24/FakeWave' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
+        np.save(filen, self.fake_W.cpu().detach().numpy())  #switch on physics based fwi
         #if (epoch1 == 52):
         #    np.save('true_data.npy',self.real_A.cpu().detach().numpy())
         #    np.save('true_model.npy',self.real_B.cpu().detach().numpy())
