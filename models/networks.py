@@ -12448,9 +12448,36 @@ class AutoMarmousiWav_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
 
         ###wavelet
-        self.convWav1 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1))
-        self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
-        self.upWav1 = nn.Upsample(scale_factor=2)
+        self.convWav11 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav12 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.maxWav11 = nn.MaxPool1d(2,2,ceil_mode=True)
+
+
+        self.convWav21 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav22 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.maxWav21 = nn.MaxPool1d(2,2,ceil_mode=True)
+
+        self.convWav31 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav32 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.maxWav31 = nn.MaxPool1d(2,2,ceil_mode=True)
+
+        self.convWav41 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav42 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.maxWav41 = nn.MaxPool1d(2,2,ceil_mode=True)
+
+
+        self.convWav51 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav52 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.upWav51 = nn.Upsample(scale_factor=2)
+
+        self.convWav61 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav62 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.upWav61 = nn.Upsample(scale_factor=2)
+
+        self.convWav71 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.convWav72 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm2d(1),nn.LeakyReLU(0.1))
+        self.upWav71 = nn.Upsample(scale_factor=2)
+
         self.TanhWav1 = nn.Tanh()
 
 
@@ -12542,17 +12569,39 @@ class AutoMarmousiWav_Net(nn.Module):
         wavgrad = 0*initial_wav
 
         #inputwav = torch.randn(20,10,50).to(inputs1.get_device())
-        p1 = self.convWav1(rand_wav[:,:,0:500])
+        p1 = self.convWav11(rand_wav[:,:,0:500])
+        p1 = self.convWav12(p1)
+        p1 = self.maxWav11(p1)
+
+        p1 = self.convWav21(p1)
+        p1 = self.convWav22(p1)
+        p1 = self.maxWav21(p1)
+
+        p1 = self.convWav31(p1)
+        p1 = self.convWav32(p1)
+        p1 = self.maxWav31(p1)
+
+        p1 = self.convWav41(p1)
+        p1 = self.convWav42(p1)
+        p1 = self.maxWav41(p1)
+
+        p1 = self.convWav51(p1)
+        p1 = self.convWav52(p1)
+        p1 = self.upWav51(p1)
+
+        p1 = self.convWav61(p1)
+        p1 = self.convWav62(p1)
+        p1 = self.upWav61(p1)
+
+        p1 = self.convWav71(p1)
+        p1 = self.convWav72(p1)
+        p1 = self.upWav71(p1)
 
         print("shape of p1 :", np.shape(p1))
-        p2 = self.maxWav1(p1)
 
-        print("shape of p2 :", np.shape(p2))
-        p3 = self.upWav1(p2)
+        p4 = self.TanhWav1(p1)
 
-        p4 = self.TanhWav1(p3)
-
-        print("shape of p3 :", np.shape(p3))
+        print("shape of p4 :", np.shape(p4))
         print("shape of initial wav :", np.shape(initial_wav))
         wav_inp = 0*initial_wav
         wav_inp[:,:,0:500] = p4[:,:,0:500]
