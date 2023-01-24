@@ -12586,7 +12586,7 @@ class AutoMarmousiWav_Net(nn.Module):
                     m.bias.data.zero_()
                     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true):
+    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true, wav):
         
         torch.cuda.set_device(0)  #RB Necessary if device <> 0
         GPU_string='cuda:'+str(0)
@@ -12627,10 +12627,10 @@ class AutoMarmousiWav_Net(nn.Module):
         x_r[0, :, 1] = torch.arange(num_receivers_per_shot).float() * receiver_spacing
         x_r[:, :, 1] = x_r[0, :, 1].repeat(num_shots, 1)
 
-        source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
-                                  .reshape(-1, 1, 1))
+        ####3####source_amplitudes_true = (deepwave.wavelets.ricker(freq, nt, dt, 1/freq)
+        ####3######                          .reshape(-1, 1, 1))
         #print("device ordinal :", self.devicek)
-        source_amplitudes_true = source_amplitudes_true.to(devicek)
+        source_amplitudes_true = torch.swapaxes(wav,0,2)
         #lstart = -1
         num_batches = 3
         num_epochs = 1
