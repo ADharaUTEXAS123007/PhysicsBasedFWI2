@@ -12550,6 +12550,7 @@ class AutoMarmousiWav_Net(nn.Module):
         p3 = self.upWav1(p2)
 
         print("shape of p3 :", np.shape(p3))
+        print("shape of initial wav :", np.shape(initial_wav))
 
         if (epoch1 > lstart):
             [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
