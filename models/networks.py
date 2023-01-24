@@ -12450,7 +12450,7 @@ class AutoMarmousiWav_Net(nn.Module):
         ###wavelet
         self.convWav1 = nn.Sequential(nn.Conv1d(10, 15, 3, 1, 1))
         self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
-        self.upWav1 = nn.Upsample()
+        self.upWav1 = nn.Upsample(scale_factor=2)
 
 
         
