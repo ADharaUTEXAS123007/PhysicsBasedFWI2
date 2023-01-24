@@ -368,6 +368,7 @@ class AutoWavModel(BaseModel):
         
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
+            self.fake_W.backward(self.wavegrad)
         print("shape of wavelet grad :", np.shape(self.wavegrad))
         
         #print("shape of down3 :", np.shape(self.down3))
