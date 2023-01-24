@@ -12566,7 +12566,7 @@ class AutoMarmousiWav_Net(nn.Module):
         #result = torch.flatten(f1, start_dim=1)
         print(" shape of wavgrad :", np.shape(wavgrad))
 
-        return f1, grad, latent1, lossT, down3, up2, up1, wav_inp
+        return f1, grad, latent1, lossT, down3, up2, up1, wav_inp, wavgrad
     
     # Initialization of Parameters
     def  _initialize_weights(self):

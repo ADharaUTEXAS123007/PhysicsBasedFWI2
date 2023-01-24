@@ -155,7 +155,7 @@ class AutoWavModel(BaseModel):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
 
-        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.down3,self.up2,self.up1,self.fake_W] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D[0,:,:,:],self.real_E[0,:,:,:],self.real_F[0,:,:,:])  # G(A)
+        [self.fake_B,self.grad,self.latent,self.loss_D_MSE,self.down3,self.up2,self.up1,self.fake_W,self.wavegrad] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D[0,:,:,:],self.real_E[0,:,:,:],self.real_F[0,:,:,:])  # G(A)
         #self.latent = self.latent.clone().detach()
         #print("self.latent :", self.latent)
         #self.real_C = self.fake_B
@@ -173,7 +173,7 @@ class AutoWavModel(BaseModel):
         #netin1 = self.real_A[:, :, 1:800:2, :]
         #if (epoch1 == 1):
         self.latentT = torch.ones(1,1,1,1)
-        [self.fake_BT,self.gradT,self.latentT,_,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D[0,:,:,:],self.real_E[0,:,:,:],self.real_F[0,:,:,:])  # G(A)
+        [self.fake_BT,self.gradT,self.latentT,_,_,_,_,_,_] = self.netG(self.real_B,self.real_A,False_lstart,False_epoch,self.latentT,self.real_C,self.real_D[0,:,:,:],self.real_E[0,:,:,:],self.real_F[0,:,:,:])  # G(A)
         #self.fake_BT = torch.clamp(self.fake_BT,min=15.00,max=35.50)
         self.real_BT = self.real_B
         #self.real_C = self.real_BT
@@ -368,6 +368,7 @@ class AutoWavModel(BaseModel):
         
         #self.grad = self.grad/torch.max(self.grad.abs())
             self.fake_B.backward(self.grad) #switch on for physics based fwi
+        print("shape of wavelet grad :", np.shape(self.wavegrad))
         
         #print("shape of down3 :", np.shape(self.down3))
         #print("shape of up2 :", np.shape(self.up2))
