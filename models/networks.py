@@ -8380,7 +8380,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
 
         print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.01*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.009*rho1f
         print("after rho1 norm :", torch.norm(rho1))
 
         
