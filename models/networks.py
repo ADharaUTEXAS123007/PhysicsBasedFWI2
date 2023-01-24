@@ -12451,6 +12451,7 @@ class AutoMarmousiWav_Net(nn.Module):
         self.convWav1 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1))
         self.maxWav1 = nn.MaxPool1d(2,2,ceil_mode=True)
         self.upWav1 = nn.Upsample(scale_factor=2)
+        self.TanhWav1 = nn.Tanh()
 
 
         
@@ -12549,11 +12550,16 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of p2 :", np.shape(p2))
         p3 = self.upWav1(p2)
 
+        p4 = self.TanhWav1(p3)
+
         print("shape of p3 :", np.shape(p3))
         print("shape of initial wav :", np.shape(initial_wav))
+        wav_inp = 0*initial_wav
+        wav_inp[:,:,0:500] = initial_wav[:,:,0:500] + p4[:,:,0:500]
+        print("shape of wav_inp :", np.shape(wav_inp))
 
         if (epoch1 > lstart):
-            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
+            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1, wav_inp)
             grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
