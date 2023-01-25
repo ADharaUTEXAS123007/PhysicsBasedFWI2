@@ -12549,8 +12549,8 @@ class AutoMarmousiWav_Net(nn.Module):
         print("maxtrue :", maxtrue)
         
         ############f1    = mintrue + f1*(maxtrue-mintrue)
-
-        f1 = torch.clip(f1,min=1500,max=4766.604)
+        f1 = f1 + lowf
+        f1 = torch.clip(f1,min=mintrue,max=maxtrue)
 
         f1[(inputs1==1500)] = 1500
         #f1     = lowf + f1
