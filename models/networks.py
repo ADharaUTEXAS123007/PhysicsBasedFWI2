@@ -12540,7 +12540,7 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],0:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.final(f1)
+        #####f1     = self.final(f1)
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
@@ -12548,7 +12548,10 @@ class AutoMarmousiWav_Net(nn.Module):
         print("mintrue :", mintrue)
         print("maxtrue :", maxtrue)
         
-        f1    = mintrue + f1*(maxtrue-mintrue)
+        ############f1    = mintrue + f1*(maxtrue-mintrue)
+
+        f1 = torch.clip(f1,min=1500,max=4766.604)
+
         f1[(inputs1==1500)] = 1500
         #f1     = lowf + f1
         #f1[(inputs1 == 1.510)] = 1.510
@@ -12616,7 +12619,7 @@ class AutoMarmousiWav_Net(nn.Module):
         print("shape of wav_inp :", np.shape(wav_inp))
 
         if (epoch1 > lstart):
-            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1, wav_inp)
+            [grad, lossT, wavgrad] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1, wav_inp, lowf)
             grad = grad.to(inputs2.get_device())
             grad = torch.unsqueeze(grad,0)
             grad = torch.unsqueeze(grad,0)
@@ -12645,20 +12648,20 @@ class AutoMarmousiWav_Net(nn.Module):
                     m.bias.data.zero_()
                     
     # forward modeling to compute gradients
-    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true, wav):
+    def prop(self, inputs, vel, lstart, epoch1, mintrue, maxtrue, true, wav, lowf):
         
         torch.cuda.set_device(6)  #RB Necessary if device <> 0
         GPU_string='cuda:'+str(6)
         devicek = torch.device(GPU_string)
         #vel = vel.to(devicek)
         #net1out1 = mintrue + vel*(maxtrue-kimintrue)
-        net1out1 = vel
+        net1out1 = vel 
         #net1out1 = net1out2.to(devicek)
         #net1out1 = (3550-1500)*vel+1500
         #print("---shape of vel---", str(np.shape(vel)))
         #print("devicek :", devicek)
         net1out1 = net1out1.detach()
-        net1out1 = torch.squeeze(net1out1)
+        net1out1 = torch.squeeze(net1out1) 
         g1 = torch.arange(net1out1.size(dim=0))
         g1 = g1**2.0
         ss = g1.tile((200,1))
