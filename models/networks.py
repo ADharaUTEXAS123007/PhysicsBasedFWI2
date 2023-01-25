@@ -12448,8 +12448,8 @@ class AutoMarmousiWav_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
 
         ###wavelet
-        self.convWav11 = nn.Sequential(nn.Conv1d(1, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav12 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav11 = nn.Sequential(nn.Conv1d(1, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav12 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.maxWav11 = nn.MaxPool1d(2,2,ceil_mode=True)
 
 
@@ -12478,7 +12478,7 @@ class AutoMarmousiWav_Net(nn.Module):
         self.convWav72 = nn.Sequential(nn.Conv1d(1, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
         self.upWav71 = nn.Upsample(scale_factor=2)
 
-        self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.convWav82 = nn.Sequential(nn.Conv1d(8, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
         self.upWav81 = nn.Upsample(scale_factor=2)
 
