@@ -12615,7 +12615,7 @@ class AutoMarmousiWav_Net(nn.Module):
         #print("shape of p4 :", np.shape(p4))
         print("shape of initial wav :", np.shape(initial_wav))
         wav_inp = 0*initial_wav
-        wav_inp[:,:,0:500] = initial_wav[:,:,0:500] + p4[:,:,0:500]
+        wav_inp[:,:,0:500] = initial_wav[:,:,0:500] + p4[:,:,0:500] 
         print("shape of wav_inp :", np.shape(wav_inp))
 
         if (epoch1 > lstart):
@@ -12813,6 +12813,7 @@ class AutoMarmousiWav_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
+                    #print("shape of ")
                     lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
