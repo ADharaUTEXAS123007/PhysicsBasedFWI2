@@ -8367,7 +8367,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1f    = self.final1(vp1f)
         vs1f    = self.final2(vs1f)
-        rho1f    = self.final3(rho1f)
+        rho1f    = 0.001*self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8378,8 +8378,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1f     = self.final2(vs1f)
         
         vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = minvs + vs1f*(maxvs-88.1)
-        rho1 =  minrho + rho1f*(maxrho - 171.9)
+        vs1    = 88.1 + vs1f*(maxvs-88.1)
+        rho1   = 171.9 + rho1f*(maxrho - 171.9)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         #################4############### vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         ##################4############## vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
