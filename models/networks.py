@@ -12813,7 +12813,7 @@ class AutoMarmousiWav_Net(nn.Module):
                     # print(np.shape(batch_rcv_amps_pred))
                     lossinner1 = criterion1(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
                     #lossinner2 = criterion2(batch_rcv_amps_pred_norm, batch_rcv_amps_true)
-                    #print("shape of ")
+                    print("batch src amps :", np.shape(batch_src_amps))
                     lossinner = lossinner1
                     #y_c_features = vgg(torch.unsqueeze(batch_rcv_amps_true,0))
                     #########model2.grad[0:26,:] = 0
