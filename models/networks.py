@@ -8196,13 +8196,16 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         #self.final1   = nn.LeakyReLU(0.1)
         #self.final2   = nn.LeakyReLU(0.1)
-        self.final1     =   nn.Tanh()
-        self.final2     =   nn.Tanh()
-        self.final3     =   nn.Tanh()
+        #######4############# self.final1     =   nn.Tanh()
+        #####4############### self.final2     =   nn.Tanh()
+        #######4############ self.final3     =   nn.Tanh()
         ##########self.final3     =   nn.Tanh()
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
+        self.final1 = nn.Sigmoid()
+        self.final2 = nn.Sigmoid()
+        self.final3 = nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
@@ -8352,9 +8355,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
-        vp1f     = 0.39423115*vp1f + 0.002671641
-        vs1f     = 0.22760948*vs1f + 0.0015424669
-        rho1f    = 10.381522*rho1f + 7.465008
+        #############################4######### vp1f     = 0.39423115*vp1f + 0.002671641
+        #############################4######### vs1f     = 0.22760948*vs1f + 0.0015424669
+        #############################4######## rho1f    = 10.381522*rho1f + 7.465008
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8362,9 +8365,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        #vp1f    = self.final1(vp1f)
-        #vs1f    = self.final2(vs1f)
-        #rho1f    = self.final3(rho1f)
+        vp1f    = self.final1(vp1f)
+        vs1f    = self.final2(vs1f)
+        rho1f    = self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8374,16 +8377,16 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vp1f     = self.final1(vp1f)
         #vs1f     = self.final2(vs1f)
         
-        #vp1    = minvp + vp1f*(maxvp-minvp)
-        #vs1    = minvs + vs1f*(maxvs-88.1)
-        #vp1 =  minvp + vp1f*(maxvp - minvp)
+        vp1    = minvp + vp1f*(maxvp-minvp)
+        vs1    = minvs + vs1f*(maxvs-88.1)
+        rho1 =  minrho + rho1f*(maxrho - 171.9)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        #################4############### vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        ##################4############## vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
 
-        print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
-        print("after rho1 norm :", torch.norm(rho1))
+        #################4################# print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
+        ################4################### rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
+        ##############4###################### print("after rho1 norm :", torch.norm(rho1))
 
         
         #########rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
@@ -8398,9 +8401,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ####minrho1 = lowf[:,2,:,:]
 
         
-        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
-        rho1   = torch.clip(rho1, min=171.9, max=maxrho)
+        ###########4###############  vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        ###########4##############   vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        ###########4##############  rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8672,6 +8675,8 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.RHOUPPERLIM = 2626.9998
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
+        d.FC_SPIKE_1 = 2.0
+        d.QUELLART = 6
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
@@ -8701,7 +8706,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=0.0,fc_high=8)
+        d.add_fwi_stage(fc_low=2.0,fc_high=5)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
