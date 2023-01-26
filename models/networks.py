@@ -12453,29 +12453,29 @@ class AutoMarmousiWav_Net(nn.Module):
         self.maxWav11 = nn.MaxPool1d(2,2,ceil_mode=True)
 
 
-        self.convWav21 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav22 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav21 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav22 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.maxWav21 = nn.MaxPool1d(2,2,ceil_mode=True)
 
-        self.convWav31 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav32 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav31 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav32 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.maxWav31 = nn.MaxPool1d(2,2,ceil_mode=True)
 
-        self.convWav41 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav42 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav41 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav42 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.maxWav41 = nn.MaxPool1d(2,2,ceil_mode=True)
 
 
-        self.convWav51 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav52 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav51 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav52 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.upWav51 = nn.Upsample(scale_factor=2)
 
-        self.convWav61 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav62 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav61 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav62 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.upWav61 = nn.Upsample(scale_factor=2)
 
-        self.convWav71 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.convWav72 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        self.convWav71 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        self.convWav72 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         self.upWav71 = nn.Upsample(scale_factor=2)
 
         self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
