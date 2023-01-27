@@ -8367,7 +8367,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1f    = self.final1(vp1f)
         vs1f    = self.final2(vs1f)
-        rho1f    = 0.001*self.final3(rho1f)
+        rho1f    = self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
