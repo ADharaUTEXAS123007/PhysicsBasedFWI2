@@ -8379,7 +8379,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1    = minvp + vp1f*(maxvp-minvp)
         vs1    = 88.1 + vs1f*(maxvs-88.1)
-        rho1   = 171.9 + rho1f*(maxrho - 171.9)
+        rho1   = 171.9 
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         #################4############### vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         ##################4############## vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
