@@ -12540,7 +12540,7 @@ class AutoMarmousiWav_Net(nn.Module):
         self.w0 = nn.Conv1d(width, width, 1)
         self.w1 = nn.Conv1d(width, width, 1)
         self.w2 = nn.Conv1d(width, width, 1)
-        self.w3 = nn.Conv1d(width, width, 1)
+        self.w3 = nn.Conv1d(width, 1, 1)
 
         self.q = nn.Linear(width, 500) 
 
