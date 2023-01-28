@@ -12697,6 +12697,8 @@ class AutoMarmousiWav_Net(nn.Module):
 
         p1 = self.w3(p1)
 
+        print("shape of p1 :", np.shape(p1))
+
         p1 = self.q(p1)
 
         p4 = self.TanhWav1(p1)
