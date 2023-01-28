@@ -12537,10 +12537,10 @@ class AutoMarmousiWav_Net(nn.Module):
         # self.mlp1 = MLP(self.width, self.width, self.width)
         # self.mlp2 = MLP(self.width, self.width, self.width)
         # self.mlp3 = MLP(self.width, self.width, self.width)
-        self.w0 = nn.Conv1d(self.width, self.width, 1)
-        self.w1 = nn.Conv1d(self.width, self.width, 1)
-        self.w2 = nn.Conv1d(self.width, self.width, 1)
-        self.w3 = nn.Conv1d(self.width, self.width, 1)
+        self.w0 = nn.Conv1d(width, width, 1)
+        self.w1 = nn.Conv1d(width, width, 1)
+        self.w2 = nn.Conv1d(width, width, 1)
+        self.w3 = nn.Conv1d(width, width, 1)
 
         self.q = nn.Linear(width, 500) 
 
