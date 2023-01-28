@@ -2231,6 +2231,44 @@ class Vgg16(nn.Module):
         #h_relu_4_3 = h
         out = h_relu_3_3
         return out
+
+################################################################
+#  1d fourier layer
+################################################################
+class SpectralConv1d(nn.Module):
+    def __init__(self, in_channels, out_channels, modes1):
+        super(SpectralConv1d, self).__init__()
+
+        """
+        1D Fourier layer. It does FFT, linear transform, and Inverse FFT.    
+        """
+
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.modes1 = modes1  #Number of Fourier modes to multiply, at most floor(N/2) + 1
+
+        self.scale = (1 / (in_channels*out_channels))
+        self.weights1 = nn.Parameter(self.scale * torch.rand(in_channels, out_channels, self.modes1, dtype=torch.cfloat))
+
+    # Complex multiplication
+    def compl_mul1d(self, input, weights):
+        # (batch, in_channel, x ), (in_channel, out_channel, x) -> (batch, out_channel, x)
+        return torch.einsum("bix,iox->box", input, weights)
+
+    def forward(self, x):
+        batchsize = x.shape[0]
+        #Compute Fourier coeffcients up to factor of e^(- something constant)
+        x_ft = torch.fft.rfft(x)
+
+        # Multiply relevant Fourier modes
+        out_ft = torch.zeros(batchsize, self.out_channels, x.size(-1)//2 + 1,  device=x.device, dtype=torch.cfloat)
+        out_ft[:, :, :self.modes1] = self.compl_mul1d(x_ft[:, :, :self.modes1], self.weights1)
+
+        #Return to physical space
+        x = torch.fft.irfft(out_ft, n=x.size(-1))
+        return x
+
+        
 #######################UNET 2##############################################
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -12454,39 +12492,56 @@ class AutoMarmousiWav_Net(nn.Module):
         #self.final1  =  nn.Conv2d(1, 1, 1)
 
         ###wavelet
-        self.convWav11 = nn.Sequential(nn.Conv1d(1, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav12 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.maxWav11 = nn.MaxPool1d(2,2,ceil_mode=True)
+        # self.convWav11 = nn.Sequential(nn.Conv1d(1, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav12 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.maxWav11 = nn.MaxPool1d(2,2,ceil_mode=True)
 
 
-        self.convWav21 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav22 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.maxWav21 = nn.MaxPool1d(2,2,ceil_mode=True)
+        # self.convWav21 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav22 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.maxWav21 = nn.MaxPool1d(2,2,ceil_mode=True)
 
-        self.convWav31 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav32 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.maxWav31 = nn.MaxPool1d(2,2,ceil_mode=True)
+        # self.convWav31 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav32 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.maxWav31 = nn.MaxPool1d(2,2,ceil_mode=True)
 
-        self.convWav41 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav42 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.maxWav41 = nn.MaxPool1d(2,2,ceil_mode=True)
+        # self.convWav41 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav42 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.maxWav41 = nn.MaxPool1d(2,2,ceil_mode=True)
 
 
-        self.convWav51 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav52 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.upWav51 = nn.Upsample(scale_factor=2)
+        # self.convWav51 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav52 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.upWav51 = nn.Upsample(scale_factor=2)
 
-        self.convWav61 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav62 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.upWav61 = nn.Upsample(scale_factor=2)
+        # self.convWav61 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav62 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.upWav61 = nn.Upsample(scale_factor=2)
 
-        self.convWav71 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav72 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.upWav71 = nn.Upsample(scale_factor=2)
+        # self.convWav71 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav72 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.upWav71 = nn.Upsample(scale_factor=2)
 
-        self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
-        self.convWav82 = nn.Sequential(nn.Conv1d(8, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
-        self.upWav81 = nn.Upsample(scale_factor=2)
+        # self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
+        # self.convWav82 = nn.Sequential(nn.Conv1d(8, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
+        # self.upWav81 = nn.Upsample(scale_factor=2)
+        width = 64
+        modes = 16
+
+        self.p = nn.Linear(1, width) # input channel_dim is 2: (u0(x), x)
+        self.conv0 = SpectralConv1d(width, width, modes)
+        self.conv1 = SpectralConv1d(width, width, modes)
+        self.conv2 = SpectralConv1d(width, width, modes)
+        self.conv3 = SpectralConv1d(width, width, modes)
+        # self.mlp0 = MLP(self.width, self.width, self.width)
+        # self.mlp1 = MLP(self.width, self.width, self.width)
+        # self.mlp2 = MLP(self.width, self.width, self.width)
+        # self.mlp3 = MLP(self.width, self.width, self.width)
+        # self.w0 = nn.Conv1d(self.width, self.width, 1)
+        # self.w1 = nn.Conv1d(self.width, self.width, 1)
+        # self.w2 = nn.Conv1d(self.width, self.width, 1)
+        # self.w3 = nn.Conv1d(self.width, self.width, 1)
+        # self.q = MLP(self.width, 1, self.width*2) 
 
         self.TanhWav1 = nn.Tanh()
 
@@ -12582,37 +12637,54 @@ class AutoMarmousiWav_Net(nn.Module):
         wavgrad = 0*initial_wav
 
         #inputwav = torch.randn(20,10,50).to(inputs1.get_device())
-        p1 = self.convWav11(rand_wav[:,:,0:500])
-        p1 = self.convWav12(p1)
-        p1 = self.maxWav11(p1)
+        # p1 = self.convWav11(rand_wav[:,:,0:500])
+        # p1 = self.convWav12(p1)
+        # p1 = self.maxWav11(p1)
 
-        p1 = self.convWav21(p1)
-        p1 = self.convWav22(p1)
-        p1 = self.maxWav21(p1)
+        # p1 = self.convWav21(p1)
+        # p1 = self.convWav22(p1)
+        # p1 = self.maxWav21(p1)
 
-        p1 = self.convWav31(p1)
-        p1 = self.convWav32(p1)
-        p1 = self.maxWav31(p1)
+        # p1 = self.convWav31(p1)
+        # p1 = self.convWav32(p1)
+        # p1 = self.maxWav31(p1)
 
-        p1 = self.convWav41(p1)
-        p1 = self.convWav42(p1)
-        p1 = self.maxWav41(p1)
+        # p1 = self.convWav41(p1)
+        # p1 = self.convWav42(p1)
+        # p1 = self.maxWav41(p1)
 
-        p1 = self.convWav51(p1)
-        p1 = self.convWav52(p1)
-        p1 = self.upWav51(p1)
+        # p1 = self.convWav51(p1)
+        # p1 = self.convWav52(p1)
+        # p1 = self.upWav51(p1)
 
-        p1 = self.convWav61(p1)
-        p1 = self.convWav62(p1)
-        p1 = self.upWav61(p1)
+        # p1 = self.convWav61(p1)
+        # p1 = self.convWav62(p1)
+        # p1 = self.upWav61(p1)
 
-        p1 = self.convWav71(p1)
-        p1 = self.convWav72(p1)
-        p1 = self.upWav71(p1)
+        # p1 = self.convWav71(p1)
+        # p1 = self.convWav72(p1)
+        # p1 = self.upWav71(p1)
 
-        p1 = self.convWav81(p1)
-        p1 = self.convWav82(p1)
-        p1 = self.upWav81(p1)
+        # p1 = self.convWav81(p1)
+        # p1 = self.convWav82(p1)
+        # p1 = self.upWav81(p1)
+        p1 = self.p(rand_wav[:,:,0:500])
+        
+        print("shape of p1 :", np.shape(p1))
+
+        p1 = self.conv0(p1)
+
+        print("shape of p1 :", np.shape(p1))
+
+        p1 = self.conv1(p1)
+
+        print("shape of p1 :", np.shape(p1))
+
+        p1 = self.conv2(p1)
+
+        print("shape of p1 :", np.shape(p1))
+
+        p1 = self.conv3(p1)
 
         print("shape of p1 :", np.shape(p1))
 
