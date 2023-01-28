@@ -5685,7 +5685,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up31    = self.drop31(up31)
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
-        ##########up33    = self.Rhoup33(z)
+        up33    = self.Rhoup33(z)
         #up33    = self.drop33(up33)
         #up3      = self.up3(z)
         
@@ -5695,7 +5695,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up21    = self.drop21(up21)
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
-        #################up23    = self.Rhoup23(up33)
+        up23    = self.Rhoup23(up33)
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
         
@@ -5704,7 +5704,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up11    = self.drop11(up11)
         up12    = self.up12(up21)
         #up12    = self.drop12(up12)
-       ######################up13    = self.Rhoup13(up21)
+        up13    = self.Rhoup13(up21)
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
         
@@ -5713,21 +5713,21 @@ class AutoElMarmousi22_Net(nn.Module):
         #print("shape of up11 :", np.shape(up11))
         up11    = up11[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
-        #######################up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
+        up13    = up13[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         #f11     = self.dropf11(f11)
         f12     = self.f12(up12)
         #f12     = self.dropf12(f12)
-        ########################f13     = self.Rhof13(up13)
+        f13     = self.Rhof13(up13)
         #f13     = self.dropf13(f13)
         #f1    = self.f1(up1)
         
         
         vp1     = self.vp(f11)
         vs1     = self.vs(f12)
-        #########################rho1    = self.Rhorho1(f13)
+        rho1    = self.Rhorho1(f13)
         #rho1    = self.rho2(rho1)
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
@@ -5744,14 +5744,17 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
 
-        
+        vp1f = 12.305*vp1f + 3.238
+        vs1f = 6.48*vs1f + 1.536
+        rho1f = 3.1718*rho1f - 0.736325
+
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
         
         vp1[:,:,0:15,:] = inputs1[:,0,0:15,:]
         vs1[:,:,0:15,:] = inputs1[:,1,0:15,:]
-        ###########rho1[:,:,0:15,:] = inputs1[:,2,0:15,:]
+        rho1[:,:,0:15,:] = inputs1[:,2,0:15,:]
         
         #vp1     = self.final1(vp1)
         #vs1     = self.final2(vs1)
@@ -5761,7 +5764,7 @@ class AutoElMarmousi22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
-        ################rho1   = torch.clip(rho1, min=minrho, max=maxrho)
+        rho1   = torch.clip(rho1, min=minrho, max=maxrho)
         
         #vp1     = inputs1[:,0,:,:]
         #rho1     = inputs1[:,2,:,:]
@@ -5851,9 +5854,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1.0
-        vs = vs*1.0
-        rho = rho*1.0
+        vp = vp*10.0
+        vs = vs*10.0
+        rho = rho*10.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -5870,9 +5873,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
@@ -8416,12 +8419,13 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1f     = self.final2(vs1f)
         
 
-        vp1    = minvp + vp1f*(maxvp-minvp)
-        vs1    = 88.1 + vs1f*(maxvs-88.1)
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
+        #####vp1    = minvp + vp1f*(maxvp-minvp)
+        ####vs1    = 88.1 + vs1f*(maxvs-88.1)
+        ####rho1   = torch.unsqueeze(lowf[:,2,:,:],1)
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
-        #################4############### vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
-        ##################4############## vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
+        vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
 
         #################4################# print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
         ################4################### rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
