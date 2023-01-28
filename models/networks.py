@@ -12525,10 +12525,10 @@ class AutoMarmousiWav_Net(nn.Module):
         # self.convWav81 = nn.Sequential(nn.Conv1d(8, 8, 3, 1, 1),nn.BatchNorm1d(8),nn.LeakyReLU(0.1))
         # self.convWav82 = nn.Sequential(nn.Conv1d(8, 1, 3, 1, 1),nn.BatchNorm1d(1),nn.LeakyReLU(0.1))
         # self.upWav81 = nn.Upsample(scale_factor=2)
-        width = 500
+        width = 64
         modes = 16
 
-        self.p = nn.Linear(1, width) # input channel_dim is 2: (u0(x), x)
+        self.p = nn.Linear(500, width) # input channel_dim is 2: (u0(x), x)
         self.conv0 = SpectralConv1d(width, width, modes)
         self.conv1 = SpectralConv1d(width, width, modes)
         self.conv2 = SpectralConv1d(width, width, modes)
