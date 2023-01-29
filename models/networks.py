@@ -5942,11 +5942,6 @@ class AutoElMarmousi22_Net(nn.Module):
         d.SEIS_FILE_VX = 'su1/seisT_x.su'
         d.SEIS_FILE_VY = 'su1/seisT_y.su'
 
-
-        #d.help()
-        #d.NX = 300
-        #d.NY = 150
-        #d.DH = 20.0
         d.ITERMAX = 1
         d.verbose = 0
         print("shape of vp :", np.shape(vp))
@@ -6004,7 +5999,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_high=20,inv_rho_iter=10000)
+        d.add_fwi_stage(fc_high=10,inv_rho_iter=10000)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
