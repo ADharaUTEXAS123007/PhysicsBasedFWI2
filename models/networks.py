@@ -5606,7 +5606,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
         
-    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq):
+    def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
         ######filters = [2, 4, 8, 16, 32]
         filters = [8, 16, 32, 64, 128]  ###this works very well
@@ -5811,7 +5811,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1 = vp1*0
         #rho1 = vp1*0
         if (epoch1 > lstart):
-            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq)
+            [vp_grad, vs_grad, rho_grad, lossT] = self.prop(vp1, vs1, rho1, inputs1, epoch1, freq, idx, it)
         #if (epoch1 > lstart):
         #    [grad, lossT] = self.prop(inputs2, f1, lstart, epoch1, mintrue, maxtrue, inputs1)
         #    grad = grad.to(inputs2.get_device())
@@ -5840,7 +5840,7 @@ class AutoElMarmousi22_Net(nn.Module):
                     m.bias.data.zero_()
     
     # forward modeling to compute gradients  
-    def prop(self, vp1, vs1, rho1, true, epoch1, freq):
+    def prop(self, vp1, vs1, rho1, true, epoch1, freq, idx, it):
         dx = 10.0
         vp = true[:,0,:,:].cpu().detach().numpy()
         vs = true[:,1,:,:].cpu().detach().numpy()
@@ -5910,13 +5910,37 @@ class AutoElMarmousi22_Net(nn.Module):
         ######xsrc1 = 100.
         xsrc2 = int(2610.) # last source position [m]
         #######xsrc2 = 1700.
-        xsrc = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrcoriginal = np.arange(xsrc1, xsrc2 + dx, dsrc)
+        xsrc = xsrcoriginal[idx[0:6]]
         ysrc = depth_src * xsrc / xsrc
+        tshots = len(xsrc)
 
         # Wrap into api
         fsource = 10.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
+
+        os.system('rm -rf /disk/student/adhara/DOUTPUTS/su1')
+        os.system('mkdir /disk/student/adhara/DOUTPUTS/su1')
+        def copyshot(id1, value):             
+            fo = 'cp /disk/student/adhara/DOUTPUTS/su/seis_x.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/DOUTPUTS/su1/.'
+            os.system(fo)
+            fo = 'cp /disk/student/adhara/DOUTPUTS/su/seis_y.su.shot'+str(id1+1)+ ' ' + '/disk/student/adhara/DOUTPUTS/su1/.'
+            os.system(fo)
+        #      #if (id1+1 != value+1):
+            fo = 'mv /disk/student/adhara/DOUTPUTS/su1/seis_x.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/DOUTPUTS/su1/seisT_x.su.shot' + str(value+1)
+            os.system(fo)
+            fo = 'mv /disk/student/adhara/DOUTPUTS/su1/seis_y.su.shot'+str(id1+1)+' ' + '/disk/student/adhara/DOUTPUTS/su1/seisT_y.su.shot' + str(value+1)
+            os.system(fo)
+
+        for i in range(0,tshots):
+            print("idx :", idx[i])
+            copyshot(idx[i],i)
+
+        d.DATA_DIR = '/disk/student/adhara/DOUTPUTS/su1/seisT'
+        d.SEIS_FILE_VX = 'su1/seisT_x.su'
+        d.SEIS_FILE_VY = 'su1/seisT_y.su'
+
 
         #d.help()
         #d.NX = 300
@@ -12705,12 +12729,12 @@ class AutoMarmousiWav_Net(nn.Module):
 
         p1 = self.q(p1)
 
-        p4 = self.TanhWav1(p1)
+        #p4 = self.TanhWav1(p1)
 
         print("shape of p4 :", np.shape(p4))
         print("shape of initial wav :", np.shape(initial_wav))
         wav_inp = 0*initial_wav
-        wav_inp[:,:,0:500] = initial_wav[:,:,0:500] + p4[:,:,0:500] 
+        wav_inp[:,:,0:500] = self.TanhWav1(initial_wav[:,:,0:500] + p1[:,:,0:500])
         print("shape of wav_inp :", np.shape(wav_inp))
 
         if (epoch1 > lstart):

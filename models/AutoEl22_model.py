@@ -120,18 +120,19 @@ class AutoEl22Model(BaseModel):
             #self.criterionL1 = torch.nn.L1Loss()
             # initialize optimizers; schedulers will be automatically created by function <BaseModel.setup>.
             #self.optimizer_G = torch.optim.Adam(self.netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
-            #self.optimizer_G = torch.optim.Adam(
-            #    self.netG.parameters(), lr=opt.lr)
+            self.optimizer_G = torch.optim.Adam(
+                self.netG.parameters(), lr=opt.lr)
             #self.optimizer_G = torch.optim.LBFGS(
             #    self.netG.parameters(), line_search_fn ='strong_wolfe')
             #self.optimizer_G = MALA(self.netG.parameters(), lr=opt.lr)
                         #self.optimizer_G1 = torch.optim.Adam(
-            self.optimizer_G1 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
-            self.optimizer_G2 = torch.optim.Adam(
-                [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
-            self.optimizers.append(self.optimizer_G1)
-            self.optimizers.append(self.optimizer_G2)
+            #self.optimizer_G1 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' in name], lr=0.0005)
+            #self.optimizer_G2 = torch.optim.Adam(
+            #    [param for name, param in self.netG.named_parameters() if 'Rho' not in name], lr=opt.lr)
+            #self.optimizers.append(self.optimizer_G1)
+            #self.optimizers.append(self.optimizer_G2)
+            self.optimizers.append(self.optimizer_G)
             self.criterionMSE = torch.nn.MSELoss(reduction='sum')
         else:
             print("----test data----")
@@ -179,12 +180,12 @@ class AutoEl22Model(BaseModel):
         self.grad = torch.unsqueeze(self.grad,0)
         return self.loss_D_MSE
 
-    def forward(self,epoch1,lstart,freq):
+    def forward(self,epoch1,lstart,freq,idx,it):
         """Run forward pass; called by both functions <optimize_parameters> and <test>."""
         #netin1 = self.real_A[:, :, 1:800:2, :]
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
-        [self.fake_Vp,self.fake_Vs,self.fake_Rho, self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
+        [self.fake_Vp,self.fake_Vs,self.fake_Rho, self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq,idx,it)  # G(A)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
@@ -482,17 +483,22 @@ class AutoEl22Model(BaseModel):
 
 
     def optimize_parameters(self, epoch, batch, lstart,freq,initerror,currenterror):
-        self.forward(epoch,lstart,freq)                   # compute fake images: G(A)
-        # update G
-        ###self.optimizer_G.zero_grad()        # set G's gradients to zero
-        self.optimizer_G1.zero_grad()
-        self.optimizer_G2.zero_grad()
-        self.backward_G11(epoch,batch,lstart, initerror, currenterror)   
+        num_shots = 28
+        idx = np.random.permutation(num_shots)
+        num_batches = 1
+        for it in range(num_batches):
+            self.forward(epoch,lstart,freq,idx,it)                   # compute fake images: G(A)
+            # update G
+            self.optimizer_G.zero_grad()        # set G's gradients to zero
+            ##self.optimizer_G1.zero_grad()
+            ##self.optimizer_G2.zero_grad()
+            self.backward_G11(epoch,batch,lstart, initerror, currenterror)   
                          # calculate graidents for G
         
         #self.optimizer_G.step(lambda : self.closure(epoch, lstart, batch, freq))             # udpate G's weights
-        self.optimizer_G1.step()
-        self.optimizer_G2.step()
+            ##self.optimizer_G1.step()
+            ##self.optimizer_G2.step()
+            self.optimizer_G.step()
 
     def compute_loss_only(self):
         #lossL1 = self.criterionL1(self.fake_BT,self.real_BT)
