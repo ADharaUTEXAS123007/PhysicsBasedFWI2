@@ -239,9 +239,13 @@ class Unet2Model(BaseModel):
         
         self.loss_M_MSE = self.criterionMSE(self.real_B, self.fake_B)/(diff_size[0]*diff_size[1]*diff_size[2]*diff_size[3])
         
-        wavelet = wav.ricker(0.1,2e-3,30)
-        wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
-        wavelet = wavelet*100
+        #wavelet = wav.ricker(0.1,2e-3,30)
+        #wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
+        #wavelet = wavelet*100
+        wav = np.loadtxt('/disk/student/adhara/Fall2023/Cranfield/Cranfield/HRS_DATA/statistical_wav.txt',skiprows=33)
+        wavelet = wav.to(self.real_B.get_device())
+        wavelet = torch.unsqueeze(torch.unsqueeze(wavelet,axis=0),axis=0)
+
         tr1 = self.real_A * 0
         
         idx = torch.randperm(self.real_B.shape[3])
