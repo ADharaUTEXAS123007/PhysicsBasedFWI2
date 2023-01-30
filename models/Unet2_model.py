@@ -244,7 +244,7 @@ class Unet2Model(BaseModel):
         #wavelet = wavelet*100
         wav = np.loadtxt('/disk/student/adhara/Fall2023/Cranfield/Cranfield/HRS_DATA/statistical_wav.txt',skiprows=33)
         wavelet = torch.from_numpy(wav)
-        wavelet = wav.to(self.real_B.get_device())
+        wavelet = wavelet.to(self.real_B.get_device())
         wavelet = torch.unsqueeze(torch.unsqueeze(wavelet,axis=0),axis=0)
 
         tr1 = self.real_A * 0
