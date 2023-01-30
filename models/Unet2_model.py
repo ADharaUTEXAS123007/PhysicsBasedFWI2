@@ -250,9 +250,17 @@ class Unet2Model(BaseModel):
 
         print("shape of fake_B :", np.shape(self.fake_B))
 
-        imp = torch.swapaxes(self.fake_B[0,0,:,:],0,1)
+        imp = torch.swapaxes(self.fake_B[0,:,:,:],1,2)
 
         print("shape of imp :", np.shape(imp))
+
+        reflect = (imp[:,1:,:]-imp[:,0:-1,:])/(imp[:,1:,:]+imp[:,0:-1,:]+1e-10)
+
+        tsynth = conv1d(torch.swapaxes(torch.swapaxes(reflect,1,2),0,1),wavelet,padding=int(wavelet.shape[-1]/2))
+
+        print("shape of tsynth :", np.shape(tsynth))
+
+        
 
         # tr1 = self.real_A * 0
         
