@@ -246,6 +246,7 @@ class Unet2Model(BaseModel):
         wavelet = torch.from_numpy(wav)
         wavelet = wavelet.to(self.real_B.get_device())
         wavelet = torch.unsqueeze(torch.unsqueeze(wavelet,axis=0),axis=0)
+        wavelet = wavelet.type(torch.cuda.FloatTensor)
         print("shape of wavelet :", np.shape(wavelet))
 
         print("shape of fake_B :", np.shape(self.fake_B))
