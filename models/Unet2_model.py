@@ -106,7 +106,7 @@ class Unet2Model(BaseModel):
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
         # specify the training losses you want to print out. The training/test scripts will call <BaseModel.get_current_losses>
-        self.loss_names = ['D_MSE', 'M_MSE', 'V_MSE', 'K_MSE']
+        self.loss_names = ['D_MSE']
         # specify the images you want to save/display. The training/test scripts will call <BaseModel.get_current_visuals>
         self.visual_names = ['fake_BT', 'real_BT', 'var_BT']
         # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
@@ -300,7 +300,7 @@ class Unet2Model(BaseModel):
         # print("shape of tr1 :", np.shape(tr1))    
         # print("shape of tr2 :", np.shape(tr2))
         self.loss_D_MSE = self.criterionL1(tsynth,self.real_A)
-        
+
         # neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
         # loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
         # self.loss_D_MSE = loss.mean()
