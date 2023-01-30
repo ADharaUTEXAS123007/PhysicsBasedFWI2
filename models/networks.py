@@ -5746,13 +5746,13 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
 
-        vp1 = 123.05*vp1 + 32.38
-        vs1 = 67.0688*vs1 + 16.5077
-        rho1 = 70.706884*rho1 -16.4139
+        vp1 = 12.305*vp1 + 3.238
+        vs1 = 6.70688*vs1 + 1.65077
+        rho1 = 7.0706884*rho1 -1.64139
 
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.1*rho1
     
         
         #vp1     = self.final1(vp1)
@@ -5760,6 +5760,14 @@ class AutoElMarmousi22_Net(nn.Module):
         #vp1    = minvp + vp1*(maxvp-minvp)
         #vs1    = minvs + vs1*(maxvs-minvs)
         #rho1   = minrho + rho1*(maxrho-minrho)
+        print("minvp :", minvp)
+        print("maxvp :", maxvp)
+
+        print("minvs :", minvs)
+        print("maxvs :", maxvs)
+
+        print("minrho :", minrho)
+        print("maxrho :", maxrho)
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=minvs, max=maxvs)
@@ -5857,9 +5865,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vs = np.flipud(vs)
         rho = np.flipud(rho)
         
-        vp = vp*1.0
-        vs = vs*1.0
-        rho = rho*1.0
+        vp = vp*10.0
+        vs = vs*10.0
+        rho = rho*10.0
         
         
         #model = api.Model(vp, vs, rho, dx)
@@ -5876,9 +5884,9 @@ class AutoElMarmousi22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*1.0
-        vsst = vsst*1.0
-        rhost = rhost*1.0
+        vpst = vpst*10.0
+        vsst = vsst*10.0
+        rhost = rhost*10.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
