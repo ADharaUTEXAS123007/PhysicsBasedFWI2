@@ -5972,7 +5972,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VSLOWERLIM = 866.0
         d.RHOUPPERLIM = 2294.0
         d.RHOLOWERLIM = 1829.0
-        d.SWS_TAPER_GRAD_HOR = 0
+        d.SWS_TAPER_GRAD_HOR = 1.0
         #d.EXP_TAPER_GRAD_HOR = 3.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
