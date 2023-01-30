@@ -5676,6 +5676,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 20, 38)
+
+        z1 = z1.view(-1, filters[3], 20, 38)
         
         #z1 = self.z1(z)
         #z2 = self.z2(z)
@@ -5685,7 +5687,7 @@ class AutoElMarmousi22_Net(nn.Module):
         #up31    = self.drop31(up31)
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
-        up33    = self.Rhoup33(z)
+        up33    = self.Rhoup33(z1)
         #up33    = self.drop33(up33)
         #up3      = self.up3(z)
         
@@ -5750,7 +5752,7 @@ class AutoElMarmousi22_Net(nn.Module):
 
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) - 0.001*rho1
     
         
         #vp1     = self.final1(vp1)
