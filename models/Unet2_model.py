@@ -246,33 +246,35 @@ class Unet2Model(BaseModel):
         wavelet = torch.from_numpy(wav)
         wavelet = wavelet.to(self.real_B.get_device())
         wavelet = torch.unsqueeze(torch.unsqueeze(wavelet,axis=0),axis=0)
+        print("shape of wavelet :", np.shape(wavelet))
 
-        tr1 = self.real_A * 0
+        print("shape of fake_B :", np.shape(self.fake_B))
+
+        # tr1 = self.real_A * 0
         
-        idx = torch.randperm(self.real_B.shape[3])
-        #idx = torch.arange(0,self.real_B.shape[3])
+        # idx = torch.randperm(self.real_B.shape[3])
+        # #idx = torch.arange(0,self.real_B.shape[3])
         
-        ntraces = self.real_B.shape[3]/3
-        ntraces = math.ceil(ntraces)
+        # ntraces = self.real_B.shape[3]/3
+        # ntraces = math.ceil(ntraces)
         
-        tr1 = self.real_A[:,:,:,0:ntraces] * 0
-        tr2 = self.real_A[:,:,:,0:ntraces] * 0
-        lvar = self.real_A[:,:,:,0:ntraces] * 0
+        # tr1 = self.real_A[:,:,:,0:ntraces] * 0
+        # tr2 = self.real_A[:,:,:,0:ntraces] * 0
+        # lvar = self.real_A[:,:,:,0:ntraces] * 0
         
         
-        
-        for i in range(ntraces):
-            zp = self.fake_B[:,:,:,idx[i]]
-            #print("shape of zp :", np.shape(zp))
-            zp1 = zp[:,:,:-1]
-            zp2 = zp[:,:,1:]
-            reflect = (zp2 - zp1)/(zp2 + zp1)
-            #print("shape of reflect :", np.shape(reflect))
-            synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
-            #print("shape of synth :", np.shape(synth))
-            tr1[:,:,:,i] = synth 
-            tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
-            lvar[:,:,:,i] = self.var_B[:,:,:,idx[i]]
+        # for i in range(ntraces):
+        #     zp = self.fake_B[:,:,:,idx[i]]
+        #     #print("shape of zp :", np.shape(zp))
+        #     zp1 = zp[:,:,:-1]
+        #     zp2 = zp[:,:,1:]
+        #     reflect = (zp2 - zp1)/(zp2 + zp1)
+        #     #print("shape of reflect :", np.shape(reflect))
+        #     synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
+        #     #print("shape of synth :", np.shape(synth))
+        #     tr1[:,:,:,i] = synth 
+        #     tr2[:,:,:,i] = self.real_A[:,:,:,idx[i]]
+        #     lvar[:,:,:,i] = self.var_B[:,:,:,idx[i]]
         
         
         #for i in range(self.real_B.shape[3]):
@@ -280,12 +282,12 @@ class Unet2Model(BaseModel):
         #    synth = conv1d(reflect, wavelet, padding=int(wavelet.shape[-1] / 2))
         #    tr1[:,:,:,i] = synth 
         
-        print("shape of tr1 :", np.shape(tr1))    
-        print("shape of tr2 :", np.shape(tr2))
-        #self.loss_D_MSE = self.criterionL1(tr1,tr2)
-        neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
-        loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
-        self.loss_D_MSE = loss.mean()
+        # print("shape of tr1 :", np.shape(tr1))    
+        # print("shape of tr2 :", np.shape(tr2))
+        # #self.loss_D_MSE = self.criterionL1(tr1,tr2)
+        # neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
+        # loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
+        # self.loss_D_MSE = loss.mean()
         
         
         
@@ -347,55 +349,6 @@ class Unet2Model(BaseModel):
         #if (epoch1 <= lstart):
         #    print("1st epoch1 :", epoch1)
         self.loss_G.backward()
-        #self.loss_G.backward()
-        
-        #maxb = torch.max(torch.abs(self.fake_B.grad))
-        
-        #print("maxb :", maxb)
-        #lstart1 = 35
-        #lstart2 = 60
-        
-        #if (epoch1>lstart):
-        #    print("2nd epoch1 :", epoch1)
-            #self.loss_G.backward(retain_graph=True)
-            #self.optimizer_G.zero_grad()
-            #maxb = torch.max(torch.abs(self.fake_B.grad))
-            #maxg = torch.max(torch.abs(self.grad))
-        
-            #self.fake_B.grad = None
-            #self.fake_B.grad = None
-            #if (epoch1>lstart and epoch1<=lstart1):
-            #self.grad = self.grad*(10**5)  #####(10**5) works for marmousi model
-            #self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
-                
-            #if (epoch1>lstart1 and epoch1<=lstart2):
-            #    self.grad = self.grad*(10**6)  #####(10**5) works for marmousi model
-            #    self.grad = torch.clip(self.grad, min=-0.1, max=0.1)
-                
-            #if (epoch1>lstart2):
-            #    self.grad = self.grad*(10**7)   #####(10**5) works for marmousi model
-            #    self.grad = torch.clip(self.grad, min=-2.0, max=2.0)
-            #self.grad = (self.grad-1600)/(2300-1600)
-            #self.grad = tgm.image.gaussian_blur(self.grad, (5, 5), (10, 10))
-            ##self.grad[:,:,0:26,:] = 0
-            ###self.grad = scipy.ndimage.gaussian_filter(self.grad,10)
-            #maxg = torch.max(torch.abs(self.grad))
-            #print("maxg :", maxg)
-        
-        #self.fake_B.register_hook(print)
-        #filen = './marmousi/GradNewAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
-        #np.save(filen, self.fake_B.grad.cpu().detach().numpy())  #switch on physics based fwi
-        #print("shape of fake B grad :", self.fake_B.grad)
-        #grad = torch.unsqueeze(torch.unsqueeze(self.grad,0),1) #switch on for physics based fwi
-        #grad = grad.to(self.fake_B.get_device()) #switch on for physics based fwi
-        #print("shape of self grad :", np.shape(self.grad))
-        
-        #self.grad = self.grad/torch.max(self.grad.abs())
-            #self.fake_B.backward(self.grad) #switch on for physics based fwi
-        
-        
-        #print("shape of fake_B :", np.shape(self.fake_B))
-        #print("shape of grad :", np.shape(self.grad))   
         if (epoch1 % 1 == 0): 
            filen = './marmousi2/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
