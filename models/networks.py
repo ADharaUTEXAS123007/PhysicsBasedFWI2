@@ -5746,9 +5746,9 @@ class AutoElMarmousi22_Net(nn.Module):
         #vs1[:,:,0:15,:] = 0
         #rho1[:,:,0:15,:] = 0
 
-        ####6#### vp1 = 12.305*vp1 + 3.238
-        ####6#### vs1 = 6.70688*vs1 + 1.65077
-        ####6#### rho1 = 7.0706884*rho1 -1.64139
+        vp1 = 123.05*vp1 + 32.38
+        vs1 = 67.0688*vs1 + 16.5077
+        rho1 = 70.706884*rho1 -16.4139
 
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
