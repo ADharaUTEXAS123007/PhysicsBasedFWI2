@@ -101,7 +101,7 @@ class Unet2Model(BaseModel):
         #print("variable name :",variable)
         #    locals()[variable] = torch.device('cuda:{}'.format(self.gpu_ids[i])) if self.gpu_ids else torch.device('cpu')
 
-        #self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
+        #self.device = torch.devi'ce('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
         #self.device2 = torch.device('cuda:{}'.format(self.gpu_ids[1])) if self.gpu_ids else torch.device('cpu')
         #self.device3 = torch.device('cuda:{}'.format(self.gpu_ids[2])) if self.gpu_ids else torch.device('cpu')
         # self.device4 =
