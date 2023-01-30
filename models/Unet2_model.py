@@ -250,6 +250,10 @@ class Unet2Model(BaseModel):
 
         print("shape of fake_B :", np.shape(self.fake_B))
 
+        imp = torch.swapaxes(self.fake_B[0,0,:,:],0,1)
+
+        print("shape of imp :", np.shape(imp))
+
         # tr1 = self.real_A * 0
         
         # idx = torch.randperm(self.real_B.shape[3])
