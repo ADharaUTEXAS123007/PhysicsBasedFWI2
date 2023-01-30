@@ -6052,13 +6052,13 @@ class AutoElMarmousi22_Net(nn.Module):
         vs_grad = np.flipud(vs_grad)
         rho_grad = np.flipud(rho_grad)
 
-        g1 = np.arange(np.shape(rho_grad)[0])
-        g1 = g1**2.0
-        ss = rho_grad*0
-        for i in range(np.shape(rho_grad)[1]):
-             ss[:,i] = g1
-        # rho_grad = scipy.ndimage.gaussian_filter(rho_grad,4)
-        rho_grad = rho_grad*ss
+        # g1 = np.arange(np.shape(rho_grad)[0])
+        # g1 = g1**2.0
+        # ss = rho_grad*0
+        # for i in range(np.shape(rho_grad)[1]):
+        #      ss[:,i] = g1
+        # # rho_grad = scipy.ndimage.gaussian_filter(rho_grad,4)
+        # rho_grad = rho_grad*ss
         
         vp_grad[0:15,:] = 0.0
         vs_grad[0:15,:] = 0.0
