@@ -5747,8 +5747,8 @@ class AutoElMarmousi22_Net(nn.Module):
         #rho1[:,:,0:15,:] = 0
 
         vp1 = 12.305*vp1 + 3.238
-        vs1 = 6.48*vs1 + 1.536
-        rho1 = 3.1718*rho1 - 0.736325
+        vs1 = 6.70*vs1 + 1.650
+        rho1 = 7.070685*rho1 - 1.6413945
 
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1
@@ -5971,7 +5971,7 @@ class AutoElMarmousi22_Net(nn.Module):
         d.VSUPPERLIM = 1732.0
         d.VSLOWERLIM = 866.0
         d.RHOUPPERLIM = 2294.0
-        d.RHOLOWERLIM = 1929.0
+        d.RHOLOWERLIM = 1829.0
         d.SWS_TAPER_GRAD_HOR = 0
         #d.EXP_TAPER_GRAD_HOR = 3.0
         #d.forward(model, src, rec)
