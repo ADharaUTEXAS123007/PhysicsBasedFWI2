@@ -243,6 +243,7 @@ class Unet2Model(BaseModel):
         #wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
         #wavelet = wavelet*100
         wav = np.loadtxt('/disk/student/adhara/Fall2023/Cranfield/Cranfield/HRS_DATA/statistical_wav.txt',skiprows=33)
+        wavelet = torch.from_numpy(wav)
         wavelet = wav.to(self.real_B.get_device())
         wavelet = torch.unsqueeze(torch.unsqueeze(wavelet,axis=0),axis=0)
 
