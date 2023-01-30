@@ -3305,6 +3305,7 @@ class UnetMarmousi_Net(nn.Module):
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         print("shape of inputs2 :", np.shape(inputs2))
+        inputs2 = torch.unsqueeze(inputs2,0)
         down1  = self.down1(inputs2)
         ##down1 = self.dropD1(down1)
         down2  = self.down2(down1)
