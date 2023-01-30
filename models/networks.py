@@ -3301,7 +3301,7 @@ class UnetMarmousi_Net(nn.Module):
         filters = [64, 128, 256, 512, 1024]
         #filters = [2, 4, 8, 16, 32]
         latent_dim = 512
-        label_dsp_dim = (1098,249)
+        label_dsp_dim = (150,243)
         mintrue = torch.min(inputs1)
         maxtrue = torch.max(inputs1)
         print("shape of inputs2 :", np.shape(inputs2))
