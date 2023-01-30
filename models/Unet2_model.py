@@ -259,6 +259,8 @@ class Unet2Model(BaseModel):
 
         tsynth = conv1d(torch.swapaxes(torch.swapaxes(reflect,1,2),0,1),wavelet,padding=int(wavelet.shape[-1]/2))
 
+        tsynth = torch.swapaxes(tsynth,0,1)
+
         print("shape of tsynth :", np.shape(tsynth))
         print("shape of real_A :", np.shape(self.real_A))
         
@@ -297,7 +299,8 @@ class Unet2Model(BaseModel):
         
         # print("shape of tr1 :", np.shape(tr1))    
         # print("shape of tr2 :", np.shape(tr2))
-        # #self.loss_D_MSE = self.criterionL1(tr1,tr2)
+        self.loss_D_MSE = self.criterionL1(tsynth,self.real_A)
+        
         # neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
         # loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
         # self.loss_D_MSE = loss.mean()
