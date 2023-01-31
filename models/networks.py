@@ -3333,7 +3333,7 @@ class UnetMarmousi_Net(nn.Module):
         ####print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
-        f1     = self.final(f1)
+        #f1     = self.final(f1)
         #f1     = self.f2(f1)
         #f1     = self.final(f1)
         #f1     = self.final1(f1)
@@ -3344,7 +3344,7 @@ class UnetMarmousi_Net(nn.Module):
         #f1     = lowf + torch.unsqueeze(f1[:,0,:,:],1)
         print("shape of lowf :", np.shape(lowf))
         print("shape of inputs1 :", np.shape(inputs1))
-        f1      = inputs1
+        f1      = lowf + 0.1*f1
 
         #f1    = mintrue + f1*(maxtrue-mintrue)
         #f1[(inputs1==1.5100)] = 1.510

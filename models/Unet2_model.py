@@ -261,8 +261,6 @@ class Unet2Model(BaseModel):
 
         tsynth = conv1d(torch.swapaxes(torch.swapaxes(reflect,1,2),0,1),wavelet,padding=int(wavelet.shape[-1]/2))
 
-
-
         tsynth = torch.swapaxes(torch.swapaxes(tsynth,0,1),1,2)
 
         print("shape of tsynth :", np.shape(tsynth))
@@ -375,7 +373,7 @@ class Unet2Model(BaseModel):
            filen = './marmousi2/FakeSeismicAD' + str(batch)+'ep'+str(epoch1)+'.npy'
            np.save(filen, tsynth.cpu().detach().numpy()) 
 
-        self.loss_D_MSE = self.criterionMSE(tsynth,self.real_A)
+        self.loss_D_MSE = self.criterionMSE(tsynth,self.real_A*0.6)
         self.loss_M_MSE = self.criterionMSE(self.real_B,self.fake_B)
         self.loss_K_MSE = 0
         self.loss_V_MSE = 0
