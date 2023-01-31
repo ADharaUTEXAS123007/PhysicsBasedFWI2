@@ -299,8 +299,8 @@ class Unet2Model(BaseModel):
         
         # print("shape of tr1 :", np.shape(tr1))    
         # print("shape of tr2 :", np.shape(tr2))
-        self.loss_D_MSE = self.criterionL1(tsynth,self.real_A)
-        self.loss_M_MSE = self.criterionL1(self.real_B,self.fake_B)
+        self.loss_D_MSE = self.criterionMSE(tsynth,self.real_A)
+        self.loss_M_MSE = self.criterionMSE(self.real_B,self.fake_B)
         self.loss_K_MSE = 0
         self.loss_V_MSE = 0
 
