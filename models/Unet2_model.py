@@ -263,7 +263,7 @@ class Unet2Model(BaseModel):
 
 
 
-        #tsynth = torch.swapaxes(torch.swapaxes(tsynth,0,1),0,1)
+        tsynth = torch.swapaxes(torch.swapaxes(tsynth,0,1),1,2)
 
         print("shape of tsynth :", np.shape(tsynth))
         print("shape of real_A :", np.shape(self.real_A))
