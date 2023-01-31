@@ -3321,8 +3321,8 @@ class UnetMarmousi_Net(nn.Module):
     
         up1    = self.up4(down4,center)
         ##up1    = self.dropU4(up1)
-        print("shape of up1 :", np.shape(up1))
-        print("shape of down3 :", np.shape(down3))
+        ####print("shape of up1 :", np.shape(up1))
+        ####print("shape of down3 :", np.shape(down3))
         
         up1    = self.up3(down3,up1)
         ##up1    = self.dropU3(up1)
@@ -3330,7 +3330,7 @@ class UnetMarmousi_Net(nn.Module):
         ##up1    = self.dropU2(up1)
         up1    = self.up1(down1,up1)
         ##up1    = self.dropU1(up1)
-        print("shape of up1 :", np.shape(up1))
+        ####print("shape of up1 :", np.shape(up1))
         up1    = up1[:,:,1:1+label_dsp_dim[0],1:1+label_dsp_dim[1]].contiguous()
         f1     = self.f1(up1)
         f1     = self.final(f1)
@@ -3339,9 +3339,10 @@ class UnetMarmousi_Net(nn.Module):
         #f1     = self.final1(f1)
         #f1     = self.final(f1)
         #f1     = f1/torch.max(f1)
-        print("shape of f1 :", np.shape(f1))
+        ####print("shape of f1 :", np.shape(f1))
         #f2     = 0.001*0.001*torch.unsqueeze(f1[:,1,:,:],1)
         #f1     = lowf + torch.unsqueeze(f1[:,0,:,:],1)
+        print("shape of lowf :", np.shape(lowf))
         f1      = inputs1
 
         #f1    = mintrue + f1*(maxtrue-mintrue)
