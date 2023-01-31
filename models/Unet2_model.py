@@ -257,7 +257,9 @@ class Unet2Model(BaseModel):
 
         reflect = (imp[:,1:,:]-imp[:,0:-1,:])/(imp[:,1:,:]+imp[:,0:-1,:]+1e-10)
 
-        tsynth = conv1d(torch.swapaxes(torch.swapaxes(reflect,1,2),0,1),wavelet,padding=int(wavelet.shape[-1]/2))
+        print("shape of reflect :", np.shape(reflect))
+
+        tsynth = conv1d(torch.swapaxes(reflect,0,1),wavelet,padding=int(wavelet.shape[-1]/2))
 
         tsynth = torch.swapaxes(tsynth,0,1)
 
