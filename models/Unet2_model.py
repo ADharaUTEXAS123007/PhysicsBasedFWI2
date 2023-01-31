@@ -377,6 +377,9 @@ class Unet2Model(BaseModel):
             
            filen = './marmousi2/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
            np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
+
+           filen = './marmousi2/FakeSeismicAD' + str(batch)+'ep'+str(epoch1)+'.npy'
+           np.save(filen, tsynth.cpu().detach().numpy()) 
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
