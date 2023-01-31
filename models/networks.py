@@ -3343,6 +3343,7 @@ class UnetMarmousi_Net(nn.Module):
         #f2     = 0.001*0.001*torch.unsqueeze(f1[:,1,:,:],1)
         #f1     = lowf + torch.unsqueeze(f1[:,0,:,:],1)
         print("shape of lowf :", np.shape(lowf))
+        print("shape of inputs1 :", np.shape(inputs1))
         f1      = inputs1
 
         #f1    = mintrue + f1*(maxtrue-mintrue)
