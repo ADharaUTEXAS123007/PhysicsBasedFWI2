@@ -261,7 +261,7 @@ class Unet2Model(BaseModel):
 
         tsynth = conv1d(torch.swapaxes(torch.swapaxes(reflect,1,2),0,1),wavelet,padding=int(wavelet.shape[-1]/2))
 
-        #tsynth = torch.swapaxes(tsynth,0,1)
+        tsynth = torch.swapaxes(torch.swapaxes(tsynth,0,1),0,1)
 
         print("shape of tsynth :", np.shape(tsynth))
         print("shape of real_A :", np.shape(self.real_A))
