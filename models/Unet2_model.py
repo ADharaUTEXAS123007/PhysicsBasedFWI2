@@ -362,12 +362,6 @@ class Unet2Model(BaseModel):
         #self.fake_B.retain_grad()
 
         
-        self.loss_G = lambda1 * self.loss_D_MSE
-        ####self.loss_G = lambda2 * self.loss_M1_MSE
-        
-        #if (epoch1 <= lstart):
-        #    print("1st epoch1 :", epoch1)
-        self.loss_G.backward()
         if (epoch1 % 1 == 0): 
            filen = './marmousi2/GradAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
            np.save(filen, self.grad.cpu().detach().numpy())  #switch on physics based fwi
@@ -380,6 +374,13 @@ class Unet2Model(BaseModel):
 
            filen = './marmousi2/FakeSeismicAD' + str(batch)+'ep'+str(epoch1)+'.npy'
            np.save(filen, tsynth.cpu().detach().numpy()) 
+
+        self.loss_G = lambda1 * self.loss_D_MSE
+        ####self.loss_G = lambda2 * self.loss_M1_MSE
+        
+        #if (epoch1 <= lstart):
+        #    print("1st epoch1 :", epoch1)
+        self.loss_G.backward()
         
         #filen = './marmousi/RealAD' + str(batch)+'ep'+str(epoch1)+'.npy' #switch on for physics based fwi       
         #np.save(filen, self.real_B.cpu().detach().numpy())  #switch on physics based fwi
