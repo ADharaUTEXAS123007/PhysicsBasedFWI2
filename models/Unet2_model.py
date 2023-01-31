@@ -301,10 +301,6 @@ class Unet2Model(BaseModel):
         
         # print("shape of tr1 :", np.shape(tr1))    
         # print("shape of tr2 :", np.shape(tr2))
-        self.loss_D_MSE = self.criterionMSE(tsynth,self.real_A)
-        self.loss_M_MSE = self.criterionMSE(self.real_B,self.fake_B)
-        self.loss_K_MSE = 0
-        self.loss_V_MSE = 0
 
         # neg_logvar = torch.clamp(lvar, min=-20, max=20)  # prevent nan loss
         # loss = torch.exp(neg_logvar) * torch.pow(tr2 - tr1, 2) - neg_logvar
@@ -377,6 +373,11 @@ class Unet2Model(BaseModel):
            filen = './marmousi2/FakeSeismicAD' + str(batch)+'ep'+str(epoch1)+'.npy'
            np.save(filen, tsynth.cpu().detach().numpy()) 
 
+        self.loss_D_MSE = self.criterionMSE(tsynth,self.real_A)
+        self.loss_M_MSE = self.criterionMSE(self.real_B,self.fake_B)
+        self.loss_K_MSE = 0
+        self.loss_V_MSE = 0
+        
         self.loss_G = lambda1 * self.loss_D_MSE
         ####self.loss_G = lambda2 * self.loss_M1_MSE
         
