@@ -251,7 +251,7 @@ class Unet2Model(BaseModel):
 
         print("shape of fake_B :", np.shape(self.fake_B))
 
-        imp = torch.swapaxes(self.fake_B[0,:,:,:],1,2)
+        imp = self.fake_B[0,:,:,:]
 
         print("shape of imp :", np.shape(imp))
 
