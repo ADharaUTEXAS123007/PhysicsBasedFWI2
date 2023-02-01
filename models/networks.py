@@ -8289,9 +8289,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #self.f2      =  nn.Conv2d(1,1,1)
         #self.final1   =  nn.Sigmoid()
         #self.final1  =  nn.Conv2d(1, 1, 1)
-        self.final1 = nn.Sigmoid()
-        self.final2 = nn.Sigmoid()
-        self.final3 = nn.Sigmoid()
+        ###4############ self.final1 = nn.Sigmoid()
+        ####4########### self.final2 = nn.Sigmoid()
+        ####4########### self.final3 = nn.Sigmoid()
         
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
@@ -8441,9 +8441,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs1f     = self.vs(f12)
         rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
-        #############################4######### vp1f     = 0.39423115*vp1f + 0.002671641
-        #############################4######### vs1f     = 0.22760948*vs1f + 0.0015424669
-        #############################4######## rho1f    = 10.381522*rho1f + 7.465008
+        vp1f     = 0.39423115*vp1f + 0.002671641
+        vs1f     = 0.22760948*vs1f + 0.0015424669
+        rho1f    = 10.381522*rho1f + 7.465008
         ###vp1    = self.vp(torch.unsqueeze(f1[:,0,:,:],1))
         ###vs1    = self.vs(torch.unsqueeze(f1[:,1,:,:],1))
         #rho1   = self.rho(f13)
@@ -8451,9 +8451,6 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1     = f12
         #rho1    = f13
         
-        vp1f    = self.final1(vp1f)
-        vs1f    = self.final2(vs1f)
-        rho1f    = 0.1*self.final3(rho1f)
         ############rho1   = self.final3(rho1)
         #print("shape of vp1 :", np.shape(vp1))
         #vp1[:,:,0:15,:] = 0
@@ -8470,10 +8467,10 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #vs1 = 88.10 + vs1f*(maxvs - 88.10)
         vp1    = torch.unsqueeze(lowf[:,0,:,:],1) + vp1f
         vs1    = torch.unsqueeze(lowf[:,1,:,:],1) + vs1f
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
+        ###############rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
 
         #################4################# print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
-        ################4################### rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
         ##############4###################### print("after rho1 norm :", torch.norm(rho1))
 
         
