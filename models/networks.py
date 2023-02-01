@@ -8470,7 +8470,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ###############rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
 
         #################4################# print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.001*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.1*rho1f
         ##############4###################### print("after rho1 norm :", torch.norm(rho1))
 
         
@@ -8755,7 +8755,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
         #d.FC_SPIKE_1 = 0.0
-        d.QUELLART = 6
+        #d.QUELLART = 6
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
