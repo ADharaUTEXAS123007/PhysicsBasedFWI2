@@ -8486,9 +8486,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ####minrho1 = lowf[:,2,:,:]
 
         
-        ###########4###############  vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        ###########4##############   vs1    = torch.clip(vs1, min=88.1, max=maxvs)
-        ###########4##############  rho1   = torch.clip(rho1, min=171.9, max=maxrho)
+        vp1    = torch.clip(vp1, min=minvp, max=maxvp)
+        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
