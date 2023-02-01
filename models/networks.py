@@ -8754,7 +8754,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.RHOUPPERLIM = 2626.9998
         d.RHOLOWERLIM = 1009.00
         d.SWS_TAPER_GRAD_HOR = 1
-        d.FC_SPIKE_1 = 0.0
+        #d.FC_SPIKE_1 = 0.0
         d.QUELLART = 6
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
