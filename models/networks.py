@@ -8617,12 +8617,6 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vpst = vpst*10.0
         vsst = vsst*10.0
         rhost = rhost*10.0
-        #vpst = 1500+(4509-1500)*vpst
-        #vsst = 0 + 2603*vsst
-        #rhost = 1009 + (2589-1009)*rhost
-        
-        #vsst = (2752 - 0) * (vsst - 1500)/(4766 - 1500) + 0
-        #rhost = (2627 - 1009) * (rhost - 1500)/(4766 - 1500) + 1009
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
@@ -8843,7 +8837,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         rho_grad = np.flipud(rho_grad)
 
         g1 = np.arange(np.shape(rho_grad)[0])
-        g1 = g1**1.0
+        g1 = g1**1.5
         ss = rho_grad*0
         for i in range(np.shape(rho_grad)[1]):
              ss[:,i] = g1
@@ -8862,26 +8856,6 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         print("shape of vs_grad1 :", np.shape(vs_grad))
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
-        # if freq == 2:
-        #     r = 10**5
-        # elif freq == 4:
-        #     r = 10**5
-        # elif freq == 6:
-        #     r = 10**4
-        # elif freq == 8:
-        #     r = 10**4
-        # elif freq == 10:
-        #     r = 10**3
-        # elif freq == 12:
-        #     r = 10**3
-        # elif freq == 14:
-        #     r = 10**2
-        # elif freq == 16:
-        #     r = 10**2
-        # elif freq == 18:
-        #     r = 10**1
-        # else:
-        #     r = 10**1
         r = 10**5
             
      
