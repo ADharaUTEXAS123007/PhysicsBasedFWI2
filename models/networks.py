@@ -8732,9 +8732,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        #d.FC_SPIKE_1 = -5.0
-        #d.FC_SPIKE_2 = 15.0
-        #d.QUELLART = 6
+        d.FC_SPIKE_1 = 4.0
+        d.FC_SPIKE_2 = 15.0
+        d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
