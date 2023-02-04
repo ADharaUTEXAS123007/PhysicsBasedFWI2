@@ -122,7 +122,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             if init_type == 'normal':
                 init.normal_(m.weight.data, 0.0, init_gain)
             elif init_type == 'xavier':
-                init.xavier_normal_(m.weight.data, gain=0.0000)
+                init.xavier_normal_(m.weight.data, init_gain)
             elif init_type == 'kaiming':
                 init.kaiming_uniform_(m.weight.data, a=0.2, mode='fan_out',nonlinearity='leaky_relu')
             elif init_type == 'orthogonal':
@@ -130,7 +130,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
             else:
                 #raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
                 init.ones_(m.weight.data)
-                print("initialize with 1")
+                #print("initialize with 1")
             if hasattr(m, 'bias') and m.bias is not None:
                 init.constant_(m.bias.data, 0.0)
         elif classname.find('BatchNorm2d') != -1:  # BatchNorm Layer's weight is not a matrix; only normal distribution applies.
