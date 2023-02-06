@@ -19,6 +19,7 @@ from bruges.reflection import reflection as avo
 from bruges.filters import wavelets as wav 
 from torch.nn.functional import conv1d
 import math
+import bruges as bg
 
 #from vgg import Vgg16
 
