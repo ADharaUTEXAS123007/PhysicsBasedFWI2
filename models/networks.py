@@ -13307,7 +13307,7 @@ class AutoMarmousiWav_Net(nn.Module):
         #net1out1 = (net1out1-2000)/(4500-2000)
         #net1out1.grad = net1out1.grad*1000
                  
-        return net1out1.grad, lossinner.item(), source_amplitudes_true.grad
+        return net1out1.grad, lossinner, source_amplitudes_true.grad
 
 
 class AutoMarmousiNF_Net(nn.Module):
