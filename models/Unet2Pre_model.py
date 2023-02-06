@@ -243,6 +243,15 @@ class Unet2PreModel(BaseModel):
         #wavelet = wav.ricker(0.1,2e-3,30)
         #wavelet = torch.tensor(wavelet).unsqueeze(dim=0).unsqueeze(dim=0).float().to(self.real_B.get_device())
         #wavelet = wavelet*100
+        wav3 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_3.txt',skiprows=33)
+        #wav7 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_7.txt',skiprows=33)
+        wav10 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_10.txt',skiprows=33)
+        wav16 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_16.txt',skiprows=33)
+        wav22 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_22.txt',skiprows=33)
+        wav29 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_29.txt',skiprows=33)
+        wav35 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_35.txt',skiprows=33)
+        wav42 = np.loadtxt('/disk/student/adhara/Spring2023/Legacy/wavelets/multi_angle_42.txt',skiprows=33)        
+
         wav = np.loadtxt('/disk/student/adhara/Fall2023/Cranfield/Cranfield/HRS_DATA/statistical_wav.txt',skiprows=33)
         wavelet = torch.from_numpy(wav)
         wavelet = wavelet.to(self.real_B.get_device())
