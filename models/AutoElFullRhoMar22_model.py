@@ -165,7 +165,7 @@ class AutoElFullRhoMar22Model(BaseModel):
         if (epoch1 == 1):
             self.latent = torch.ones(1,1,1,1)
         [self.fake_Vp,self.fake_Vs,self.fake_Rho,self.grad,self.latent,self.vp_grad,self.vs_grad,self.rho_grad,self.loss_D_MSE] = self.netG(self.real_B,self.real_A,lstart,epoch1,self.latent,self.real_C,self.real_D,freq)  # G(A)
-        self.loss_D_MSE = self.loss_D_MSE*(10**16)
+        self.loss_D_MSE = self.loss_D_MSE*(10**30)
         self.real_Vp = torch.unsqueeze(self.real_B[:,0,:,:],1)
         self.real_Vs = torch.unsqueeze(self.real_B[:,1,:,:],1)
         self.real_Rho = torch.unsqueeze(self.real_B[:,2,:,:],1)
