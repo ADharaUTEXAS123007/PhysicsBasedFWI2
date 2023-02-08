@@ -8825,7 +8825,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         ###############rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + rho1f
 
         #################4################# print("before rho1 norm :", torch.norm(torch.unsqueeze(lowf[:,2,:,:],1)))
-        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.0001*rho1f
+        rho1   = torch.unsqueeze(lowf[:,2,:,:],1) + 0.0005*rho1f
         ##############4###################### print("after rho1 norm :", torch.norm(rho1))
 
         
@@ -9140,7 +9140,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=4.0,fc_high=10.0)
+        d.add_fwi_stage(fc_low=2.0,fc_high=10.0)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
@@ -9236,13 +9236,13 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         rho_grad = 0.5*rho_grad*r3
         rho_grad = (rho_grad + 1e-10)
         
-        filen = './marmousiEl4Jan/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl4JanInit/vpp' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vp_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl4Jan/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl4JanInit/vss' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, vs_grad)  #switch on physics based fwi
         
-        filen = './marmousiEl4Jan/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
+        filen = './marmousiEl4JanInit/rhoo' + str(epoch1) + '.npy' #switch on for physics based fwi       
         np.save(filen, rho_grad)  #switch on physics based fwi
         
         print('grads names')
