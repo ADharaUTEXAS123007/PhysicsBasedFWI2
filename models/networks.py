@@ -8980,7 +8980,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         denise_root = '/disk/student/adhara/WORK/DeniseFWI/virginFWI/DENISE-Black-Edition/'
         d = api.Denise(denise_root,verbose=1)
-        d.save_folder = '/disk/student/adhara/MARMOUSILinConst/'
+        d.save_folder = '/disk/student/adhara/MARMOUSIInitial/'
         d.set_paths()
         
         #model = api.Model(vp, vs, rho, dx)
