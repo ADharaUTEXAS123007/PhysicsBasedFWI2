@@ -9087,7 +9087,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 4.0
+        d.FC_SPIKE_1 = 2.0
         d.FC_SPIKE_2 = 15.0
         d.QUELLART = 6
         #d.FC_SPIKE_2 = 18.0
@@ -9114,13 +9114,13 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #d.EXP_TAPER_GRAD_HOR = 1.0
         #d.forward(model, src, rec)
         #os.system('mpirun -np 4 hello')
-        filen = './marmousiEl4Jan/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
+        filen = './marmousiEl4JanInit/vpmod' + str(epoch1) + '.npy' #switch on for physics based fwi         
         np.save(filen, vpst)  #switch on physics based fwi
         
-        filen = './marmousiEl4Jan/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiEl4JanInit/vsmod' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, vsst)  #switch on physics based fwi
         
-        filen = './marmousiEl4Jan/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
+        filen = './marmousiEl4JanInit/rhomod' + str(epoch1) + '.npy' #switch on for physics based fwi     
         np.save(filen, rhost)  #switch on physics based fwi
         
         
