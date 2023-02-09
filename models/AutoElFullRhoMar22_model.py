@@ -451,9 +451,9 @@ class AutoElFullRhoMar22Model(BaseModel):
             #if (currenterror < 0.4*initerror):
                 #print("backpropagating density gradient")
             #if (currenterror < 0.5*initerror):
-            self.rho_grad = torch.unsqueeze(self.rho_grad,0)
-            self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
-            self.fake_Rho.backward(self.rho_grad)
+            #####7##### self.rho_grad = torch.unsqueeze(self.rho_grad,0)
+            ########7###### self.rho_grad = self.rho_grad.cuda(self.fake_Rho.get_device())
+            ########7####### self.fake_Rho.backward(self.rho_grad)
                 
             #self.fake_Rho.retain_grad()
 
