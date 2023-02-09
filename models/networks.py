@@ -9042,7 +9042,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 10.0
+        fsource = 8.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9092,7 +9092,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.PHYSICS = 1
         d.FC_SPIKE_1 = 3.0
         d.FC_SPIKE_2 = 15.0
-        d.QUELLART = 6
+        d.QUELLART = 1
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
@@ -9143,7 +9143,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #for i, freq in enumerate([20]
         #d.add_fwi_stage(fc_low=0.0, fc_high=int(epoch1/10)+1.0)
         #d.add_fwi_stage(fc_low=0.0, fc_high=30.0)
-        d.add_fwi_stage(fc_low=3.0,fc_high=10.0)
+        d.add_fwi_stage(fc_low=0.0,fc_high=10.0)
         # if ((epoch1 >= 0) and (epoch1 <=100 )):
         #     d.add_fwi_stage(fc_low=0.0, fc_high=2.0)
         # #     #print(f'Stage {i+1}:\n\t{d.fwi_stages[i]}\n')
