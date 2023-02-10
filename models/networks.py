@@ -8847,7 +8847,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
         vs1    = torch.clip(vs1, min=88.1, max=maxvs)
-        rho1   = torch.clip(rho1, min=171.9, max=maxrho)
+        #rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
         ########vs1 = minvs + vs1*(maxvs-minvs)
@@ -8856,7 +8856,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         
         vp1[:,:,0:24,:] = inputs1[:,0,0:24,:]
         vs1[:,:,0:24,:] = inputs1[:,1,0:24,:]
-        rho1[:,:,0:24,:] = inputs1[:,2,0:24,:]
+        #rho1[:,:,0:24,:] = inputs1[:,2,0:24,:]
         
         
        #vp1     = inputs1[:,0,:,:]
@@ -9043,7 +9043,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
 
         # Wrap into api
-        fsource = 8.0
+        fsource = 5.0
         rec = api.Receivers(xrec, yrec)
         src = api.Sources(xsrc, ysrc, fsource)
         
@@ -9091,7 +9091,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        #d.FC_SPIKE_1 = 3.0
+        d.FC_SPIKE_1 = 3.0
         #d.FC_SPIKE_2 = 15.0
         d.QUELLART = 1
         #d.FC_SPIKE_2 = 18.0
@@ -9216,8 +9216,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         print("shape of rho_grad1 :", np.shape(rho_grad))
         
         r = 10**5
-            
-     
+
         r1 = np.max(np.abs(vpst))/np.max(np.abs(vp_grad))
         vp_grad = torch.from_numpy(vp_grad.copy())
         vp_grad = vp_grad.float()
