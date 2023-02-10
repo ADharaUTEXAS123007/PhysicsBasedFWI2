@@ -8559,11 +8559,11 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         self.n_classes     = 1
         
         #filters = [16, 32, 64, 128, 256]
-        #filters = [32, 64, 128, 256, 512]
+        filters = [32, 64, 128, 256, 512]
         #filters = [16, 32, 64, 128, 512]
         #######filters = [2, 4, 8, 16, 32] #this works best result so far for marmousi model
         #filters = [1, 1, 2, 4, 16]
-        filters = [8, 16, 32, 64, 128] 
+        #filters = [8, 16, 32, 64, 128] 
         ##filters = [4,8,16,32,64]
         #filters = [4, 8, 16, 32, 64]
         #filters = [16, 32, 64, 128, 256]
@@ -8651,9 +8651,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
     def forward(self, inputs1, inputs2, lstart, epoch1, latentI, lowf, inputs3, freq, idx, it):
         #filters = [16, 32, 64, 128, 256]
         #filters = [2, 4, 8, 16, 32]
-        #filters = [32, 64, 128, 256, 512]
+        filters = [32, 64, 128, 256, 512]
         #filters = [4,8,16,32,64]
-        filters = [8, 16, 32, 64, 128]  ###this works very well
+        ###filters = [8, 16, 32, 64, 128]  ###this works very well
         #filters = [1, 1, 2, 4, 16]
         #filters = [16, 32, 64, 128, 256]
         #filters = [4, 8, 16, 32, 64]
@@ -9091,9 +9091,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         d.NPROCX = 6
         d.NPROCY = 5
         d.PHYSICS = 1
-        d.FC_SPIKE_1 = 3.0
+        #d.FC_SPIKE_1 = 3.0
         #d.FC_SPIKE_2 = 15.0
-        d.QUELLART = 1
+        ###################d.QUELLART = 1
         #d.FC_SPIKE_2 = 18.0
         #d.TIME = 6.0
         #d.NT = 2.5e-03
