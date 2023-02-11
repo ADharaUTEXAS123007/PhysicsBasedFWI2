@@ -8731,14 +8731,14 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #p = inputs2
         #z = 0.5*torch.ones([1,1,1,64])
         z = self.decoder_input(p)
-        z1 = self.decoder_input(p)
+        ##########z1 = self.decoder_input(p)
         ##############z2 = self.decoder_input2(p)
         ####zrho = self.decoder_inputRho(p)
         #####z = inputs2
         #z = z.view(-1, filters[3], 250, 51) #for marmousi model
         #print("shape of z :", np.shape(z))
         z = z.view(-1, filters[3], 23, 52)
-        z1 = z1.view(-1,filters[3],23,52)
+        ############z1 = z1.view(-1,filters[3],23,52)
         #z2 = z2.view(-1, 4, 92, 208)
         #zrho = zrho.view(-1, 1, 100, 300)
         #down4 = torch.swapaxes(down4,2,3)
@@ -8748,7 +8748,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         up32    = self.up32(z)
         #up32    = self.drop32(up32)
         ###########up33    = self.Rhoup33(z)
-        up33    = self.up33(z1)
+        ######up33    = self.up33(z1)
         print("shape off up33 :", np.shape(up33))
         #up3      = self.up3(z)
         
@@ -8758,7 +8758,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #up21    = self.drop21(up21)
         up22    = self.up22(up32)
         #up22    = self.drop22(up22)
-        up23    = self.up23(up33)
+        #######up23    = self.up23(up33)
         ###################print("shape of up23 :", np.shape(up23))
         #up23    = self.drop23(up23)
         #up2     = self.up2(up3)
@@ -8769,7 +8769,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         #print("shape of up21 :", np.shape(up21))
         up12    = self.up12(up22)
         #up12    = self.drop12(up12)
-        up13    = self.up13(up23)
+        ###########up13    = self.up13(up23)
         ##print("shape of up13 :", np.shape(up13))
         #up13    = self.drop13(up13)
         #up1     = self.up1(up2)
@@ -8780,21 +8780,21 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         print("shape of up12 :", np.shape(up12))
         up11    = up11[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         up12    = up12[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
-        up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
+        #########up13    = up13[:,:,10:10+label_dsp_dim[0],10:10+label_dsp_dim[1]].contiguous()
         
         ##print("shape of up13 :", np.shape(up13))
         #up1    = up1[:,:,3:3+label_dsp_dim[0],3:3+label_dsp_dim[1]].contiguous()
         
         f11     = self.f11(up11)
         f12     = self.f12(up12)
-        f13     = self.f13(up13)
+        ##########f13     = self.f13(up13)
         #f1    = self.f1(up1)
         
         
         
         vp1f     = self.vp(f11)
         vs1f     = self.vs(f12)
-        rho1f    = self.rho(f13)
+        #########rho1f    = self.rho(f13)
         #rho1    = self.rho2(rho1)
         #############################7######### vp1f     = 0.39423115*vp1f + 0.002671641
         #############################7######### vs1f     = 0.22760948*vs1f + 0.0015424669
