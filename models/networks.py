@@ -8846,7 +8846,7 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
 
         
         vp1    = torch.clip(vp1, min=minvp, max=maxvp)
-        vs1    = torch.clip(vs1, min=88.1, max=maxvs)
+        vs1    = torch.clip(vs1, min=881.0, max=maxvs)
         #rho1   = torch.clip(rho1, min=171.9, max=maxrho)
         #rho1   = torch.max(torch.min(rho1, maxrho1), minrho1)
         #######vp1 = minvp + vp1*(maxvp-minvp)
@@ -8943,9 +8943,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vs = np.squeeze(vs)
         rho = np.squeeze(rho)
         
-        vp = np.flipud(vp)*10.0
-        vs = np.flipud(vs)*10.0
-        rho = np.flipud(rho)*10.0
+        vp = np.flipud(vp)*1.0
+        vs = np.flipud(vs)*1.0
+        rho = np.flipud(rho)*1.0
         
         #vs = (2752 - 0) * (vs - 1500)/(4766 - 1500) + 0
         #rho = (2627 - 1009) * (rho - 1500)/(4766 - 1500) + 1009
@@ -8973,9 +8973,9 @@ class AutoElFullRhoMarmousiMar22_Net(nn.Module):
         vsst = np.flipud(vsst)
         rhost = np.flipud(rhost)
         
-        vpst = vpst*10.0
-        vsst = vsst*10.0
-        rhost = rhost*10.0
+        vpst = vpst*1.0
+        vsst = vsst*1.0
+        rhost = rhost*1.0
         
                
         print("max of vp passed :", np.max(vp), np.max(vs), np.max(rho))
